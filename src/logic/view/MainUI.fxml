@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.UIController">
+   <children>
+      <SplitPane dividerPositions="0.8657718120805369" orientation="VERTICAL" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <SplitPane dividerPositions="0.11912751677852348" layoutX="63.0" layoutY="14.0" prefHeight="210.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <VBox layoutX="14.0" layoutY="14.0" spacing="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <children>
+                                    <Button fx:id="addButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#add" prefWidth="55.0" text="Add..." />
+                                    <Button fx:id="editButton" layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#edit" prefWidth="55.0" text="Edit..." />
+                                    <Button fx:id="deleteButton" layoutX="14.0" layoutY="86.0" mnemonicParsing="false" onMouseClicked="#delete" prefWidth="55.0" text="Delete" />
+                                    <Button fx:id="listButton" layoutX="14.0" layoutY="119.0" mnemonicParsing="false" prefWidth="55.0" text="List..." />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <HBox layoutX="5.0" layoutY="5.0" prefHeight="82.0" prefWidth="598.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <TextField fx:id="cmdTextField" prefHeight="25.0" prefWidth="536.0" />
+                        <Button fx:id="enterButton" layoutX="532.0" layoutY="29.0" mnemonicParsing="false" text="Enter">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
