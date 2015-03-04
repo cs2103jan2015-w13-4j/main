@@ -1,11 +1,10 @@
+package logic;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ListTask {
 	
-	public static getList(){
-		
-	}
 	
 	
 	public static StringBuilder listTask(ArrayList<Task> taskList){

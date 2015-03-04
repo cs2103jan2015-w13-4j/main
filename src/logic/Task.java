@@ -3,6 +3,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import logic.storage.Storage;
+
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -39,7 +41,7 @@ public class Task {
 	public Task(String[] inputArray){
 		this.title=inputArray[ARRAY_INDEX_TITLE];
 		//this.description=inputArray[ARRAY_INDEX_TITLE]);
-		this.id=(int) Math.random();
+		this.id= Storage.getNextAvailableID();
 		this.startDate=inputArray[ARRAY_INDEX_START_DATE];
 		this.startTime=inputArray[ARRAY_INDEX_START_TIME];
 		this.endDate=inputArray[ARRAY_INDEX_END_DATE];

@@ -1,3 +1,4 @@
+package logic;
 
 public class Message {
 	public static String MSG_SUCCESS = "%s Task successfully added\n";

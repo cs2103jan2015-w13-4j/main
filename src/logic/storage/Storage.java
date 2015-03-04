@@ -27,17 +27,17 @@ import org.w3c.dom.Element;
 
 public class Storage {
 
-	int max_number_of_tasks;
+	static int max_number_of_tasks;
 	
-	final String NODE_ROOT_TAG = "tasks";
-	final String NODE_TOTAL_TASK_TAG = "total_task";
-	final String NODE_TOTAL_TASK_VALUE_TAG = "value";
-	final String NODE_TASK_TAG = "task";
-	final String NODE_TASK_ID_TAG = "id";
-	final String NODE_TASK_TITLE_TAG = "title";
-	final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
-	final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
-	final String NODE_TASK_IS_DONE_TAG = "is_done";
+	static final String NODE_ROOT_TAG = "tasks";
+	static final String NODE_TOTAL_TASK_TAG = "total_task";
+	static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
+	static final String NODE_TASK_TAG = "task";
+	static final String NODE_TASK_ID_TAG = "id";
+	static final String NODE_TASK_TITLE_TAG = "title";
+	static final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
+	static final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
+	static final String NODE_TASK_IS_DONE_TAG = "is_done";
 	/*
 	final String NODE_TASK_START_TIME_TAG = "start_time";
 	final String NODE_TASK_START_DATE_TAG = "start_date";
@@ -55,7 +55,7 @@ public class Storage {
 	 * Need XML file path to read
 	 * ArrayList of tasks for input
 	 * */
-	public boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
+	public static boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
 		boolean isSaved = false;
 		try{
 			Node nRoot = null;
@@ -77,7 +77,7 @@ public class Storage {
 			
 			//add total number of tasks
 			nTotal = doc.createElement(NODE_TOTAL_TASK_TAG);
-			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(this.max_number_of_tasks));
+			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));
 			//add total node to root
 			nRoot.appendChild(nTotal);
 			
@@ -131,7 +131,7 @@ public class Storage {
 	 * ArrayList
 	 * value  task object
 	 * */
-	public ArrayList<Task> XmltoTable(String xmlFilePath){
+	public static ArrayList<Task> XmltoTable(String xmlFilePath){
 		
 		ArrayList<Task> mArrayTask = new ArrayList<Task>();
 		
@@ -145,7 +145,7 @@ public class Storage {
 			
 			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
 			Node nTotalValue = nTotalList.item(0);
-			this.max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent());
+			max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent());
 			
 			NodeList nList = doc.getElementsByTagName(NODE_TASK_TAG);
 			
@@ -216,7 +216,7 @@ public class Storage {
 	
 	
 	//Not in used
-	private boolean XmlAddTask(String xmlFilePath, Task newTask){
+	private static boolean XmlAddTask(String xmlFilePath, Task newTask){
 		boolean isSaved = false;
 		
 		try{
@@ -268,7 +268,7 @@ public class Storage {
 	}
 	
 	//Not in used
-	private boolean xmlDeleteTask(String xmlFilePath, Task deleteTask){
+	private static boolean xmlDeleteTask(String xmlFilePath, Task deleteTask){
 		boolean isSaved = false;
 		
 		try{
@@ -309,7 +309,7 @@ public class Storage {
 		
 	}
 	
-	private void createNode(Node parent, String tagName, String value){
+	private static void createNode(Node parent, String tagName, String value){
 		Document doc = parent.getOwnerDocument();
 		
 		//create a new node
@@ -322,7 +322,7 @@ public class Storage {
 		
 	}	
 	
-	private Node searchNode(Document doc, String findID){
+	private static Node searchNode(Document doc, String findID){
 		
 		Node findNode = null;
 		Node nRoot = doc.getDocumentElement();
@@ -342,7 +342,7 @@ public class Storage {
 	}
 	
 	
-	private boolean saveXml(Document doc, String xmlFilePath){
+	private static boolean saveXml(Document doc, String xmlFilePath){
 		//Save the document
 		try{
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -375,45 +375,43 @@ public class Storage {
 	}//end removeAllFromXML
 	 
 	 
-	 private void normalize(Document doc){
+	 private static void normalize(Document doc){
 		 Element root = doc.getDocumentElement();
 		 root.normalize();		 
 	 }
-	
-	 
 
-	 public int getMaxNumberOfTasks(){
-		 return this.max_number_of_tasks;
+	 public static int getMaxNumberOfTasks(){
+		 return max_number_of_tasks;
 	 }
 	 
-	 public void setMaxNumberOfTasks(int num){
-		 this.max_number_of_tasks = num;
+	 public static void setMaxNumberOfTasks(int num){
+		 max_number_of_tasks = num;
 	 }
 	 
-	 public int getNextAvailableID(){
-		 return this.max_number_of_tasks + 1;
+	 public static int getNextAvailableID(){
+		 return max_number_of_tasks + 1;
 	 }
 	 
 	 
 	 
 	 /*Conversion*/
-	 private String convertIntToString(int input){
+	 private static String convertIntToString(int input){
 		 return String.valueOf(input);
 	 }
 	 
-	 private int convertStringToInt(String input){
+	 private static int convertStringToInt(String input){
 		 return Integer.parseInt(input);
 	 }
 	 
-	 private String convertBooleanToString(boolean input){
+	 private static String convertBooleanToString(boolean input){
 		 return String.valueOf(input);
 	 }
 	 
-	 private String convertLongToString(long input){
+	 private static String convertLongToString(long input){
 		 return String.valueOf(input);
 	 }
 	 
-	 private long convertStringToLong(String input){
+	 private static long convertStringToLong(String input){
 		 return Long.valueOf(input);
 	 }
 	 
