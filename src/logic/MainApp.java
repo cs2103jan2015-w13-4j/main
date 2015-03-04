@@ -13,13 +13,15 @@ public class MainApp extends Application {
 	private Stage primaryStage;
     private BorderPane rootLayout;
     
+    //private Constants mConstants;
+    
+    
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Pista");
+        this.primaryStage.setTitle(Constants.PRODUCT_NAME);
 
-        initRootLayout();
-
+        initRootLayout(); //initalise Root
         showMainUI();
     }
     

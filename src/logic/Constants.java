@@ -3,7 +3,7 @@ package logic;
 //contains all the constants used by the program
 public class Constants {
 	
-	public String PRODUCT_NAME = "Pista";
+	public static String PRODUCT_NAME = "Pista";
 	
 	public static String FILENAME = "Tasks.txt";
 	public static String ADD_COMMAND = "add para1 para2";
