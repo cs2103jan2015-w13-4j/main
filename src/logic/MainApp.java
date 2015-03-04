@@ -21,7 +21,7 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(Constants.PRODUCT_NAME);
 
-        initRootLayout(); //initalise Root
+        initRootLayout();
         showMainUI();
     }
     
@@ -30,12 +30,12 @@ public class MainApp extends Application {
      */
     public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
+            // Load root layout from fxml file
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
-            // Show the scene containing the root layout.
+            // Show the scene containing the root layout
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -46,12 +46,12 @@ public class MainApp extends Application {
     
     public void showMainUI() {
         try {
-            // Load person overview.
+            // Load MainUI
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/MainUI.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
+            // Set MainUI into the center of RootLayout
             rootLayout.setCenter(personOverview);
         } catch (IOException e) {
             e.printStackTrace();
