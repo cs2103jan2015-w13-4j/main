@@ -27,7 +27,7 @@ code, pre {
 /* Font Awesome icons by CSS as markdown class is stripped */
 h2 i {
  display: inline-block;
- font: normal normal normal 14px/1 FontAwesome;
+ font: normal normal normal 14px 1 FontAwesome;
  font-size: inherit;
  text-rendering: auto;
  -webkit-font-smoothing: antialiased;
