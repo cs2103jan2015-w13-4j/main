@@ -3,37 +3,56 @@ package logic.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import logic.Constants;
+import logic.Parser;
 
+//Contains all objects found in MainUI
 public class UIController {
 	
-    @FXML
-    private Button deleteButton;
-
-    @FXML
-    private TextField cmdTextField;
-
-    @FXML
-    private Button editButton;
-
+	public String userInput = null;
+	
+	//Objects
     @FXML
     private Button addButton;
 
     @FXML
+    private Button editButton;
+    
+    @FXML
+    private Button deleteButton;
+    
+    @FXML
     private Button listButton;
     
     @FXML
+    public TextField cmdTextField;
+    
+    @FXML
+    private TextArea displayTextArea;
+
+    @FXML
     private Button enterButton;
     
+    //Methods
     public void add() {
-    	cmdTextField.setText("add para1 para2");
+    	cmdTextField.setText(Constants.ADD_COMMAND);
     }
     
     public void edit() {
-    	cmdTextField.setText("edit para1 para2");
+    	cmdTextField.setText(Constants.EDIT_COMMAND);
     }
     
     public void delete() {
-    	cmdTextField.setText("delete para1 para2");
+    	cmdTextField.setText(Constants.DELETE_COMMAND);
+    }
+    
+    public void list() {
+    	cmdTextField.setText(Constants.LIST_COMMAND);
+    }
+    
+    public void enter() {
+    	userInput = cmdTextField.getText();
+    	String output = Parser.inputHandler(userInput);
+    	displayTextArea.appendText(output + "\n");
     }
 }
 
