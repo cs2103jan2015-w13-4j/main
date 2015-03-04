@@ -5,7 +5,7 @@ public class Constants {
 	
 	public String PRODUCT_NAME = "Pista";
 	
-	public static String FILENAME = "test.txt";
+	public static String FILENAME = "Tasks.txt";
 	public static String ADD_COMMAND = "add para1 para2";
 	public static String EDIT_COMMAND = "edit para1 para2";
 	public static String DELETE_COMMAND = "delete para1 para2";

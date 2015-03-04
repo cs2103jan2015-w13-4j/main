@@ -1,5 +1,7 @@
 package logic.view;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import logic.Constants;
@@ -49,7 +51,7 @@ public class UIController {
     	cmdTextField.setText(Constants.LIST_COMMAND);
     }
     
-    public void enter() {
+    public void enter() throws IOException {
     	userInput = cmdTextField.getText();
     	String output = Parser.inputHandler(userInput);
     	displayTextArea.appendText(output + "\n");
