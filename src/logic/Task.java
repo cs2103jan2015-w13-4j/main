@@ -137,7 +137,7 @@ public class Task {
 	
 	
 	public void setIsDone(){
-		isDone=true;
+		this.isDone=true;
 	}
 	
 	/*@Override
