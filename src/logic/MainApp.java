@@ -2,7 +2,10 @@ package logic;
 
 import java.io.IOException;
 
+import logic.MainApp;
+import logic.view.ListViewController;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -12,7 +15,7 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
     private BorderPane rootLayout;
-    
+       
     //private Constants mConstants;
     
     
@@ -23,6 +26,7 @@ public class MainApp extends Application {
 
         initRootLayout();
         showMainUI();
+        initListViewLayout();
     }
     
     /**
@@ -32,7 +36,7 @@ public class MainApp extends Application {
         try {
             // Load root layout from fxml file
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
+            loader.setLocation(MainApp.class.getResource(Constants.ROOT_LAYOUT_PATH));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout
@@ -44,11 +48,40 @@ public class MainApp extends Application {
         }
     }
     
+    public void initListViewLayout(){
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource(Constants.LISTVIEW_LAYOUT_PATH));
+			
+			//AnchorPane mAP = (AnchorPane) primaryStage.getScene().lookup("#anchorRightPane");
+			
+			//BorderPane bp = (BorderPane) loader.load();
+			
+			//mAP.getChildren().add(bp);
+			
+
+			/*
+			anchorRightPane.getChildren().add(mPane);
+			AnchorPane.setTopAnchor(mPane, 10.0);  
+			AnchorPane.setRightAnchor(mPane, 10.0);  
+			AnchorPane.setTopAnchor(mPane, 40.0);  
+			AnchorPane.setRightAnchor(mPane,10.0); 
+			*/
+			
+			ListViewController controller = loader.getController();
+			//controller.setMainListView(this);
+			
+		}catch (Exception e){
+			e.printStackTrace();
+		}//end try
+	}
+	
+	
     public void showMainUI() {
         try {
             // Load MainUI
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/MainUI.fxml"));
+            loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PAH));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set MainUI into the center of RootLayout

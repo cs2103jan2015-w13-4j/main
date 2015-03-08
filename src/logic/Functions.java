@@ -21,7 +21,7 @@ public class Functions {
     	String[] inputArray = parameters.split("-");
     	
     	AddTask.add(inputArray);
-    	
+ 
     	Storage.setMaxNumberOfTasks(Storage.getMaxNumberOfTasks() + 1);
     	Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
     	
@@ -47,4 +47,7 @@ public class Functions {
     	return ListTask.listTask(taskList).toString();
 //    	return "[LIST]Parameters entered are: " + parameters;
     }
+    
+    
+    
 }

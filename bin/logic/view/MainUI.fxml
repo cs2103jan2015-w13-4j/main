@@ -26,9 +26,9 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <AnchorPane id="anchorRightPane" fx:id="anchorRightPane_fx_id" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@listcellstyle.css">
                            <children>
-                              <TextArea fx:id="displayTextArea" layoutX="43.0" layoutY="27.0" prefHeight="253.0" prefWidth="522.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ListView id="listview_task" fx:id="listview_task_fx_id" layoutX="216.0" layoutY="59.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>
