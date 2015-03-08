@@ -11,14 +11,20 @@ import logic.storage.Storage;
 public class Functions {
 	
 	
+	
+	public static ArrayList<Task> taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
+	public static int totalNumberOfTasks =  Storage.getMaxNumberOfTasks();
 
-	static ArrayList<Task> taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
 	
     public static String add(String parameters) throws IOException {
     	
     	String[] inputArray = parameters.split("-");
+    	
     	AddTask.add(inputArray);
+    	
+    	Storage.setMaxNumberOfTasks(Storage.getMaxNumberOfTasks() + 1);
     	Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
+    	
     	
 //    	FileWriter fw = new FileWriter(Constants.FILENAME, true);
 //    	BufferedWriter bw = new BufferedWriter(fw);

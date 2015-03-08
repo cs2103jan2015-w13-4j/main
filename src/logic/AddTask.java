@@ -9,21 +9,23 @@ import org.joda.time.format.*;
 
 
 public class AddTask {
-	private static final int ARRAY_INDEX_TITLE=0;
-	private static final int ARRAY_INDEX_START_DATE=1;
-	private static final int ARRAY_INDEX_START_TIME=2;
-	private static final int ARRAY_INDEX_END_DATE=3;
-	private static final int ARRAY_INDEX_END_TIME=4;
-	private static final int ARRAY_INDEX_REPEAT=5;
-	private static final int ARRAY_INDEX_DELAYTYPE=6;
-	private static final int ARRAY_INDEX_RECUR=7;
-	private static int ARRAY_INDEX_START_MILLISECONDS=8;;
-	private static int ARRAY_INDEX_END_MILLISECONDS=9;;
-	private static final int ONE_DAY=1;
-	private static final int ONE_WEEK=1;
-	private static final int ONE_MONTH=1;
-	private static final int ONE_YEAR=1;
-	private static final int DELAY_DURATION_ONE=1;
+	private static final int ARRAY_SIZE = 10;
+	
+	private static final int ARRAY_INDEX_TITLE = 0;
+	private static final int ARRAY_INDEX_START_DATE = 1;
+	private static final int ARRAY_INDEX_START_TIME = 2;
+	private static final int ARRAY_INDEX_END_DATE = 3;
+	private static final int ARRAY_INDEX_END_TIME = 4;
+	private static final int ARRAY_INDEX_REPEAT = 5;
+	private static final int ARRAY_INDEX_DELAYTYPE = 6;
+	private static final int ARRAY_INDEX_RECUR = 7;
+	private static int ARRAY_INDEX_START_MILLISECONDS = 8;
+	private static int ARRAY_INDEX_END_MILLISECONDS = 9;
+	private static final int ONE_DAY = 1;
+	private static final int ONE_WEEK = 1;
+	private static final int ONE_MONTH = 1;
+	private static final int ONE_YEAR = 1;
+	private static final int DELAY_DURATION_ONE = 1;
 
 
 	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
@@ -31,7 +33,7 @@ public class AddTask {
 	//private static SimpleDateFormat stf=new SimpleDateFormat();
 
 	
-	public static void dtFormat(String delayType, String[] inputArray, String startDate, String endDate){
+	public static void dtFormat(String delayType, String[] inputArray){
 	
 		/*if(delayType.equalsIgnoreCase("d")){
 			startDate.plusDays(DELAY_DURATION_ONE);
@@ -55,23 +57,29 @@ public class AddTask {
 //		String combine2=endDate+" "+inputArray[ARRAY_INDEX_END_TIME];
 //		DateTime startDate2=dtf2.parseDateTime(combine);
 //		DateTime endDate2=dtf2.parseDateTime(combine2);
-		inputArray[ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(convertToMillisecond(startDate, inputArray[ARRAY_INDEX_START_TIME]));
-		inputArray[ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertToMillisecond(endDate, inputArray[ARRAY_INDEX_END_TIME]));
+		inputArray[ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(convertToMillisecond(inputArray[ARRAY_INDEX_START_DATE], 
+																inputArray[ARRAY_INDEX_START_TIME]));
+		inputArray[ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertToMillisecond(inputArray[ARRAY_INDEX_END_DATE], 
+																inputArray[ARRAY_INDEX_END_TIME]));
 	}
 	
 	public static String add(String[] inputArray){
-		Task newTask;
+		Task newTask = null;
 		//DateTime startDate=dtf.parseDateTime(inputArray[ARRAY_INDEX_START_DATE]);
 		//DateTime endDate=dtf.parseDateTime(inputArray[ARRAY_INDEX_END_DATE]);
 		
-		System.out.println("the length is"+inputArray.length);
+		System.out.println("the length is " + inputArray.length);
 		for (int i = 0; i < inputArray.length; i++) {
-			System.out.println("what is inside "+inputArray[i]);
+			System.out.println("what is inside " + inputArray[i]);
 		}
-		String[] newArray=new String[10];
+		
+		String[] newArray=new String[ARRAY_SIZE];
+		
 		System.arraycopy(inputArray, 0, newArray, 0, inputArray.length);
-		dtFormat(newArray[ARRAY_INDEX_REPEAT], newArray, newArray[ARRAY_INDEX_START_DATE], newArray[ARRAY_INDEX_END_DATE]);
-		newTask=new Task(newArray);
+		
+		dtFormat(newArray[ARRAY_INDEX_REPEAT], newArray);
+		
+		newTask = new Task(newArray); //id will auto generate inside Task class
 		Functions.taskList.add(newTask);
 		
 		
@@ -101,7 +109,7 @@ public class AddTask {
 	}
 	
 	private static int stringToInt(String input){
-		return Integer.parseInt(input);
+		return Integer.parseInt(input.trim());
 	}
 	
 }

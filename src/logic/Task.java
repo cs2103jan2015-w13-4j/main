@@ -22,16 +22,16 @@ public class Task {
 	private long startMilliseconds;
 	private long endMilliseconds;
 	
-	private static int ARRAY_INDEX_TITLE=0;
-	private static int ARRAY_INDEX_START_DATE=1;
-	private static int ARRAY_INDEX_START_TIME=2;
-	private static int ARRAY_INDEX_END_DATE=3;
-	private static int ARRAY_INDEX_END_TIME=4;
-	private static int ARRAY_INDEX_REPEAT=5;
-	private static int ARRAY_INDEX_DELAYTYPE=6;
-	private static int ARRAY_INDEX_RECUR=7;;
-	private static int ARRAY_INDEX_START_MILLISECONDS=8;;
-	private static int ARRAY_INDEX_END_MILLISECONDS=9;;
+	private static final int ARRAY_INDEX_TITLE = 0;
+	private static final int ARRAY_INDEX_START_DATE = 1;
+	private static final int ARRAY_INDEX_START_TIME = 2;
+	private static final int ARRAY_INDEX_END_DATE = 3;
+	private static final int ARRAY_INDEX_END_TIME = 4;
+	private static final int ARRAY_INDEX_REPEAT = 5;
+	private static final int ARRAY_INDEX_DELAYTYPE = 6;
+	private static final int ARRAY_INDEX_RECUR = 7;
+	private static int ARRAY_INDEX_START_MILLISECONDS = 8;
+	private static int ARRAY_INDEX_END_MILLISECONDS = 9;
 	
 	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
 	
