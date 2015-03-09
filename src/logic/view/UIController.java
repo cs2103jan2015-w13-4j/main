@@ -99,7 +99,7 @@ public class UIController {
     	parserOutputToken = Parser.getToken();
     	parserTokenParameter = parserOutputToken[1]; //index 1 is parameter
     	parserUserCommand=parserOutputToken[0];
-    	
+  
     	//2. Logic - check individual parameters
     	logicOutput = Logic.validateString(parserUserCommand ,parserTokenParameter);
     	if(!logicOutput.equals(Constants.LOGIC_VALID_PARAMETER_MESSAGE)){ //wrong parameter
@@ -115,6 +115,7 @@ public class UIController {
     		txtStatus.setText(logicOutput);
     		return;
     	}
+    	
     	
     	//4. print the final output string..success..
 

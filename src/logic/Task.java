@@ -160,8 +160,8 @@ public class Task {
 	}
 	
 	
-	public void setIsDone(){
-		this.isDone=true;
+	public void setIsDone(boolean status){
+		this.isDone=status;
 	}
 
 

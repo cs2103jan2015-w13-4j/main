@@ -66,6 +66,25 @@ public class Logic {
     	
     }//end add
     
+    public static String mark(String param){ 
+    	temp = param.split("-");
+    	temp=trimLeadingTrailingSpacesInArray(temp);
+    	Task newTask = null;
+    	int taskId=Integer.parseInt(temp[0]);
+    	String status=temp[1];
+    	int taskIndex=getTaskIndexInList(taskId);
+    	
+    	newTask =taskList.get(taskIndex);
+    	if(status.equalsIgnoreCase("done")){
+    		newTask.setIsDone(true);
+    	}
+    	else if(status.equalsIgnoreCase("undone")){
+    		newTask.setIsDone(false);
+    	}
+    	
+		return Constants.LOGIC_SUCCESS_MARK_TASK;
+    }//end mark
+    
     public static boolean addTaskToTaskArrayList(Task task){
     	taskList.add(task);
     	return true;
@@ -79,6 +98,8 @@ public class Logic {
     	taskList.clear();
     	return true;
     }
+    
+
     
     public static String list(String parameters) {
     	return ListTask.listTask(taskList).toString();
@@ -107,7 +128,49 @@ public class Logic {
     		if(command.equalsIgnoreCase("add")){
     			return validateAddParameters(param);
     		}
+    		else if(command.equalsIgnoreCase("edit")){
+    			return validateEditParameters(param);
+    		}
+    		else if(command.equalsIgnoreCase("mark")){
+    			return validateEditParameters(param);
+    		}
     	}
+    	
+    	return false;
+    }
+    
+    private static boolean validateMarkParameters(String param){
+    	String[] inputArray = param.split("-");
+    	inputArray=trimLeadingTrailingSpacesInArray(inputArray);
+    	int taskId=Integer.parseInt(inputArray[0]);
+    	boolean isTaskExists= isTaskInList(taskId);
+    	if(isTaskExists){
+    		if(inputArray[1].equalsIgnoreCase("done") || inputArray[1].equalsIgnoreCase("undone")){
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    private static boolean isTaskInList(int taskId){
+    	for(Task t: taskList){
+    		if(t.getID()==taskId){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    private static int getTaskIndexInList(int taskId){
+    	for (int i = 0; i < taskList.size(); i++) {
+			if(taskList.get(i).getID()==taskId)
+				return i;
+		}
+    	return -1;
+    }
+    
+    private static boolean validateEditParameters(String param){
     	
     	return false;
     }

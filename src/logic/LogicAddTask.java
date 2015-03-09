@@ -107,18 +107,18 @@ public class LogicAddTask {
 		}
 		
 		String[] newArray = new String[Constants.ARRAY_SIZE];
-		if(inputArray.length==1 || inputArray.length==5){
+		if(inputArray.length==Constants.FLOATING_TASK || inputArray.length==Constants.TIMED_TASK){
 			System.arraycopy(inputArray, 0, newArray, 0, inputArray.length); //copy inputArray into newArray
 		}
-		else if(inputArray.length==3){
+		else if(inputArray.length==Constants.DEADLINE_TASK){
 			System.arraycopy(inputArray, 0, newArray, 0, 1); //copy title of inputArray into newArray postition
 			System.arraycopy(inputArray, 1, newArray, 3, inputArray.length-1); //copy end date and end time of inputArray into newArray postition
 		}
 		
-		if(inputArray.length==3){
+		if(inputArray.length==Constants.DEADLINE_TASK){
 			newArray = formatArray(newArray,"deadline"); //add in epoh time for parser
 		}
-		else if(inputArray.length==5){
+		else if(inputArray.length==Constants.TIMED_TASK){
 			newArray = formatArray(newArray,"timed"); //add in epoh time for parser
 		}
 		

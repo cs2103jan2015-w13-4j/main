@@ -21,7 +21,11 @@ public class Constants {
 	public static String LOGIC_INVALID_PARAMETER_MESSAGE = "Invalid parameters detected!";
 	public static String LOGIC_VALID_PARAMETER_MESSAGE = "valid";
 	public static String LOGIC_SUCCESS_ADD_TASK = "Successfully add new task.";
+	public static String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
+	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
+	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
+	public static String LOGIC_FAIL_MARK_TASK = "Failed to mark task.";
 	
 	public static String XML_FILE_PATH = "init_task.xml";
 	
@@ -47,6 +51,9 @@ public class Constants {
 	public static final int ONE_MONTH = 1;
 	public static final int ONE_YEAR = 1;
 	public static final int DELAY_DURATION_ONE = 1;
+	public static final int FLOATING_TASK=1;
+	public static final int DEADLINE_TASK=3;
+	public static final int TIMED_TASK=5;
 	
 	
 	public static final String ADD_COMMAND_VALUE = "add";
