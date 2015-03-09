@@ -4,6 +4,7 @@ import logic.Task;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 
 public class TaskListCell extends ListCell<Task> {
@@ -19,7 +20,7 @@ public class TaskListCell extends ListCell<Task> {
     //private Label icon = new Label();
     private Label lblTitle = new Label();
     private Label lblDateTime = new Label();
-    
+
     public TaskListCell() {
         configureGrid();        
         configureIcon();
@@ -67,6 +68,7 @@ public class TaskListCell extends ListCell<Task> {
         setGraphic(grid);
     }
     
+   
     /*
      * for switching classes
     private void setStyleClassDependingOnFoundState(Cache cache) {
@@ -87,7 +89,8 @@ public class TaskListCell extends ListCell<Task> {
 		if(empty){
 			clearContent();
 		}else {		
-			addContent(mTask);			
+			addContent(mTask);	
+			
 		}//end if 
 	}//end updateItem
 	

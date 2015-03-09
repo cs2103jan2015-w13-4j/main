@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import logic.MainApp;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -116,6 +118,10 @@ public class UIController {
 
     	txtStatus.setText(logicOutput);
 
+    	ObservableList<Task> myObservableList = FXCollections.observableList(Logic.taskList);
+    	listview_task_fx_id.setItems(null); 
+    	listview_task_fx_id.setItems(myObservableList);
+    	
     }
       
     @FXML
@@ -123,15 +129,32 @@ public class UIController {
     	clearContent();
     	prepareList();
     	
-    	ObservableList<Task> myObservableList = FXCollections.observableList(this.taskList);
+    	ObservableList<Task> myObservableList = FXCollections.observableList(Logic.initTaskFromXML());
     	listview_task_fx_id.setItems(myObservableList);
     	
     	listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
+    		
+    		
     		@Override
     		public ListCell<Task> call(ListView<Task> param) {
-    			return new TaskListCell();
-    		}
+    			//final Tooltip tooltip = new Tooltip();
+    			final TaskListCell mCell = new TaskListCell();
+    			return mCell;
+    		}//end call
     	});
+    	
+    	
+    	//Selected item
+    	listview_task_fx_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+			@Override      
+			public void changed(ObservableValue<? extends Task> ov,
+	          Task oldTask, Task newTask) {
+				System.out.println("Selected : " + newTask.getID() + " - " + newTask.getTitle());
+			}
+        });
+
+    	
+    
 
 	}
     

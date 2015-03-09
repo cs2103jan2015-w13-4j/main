@@ -12,9 +12,13 @@ public class Logic {
 	
 	private String[] parameterToken = null;
 	
-	public static ArrayList<Task> taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
+	public static ArrayList<Task> taskList = null;
 	public static int totalNumberOfTasks =  Storage.getMaxNumberOfTasks();
 
+	public static ArrayList<Task> initTaskFromXML(){
+		taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
+		return taskList;
+	}
 	/*
     public static String add(String parameters) throws IOException {
     	
