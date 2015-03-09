@@ -12,8 +12,8 @@ public class LogicAddTask {
 
 
 
-	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
-	private static DateTimeFormatter dtf2=DateTimeFormat.forPattern("dd/MM/yyyy HH:MM");
+	//private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
+	//private static DateTimeFormatter dtf2=DateTimeFormat.forPattern("dd/MM/yyyy HH:MM");
 	//private static SimpleDateFormat stf=new SimpleDateFormat();
 
 	/*
