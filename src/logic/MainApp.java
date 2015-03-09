@@ -3,7 +3,6 @@ package logic;
 import java.io.IOException;
 
 import logic.MainApp;
-import logic.view.ListViewController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +25,6 @@ public class MainApp extends Application {
 
         initRootLayout();
         showMainUI();
-        initListViewLayout();
     }
     
     /**
@@ -48,34 +46,6 @@ public class MainApp extends Application {
         }
     }
     
-    public void initListViewLayout(){
-		try{
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource(Constants.LISTVIEW_LAYOUT_PATH));
-			
-			//AnchorPane mAP = (AnchorPane) primaryStage.getScene().lookup("#anchorRightPane");
-			
-			//BorderPane bp = (BorderPane) loader.load();
-			
-			//mAP.getChildren().add(bp);
-			
-
-			/*
-			anchorRightPane.getChildren().add(mPane);
-			AnchorPane.setTopAnchor(mPane, 10.0);  
-			AnchorPane.setRightAnchor(mPane, 10.0);  
-			AnchorPane.setTopAnchor(mPane, 40.0);  
-			AnchorPane.setRightAnchor(mPane,10.0); 
-			*/
-			
-			ListViewController controller = loader.getController();
-			//controller.setMainListView(this);
-			
-		}catch (Exception e){
-			e.printStackTrace();
-		}//end try
-	}
-	
 	
     public void showMainUI() {
         try {

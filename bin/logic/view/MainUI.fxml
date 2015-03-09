@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.UIController">
+<AnchorPane prefHeight="438.0" prefWidth="607.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="logic.view.UIController">
    <children>
-      <SplitPane dividerPositions="0.8657718120805369" orientation="VERTICAL" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.8657718120805369" orientation="VERTICAL" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
@@ -26,15 +27,16 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                      <AnchorPane id="anchorRightPane" fx:id="anchorRightPane_fx_id" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@listcellstyle.css">
+                      	<AnchorPane id="anchorRightPane" fx:id="anchorRightPane_fx_id" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@listcellstyle.css">
                            <children>
                               <ListView id="listview_task" fx:id="listview_task_fx_id" layoutX="216.0" layoutY="59.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children></AnchorPane>
+                           </children>
+                  		</AnchorPane>
                     </items>
                   </SplitPane>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="119.0" prefWidth="605.0">
                <children>
                   <HBox layoutX="5.0" layoutY="5.0" prefHeight="82.0" prefWidth="598.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <children>
@@ -50,5 +52,6 @@
             </AnchorPane>
         </items>
       </SplitPane>
+      <Text id="txtStatus" fx:id="txtStatus" layoutX="5.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="595.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="412.0" />
    </children>
 </AnchorPane>

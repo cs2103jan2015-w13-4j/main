@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import logic.MainApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import logic.Constants;
+import logic.Logic;
 import logic.Parser;
 import logic.Task;
 import logic.storage.Storage;
@@ -36,6 +40,9 @@ public class UIController {
     
     @FXML
     public TextField cmdTextField;
+    
+    @FXML
+    private Text txtStatus;
     
     //@FXML
     //private TextArea displayTextArea;
@@ -69,14 +76,51 @@ public class UIController {
     }
     
     public void enter() throws IOException {
+    	//user click mouse on the enter button
+    	String parserOutput = "";
+    	String logicOutput = "";
+    	
+    	String[] parserOutputToken = null;
+    	String parserTokenParameter = "";
+    	
     	userInput = cmdTextField.getText();
-    	String output = Parser.inputHandler(userInput);
-    	//displayTextArea.appendText(output + "\n");
+    	
+    	//1. Parser - check the incoming command string first
+    	parserOutput = Parser.validateString(userInput);
+    	if(!parserOutput.equals(Constants.CORRECT_INPUT_MESSAGE)){ //wrong commands and parameter
+    		//print out the error message
+    		txtStatus.setText(parserOutput);
+    		return;
+    	}
+    	
+    	parserOutputToken = Parser.getToken();
+    	parserTokenParameter = parserOutputToken[1]; //index 1 is parameter
+    	
+    	//2. Logic - check individual parameters
+    	logicOutput = Logic.validateString(parserTokenParameter);
+    	if(!logicOutput.equals(Constants.LOGIC_VALID_PARAMETER_MESSAGE)){ //wrong parameter
+    		//print out the error message
+    		txtStatus.setText(logicOutput);
+    		return;
+    	}
+    	
+    	//3. Logic - add new task based on parameter
+    	logicOutput = Logic.add(parserTokenParameter);
+    	if(!logicOutput.equals(Constants.LOGIC_SUCCESS_ADD_TASK)){ //fail to add
+    		//print out the error message
+    		txtStatus.setText(logicOutput);
+    		return;
+    	}
+    	
+    	//4. print the final output string..success..
+
+    	txtStatus.setText(logicOutput);
+
     }
       
     @FXML
     public void initialize() {
-    	
+    	clearContent();
     	prepareList();
     	
     	ObservableList<Task> myObservableList = FXCollections.observableList(this.taskList);
@@ -90,6 +134,22 @@ public class UIController {
     	});
 
 	}
+    
+    /*
+    public static <T> void triggerUpdate(ListView<T> listView, T newValue, int i) {
+        EventType<? extends ListView.EditEvent<T>> type = ListView.editCommitEvent();
+        Event event = new ListView.EditEvent<>(listView, type, newValue, i);
+        listView.fireEvent(event);
+    }*/
+    
+    
+    public ListView getListView(){
+    	return listview_task_fx_id;
+    }
+    
+    private void clearContent(){
+    	txtStatus.setText("");
+    }
     
     private void prepareList(){
     	this.taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);

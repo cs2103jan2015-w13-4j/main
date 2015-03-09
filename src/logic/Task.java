@@ -54,12 +54,17 @@ public class Task {
 	}
 	
 	/*Used for importing all tasks from XML*/
-	public Task(int id, String title, long startMs, long endMs, boolean isDone){
+	public Task(int id, String title, long startMs, long endMs, String startTime, String startDate, String endTime, String endDate, boolean isDone){
 		this.id = id;
 		this.title = title;
 		this.startMilliseconds = startMs;
 		this.endMilliseconds = endMs;
+		this.startTime = startTime;
+		this.startDate = startDate;
+		this.endTime = endTime;
+		this.endDate = endDate;
 		this.isDone = isDone;
+		
 	}
 	
 	public String getTitle(){

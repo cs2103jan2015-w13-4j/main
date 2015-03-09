@@ -24,8 +24,6 @@ public class TokenValidation {
 	
 	public static boolean isTokenValid(StringTokenizer st){
 		Task a= new Task();
-
-
 		return false;
 	}
 
@@ -75,6 +73,7 @@ public class TokenValidation {
 		}
 		return false;
 	}
+	
 	public static boolean isEndTimeValidString(String endTime){
 		if(endTime.isEmpty() || endTime.equalsIgnoreCase("d")){
 			inputArray[ARRAY_INDEX_END_DATE]="2359";

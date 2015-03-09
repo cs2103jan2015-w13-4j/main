@@ -1,8 +1,12 @@
 package logic.storage;
 
+import logic.Parser;
 import logic.Task;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -174,13 +178,12 @@ public class Storage {
 					m_title = eElement.getElementsByTagName(NODE_TASK_TITLE_TAG).item(0).getTextContent();
 					m_start_millisecond = eElement.getElementsByTagName(NODE_TASK_START_MILLISECOND_TAG).item(0).getTextContent();
 					m_end_millisecond = eElement.getElementsByTagName(NODE_TASK_END_MILLISECOND_TAG).item(0).getTextContent();
-					/*
-					m_start_time = eElement.getElementsByTagName(NODE_TASK_START_TIME_TAG).item(0).getTextContent();
-					m_end_time = eElement.getElementsByTagName(NODE_TASK_END_TIME_TAG).item(0).getTextContent();
-					m_start_date = eElement.getElementsByTagName(NODE_TASK_START_DATE_TAG).item(0).getTextContent();
-					m_end_date = eElement.getElementsByTagName(NODE_TASK_END_DATE_TAG).item(0).getTextContent();
-					*/
 					
+					m_start_time = Parser.convertMillisecondToTime(Long.valueOf(m_start_millisecond));
+					m_end_time = Parser.convertMillisecondToTime(Long.valueOf(m_end_millisecond));
+					m_start_date = Parser.convertMillisecondToDate(Long.valueOf(m_start_millisecond));
+					m_end_date = Parser.convertMillisecondToDate(Long.valueOf(m_end_millisecond));
+							
 					m_is_done = Boolean.parseBoolean(eElement.getElementsByTagName(NODE_TASK_IS_DONE_TAG).item(0).getTextContent());
 					
 					
@@ -189,12 +192,11 @@ public class Storage {
 									m_title, 
 									convertStringToLong(m_start_millisecond),
 									convertStringToLong(m_end_millisecond),
+									m_start_time,
+									m_start_date,
+									m_end_time,
+									m_end_date,
 									m_is_done);
-								//	m_start_time,
-								//	m_start_date,
-								//	m_end_time,
-								//	m_end_date,
-									
 					
 					mArrayTask.add(mTask); //add new task into table
 					
@@ -215,9 +217,12 @@ public class Storage {
 	}//end XMLtoJava
 	
 	
-	//Not in used
-	private static boolean XmlAddTask(String xmlFilePath, Task newTask){
+
+	public static boolean XmlAddTask(String xmlFilePath, Task newTask){
 		boolean isSaved = false;
+		
+		//increase the total tasks by 1
+		max_number_of_tasks = max_number_of_tasks + 1;
 		
 		try{
 
@@ -229,6 +234,10 @@ public class Storage {
 			
 			//get root node
 			Node nRoot = doc.getFirstChild();
+			
+			Node ntotalTask = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG).item(0);
+			Node nTotalTaskValue = ntotalTask.getFirstChild();
+			nTotalTaskValue.setTextContent(String.valueOf(max_number_of_tasks));
 			
 			//Create a new child of the root
 			Element nTask = doc.createElement(NODE_TASK_TAG);
@@ -384,7 +393,7 @@ public class Storage {
 		 return max_number_of_tasks;
 	 }
 	 
-	 public static void setMaxNumberOfTasks(int num){
+	 private static void setMaxNumberOfTasks(int num){
 		 max_number_of_tasks = num;
 	 }
 	 
@@ -414,6 +423,9 @@ public class Storage {
 	 private static long convertStringToLong(String input){
 		 return Long.valueOf(input);
 	 }
+	 
+	 
+	 
 	 
 }//end class
 
