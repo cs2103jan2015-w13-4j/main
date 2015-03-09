@@ -1,5 +1,6 @@
 package logic;
 
+
 //contains all the constants used by the program
 public class Constants {
 	

@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 public class ListTask {
 	
-	
+
 	
 	public static StringBuilder listTask(ArrayList<Task> taskList){
 		StringBuilder finalString = new StringBuilder("");

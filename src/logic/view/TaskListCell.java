@@ -62,8 +62,17 @@ public class TaskListCell extends ListCell<Task> {
     private void addContent(Task mTask) {
         setText(null);
         //icon.setText(GeocachingIcons.getIcon(cache).toString());
-        lblTitle.setText(mTask.getTitle());
-        lblDateTime.setText(mTask.getStartDate()+ " "+ mTask.getStartTime());
+        lblTitle.setText(mTask.getTitle()+ "id:"+mTask.getID());
+        String category=mTask.getCategory();
+        if(category.equals("timed")){
+        	lblDateTime.setText("Start "+" "+mTask.getStartDate()+ " "+ mTask.getStartTime()+" End by "+mTask.getEndDate()+mTask.getEndTime());
+        }
+        else if(category.equals("deadline")){
+        	lblDateTime.setText("Complete by "+" "+mTask.getEndDate()+ " "+ mTask.getEndTime());
+        }
+        else if(category.equals("floating")){
+        	lblDateTime.setText("Floating task");
+        }
         //setStyleClassDependingOnFoundState(mTask);        
         setGraphic(grid);
     }

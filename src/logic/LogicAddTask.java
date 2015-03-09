@@ -45,17 +45,21 @@ public class LogicAddTask {
 	}
 	*/
 	
-	public static String[] formatArray(String[] inputArray){
+	public static String[] formatArray(String[] inputArray, String category){
 		String delayType = inputArray[Constants.ARRAY_INDEX_REPEAT];
 		
-		switch(delayType.toLowerCase()){
+		/*switch(delayType.toLowerCase()){
 			//do delay etc etc
+		}*/
+		
+		if(category.equals("timed")){
+			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
 		}
-
-		inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], 
-																			inputArray[Constants.ARRAY_INDEX_START_TIME]));
-		inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], 
-																			inputArray[Constants.ARRAY_INDEX_END_TIME]));
+		else{
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
+		}
+		
 		
 		return inputArray;
 	}
@@ -103,9 +107,21 @@ public class LogicAddTask {
 		}
 		
 		String[] newArray = new String[Constants.ARRAY_SIZE];
-		System.arraycopy(inputArray, 0, newArray, 0, inputArray.length); //copy inputArray into newArray
+		if(inputArray.length==1 || inputArray.length==5){
+			System.arraycopy(inputArray, 0, newArray, 0, inputArray.length); //copy inputArray into newArray
+		}
+		else if(inputArray.length==3){
+			System.arraycopy(inputArray, 0, newArray, 0, 1); //copy title of inputArray into newArray postition
+			System.arraycopy(inputArray, 1, newArray, 3, inputArray.length-1); //copy end date and end time of inputArray into newArray postition
+		}
 		
-		newArray = formatArray(newArray); //add in more data inside array
+		if(inputArray.length==3){
+			newArray = formatArray(newArray,"deadline"); //add in epoh time for parser
+		}
+		else if(inputArray.length==5){
+			newArray = formatArray(newArray,"timed"); //add in epoh time for parser
+		}
+		
 		newTask = new Task(newArray); //id will auto generate inside Task class
 		
 		return newTask;

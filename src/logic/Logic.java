@@ -9,7 +9,7 @@ import logic.storage.Storage;
 
 
 public class Logic {
-	
+	static String[] temp=new String[8];
 	private String[] parameterToken = null;
 	
 	public static ArrayList<Task> taskList = null;
@@ -41,17 +41,20 @@ public class Logic {
     
 	/*
 	 * @param is correct 
+	 * add meeting -10/03/2015 -14:36 -11/03/2015 -15:10
 	 * */
     public static String add(String param){
     	boolean isAddedToStorage = false;
     	boolean isAddedToArray = false;
     	
-    	String[] inputArray = param.split("-");
+    	temp = param.split("-");
+    	temp=trimLeadingTrailingSpacesInArray(temp);
     	Task newTask = null;
     	
-    	newTask = LogicAddTask.constructNewTask(inputArray);
+   
+    	newTask = LogicAddTask.constructNewTask(temp);
     	
-    	isAddedToArray = addTaskToArrayTask(newTask);
+    	isAddedToArray = addTaskToTaskArrayList(newTask);
     	isAddedToStorage = Storage.XmlAddTask(Constants.XML_FILE_PATH, newTask);
     	
     	if(isAddedToArray && isAddedToStorage){
@@ -63,7 +66,7 @@ public class Logic {
     	
     }//end add
     
-    public static boolean addTaskToArrayTask(Task task){
+    public static boolean addTaskToTaskArrayList(Task task){
     	taskList.add(task);
     	return true;
     }
@@ -72,8 +75,9 @@ public class Logic {
     	return "[EDIT]Parameters entered are: " + parameters;
     }
     
-    public static String delete(String parameters) {
-    	return "[DELETE]Parameters entered are: " + parameters;
+    public static boolean delete(String parameters) {
+    	taskList.clear();
+    	return true;
     }
     
     public static String list(String parameters) {
@@ -82,8 +86,9 @@ public class Logic {
     }
     
     
-    public static String validateString(String input){
-    	boolean isValid = validateParameter(input);
+    public static String validateString(String command, String input){
+ 
+    	boolean isValid = validateParameter(command, input);
     	if(isValid){
     		return Constants.LOGIC_VALID_PARAMETER_MESSAGE;
     	}else{
@@ -95,15 +100,46 @@ public class Logic {
     /*
      * Valid incoming parameter
      * */
-    private static boolean validateParameter(String param){
+    private static boolean validateParameter(String command, String param){
     	String[] inputArray = param.split("-");
     	
     	if(inputArray.length > 0){
-    		return true;
+    		if(command.equalsIgnoreCase("add")){
+    			return validateAddParameters(param);
+    		}
     	}
     	
     	return false;
     }
     
+    private static boolean validateAddParameters(String param){
+    	String[] inputArray = param.split("-");
+    	inputArray=trimLeadingTrailingSpacesInArray(inputArray);
+   
+    	
+    	if(inputArray.length==1){
+    		return TokenValidation.isTitleValid((inputArray[Constants.ARRAY_INDEX_TITLE]));
+    	}
+    	
+    	else if(inputArray.length==3){
+    		if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[1])) && (TokenValidation.isTimeValid(inputArray[2]))){
+    			return true;
+    		}
+    	}
+    	else if(inputArray.length==5){
+    		if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_START_TIME]))){
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
     
+    private static String[] trimLeadingTrailingSpacesInArray(String[] temp){
+    	for (int i = 0; i < temp.length; i++) {
+			temp[i]=temp[i].trim();
+		}
+    	return temp;
+    }
+
 }

@@ -84,6 +84,7 @@ public class UIController {
     	
     	String[] parserOutputToken = null;
     	String parserTokenParameter = "";
+    	String parserUserCommand="";
     	
     	userInput = cmdTextField.getText();
     	
@@ -97,9 +98,10 @@ public class UIController {
     	
     	parserOutputToken = Parser.getToken();
     	parserTokenParameter = parserOutputToken[1]; //index 1 is parameter
+    	parserUserCommand=parserOutputToken[0];
     	
     	//2. Logic - check individual parameters
-    	logicOutput = Logic.validateString(parserTokenParameter);
+    	logicOutput = Logic.validateString(parserUserCommand ,parserTokenParameter);
     	if(!logicOutput.equals(Constants.LOGIC_VALID_PARAMETER_MESSAGE)){ //wrong parameter
     		//print out the error message
     		txtStatus.setText(logicOutput);
@@ -149,7 +151,7 @@ public class UIController {
 			@Override      
 			public void changed(ObservableValue<? extends Task> ov,
 	          Task oldTask, Task newTask) {
-				System.out.println("Selected : " + newTask.getID() + " - " + newTask.getTitle());
+				System.out.println("Selected : " + newTask.getID() + " - " + newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+newTask.getEndTime()+ " - "+newTask.getCategory());
 			}
         });
 

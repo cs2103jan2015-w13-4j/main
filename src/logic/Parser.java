@@ -63,6 +63,9 @@ public class Parser {
 		return tokens;
 	}//end getToken
 	
+	/*
+	 * Grabs user command and verify if matches the supported commands
+	 * Add, edit, delete*/
 	private static boolean checkCommand(String input){
 		tokens = input.split("\\s", 2);
 		String cmd = "";
@@ -83,6 +86,11 @@ public class Parser {
 
 	}//end checkCommand
 	
+	/*
+	 * check parameters
+	 * true=parameter exists
+	 * false=no parameters
+	 */
 	private static boolean checkParameter(String input){
 		String parameter = "";
 		

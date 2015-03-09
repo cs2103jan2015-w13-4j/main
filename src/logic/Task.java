@@ -11,16 +11,17 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class Task {
 	
-	private String title;
+	private String title="";
 	//private String description;
 	private int id;
-	private String startDate;
-	private String endDate;
-	private String startTime;
-	private String endTime;
-	private boolean isDone;
+	private String startDate="";
+	private String endDate="";
+	private String startTime="";
+	private String endTime="";
+	private boolean isDone=false;
 	private long startMilliseconds;
 	private long endMilliseconds;
+	private String category="";
 	
 	private static final int ARRAY_INDEX_TITLE = 0;
 	private static final int ARRAY_INDEX_START_DATE = 1;
@@ -35,9 +36,12 @@ public class Task {
 	
 	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
 	
-	//default constructor
-	public Task(){}
+
 	
+	/*3 catergory
+	 * timed-has start date/time and end date/time
+	 * deadline	has end date/time only
+	 * floating does not have start and end date/time*/
 	public Task(String[] inputArray){
 		this.title=inputArray[ARRAY_INDEX_TITLE];
 		//this.description=inputArray[ARRAY_INDEX_TITLE]);
@@ -47,12 +51,21 @@ public class Task {
 		this.endDate=inputArray[ARRAY_INDEX_END_DATE];
 		this.endTime=inputArray[ARRAY_INDEX_END_TIME];
 		this.isDone=false;
+		this.category="floating";
 		
-		this.startMilliseconds=Long.parseLong(inputArray[ARRAY_INDEX_START_MILLISECONDS]);
-		this.endMilliseconds=Long.parseLong(inputArray[ARRAY_INDEX_END_MILLISECONDS]);
+	
+		if(inputArray[ARRAY_INDEX_END_MILLISECONDS]!=null){
+			this.endMilliseconds=Long.parseLong(inputArray[ARRAY_INDEX_END_MILLISECONDS]);
+			this.category="deadline";
+		}
+		if(inputArray[ARRAY_INDEX_START_MILLISECONDS]!=null){
+			this.startMilliseconds=Long.parseLong(inputArray[ARRAY_INDEX_START_MILLISECONDS]);
+			this.category="timed";
+		}
 		
 	}
 	
+
 	/*Used for importing all tasks from XML*/
 	public Task(int id, String title, long startMs, long endMs, String startTime, String startDate, String endTime, String endDate, boolean isDone){
 		this.id = id;
@@ -109,6 +122,10 @@ public class Task {
 		return isDone;
 	}
 	
+	public String getCategory() {
+		return category;
+	}
+	
 	public void setTitle(String title){
 		this.title=title;
 	}
@@ -146,7 +163,8 @@ public class Task {
 	public void setIsDone(){
 		this.isDone=true;
 	}
-	
+
+
 	/*@Override
 	public int compare (Object one, Object two){
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yy");
