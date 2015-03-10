@@ -42,6 +42,8 @@ public class Storage {
 	static final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
 	static final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
 	static final String NODE_TASK_IS_DONE_TAG = "is_done";
+	static final String NODE_TASK_CATEGORY_TAG = "category";
+	static final String NODE_TASK_PRIORITY_TAG = "priority";
 	/*
 	final String NODE_TASK_START_TIME_TAG = "start_time";
 	final String NODE_TASK_START_DATE_TAG = "start_date";
@@ -96,13 +98,9 @@ public class Storage {
 				createNode(nTask, NODE_TASK_TITLE_TAG, mTask.getTitle());
 				createNode(nTask, NODE_TASK_START_MILLISECOND_TAG, convertLongToString(mTask.getStartMilliseconds()));
 				createNode(nTask, NODE_TASK_END_MILLISECOND_TAG, convertLongToString(mTask.getEndMilliseconds()));
-				/*
-				createNode(nTask, NODE_TASK_START_TIME_TAG, mTask.getStartTime());
-				createNode(nTask, NODE_TASK_END_TIME_TAG, mTask.getEndTime());
-				createNode(nTask, NODE_TASK_START_DATE_TAG, mTask.getStartDate());
-				createNode(nTask, NODE_TASK_END_DATE_TAG, mTask.getEndDate());
-				*/
 				createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(mTask.getIsDone()));
+				createNode(nTask, NODE_TASK_CATEGORY_TAG, mTask.getCategory());
+				createNode(nTask, NODE_TASK_PRIORITY_TAG, mTask.getPriority());
 				
 				//add task node to root
 				nRoot.appendChild(nTask);
@@ -171,6 +169,8 @@ public class Storage {
 					String m_end_time = "";
 					String m_start_date = "";
 					String m_end_date = "";
+					String m_category = "";
+					String m_priority = "";
 					boolean m_is_done = false;
 					
 					
@@ -185,7 +185,8 @@ public class Storage {
 					m_end_date = Parser.convertMillisecondToDate(Long.valueOf(m_end_millisecond));
 							
 					m_is_done = Boolean.parseBoolean(eElement.getElementsByTagName(NODE_TASK_IS_DONE_TAG).item(0).getTextContent());
-					
+					m_category = eElement.getElementsByTagName(NODE_TASK_CATEGORY_TAG).item(0).getTextContent();
+					m_priority = eElement.getElementsByTagName(NODE_TASK_PRIORITY_TAG).item(0).getTextContent();
 					
 					//create new task object
 					mTask = new Task(m_id, 
@@ -196,6 +197,8 @@ public class Storage {
 									m_start_date,
 									m_end_time,
 									m_end_date,
+									m_category,
+									m_priority,
 									m_is_done);
 					
 					mArrayTask.add(mTask); //add new task into table
@@ -248,14 +251,10 @@ public class Storage {
 			createNode(nTask, NODE_TASK_START_MILLISECOND_TAG, convertLongToString(newTask.getStartMilliseconds()));
 			createNode(nTask, NODE_TASK_END_MILLISECOND_TAG, convertLongToString(newTask.getEndMilliseconds()));
 			createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(newTask.getIsDone()));
-			/*
-			createNode(nTask, NODE_TASK_START_TIME_TAG, newTask.getStartTime());
-			createNode(nTask, NODE_TASK_END_TIME_TAG, newTask.getEndTime());
-			createNode(nTask, NODE_TASK_START_DATE_TAG, newTask.getStartDate());
-			createNode(nTask, NODE_TASK_END_DATE_TAG, newTask.getEndDate());
-			
-			*/
-			
+			createNode(nTask, NODE_TASK_CATEGORY_TAG, newTask.getCategory());
+			createNode(nTask, NODE_TASK_PRIORITY_TAG, newTask.getCategory());
+			createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(newTask.getIsDone()));
+						
 			//add new task node to root
 			nRoot.appendChild(nTask);
 		

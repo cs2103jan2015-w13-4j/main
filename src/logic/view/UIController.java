@@ -58,8 +58,6 @@ public class UIController {
     @FXML
     private ListView<Task> listview_task_fx_id;
     
-    //private ArrayList<Task> taskList;
-    
     //Methods
     public void add() {
     	cmdTextField.setText(Constants.ADD_COMMAND);
@@ -156,17 +154,7 @@ public class UIController {
 			}
         });
 
-    	
-    
-
 	}
-    
-    /*
-    public static <T> void triggerUpdate(ListView<T> listView, T newValue, int i) {
-        EventType<? extends ListView.EditEvent<T>> type = ListView.editCommitEvent();
-        Event event = new ListView.EditEvent<>(listView, type, newValue, i);
-        listView.fireEvent(event);
-    }*/
     
     
     public ListView getListView(){
