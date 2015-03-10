@@ -307,7 +307,7 @@ public class Logic {
 			return true;
 
 		} catch(NumberFormatException e) { //if it is not a number
-			if(!param.equalsIgnoreCase("a")){
+			if(!input.equalsIgnoreCase("a")){
 				return false;
 			}
 			return true;
