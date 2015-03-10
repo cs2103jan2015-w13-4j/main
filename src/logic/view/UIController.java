@@ -58,7 +58,7 @@ public class UIController {
     @FXML
     private ListView<Task> listview_task_fx_id;
     
-    private ArrayList<Task> taskList;
+    //private ArrayList<Task> taskList;
     
     //Methods
     public void add() {
@@ -178,7 +178,7 @@ public class UIController {
     }
     
     private void prepareList(){
-    	this.taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
+    	Logic.taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
     }
     
     
