@@ -167,11 +167,15 @@ public class Logic {
 
     //delete tasks by id or all
     public static String delete(String param){
+    	
     	if(param.equalsIgnoreCase("-a")){
     		clearList();
-    		return Constants.LOGIC_SUCCESS_DELETE_ALL_TASK;
-    	}
-    	else{
+    		if(save()){
+    			return Constants.LOGIC_SUCCESS_DELETE_ALL_TASK;
+    		}else{
+    			return Constants.LOGIC_FAIL_DELETE_TASK;
+    		}
+    	}else{
     		int id = Integer.parseInt(param.substring(1));
     		int index = findTaskIndex(id);
     		
@@ -181,12 +185,13 @@ public class Logic {
     			return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
     		}	
     	}
+    	
     	if (save()){
     		return Constants.LOGIC_SUCCESS_DELETE_TASK;
-    	}
-    	else{
+    	}else{
     		return Constants.LOGIC_FAIL_DELETE_TASK;
     	}
+    	
     }
     
     //find the index of the task by a certain parameter, can expands it further
