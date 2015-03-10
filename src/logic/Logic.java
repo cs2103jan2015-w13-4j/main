@@ -175,7 +175,7 @@ public class Logic {
     		int id = Integer.parseInt(param.substring(1));
     		int index = findTaskIndex(id);
     		
-    		if( index > 0){
+    		if( index > -1){
     			taskList.remove(index);
     		}else{
     			return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
@@ -301,7 +301,7 @@ public class Logic {
 		try { 
 			int id = Integer.parseInt(input); 
 			// if it is a number
-			if( id < 0 || id > taskList.get(-1).getID()){
+			if( id < 1 || id > taskList.get(taskList.size()-1).getID()){
 				return false;
 			}
 			return true;
