@@ -77,24 +77,33 @@ public class Logic {
     	boolean isAddedToArray = false;
     	temp = param.split("-");
     	temp=trimLeadingTrailingSpacesInArray(temp);
+    	int taskId=Integer.parseInt(temp[0]);
+    	int taskIndex=getTaskIndexInList(taskId);
     	Task extractedTask = extractTaskFromList(temp);
-    	String[] newArray=null;
+    	String[] newArray=new String[8];
     	System.arraycopy(temp, 1, newArray, 0, temp.length-1);
-    	
-    	if(newArray.length==Constants.FLOATING_TASK){
-    		editFloatingTask(extractedTask, newArray);
-    	}else if(newArray.length==Constants.DEADLINE_TASK){
-    		editDeadlineTask(extractedTask, newArray);
+    	System.out.println("array size " +newArray.length);
+    	if(temp.length==2){
+    		extractedTask=editFloatingTask(extractedTask, newArray);
+    	}else if(temp.length==4){
+    		System.out.println("is deadline");
+    		extractedTask=editDeadlineTask(extractedTask, newArray);
     		
-    	}else if(newArray.length==Constants.TIMED_TASK){
-    		editTimedTask(extractedTask, newArray);
+    	}else if(temp.length==6){
+    		extractedTask=editTimedTask(extractedTask, newArray);
     	}
     	
-    	///save here
+    	taskList.remove(taskIndex);
+    	taskList.add(extractedTask);
+    	System.out.println("testing");
+    	for (int i = 0; i < newArray.length; i++) {
+			System.out.println(newArray[i]);
+		}
+    	save();
     	return Constants.LOGIC_SUCCESS_EDIT_TASK;
     }
 
-	private static void editTimedTask(Task extractedTask, String[] newArray) {
+	private static Task editTimedTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
 		}
@@ -110,8 +119,9 @@ public class Logic {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_END_TIME])){//check endtime
 			extractedTask.setEndTime(newArray[Constants.ARRAY_INDEX_END_TIME]);
 		}
+		return extractedTask;
 	}
-	private static void editDeadlineTask(Task extractedTask, String[] newArray) {
+	private static Task editDeadlineTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
 		}
@@ -121,11 +131,13 @@ public class Logic {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check endtime
 			extractedTask.setEndTime(newArray[2]);
 		}
+		return extractedTask;
 	}
-	private static void editFloatingTask(Task extractedTask, String[] newArray) {
+	private static Task editFloatingTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
 		}
+		return extractedTask;
 	}
 
 	private static Task extractTaskFromList(String[] temp) {
@@ -267,26 +279,37 @@ public class Logic {
 	}
 
 	private static boolean validateEditParameters(String param){
+		System.out.println("inside editpara");
 		String[] inputArray = param.split("-");
 		inputArray=trimLeadingTrailingSpacesInArray(inputArray);
-		String[] newArray=null;
+		String[] newArray=new String[8];
 		System.arraycopy(inputArray, 1, newArray, 0, inputArray.length-1);
+		for (int i = 0; i < newArray.length; i++) {
+			System.out.println(newArray[i] +" "+i);
+		}
 		int taskId=Integer.parseInt(inputArray[0]);
 		boolean isTaskExists= isTaskInList(taskId);
 		if(isTaskExists){
+			System.out.println("task exists"+newArray.length);
 			int taskIndex=getTaskIndexInList(taskId);
 			Task task=taskList.get(taskIndex);
-			if(inputArray.length==Constants.EDIT_FLOATING_TASK){
+			if(inputArray.length==2){
 				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE])){	//edit id -title 
 					return true;
 				}
 			}
-			else if(inputArray.length==Constants.EDIT_DEADLINE_TASK){
+			else if(inputArray.length==4){
 				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[1])) && (TokenValidation.isTimeValid(newArray[2]))){
 					return true;
-				}
+				}	
+				/*if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]))
+					System.out.println("title true");
+				if(TokenValidation.isDateValid(newArray[1]))
+					System.out.println("date true");
+				if(TokenValidation.isTimeValid(newArray[2]))
+					System.out.println("time true");*/
 			}
-			else if(inputArray.length==Constants.EDIT_TIMED_TASK){
+			else if(inputArray.length==6){
 				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE]))){
 					return true;
 				}
