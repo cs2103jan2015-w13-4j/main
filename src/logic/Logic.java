@@ -96,10 +96,6 @@ public class Logic {
     	return true;
     }
     
-    public static String edit(String parameters) {
-    	return "[EDIT]Parameters entered are: " + parameters;
-    }
-    
     public static boolean delete(String parameters) {
     	taskList.clear();
     	return true;

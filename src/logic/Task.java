@@ -23,6 +23,7 @@ public class Task {
 	private long endMilliseconds;
 	private String category="";
 	
+	/*
 	private static final int ARRAY_INDEX_TITLE = 0;
 	private static final int ARRAY_INDEX_START_DATE = 1;
 	private static final int ARRAY_INDEX_START_TIME = 2;
@@ -33,6 +34,7 @@ public class Task {
 	private static final int ARRAY_INDEX_RECUR = 7;
 	private static int ARRAY_INDEX_START_MILLISECONDS = 8;
 	private static int ARRAY_INDEX_END_MILLISECONDS = 9;
+	*/
 	
 	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
 	
@@ -43,23 +45,24 @@ public class Task {
 	 * deadline	has end date/time only
 	 * floating does not have start and end date/time*/
 	public Task(String[] inputArray){
-		this.title=inputArray[ARRAY_INDEX_TITLE];
+		this.title=inputArray[Constants.ARRAY_INDEX_TITLE];
 		//this.description=inputArray[ARRAY_INDEX_TITLE]);
 		this.id= Storage.getNextAvailableID();
-		this.startDate=inputArray[ARRAY_INDEX_START_DATE];
-		this.startTime=inputArray[ARRAY_INDEX_START_TIME];
-		this.endDate=inputArray[ARRAY_INDEX_END_DATE];
-		this.endTime=inputArray[ARRAY_INDEX_END_TIME];
+		this.startDate=inputArray[Constants.ARRAY_INDEX_START_DATE];
+		this.startTime=inputArray[Constants.ARRAY_INDEX_START_TIME];
+		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
+		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
 		this.isDone=false;
 		this.category="floating";
 		
 	
-		if(inputArray[ARRAY_INDEX_END_MILLISECONDS]!=null){
-			this.endMilliseconds=Long.parseLong(inputArray[ARRAY_INDEX_END_MILLISECONDS]);
+		if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null){
+			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
 			this.category="deadline";
 		}
-		if(inputArray[ARRAY_INDEX_START_MILLISECONDS]!=null){
-			this.startMilliseconds=Long.parseLong(inputArray[ARRAY_INDEX_START_MILLISECONDS]);
+		
+		if(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]!=null){
+			this.startMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]);
 			this.category="timed";
 		}
 		
@@ -77,7 +80,6 @@ public class Task {
 		this.endTime = endTime;
 		this.endDate = endDate;
 		this.isDone = isDone;
-		
 	}
 	
 	public String getTitle(){
@@ -119,11 +121,11 @@ public class Task {
 	}
 	
 	public boolean getIsDone(){
-		return isDone;
+		return this.isDone;
 	}
 	
 	public String getCategory() {
-		return category;
+		return this.category;
 	}
 	
 	public void setTitle(String title){

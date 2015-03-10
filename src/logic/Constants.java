@@ -64,4 +64,7 @@ public class Constants {
 	public static final String ADD_COMMAND_VALUE = "add";
 	public static final String EDIT_COMMAND_VALUE = "edit";
 	public static final String DELETE_COMMAND_VALUE = "delete";
+	
+	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
+	
 }
