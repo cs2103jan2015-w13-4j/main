@@ -205,12 +205,6 @@ public class Logic {
     	return Storage.tableToXml("init_task.xml", taskList);
     }
 
-	public static String list(String parameters) {
-		return ListTask.listTask(taskList).toString();
-		//    	return "[LIST]Parameters entered are: " + parameters;
-	}
-
-
 	public static String validateString(String command, String input){
 
 		boolean isValid = validateParameter(command, input);

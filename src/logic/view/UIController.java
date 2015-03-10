@@ -45,9 +45,6 @@ public class UIController {
 	private Button deleteButton;
 
 	@FXML
-	private Button listButton;
-
-	@FXML
 	public TextField cmdTextField;
 
 	@FXML
@@ -71,11 +68,6 @@ public class UIController {
 	public void delete() {
 		cmdTextField.setText(Constants.DELETE_COMMAND);
 	}
-
-	public void list() {
-		cmdTextField.setText(Constants.LIST_COMMAND);
-	}
-
 
 	@FXML
 	void onHelp(ActionEvent event) {
