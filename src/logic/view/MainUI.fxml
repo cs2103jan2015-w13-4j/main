@@ -13,14 +13,14 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <SplitPane dividerPositions="0.11912751677852348" layoutX="63.0" layoutY="14.0" prefHeight="210.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.14759535655058043" layoutX="63.0" layoutY="14.0" prefHeight="210.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
                               <VBox layoutX="14.0" layoutY="14.0" spacing="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Button fx:id="addButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#add" prefWidth="55.0" text="Add..." />
-                                    <Button fx:id="editButton" layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#edit" prefWidth="55.0" text="Edit..." />
+                                    <Button id="btnHelp" fx:id="btnHelp" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHelp" prefHeight="31.0" prefWidth="74.0" text="Help" />
+                                    <Button id="btnRefresh" fx:id="btnRefresh" layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onAction="#onRefresh" prefHeight="31.0" prefWidth="75.0" text="Refresh" />
                                     <Button fx:id="deleteButton" layoutX="14.0" layoutY="86.0" mnemonicParsing="false" onMouseClicked="#delete" prefWidth="55.0" text="Delete" />
                                     <Button fx:id="listButton" layoutX="14.0" layoutY="119.0" mnemonicParsing="false" onMouseClicked="#list" prefWidth="55.0" text="List..." />
                                  </children>
