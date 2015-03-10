@@ -53,6 +53,21 @@ public class TokenValidation {
 		return false;
 	}
 	
+	public static boolean isStartDateBeforeThanEndDate(String start, String end){
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		sdf.setLenient(false);
+		try {
+			Date startDate=sdf.parse(start);
+			Date endDate=sdf.parse(end);
+			if(startDate.before(endDate)){
+				return true;
+			}
+		} catch (ParseException e) {
+			return false;
+		}
+		return false;
+	}
+	
 	public static boolean isRepeatValid(String repeat){
 		if (repeat.equalsIgnoreCase("n") || repeat.equalsIgnoreCase("r")) {
 			inputArray[Constants.ARRAY_INDEX_REPEAT]=repeat;

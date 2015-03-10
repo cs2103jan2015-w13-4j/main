@@ -66,5 +66,6 @@ public class Constants {
 	public static final String DELETE_COMMAND_VALUE = "delete";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
+	public static final String DEFAULT_VALUE="default";
 	
 }

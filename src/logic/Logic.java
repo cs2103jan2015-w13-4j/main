@@ -66,6 +66,70 @@ public class Logic {
     	
     }//end add
     
+    public static String edit(String param){
+    	boolean isAddedToStorage = false;
+    	boolean isAddedToArray = false;
+    	temp = param.split("-");
+    	temp=trimLeadingTrailingSpacesInArray(temp);
+    	Task extractedTask = extractTaskFromList(temp);
+    	String[] newArray=null;
+    	System.arraycopy(temp, 1, newArray, 0, temp.length-1);
+    	
+    	if(newArray.length==Constants.FLOATING_TASK){
+    		editFloatingTask(extractedTask, newArray);
+    	}else if(newArray.length==Constants.DEADLINE_TASK){
+    		editDeadlineTask(extractedTask, newArray);
+    		
+    	}else if(newArray.length==Constants.TIMED_TASK){
+    		editTimedTask(extractedTask, newArray);
+    	}
+    	
+    	///save here
+    	return Constants.LOGIC_SUCCESS_EDIT_TASK;
+    }
+
+	private static void editTimedTask(Task extractedTask, String[] newArray) {
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
+			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_START_DATE])){	//check enddate
+			extractedTask.setStartDate(newArray[Constants.ARRAY_INDEX_START_DATE]);
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_START_TIME])){//check endtime
+			extractedTask.setStartTime(newArray[Constants.ARRAY_INDEX_START_TIME]);
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_END_DATE])){	//check enddate
+			extractedTask.setEndDate(newArray[Constants.ARRAY_INDEX_END_DATE]);
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_END_TIME])){//check endtime
+			extractedTask.setEndTime(newArray[Constants.ARRAY_INDEX_END_TIME]);
+		}
+	}
+	private static void editDeadlineTask(Task extractedTask, String[] newArray) {
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
+			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[1])){	//check enddate
+			extractedTask.setEndDate(newArray[1]);
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check endtime
+			extractedTask.setEndTime(newArray[2]);
+		}
+	}
+	private static void editFloatingTask(Task extractedTask, String[] newArray) {
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
+			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
+		}
+	}
+
+	private static Task extractTaskFromList(String[] temp) {
+		Task tempTask;
+		int taskId=Integer.parseInt(temp[0]);
+    	int taskIndex=getTaskIndexInList(taskId);
+    	tempTask = taskList.get(taskIndex);
+		return tempTask;
+	}
+    
    /* public static String edit(String param){
     	
     	
@@ -75,12 +139,9 @@ public class Logic {
     public static String mark(String param){ 
     	temp = param.split("-");
     	temp=trimLeadingTrailingSpacesInArray(temp);
-    	Task newTask = null;
-    	int taskId=Integer.parseInt(temp[0]);
+    	Task newTask = extractTaskFromList(temp);
     	String status=temp[1];
-    	int taskIndex=getTaskIndexInList(taskId);
     	
-    	newTask =taskList.get(taskIndex);
     	if(Constants.STATUS_DONE.equalsIgnoreCase(status)){
     		newTask.setIsDone(true);
     	}
@@ -96,6 +157,11 @@ public class Logic {
     	return true;
     }
     
+    public static boolean editTaskInList(Task task, int taskIndex){
+    	
+    	
+    	return true;
+    }
     public static boolean delete(String parameters) {
     	taskList.clear();
     	return true;
@@ -161,17 +227,27 @@ public class Logic {
     private static boolean validateEditParameters(String param){
     	String[] inputArray = param.split("-");
     	inputArray=trimLeadingTrailingSpacesInArray(inputArray);
+    	String[] newArray=null;
+    	System.arraycopy(inputArray, 1, newArray, 0, inputArray.length-1);
     	int taskId=Integer.parseInt(inputArray[0]);
     	boolean isTaskExists= isTaskInList(taskId);
     	if(isTaskExists){
+    		int taskIndex=getTaskIndexInList(taskId);
+    		Task task=taskList.get(taskIndex);
     		if(inputArray.length==Constants.EDIT_FLOATING_TASK){
-    			
+    			if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE])){	//edit id -title 
+    				return true;
+    			}
     		}
     		else if(inputArray.length==Constants.EDIT_DEADLINE_TASK){
-    			
+    			if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[1])) && (TokenValidation.isTimeValid(newArray[2]))){
+    				return true;
+    			}
     		}
     		else if(inputArray.length==Constants.EDIT_TIMED_TASK){
-    			
+    			if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE]))){
+    				return true;
+    			}
     		}
     	}
     	return false;
@@ -209,7 +285,7 @@ public class Logic {
     		}
     	}
     	else if(inputArray.length==5){
-    		if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_START_TIME]))){
+    		if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_START_TIME])) && TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE])){
     			return true;
     		}
     	}
