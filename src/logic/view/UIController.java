@@ -97,9 +97,10 @@ public class UIController {
 
     @FXML
     void onRefresh(ActionEvent event) {
-    	ObservableList<Task> myObservableList = FXCollections.observableList(Logic.taskList);
-    	listview_task_fx_id.setItems(null); 
-    	listview_task_fx_id.setItems(myObservableList);
+    	this.initialize();
+    	//ObservableList<Task> myObservableList = FXCollections.observableList(Logic.taskList);
+    	//listview_task_fx_id.setItems(null); 
+    	//listview_task_fx_id.setItems(myObservableList);
     }
     
     
