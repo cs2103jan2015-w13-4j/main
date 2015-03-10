@@ -23,9 +23,13 @@ public class Constants {
 	public static String LOGIC_SUCCESS_ADD_TASK = "Successfully add new task.";
 	public static String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
 	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
+	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
+	public static String LOGIC_SUCCESS_DELETE_ALL_TASK = "Successfully delete all task.";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
 	public static String LOGIC_FAIL_MARK_TASK = "Failed to mark task.";
+	public static String LOGIC_FAIL_DELETE_TASK = "Failed to delete task.";
+	public static String LOGIC_DELETE_TASK_NOT_FOUND = "No such task existed.";
 	
 	public static String XML_FILE_PATH = "init_task.xml";
 	
