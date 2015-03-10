@@ -40,21 +40,21 @@ public class UIController {
 
 	@FXML
 	private Button btnRefresh;
+	
+	@FXML
+	private Button addButton;
+	
+	@FXML
+	private Button editButton;
 
 	@FXML
 	private Button deleteButton;
-
-	@FXML
-	private Button listButton;
 
 	@FXML
 	public TextField cmdTextField;
 
 	@FXML
 	private Text txtStatus;
-
-	//@FXML
-	//private TextArea displayTextArea;
 
 	@FXML
 	private Button enterButton;
@@ -103,7 +103,18 @@ public class UIController {
 		//listview_task_fx_id.setItems(myObservableList);
 	}
 
-
+	public void add_outline() {
+		cmdTextField.setText(Constants.ADD_COMMAND);
+	}
+	
+	public void edit_outline() {
+		cmdTextField.setText(Constants.EDIT_COMMAND);
+	}
+	
+	public void delete_outline() {
+		cmdTextField.setText(Constants.DELETE_COMMAND);
+	}
+	
 	public void enter() throws IOException {
 		//user click mouse on the enter button
 		String parserOutput = "";

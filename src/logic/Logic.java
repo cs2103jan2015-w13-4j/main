@@ -105,6 +105,7 @@ public class Logic {
 			extractedTask.setEndTime(newArray[Constants.ARRAY_INDEX_END_TIME]);
 		}
 	}
+	
 	private static void editDeadlineTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
@@ -116,6 +117,7 @@ public class Logic {
 			extractedTask.setEndTime(newArray[2]);
 		}
 	}
+	
 	private static void editFloatingTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
