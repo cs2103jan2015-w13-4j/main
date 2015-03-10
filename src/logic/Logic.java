@@ -66,6 +66,12 @@ public class Logic {
     	
     }//end add
     
+    public static String edit(String param){
+    	
+    	
+    	return Constants.LOGIC_SUCCESS_EDIT_TASK;
+    }
+    
     public static String mark(String param){ 
     	temp = param.split("-");
     	temp=trimLeadingTrailingSpacesInArray(temp);
@@ -75,10 +81,10 @@ public class Logic {
     	int taskIndex=getTaskIndexInList(taskId);
     	
     	newTask =taskList.get(taskIndex);
-    	if(status.equalsIgnoreCase("done")){
+    	if(Constants.STATUS_DONE.equalsIgnoreCase(status)){
     		newTask.setIsDone(true);
     	}
-    	else if(status.equalsIgnoreCase("undone")){
+    	else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
     		newTask.setIsDone(false);
     	}
     	
@@ -132,7 +138,7 @@ public class Logic {
     			return validateEditParameters(param);
     		}
     		else if(command.equalsIgnoreCase("mark")){
-    			return validateEditParameters(param);
+    			return validateMarkParameters(param);
     		}
     	}
     	
@@ -153,6 +159,25 @@ public class Logic {
     	return false;
     }
     
+    private static boolean validateEditParameters(String param){
+    	String[] inputArray = param.split("-");
+    	inputArray=trimLeadingTrailingSpacesInArray(inputArray);
+    	int taskId=Integer.parseInt(inputArray[0]);
+    	boolean isTaskExists= isTaskInList(taskId);
+    	if(isTaskExists){
+    		if(inputArray.length==Constants.EDIT_FLOATING_TASK){
+    			
+    		}
+    		else if(inputArray.length==Constants.EDIT_DEADLINE_TASK){
+    			
+    		}
+    		else if(inputArray.length==Constants.EDIT_TIMED_TASK){
+    			
+    		}
+    	}
+    	return false;
+    }
+    
     private static boolean isTaskInList(int taskId){
     	for(Task t: taskList){
     		if(t.getID()==taskId){
@@ -168,11 +193,6 @@ public class Logic {
 				return i;
 		}
     	return -1;
-    }
-    
-    private static boolean validateEditParameters(String param){
-    	
-    	return false;
     }
     
     private static boolean validateAddParameters(String param){

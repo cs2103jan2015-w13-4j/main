@@ -33,6 +33,9 @@ public class Constants {
 	public static String ROOT_LAYOUT_PATH = "view/RootLayout.fxml";
 	public static String LISTVIEW_LAYOUT_PATH = "view/customListView.fxml";
 	
+	public static String STATUS_DONE="done";
+	public static String STATUS_UNDONE="undone";
+	
 	
 	public static final int ARRAY_SIZE = 10;
 	
@@ -54,7 +57,9 @@ public class Constants {
 	public static final int FLOATING_TASK=1;
 	public static final int DEADLINE_TASK=3;
 	public static final int TIMED_TASK=5;
-	
+	public static final int EDIT_FLOATING_TASK=2;
+	public static final int EDIT_DEADLINE_TASK=3;
+	public static final int EDIT_TIMED_TASK=5;
 	
 	public static final String ADD_COMMAND_VALUE = "add";
 	public static final String EDIT_COMMAND_VALUE = "edit";
