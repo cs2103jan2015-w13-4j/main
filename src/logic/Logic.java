@@ -181,7 +181,8 @@ public class Logic {
     	}
     	if (save()){
     		return Constants.LOGIC_SUCCESS_DELETE_TASK;
-    	}else{
+    	}
+    	else{
     		return Constants.LOGIC_FAIL_DELETE_TASK;
     	}
     }
