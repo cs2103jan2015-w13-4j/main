@@ -121,7 +121,12 @@ public class Logic {
 		}
 		return extractedTask;
 	}
+<<<<<<< HEAD
 	private static Task editDeadlineTask(Task extractedTask, String[] newArray) {
+=======
+	
+	private static void editDeadlineTask(Task extractedTask, String[] newArray) {
+>>>>>>> 8c1e551f42067ebd626e90deee049eff64923e2b
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
 		}
@@ -133,7 +138,12 @@ public class Logic {
 		}
 		return extractedTask;
 	}
+<<<<<<< HEAD
 	private static Task editFloatingTask(Task extractedTask, String[] newArray) {
+=======
+	
+	private static void editFloatingTask(Task extractedTask, String[] newArray) {
+>>>>>>> 8c1e551f42067ebd626e90deee049eff64923e2b
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
 		}
@@ -220,7 +230,7 @@ public class Logic {
     }
     
     public static boolean save(){
-    	return Storage.tableToXml("init_task.xml", taskList);
+    	return Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
     }
 
 	public static String list(String parameters) {

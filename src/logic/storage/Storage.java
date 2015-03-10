@@ -81,6 +81,9 @@ public class Storage {
 			//create a new root node
 			nRoot = doc.createElement(NODE_ROOT_TAG);
 			
+			//get the latest tasklist size as the total number of tasks
+			max_number_of_tasks = mArrayTask.size();
+			
 			//add total number of tasks
 			nTotal = doc.createElement(NODE_TOTAL_TASK_TAG);
 			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));
@@ -303,7 +306,8 @@ public class Storage {
 			//Save the document
 			isSaved = saveXml(doc, xmlFilePath);
 					
-			
+			max_number_of_tasks = max_number_of_tasks - 1;
+				
 			if (isSaved){
 				return true;
 			}else{

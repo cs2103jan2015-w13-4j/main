@@ -40,21 +40,21 @@ public class UIController {
 
 	@FXML
 	private Button btnRefresh;
+	
+	@FXML
+	private Button addButton;
+	
+	@FXML
+	private Button editButton;
 
 	@FXML
 	private Button deleteButton;
-
-	@FXML
-	private Button listButton;
 
 	@FXML
 	public TextField cmdTextField;
 
 	@FXML
 	private Text txtStatus;
-
-	//@FXML
-	//private TextArea displayTextArea;
 
 	@FXML
 	private Button enterButton;
@@ -103,7 +103,18 @@ public class UIController {
 		//listview_task_fx_id.setItems(myObservableList);
 	}
 
-
+	public void add_outline() {
+		cmdTextField.setText(Constants.ADD_COMMAND);
+	}
+	
+	public void edit_outline() {
+		cmdTextField.setText(Constants.EDIT_COMMAND);
+	}
+	
+	public void delete_outline() {
+		cmdTextField.setText(Constants.DELETE_COMMAND);
+	}
+	
 	public void enter() throws IOException {
 		//user click mouse on the enter button
 		String parserOutput = "";
@@ -145,19 +156,19 @@ public class UIController {
 			}
 		}
 		else if(parserUserCommand.equalsIgnoreCase("edit")){
-			//3. Logic - add new task based on parameter
+			//Logic - edit new task based on parameter
 			logicOutput = Logic.edit(parserTokenParameter);
-			if(!logicOutput.equals(Constants.LOGIC_SUCCESS_ADD_TASK)){ //fail to add
+			if(!logicOutput.equals(Constants.LOGIC_SUCCESS_ADD_TASK)){ //fail to edit
 				//print out the error message
 				txtStatus.setText(logicOutput);
 				return;
 			}
 		}
 		else if(parserUserCommand.equalsIgnoreCase("delete")){
-			//3. Logic - add new task based on parameter
+			//Logic - delete task based on parameter
 			logicOutput = Logic.delete(parserTokenParameter);
 			if((!logicOutput.equals(Constants.LOGIC_SUCCESS_DELETE_TASK) && 
-					(!logicOutput.equals(Constants.LOGIC_SUCCESS_DELETE_ALL_TASK)))){ //fail to add
+					(!logicOutput.equals(Constants.LOGIC_SUCCESS_DELETE_ALL_TASK)))){ //fail to delete
 				//print out the error message
 				txtStatus.setText(logicOutput);
 				return;
