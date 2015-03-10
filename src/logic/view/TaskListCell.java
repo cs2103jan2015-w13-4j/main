@@ -67,17 +67,18 @@ public class TaskListCell extends ListCell<Task> {
         
         String category = mTask.getCategory();
         
-        lblDateTime.setText(String.format(Constants.LISTVIEW_DATETIME_STRING_FORMAT, mTask.getStartDate(), mTask.getStartTime()));
-        lblDateTime.setText(lblDateTime.getText() + " category - " + category);
+        //lblDateTime.setText(String.format(Constants.LISTVIEW_DATETIME_STRING_FORMAT, mTask.getStartDate(), mTask.getStartTime()));
+        //lblDateTime.setText(lblDateTime.getText() + " category - " + category);
         
         if(category.equals("timed")){
-        	//lblDateTime.setText("Start "+" "+mTask.getStartDate()+ " "+ mTask.getStartTime()+" End by "+mTask.getEndDate()+mTask.getEndTime());
+        	lblDateTime.setText("Start on: " + mTask.getStartDate()+ " " + mTask.getStartTime() + 
+        						" Due on: " + mTask.getEndDate() + " " + mTask.getEndTime());
         }
         else if(category.equals("deadline")){
-        	//lblDateTime.setText("Complete by "+" "+mTask.getEndDate()+ " "+ mTask.getEndTime());
+        	lblDateTime.setText("Due on: " + mTask.getEndDate() + " " + mTask.getEndTime());
         }
         else if(category.equals("floating")){
-        	//lblDateTime.setText("Floating task");
+        	lblDateTime.setText("");
         }
         //setStyleClassDependingOnFoundState(mTask);        
         setGraphic(grid);
