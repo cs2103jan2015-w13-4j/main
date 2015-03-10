@@ -181,8 +181,7 @@ public class Logic {
     	}
     	if (save()){
     		return Constants.LOGIC_SUCCESS_DELETE_TASK;
-    	}
-    	else{
+    	}else{
     		return Constants.LOGIC_FAIL_DELETE_TASK;
     	}
     }
@@ -202,7 +201,7 @@ public class Logic {
     }
     
     public static boolean save(){
-    	return Storage.tableToXml("init_task.xml", taskList);
+    	return Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
     }
 
 	public static String list(String parameters) {
