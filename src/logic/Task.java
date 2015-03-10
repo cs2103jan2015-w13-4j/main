@@ -22,19 +22,7 @@ public class Task {
 	private long startMilliseconds;
 	private long endMilliseconds;
 	private String category="";
-	
-	/*
-	private static final int ARRAY_INDEX_TITLE = 0;
-	private static final int ARRAY_INDEX_START_DATE = 1;
-	private static final int ARRAY_INDEX_START_TIME = 2;
-	private static final int ARRAY_INDEX_END_DATE = 3;
-	private static final int ARRAY_INDEX_END_TIME = 4;
-	private static final int ARRAY_INDEX_REPEAT = 5;
-	private static final int ARRAY_INDEX_DELAYTYPE = 6;
-	private static final int ARRAY_INDEX_RECUR = 7;
-	private static int ARRAY_INDEX_START_MILLISECONDS = 8;
-	private static int ARRAY_INDEX_END_MILLISECONDS = 9;
-	*/
+	private String priority = "";  
 	
 	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
 	
@@ -53,6 +41,7 @@ public class Task {
 		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
 		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
 		this.isDone=false;
+		this.priority ="";
 		this.category="floating";
 		
 	
@@ -70,7 +59,8 @@ public class Task {
 	
 
 	/*Used for importing all tasks from XML*/
-	public Task(int id, String title, long startMs, long endMs, String startTime, String startDate, String endTime, String endDate, boolean isDone){
+	public Task(int id, String title, long startMs, long endMs, String startTime, String startDate, String endTime, String endDate, 
+				String category, String priority, boolean isDone){
 		this.id = id;
 		this.title = title;
 		this.startMilliseconds = startMs;
@@ -80,6 +70,8 @@ public class Task {
 		this.endTime = endTime;
 		this.endDate = endDate;
 		this.isDone = isDone;
+		this.category = category;
+		this.priority = priority;
 	}
 	
 	public String getTitle(){
@@ -128,6 +120,10 @@ public class Task {
 		return this.category;
 	}
 	
+	public String getPriority(){
+		return this.priority;
+	}
+	
 	public void setTitle(String title){
 		this.title=title;
 	}
@@ -166,6 +162,13 @@ public class Task {
 		this.isDone=status;
 	}
 
+	public void setCategory(String cat){
+		this.category = cat;
+	}
+	
+	public void setPriority(String p){
+		this.priority = p;
+	}
 
 	/*@Override
 	public int compare (Object one, Object two){

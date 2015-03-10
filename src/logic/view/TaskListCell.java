@@ -68,6 +68,7 @@ public class TaskListCell extends ListCell<Task> {
         String category = mTask.getCategory();
         
         lblDateTime.setText(String.format(Constants.LISTVIEW_DATETIME_STRING_FORMAT, mTask.getStartDate(), mTask.getStartTime()));
+        lblDateTime.setText(lblDateTime.getText() + " category - " + category);
         
         if(category.equals("timed")){
         	//lblDateTime.setText("Start "+" "+mTask.getStartDate()+ " "+ mTask.getStartTime()+" End by "+mTask.getEndDate()+mTask.getEndTime());
