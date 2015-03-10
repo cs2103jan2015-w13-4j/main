@@ -3,18 +3,25 @@ package logic.view;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import logic.view.Browser;
 import logic.MainApp;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import logic.Constants;
 import logic.Logic;
@@ -28,11 +35,11 @@ public class UIController {
 	public String userInput = null;
 	
 	//Objects
-    @FXML
-    private Button addButton;
-
-    @FXML
-    private Button editButton;
+	@FXML
+    private Button btnHelp;
+	
+	@FXML
+    private Button btnRefresh;
     
     @FXML
     private Button deleteButton;
@@ -59,13 +66,7 @@ public class UIController {
     private ListView<Task> listview_task_fx_id;
     
     //Methods
-    public void add() {
-    	cmdTextField.setText(Constants.ADD_COMMAND);
-    }
     
-    public void edit() {
-    	cmdTextField.setText(Constants.EDIT_COMMAND);
-    }
     
     public void delete() {
     	cmdTextField.setText(Constants.DELETE_COMMAND);
@@ -74,6 +75,34 @@ public class UIController {
     public void list() {
     	cmdTextField.setText(Constants.LIST_COMMAND);
     }
+    
+
+    @FXML
+    void onHelp(ActionEvent event) {
+    	Stage stage = new Stage();
+    	
+		stage.setTitle("Web View");
+		stage.initModality(Modality.NONE);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setResizable(false);
+        //stage.setMaxHeight(800);
+        //stage.setMaxWidth(600);
+        //stage.setMinHeight(600);
+        //stage.setMinWidth(400);
+        
+		Scene scene = new Scene(new Browser(), 500,700, Color.web("#666970"));
+		stage.setScene(scene);    
+     	stage.show();
+    }
+
+    @FXML
+    void onRefresh(ActionEvent event) {
+    	this.initialize();
+    	//ObservableList<Task> myObservableList = FXCollections.observableList(Logic.taskList);
+    	//listview_task_fx_id.setItems(null); 
+    	//listview_task_fx_id.setItems(myObservableList);
+    }
+    
     
     public void enter() throws IOException {
     	//user click mouse on the enter button
@@ -150,7 +179,10 @@ public class UIController {
 			@Override      
 			public void changed(ObservableValue<? extends Task> ov,
 	          Task oldTask, Task newTask) {
-				System.out.println("Selected : " + newTask.getID() + " - " + newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+newTask.getEndTime()+ " - "+newTask.getCategory());
+				if(newTask != null){
+					System.out.println("Selected : " + newTask.getID() + " - " + newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+newTask.getEndTime()+ " - "+newTask.getCategory());
+					
+				}
 			}
         });
 
