@@ -81,7 +81,7 @@ public class UIController {
 	void onHelp(ActionEvent event) {
 		Stage stage = new Stage();
 
-		stage.setTitle("Web View");
+		stage.setTitle("Pista User Guide");
 		stage.initModality(Modality.NONE);
 		stage.initStyle(StageStyle.DECORATED);
 		stage.setResizable(false);
