@@ -72,9 +72,9 @@ public class UIController {
 		cmdTextField.setText(Constants.DELETE_COMMAND);
 	}
 
-	public void list() {
+	/*public void list() {
 		cmdTextField.setText(Constants.LIST_COMMAND);
-	}
+	}*/
 
 
 	@FXML
@@ -235,4 +235,3 @@ public class UIController {
 
 
 }
-

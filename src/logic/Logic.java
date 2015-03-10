@@ -11,6 +11,8 @@ import logic.storage.Storage;
 public class Logic {
 	static String[] temp=new String[8];
 	private String[] parameterToken = null;
+	static String startMiliseconds="";
+	static String endMiliseconds="";
 
 	public static ArrayList<Task> taskList = null;
 	public static int totalNumberOfTasks =  Storage.getMaxNumberOfTasks();
@@ -75,24 +77,44 @@ public class Logic {
     public static String edit(String param){
     	boolean isAddedToStorage = false;
     	boolean isAddedToArray = false;
+    
+    	String category="";
     	temp = param.split("-");
     	temp=trimLeadingTrailingSpacesInArray(temp);
     	int taskId=Integer.parseInt(temp[0]);
     	int taskIndex=getTaskIndexInList(taskId);
     	Task extractedTask = extractTaskFromList(temp);
-    	String[] newArray=new String[8];
-    	System.arraycopy(temp, 1, newArray, 0, temp.length-1);
+    	String[] newArray=new String[12];
+    	System.arraycopy(temp, 1, newArray, 0, temp.length-1);//copy title
+    	
+    	
     	System.out.println("array size " +newArray.length);
     	if(temp.length==2){
     		extractedTask=editFloatingTask(extractedTask, newArray);
+    		category="floating";
     	}else if(temp.length==4){
-    		System.out.println("is deadline");
+    		//System.arraycopy(temp, 2, newArray, 3, 1);
+    		//System.arraycopy(temp, 3, newArray, 4, 1);
     		extractedTask=editDeadlineTask(extractedTask, newArray);
+    		category="deadline";
     		
     	}else if(temp.length==6){
+    		//System.arraycopy(temp, 2, newArray, 1, 1);
+    		//System.arraycopy(temp, 3, newArray, 2, 1);
+    		//System.arraycopy(temp, 4, newArray, 3, 1);
+    		//System.arraycopy(temp, 5, newArray, 4, 1);
     		extractedTask=editTimedTask(extractedTask, newArray);
+    		category="timed";
     	}
-    	
+    	formatArray(newArray,category);
+    	if(temp.length==4){
+    		extractedTask.setEndMilliseconds(Long.parseLong(endMiliseconds));
+    	}
+    	else if(temp.length==6){
+    		extractedTask.setStartMilliseconds(Long.parseLong(startMiliseconds));
+    		extractedTask.setEndMilliseconds(Long.parseLong(endMiliseconds));
+    	}
+
     	taskList.remove(taskIndex);
     	taskList.add(extractedTask);
     	System.out.println("testing");
@@ -100,25 +122,34 @@ public class Logic {
 			System.out.println(newArray[i]);
 		}
     	save();
+    	
     	return Constants.LOGIC_SUCCESS_EDIT_TASK;
     }
 
 	private static Task editTimedTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
-			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
+			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);//0
 		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_START_DATE])){	//check enddate
-			extractedTask.setStartDate(newArray[Constants.ARRAY_INDEX_START_DATE]);
+		else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[1])){	//check enddate
+			extractedTask.setStartDate(newArray[Constants.ARRAY_INDEX_START_DATE]);//1
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check endtime
+			extractedTask.setStartTime(newArray[Constants.ARRAY_INDEX_START_TIME]);//2
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[3])){	//check enddate
+			extractedTask.setEndDate(newArray[Constants.ARRAY_INDEX_END_DATE]);//3
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[4])){//check endtime
+			extractedTask.setEndTime(newArray[Constants.ARRAY_INDEX_END_TIME]);//4
+		}else{
+			
 		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_START_TIME])){//check endtime
-			extractedTask.setStartTime(newArray[Constants.ARRAY_INDEX_START_TIME]);
-		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_END_DATE])){	//check enddate
-			extractedTask.setEndDate(newArray[Constants.ARRAY_INDEX_END_DATE]);
-		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_END_TIME])){//check endtime
-			extractedTask.setEndTime(newArray[Constants.ARRAY_INDEX_END_TIME]);
-		}
+		
 		return extractedTask;
 	}
 
@@ -126,13 +157,19 @@ public class Logic {
 	private static Task editDeadlineTask(Task extractedTask, String[] newArray) {
 
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
-			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
+			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);//0
+		}else{
+			
 		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[1])){	//check enddate
-			extractedTask.setEndDate(newArray[1]);
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[3])){	//check enddate
+			extractedTask.setEndDate(newArray[3]);//3
+		}else{
+			
 		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check endtime
-			extractedTask.setEndTime(newArray[2]);
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[4])){//check endtime
+			extractedTask.setEndTime(newArray[4]);//4
+		}else{
+			
 		}
 		return extractedTask;
 	}
@@ -141,6 +178,8 @@ public class Logic {
 
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
 			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
+		}else{
+			
 		}
 		return extractedTask;
 	}
@@ -287,17 +326,36 @@ public class Logic {
 		System.out.println("inside editpara");
 		String[] inputArray = param.split("-");
 		inputArray=trimLeadingTrailingSpacesInArray(inputArray);
-		String[] newArray=new String[8];
-		System.arraycopy(inputArray, 1, newArray, 0, inputArray.length-1);
-		for (int i = 0; i < newArray.length; i++) {
-			System.out.println(newArray[i] +" "+i);
+		String[] newArray=new String[12];
+		for (int i = 0; i < inputArray.length; i++) {
+			System.out.println("iA   "+inputArray[i] +" "+i);
 		}
+		System.arraycopy(inputArray, 1, newArray, 0, inputArray.length-1);
+	
+		/*if(inputArray.length==4){
+    		System.arraycopy(inputArray, 2, newArray, 3, 1);
+    		System.arraycopy(inputArray, 3, newArray, 4, 1);
+    		
+    	}else if(inputArray.length==6){
+    		System.arraycopy(inputArray, 2, newArray, 1, 1);
+    		System.arraycopy(inputArray, 3, newArray, 2, 1);
+    		System.arraycopy(inputArray, 4, newArray, 3, 1);
+    		System.arraycopy(inputArray, 5, newArray, 4, 1);
+    	}*/
+		/*for (int i = 0; i < inputArray.length; i++) {
+			System.out.println("iA   "+newArray[i] +" "+i);
+		}*/
+		for (int i = 0; i < newArray.length; i++) {
+			System.out.println("nA   "+newArray[i] +" "+i);
+		}
+		
 		int taskId=Integer.parseInt(inputArray[0]);
 		boolean isTaskExists= isTaskInList(taskId);
 		if(isTaskExists){
-			System.out.println("task exists"+newArray.length);
+			System.out.println("task exists"+inputArray.length);
 			int taskIndex=getTaskIndexInList(taskId);
 			Task task=taskList.get(taskIndex);
+			
 			if(inputArray.length==2){
 				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE])){	//edit id -title 
 					return true;
@@ -315,7 +373,12 @@ public class Logic {
 					System.out.println("time true");*/
 			}
 			else if(inputArray.length==6){
-				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE]))){
+				System.out.println("inside 6");
+				if(TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE],newArray[Constants.ARRAY_INDEX_END_DATE]))
+					System.out.println("ok");
+				//if(TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE], newArray[Constants.ARRAY_INDEX_START_DATE]))
+				//	System.out.println("date is ok");
+				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE], newArray[Constants.ARRAY_INDEX_END_DATE]))){
 					return true;
 				}
 			}
@@ -393,5 +456,17 @@ public class Logic {
 		}
 		return temp;
 	}
-
+	public static void formatArray(String[] inputArray, String category){
+	
+		if(category.equals("timed")){
+			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
+		}
+		else if(category.equals("deadline")){
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
+			System.out.println(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
+		}
+		startMiliseconds=inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS];
+		endMiliseconds=inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS];
+	}
 }
