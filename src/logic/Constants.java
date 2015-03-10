@@ -7,10 +7,9 @@ public class Constants {
 	public static String PRODUCT_NAME = "Pista";
 	
 	public static String FILENAME = "Tasks.txt";
-	public static String ADD_COMMAND = "add para1 para2";
-	public static String EDIT_COMMAND = "edit para1 para2";
-	public static String DELETE_COMMAND = "delete para1 para2";
-	public static String LIST_COMMAND = "list para1 para2";
+	public static String ADD_COMMAND = "add <Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
+	public static String EDIT_COMMAND = "edit <ID> -<Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
+	public static String DELETE_COMMAND = "delete -<TaskID>";
 	
 	//Parser Message 
 	public static String WRONG_CMD_MESSAGE = "No/Wrong command detected!";
