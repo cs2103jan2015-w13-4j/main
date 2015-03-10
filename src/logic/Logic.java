@@ -136,6 +136,9 @@ public class Logic {
     		else if(command.equalsIgnoreCase("mark")){
     			return validateMarkParameters(param);
     		}
+    		else if(command.equalsIgnoreCase("delete")){
+    			return validateEditParameters(param);
+    		}
     	}
     	
     	return false;
