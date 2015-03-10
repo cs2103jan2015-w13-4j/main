@@ -66,6 +66,11 @@ public class Logic {
     	
     }//end add
     
+    /*
+     * edit id -title  2
+	edit id -title enddate endtime  3
+	edit id -title startdate starttime enddate endtime  5
+     */
     public static String edit(String param){
     	boolean isAddedToStorage = false;
     	boolean isAddedToArray = false;
