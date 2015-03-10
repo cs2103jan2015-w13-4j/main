@@ -85,7 +85,7 @@ public class Logic {
     	int taskIndex=getTaskIndexInList(taskId);
     	Task extractedTask = extractTaskFromList(temp);
     	String[] newArray=new String[12];
-    	System.arraycopy(temp, 1, newArray, 0, temp.length-1);//copy title
+    	System.arraycopy(temp, 1, newArray, 0, 1);//copy title
     	
     	
     	System.out.println("array size " +newArray.length);
@@ -93,33 +93,39 @@ public class Logic {
     		extractedTask=editFloatingTask(extractedTask, newArray);
     		category="floating";
     	}else if(temp.length==4){
-    		//System.arraycopy(temp, 2, newArray, 3, 1);
+    		System.arraycopy(temp, 2, newArray, 3, 2);
     		//System.arraycopy(temp, 3, newArray, 4, 1);
     		extractedTask=editDeadlineTask(extractedTask, newArray);
     		category="deadline";
     		
     	}else if(temp.length==6){
-    		//System.arraycopy(temp, 2, newArray, 1, 1);
-    		//System.arraycopy(temp, 3, newArray, 2, 1);
-    		//System.arraycopy(temp, 4, newArray, 3, 1);
-    		//System.arraycopy(temp, 5, newArray, 4, 1);
+    		System.arraycopy(temp, 2, newArray, 1, 1);
+    		System.arraycopy(temp, 3, newArray, 2, 1);
+    		System.arraycopy(temp, 4, newArray, 3, 1);
+    		System.arraycopy(temp, 5, newArray, 4, 1);
     		extractedTask=editTimedTask(extractedTask, newArray);
     		category="timed";
     	}
     	formatArray(newArray,category);
-    	if(temp.length==4){
+    	if(temp.length==4){//deadline task
     		extractedTask.setEndMilliseconds(Long.parseLong(endMiliseconds));
+    		System.out.println(endMiliseconds);
+    		System.out.println("sdffffffffffff    "+extractedTask.getEndMilliseconds());
     	}
-    	else if(temp.length==6){
+    	else if(temp.length==6){//timed task
     		extractedTask.setStartMilliseconds(Long.parseLong(startMiliseconds));
     		extractedTask.setEndMilliseconds(Long.parseLong(endMiliseconds));
     	}
 
     	taskList.remove(taskIndex);
     	taskList.add(extractedTask);
-    	System.out.println("testing");
+    	System.out.println("inside actual edit function");
     	for (int i = 0; i < newArray.length; i++) {
-			System.out.println(newArray[i]);
+			System.out.println(newArray[i]+" na "+i);
+		}
+    	
+    	for (int i = 0; i < temp.length; i++) {
+			System.out.println(temp[i]+" temp "+i);
 		}
     	save();
     	
@@ -132,11 +138,11 @@ public class Logic {
 		}
 		else{
 			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[1])){	//check enddate
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[1])){	//check startdate
 			extractedTask.setStartDate(newArray[Constants.ARRAY_INDEX_START_DATE]);//1
 		}else{
 			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check endtime
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check starttime
 			extractedTask.setStartTime(newArray[Constants.ARRAY_INDEX_START_TIME]);//2
 		}else{
 			
@@ -335,18 +341,17 @@ public class Logic {
 		for (int i = 0; i < inputArray.length; i++) {
 			System.out.println("iA   "+inputArray[i] +" "+i);
 		}
-		System.arraycopy(inputArray, 1, newArray, 0, inputArray.length-1);
+		System.arraycopy(inputArray, 1, newArray, 0, 1);
 	
-		/*if(inputArray.length==4){
-    		System.arraycopy(inputArray, 2, newArray, 3, 1);
-    		System.arraycopy(inputArray, 3, newArray, 4, 1);
+		if(inputArray.length==4){
+			System.arraycopy(inputArray, 2, newArray, 3, 2);
     		
     	}else if(inputArray.length==6){
     		System.arraycopy(inputArray, 2, newArray, 1, 1);
     		System.arraycopy(inputArray, 3, newArray, 2, 1);
     		System.arraycopy(inputArray, 4, newArray, 3, 1);
     		System.arraycopy(inputArray, 5, newArray, 4, 1);
-    	}*/
+    	}
 		/*for (int i = 0; i < inputArray.length; i++) {
 			System.out.println("iA   "+newArray[i] +" "+i);
 		}*/
@@ -367,7 +372,7 @@ public class Logic {
 				}
 			}
 			else if(inputArray.length==4){
-				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[1])) && (TokenValidation.isTimeValid(newArray[2]))){
+				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME]))){
 					return true;
 				}	
 				/*if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]))
@@ -464,14 +469,13 @@ public class Logic {
 	public static void formatArray(String[] inputArray, String category){
 	
 		if(category.equals("timed")){
-			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
-			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
+			startMiliseconds=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
+			endMiliseconds=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
 		}
 		else if(category.equals("deadline")){
-			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
-			System.out.println(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
+			System.out.println("hjsdhafjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk  "+inputArray[Constants.ARRAY_INDEX_END_DATE]+" "+inputArray[Constants.ARRAY_INDEX_END_TIME]);
+			endMiliseconds=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
+			System.out.println(endMiliseconds);
 		}
-		startMiliseconds=inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS];
-		endMiliseconds=inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS];
 	}
 }

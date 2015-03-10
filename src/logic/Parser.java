@@ -1,7 +1,10 @@
 package logic;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Parser {
 	
@@ -126,37 +129,34 @@ public class Parser {
 	
 	
 	public static String convertMillisecondToDate(long ms){
-		 //convert xxxxxx to d/m/YYYY
-		 Calendar calendar = Calendar.getInstance();
-		 calendar.setTimeInMillis(ms);
-		 int mYear = calendar.get(Calendar.YEAR);
-		 int mMonth = calendar.get(Calendar.MONTH);
-		 int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-		 
-		 return mDay + "/" + mMonth + "/" + mYear;
+		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
+		 return date.split(" ",2)[0];
 		 
 	 }//end /convertMillisecondToDate
 	
 	public static String convertMillisecondToTime(long ms){
 		//get time in HH:mm
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(ms);
-		int hr = calendar.get(Calendar.HOUR);
-		int min = calendar.get(Calendar.MINUTE);
-		
-		return addZero(String.valueOf(hr)) + ":" + addZero(String.valueOf(min));
+		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
+		return date.split(" ",2)[1];
+		 
 	}
 	
 	
 	public static long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
-		String[] dateArray = date.split("/");
-		String[] timeArray = time.split(":");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy HH:mm");
+		String combined=date+" "+time;
+		Date date1 = null;
+		try {
+			date1=sdf.parse(combined);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		Calendar cal = Calendar.getInstance();
-		cal.set(stringToInt(dateArray[2]), stringToInt(dateArray[1]), stringToInt(dateArray[0]), 
-				stringToInt(timeArray[0]), stringToInt(timeArray[1]));
+		cal.setTime(date1);
 		
 		return cal.getTimeInMillis();
 	}
