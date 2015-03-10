@@ -227,26 +227,31 @@ public class Logic {
 
     //delete tasks by id or all
     public static String delete(String param){
+    	
     	if(param.equalsIgnoreCase("-a")){
     		clearList();
-    		return Constants.LOGIC_SUCCESS_DELETE_ALL_TASK;
-    	}
-    	else{
+    		if(save()){
+    			return Constants.LOGIC_SUCCESS_DELETE_ALL_TASK;
+    		}else{
+    			return Constants.LOGIC_FAIL_DELETE_TASK;
+    		}
+    	}else{
     		int id = Integer.parseInt(param.substring(1));
     		int index = findTaskIndex(id);
     		
-    		if( index > 0){
+    		if( index > -1){
     			taskList.remove(index);
     		}else{
     			return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
     		}	
     	}
+    	
     	if (save()){
     		return Constants.LOGIC_SUCCESS_DELETE_TASK;
-    	}
-    	else{
+    	}else{
     		return Constants.LOGIC_FAIL_DELETE_TASK;
     	}
+    	
     }
     
     //find the index of the task by a certain parameter, can expands it further
@@ -396,13 +401,13 @@ public class Logic {
 		try { 
 			int id = Integer.parseInt(input); 
 			// if it is a number
-			if( id < 0 || id > taskList.get(-1).getID()){
+			if( id < 1 || id > taskList.get(taskList.size()-1).getID()){
 				return false;
 			}
 			return true;
 
 		} catch(NumberFormatException e) { //if it is not a number
-			if(!param.equalsIgnoreCase("a")){
+			if(!input.equalsIgnoreCase("a")){
 				return false;
 			}
 			return true;
