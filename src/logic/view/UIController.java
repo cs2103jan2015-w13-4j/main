@@ -145,19 +145,19 @@ public class UIController {
 			}
 		}
 		else if(parserUserCommand.equalsIgnoreCase("edit")){
-			//3. Logic - add new task based on parameter
+			//Logic - edit new task based on parameter
 			logicOutput = Logic.edit(parserTokenParameter);
-			if(!logicOutput.equals(Constants.LOGIC_SUCCESS_ADD_TASK)){ //fail to add
+			if(!logicOutput.equals(Constants.LOGIC_SUCCESS_ADD_TASK)){ //fail to edit
 				//print out the error message
 				txtStatus.setText(logicOutput);
 				return;
 			}
 		}
 		else if(parserUserCommand.equalsIgnoreCase("delete")){
-			//3. Logic - add new task based on parameter
+			//Logic - delete task based on parameter
 			logicOutput = Logic.delete(parserTokenParameter);
 			if((!logicOutput.equals(Constants.LOGIC_SUCCESS_DELETE_TASK) && 
-					(!logicOutput.equals(Constants.LOGIC_SUCCESS_DELETE_ALL_TASK)))){ //fail to add
+					(!logicOutput.equals(Constants.LOGIC_SUCCESS_DELETE_ALL_TASK)))){ //fail to delete
 				//print out the error message
 				txtStatus.setText(logicOutput);
 				return;
