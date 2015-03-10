@@ -43,7 +43,7 @@ public class Logic {
 	 * @param is correct 
 	 * add meeting -10/03/2015 -14:36 -11/03/2015 -15:10
 	 * */
-<<<<<<< HEAD
+
     public static String add(String param){
     	boolean isAddedToStorage = false;
     	boolean isAddedToArray = false;
@@ -93,52 +93,6 @@ public class Logic {
     	///save here
     	return Constants.LOGIC_SUCCESS_EDIT_TASK;
     }
-=======
-	public static String add(String param){
-		boolean isAddedToStorage = false;
-		boolean isAddedToArray = false;
-
-		temp = param.split("-");
-		temp=trimLeadingTrailingSpacesInArray(temp);
-		Task newTask = null;
-
-
-		newTask = LogicAddTask.constructNewTask(temp);
-
-		isAddedToArray = addTaskToTaskArrayList(newTask);
-		isAddedToStorage = Storage.XmlAddTask(Constants.XML_FILE_PATH, newTask);
-
-		if(isAddedToArray && isAddedToStorage){
-			return Constants.LOGIC_SUCCESS_ADD_TASK;
-
-		}else{
-			return Constants.LOGIC_FAIL_ADD_TASK;
-		}
-
-	}//end add
-
-	public static String edit(String param){
-		boolean isAddedToStorage = false;
-		boolean isAddedToArray = false;
-		temp = param.split("-");
-		temp=trimLeadingTrailingSpacesInArray(temp);
-		Task extractedTask = extractTaskFromList(temp);
-		String[] newArray=null;
-		System.arraycopy(temp, 1, newArray, 0, temp.length-1);
-
-		if(newArray.length==Constants.FLOATING_TASK){
-			editFloatingTask(extractedTask, newArray);
-		}else if(newArray.length==Constants.DEADLINE_TASK){
-			editDeadlineTask(extractedTask, newArray);
-
-		}else if(newArray.length==Constants.TIMED_TASK){
-			editTimedTask(extractedTask, newArray);
-		}
-
-		///save here
-		return Constants.LOGIC_SUCCESS_EDIT_TASK;
-	}
->>>>>>> bd5f78908677158057e0143a7a1ad7bb1f529753
 
 	private static void editTimedTask(Task extractedTask, String[] newArray) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
