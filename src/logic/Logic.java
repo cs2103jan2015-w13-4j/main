@@ -202,7 +202,7 @@ public class Logic {
     }
     
     public static boolean save(){
-    	return Storage.tableToXml("init_task.xml", taskList);
+    	return Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
     }
 
 	public static String list(String parameters) {
