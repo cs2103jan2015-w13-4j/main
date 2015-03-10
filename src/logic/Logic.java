@@ -66,11 +66,11 @@ public class Logic {
     	
     }//end add
     
-    public static String edit(String param){
+   /* public static String edit(String param){
     	
     	
     	return Constants.LOGIC_SUCCESS_EDIT_TASK;
-    }
+    }*/
     
     public static String mark(String param){ 
     	temp = param.split("-");
