@@ -32,6 +32,9 @@ public class TokenValidation {
 	public static boolean isDateValid(String myDate){
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		sdf.setLenient(false);
+		if(myDate.length()!=sdf.toPattern().length()){
+			return false;
+		}
 		Date testDate;
 		try {
 			testDate = sdf.parse(myDate);
