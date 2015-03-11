@@ -32,10 +32,13 @@ import org.w3c.dom.Element;
 public class Storage {
 
 	static int max_number_of_tasks;
+	static String data_folder_location="";
 	
 	static final String NODE_ROOT_TAG = "tasks";
 	static final String NODE_TOTAL_TASK_TAG = "total_task";
 	static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
+	static final String NODE_SETTING_TAG="setting";
+	static final String NODE_DATA_FOLDER_LOCATION="data_folder_location";
 	static final String NODE_TASK_TAG = "task";
 	static final String NODE_TASK_ID_TAG = "id";
 	static final String NODE_TASK_TITLE_TAG = "title";
@@ -67,6 +70,7 @@ public class Storage {
 			Node nRoot = null;
 			Node nTask = null;
 			Node nTotal = null;
+			Node nSetting = null;
 			
 			File mXmlFile = new File(xmlFilePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -86,9 +90,15 @@ public class Storage {
 			
 			//add total number of tasks
 			nTotal = doc.createElement(NODE_TOTAL_TASK_TAG);
-			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));
+			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));//add value to total_task
 			//add total node to root
 			nRoot.appendChild(nTotal);
+			
+			//add setting
+			nSetting = doc.createElement(NODE_SETTING_TAG);
+			createNode(nSetting, NODE_DATA_FOLDER_LOCATION, data_folder_location);
+			//add setting node to root
+			nRoot.appendChild(nSetting);
 			
 			
 			//add task nodes
@@ -148,9 +158,15 @@ public class Storage {
 			
 			normalize(doc);
 			
+			//Get total num of tasks from XML
 			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
 			Node nTotalValue = nTotalList.item(0);
-			max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent());
+			max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent()); //get total number
+			
+			//Get settings from XML
+			NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
+			Node nDataFolderLocation = nSettings.item(0);
+			data_folder_location = nDataFolderLocation.getTextContent(); //get folder directory
 			
 			NodeList nList = doc.getElementsByTagName(NODE_TASK_TAG);
 			
@@ -404,7 +420,13 @@ public class Storage {
 		 return max_number_of_tasks + 1;
 	 }
 	 
+	 public static String getDataFolderLocation(){
+		 return data_folder_location;
+	 }
 	 
+	 public static void setDataFolderLocation(String location){
+		 data_folder_location = location;
+	 }
 	 
 	 /*Conversion*/
 	 private static String convertIntToString(int input){
