@@ -341,10 +341,10 @@ public class Logic {
 		for (int i = 0; i < inputArray.length; i++) {
 			System.out.println("iA   "+inputArray[i] +" "+i);
 		}
-		System.arraycopy(inputArray, 1, newArray, 0, 1);
+		System.arraycopy(inputArray, 1, newArray, 0, 1);	//copy title into postion 0 of newArray
 	
 		if(inputArray.length==4){
-			System.arraycopy(inputArray, 2, newArray, 3, 2);
+			System.arraycopy(inputArray, 2, newArray, 3, 2);	//copy end date and time to 3 and 4 of newArray  This follows the constants
     		
     	}else if(inputArray.length==6){
     		System.arraycopy(inputArray, 2, newArray, 1, 1);
@@ -383,12 +383,7 @@ public class Logic {
 					System.out.println("time true");*/
 			}
 			else if(inputArray.length==6){
-				System.out.println("inside 6");
-				if(TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE],newArray[Constants.ARRAY_INDEX_END_DATE]))
-					System.out.println("ok");
-				//if(TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE], newArray[Constants.ARRAY_INDEX_START_DATE]))
-				//	System.out.println("date is ok");
-				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE], newArray[Constants.ARRAY_INDEX_END_DATE]))){
+				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE], newArray[Constants.ARRAY_INDEX_END_DATE], newArray[Constants.ARRAY_INDEX_START_TIME], newArray[Constants.ARRAY_INDEX_END_TIME]))){
 					return true;
 				}
 			}
@@ -452,7 +447,7 @@ public class Logic {
 			}
 		}
 		else if(inputArray.length==5){
-			if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_START_TIME])) && TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE])){
+			if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_START_TIME])) && TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME], inputArray[Constants.ARRAY_INDEX_END_TIME])){
 				return true;
 			}
 		}

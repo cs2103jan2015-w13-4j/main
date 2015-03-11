@@ -53,12 +53,14 @@ public class TokenValidation {
 		return false;
 	}
 	
-	public static boolean isStartDateBeforeThanEndDate(String start, String end){
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+	public static boolean isStartDateBeforeThanEndDate(String start, String end, String startTime, String endTime){
+		String sdst=start+" "+startTime;
+		String edet=end +" "+endTime;
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		sdf.setLenient(false);
 		try {
-			Date startDate=sdf.parse(start);
-			Date endDate=sdf.parse(end);
+			Date startDate=sdf.parse(sdst);
+			Date endDate=sdf.parse(edet);
 			if(startDate.before(endDate)){
 				return true;
 			}
