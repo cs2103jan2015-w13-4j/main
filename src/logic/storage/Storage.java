@@ -66,7 +66,7 @@ public class Storage {
 	}
 	
 	
-	public boolean load(){
+	public static boolean load(){
 		taskList = XmltoTable(Constants.XML_FILE_PATH);	
 		if(taskList != null){
 			return true;
@@ -74,7 +74,7 @@ public class Storage {
 		return false;
 	}
 	
-	public boolean save(){
+	public static boolean save(){
 		boolean isSaved = false;
 		isSaved = tableToXml(Constants.XML_FILE_PATH, taskList);
 		return isSaved;
