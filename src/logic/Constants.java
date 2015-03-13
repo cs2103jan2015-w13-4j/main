@@ -32,7 +32,7 @@ public class Constants {
 	
 	public static String XML_FILE_PATH = "init_task.xml";
 	
-	public static String MAIN_UI_LAYOUT_PAH = "view/MainUI.fxml";
+	public static String MAIN_UI_LAYOUT_PATH = "view/MainUI.fxml";
 	public static String ROOT_LAYOUT_PATH = "view/RootLayout.fxml";
 	public static String LISTVIEW_LAYOUT_PATH = "view/customListView.fxml";
 	

@@ -14,10 +14,8 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
     private BorderPane rootLayout;
-       
-    //private Constants mConstants;
     
-    
+    //initialises the stage
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -27,9 +25,7 @@ public class MainApp extends Application {
         showMainUI();
     }
     
-    /**
-     * Initializes the root layout.
-     */
+    //sets up the base root layout inclusive of the menu bar
     public void initRootLayout() {
         try {
             // Load root layout from fxml file
@@ -46,12 +42,12 @@ public class MainApp extends Application {
         }
     }
     
-	
+	//sets up inside the base root layout the main UI
     public void showMainUI() {
         try {
             // Load MainUI
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PAH));
+            loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PATH));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set MainUI into the center of RootLayout
@@ -61,10 +57,7 @@ public class MainApp extends Application {
         }
     }
 
-    /**
-     * Returns the main stage.
-     * @return
-     */
+    //returns primary stage
     public Stage getPrimaryStage() {
         return primaryStage;
     }
