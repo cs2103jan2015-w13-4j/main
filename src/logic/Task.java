@@ -1,13 +1,6 @@
 package logic;
 
-import java.util.*;
-
-
 import logic.storage.Storage;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 
 public class Task {
 	
@@ -24,9 +17,6 @@ public class Task {
 	private String category="";
 	private String priority = "";  
 	
-	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
-	
-
 	
 	/*3 catergory
 	 * timed-has start date/time and end date/time

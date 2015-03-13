@@ -1,269 +1,134 @@
 package logic;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import logic.storage.Storage;
 
 
 public class Logic {
-	static String[] temp=new String[8];
-	private String[] parameterToken = null;
-	static String startMiliseconds="";
-	static String endMiliseconds="";
-
-	public static ArrayList<Task> taskList = null;
-	public static int totalNumberOfTasks =  Storage.getMaxNumberOfTasks();
-
-	public static ArrayList<Task> initTaskFromXML(){
-		taskList = Storage.XmltoTable(Constants.XML_FILE_PATH);
-		return taskList;
+	public static String runCommand(String command, String[] tokens) {
+		String output = "";
+		switch(command) {
+		case Constants.VALUE_ADD:
+			output = add(tokens);
+			break;
+		case Constants.VALUE_EDIT:
+			output = edit(tokens);
+			break;
+		case Constants.VALUE_DELETE:
+			output = delete(tokens) ;
+			break;
+		default:
+			break;
+		}
+		
+		return output;
 	}
-	/*
-    public static String add(String parameters) throws IOException {
-
-    	String[] inputArray = parameters.split("-");
-
-    	LogicAddTask.add(inputArray);
-
-    	Storage.setMaxNumberOfTasks(Storage.getMaxNumberOfTasks() + 1);
-    	Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
-
-
-//    	FileWriter fw = new FileWriter(Constants.FILENAME, true);
-//    	BufferedWriter bw = new BufferedWriter(fw);
-//    	
-//    	bw.write(parameters + "\n");
-//    	bw.close();
-//    	
-    	return "[ADD]Parameters entered are: " + parameters;
-    }*/
-
-	/*
-	 * @param is correct 
-	 * add meeting -10/03/2015 -14:36 -11/03/2015 -15:10
-	 * */
-
-    public static String add(String param){
+	
+	public static String load(){
+		if(Storage.load()){
+			return Constants.LOGIC_SUCCESS_LOAD_XML;
+		}else{
+			return Constants.LOGIC_FAIL_LOAD_XML;
+		}
+	}
+	
+	public static ArrayList<Task> getStorageList(){
+		return Storage.getTaskList();
+	}
+	
+	public static String add(String[] tokens){
     	boolean isAddedToStorage = false;
     	boolean isAddedToArray = false;
     	
-    	temp = param.split("-");
-    	temp=trimLeadingTrailingSpacesInArray(temp);
     	Task newTask = null;
     	
-   
-    	newTask = LogicAddTask.constructNewTask(temp);
+    	newTask = constructNewTask(tokens);
     	
     	isAddedToArray = addTaskToTaskArrayList(newTask);
-    	isAddedToStorage = Storage.XmlAddTask(Constants.XML_FILE_PATH, newTask);
+    	isAddedToStorage = Storage.save();
     	
     	if(isAddedToArray && isAddedToStorage){
     		return Constants.LOGIC_SUCCESS_ADD_TASK;
-    		
     	}else{
     		return Constants.LOGIC_FAIL_ADD_TASK;
     	}
-    	
-    }//end add
-    
-    /*
-     * edit id -title  2
-	edit id -title enddate endtime  3
-	edit id -title startdate starttime enddate endtime  5
-     */
-    public static String edit(String param){
-    	boolean isAddedToStorage = false;
-    	boolean isAddedToArray = false;
-    
-    	String category="";
-    	temp = param.split("-");
-    	temp=trimLeadingTrailingSpacesInArray(temp);
-    	int taskId=Integer.parseInt(temp[0]);
-    	int taskIndex=getTaskIndexInList(taskId);
-    	Task extractedTask = extractTaskFromList(temp);
-    	String[] newArray=new String[12];
-    	System.arraycopy(temp, 1, newArray, 0, 1);//copy title
-    	
-    	
-    	System.out.println("array size " +newArray.length);
-    	if(temp.length==2){
-    		extractedTask=editFloatingTask(extractedTask, newArray);
-    		category="floating";
-    	}else if(temp.length==4){
-    		System.arraycopy(temp, 2, newArray, 3, 2);
-    		//System.arraycopy(temp, 3, newArray, 4, 1);
-    		extractedTask=editDeadlineTask(extractedTask, newArray);
-    		category="deadline";
-    		
-    	}else if(temp.length==6){
-    		System.arraycopy(temp, 2, newArray, 1, 1);
-    		System.arraycopy(temp, 3, newArray, 2, 1);
-    		System.arraycopy(temp, 4, newArray, 3, 1);
-    		System.arraycopy(temp, 5, newArray, 4, 1);
-    		extractedTask=editTimedTask(extractedTask, newArray);
-    		category="timed";
-    	}
-    	formatArray(newArray,category);
-    	if(temp.length==4){//deadline task
-    		extractedTask.setEndMilliseconds(Long.parseLong(endMiliseconds));
-    		System.out.println(endMiliseconds);
-    		System.out.println("sdffffffffffff    "+extractedTask.getEndMilliseconds());
-    	}
-    	else if(temp.length==6){//timed task
-    		extractedTask.setStartMilliseconds(Long.parseLong(startMiliseconds));
-    		extractedTask.setEndMilliseconds(Long.parseLong(endMiliseconds));
-    	}
-
-    	taskList.remove(taskIndex);
-    	taskList.add(extractedTask);
-    	System.out.println("inside actual edit function");
-    	for (int i = 0; i < newArray.length; i++) {
-			System.out.println(newArray[i]+" na "+i);
-		}
-    	
-    	for (int i = 0; i < temp.length; i++) {
-			System.out.println(temp[i]+" temp "+i);
-		}
-    	save();
-    	
-    	return Constants.LOGIC_SUCCESS_EDIT_TASK;
     }
+	
+	public static String edit(String[] tokens){
 
-	private static Task editTimedTask(Task extractedTask, String[] newArray) {
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
-			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);//0
+		int taskId=Integer.parseInt(tokens[0]);
+		if(isTaskInList(taskId)){
+			int taskIndex = findTaskIndex(taskId);
+			Task extractedTask = Storage.getTaskList().get(taskIndex);
+			
+			if(tokens.length==2){
+				extractedTask=editFloatingTask(extractedTask, tokens[1]);
+				
+			}else if(tokens.length==4){
+				extractedTask=editDeadlineTask(extractedTask, tokens);
+
+			}else if(tokens.length==6){
+				extractedTask=editTimedTask(extractedTask, tokens);
+
+			}
+
+			//for deadline and timed tasks, additionally convert date and time to millisecond
+			if(tokens.length==4){//deadline task
+				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
+			}
+			else if(tokens.length==6){//timed task
+				extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
+				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[3], tokens[4]));
+			}
+
+			Storage.getTaskList().remove(taskIndex);
+			Storage.getTaskList().add(extractedTask);
+			Storage.save();
+
+			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
 		else{
-			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[1])){	//check startdate
-			extractedTask.setStartDate(newArray[Constants.ARRAY_INDEX_START_DATE]);//1
-		}else{
-			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[2])){//check starttime
-			extractedTask.setStartTime(newArray[Constants.ARRAY_INDEX_START_TIME]);//2
-		}else{
-			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[3])){	//check enddate
-			extractedTask.setEndDate(newArray[Constants.ARRAY_INDEX_END_DATE]);//3
-		}else{
-			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[4])){//check endtime
-			extractedTask.setEndTime(newArray[Constants.ARRAY_INDEX_END_TIME]);//4
-		}else{
-			
+			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
 		}
-		
-		return extractedTask;
 	}
-
 	
-	private static Task editDeadlineTask(Task extractedTask, String[] newArray) {
-
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
-			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);//0
-		}else{
-			
-		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[3])){	//check enddate
-			extractedTask.setEndDate(newArray[3]);//3
-		}else{
-			
-		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[4])){//check endtime
-			extractedTask.setEndTime(newArray[4]);//4
-		}else{
-			
-		}
-		return extractedTask;
-	}
-
-	private static Task editFloatingTask(Task extractedTask, String[] newArray) {
-
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(newArray[Constants.ARRAY_INDEX_TITLE])){
-			extractedTask.setTitle(newArray[Constants.ARRAY_INDEX_TITLE]);
-		}else{
-			
-		}
-		return extractedTask;
-	}
-
-	private static Task extractTaskFromList(String[] temp) {
-		Task tempTask;
-		int taskId=Integer.parseInt(temp[0]);
-		int taskIndex=getTaskIndexInList(taskId);
-		tempTask = taskList.get(taskIndex);
-		return tempTask;
-	}
-
-	/* public static String edit(String param){
-
-
-    	return Constants.LOGIC_SUCCESS_EDIT_TASK;
-    }*/
-
-	public static String mark(String param){ 
-		temp = param.split("-");
-		temp=trimLeadingTrailingSpacesInArray(temp);
-		Task newTask = extractTaskFromList(temp);
-		String status=temp[1];
-
-		if(Constants.STATUS_DONE.equalsIgnoreCase(status)){
-			newTask.setIsDone(true);
-		}
-		else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
-			newTask.setIsDone(false);
-		}
-
-		return Constants.LOGIC_SUCCESS_MARK_TASK;
-	}//end mark
-
-	public static boolean addTaskToTaskArrayList(Task task){
-		taskList.add(task);
-		return true;
-	}
-
-	public static boolean editTaskInList(Task task, int taskIndex){
-
-
-		return true;
-	}
-
     //delete tasks by id or all
-    public static String delete(String param){
-    	
-    	if(param.equalsIgnoreCase("-a")){
+    public static String delete(String[] tokens){  	
+    	String input = tokens[0];
+    	if(input.equalsIgnoreCase("a")){
     		clearList();
-    		if(save()){
-    			return Constants.LOGIC_SUCCESS_DELETE_ALL_TASK;
+    		if(Storage.save()){
+    			return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
     		}else{
-    			return Constants.LOGIC_FAIL_DELETE_TASK;
+    			return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
     		}
-    	}else{
-    		int id = Integer.parseInt(param.substring(1));
+    	}else {
+    		int id = Integer.parseInt(input);
     		int index = findTaskIndex(id);
     		
     		if( index > -1){
-    			taskList.remove(index);
+    			Storage.getTaskList().remove(index);
     		}else{
     			return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
     		}	
     	}
     	
-    	if (save()){
+    	if (Storage.save()){
     		return Constants.LOGIC_SUCCESS_DELETE_TASK;
     	}else{
     		return Constants.LOGIC_FAIL_DELETE_TASK;
     	}
-    	
     }
     
     //find the index of the task by a certain parameter, can expands it further
     public static Integer findTaskIndex(int id){
-		for (int i = 0;i < taskList.size();i++){
-			if(taskList.get(i).getID() == id){
+		for (int i = 0;i < Storage.getTaskList().size();i++){
+			if(Storage.getTaskList().get(i).getID() == id){
 				return i;
 			}
 		}
@@ -271,206 +136,129 @@ public class Logic {
     }
     
     public static void clearList(){
-    	taskList.clear();
+    	Storage.getTaskList().clear();
     }
     
-    public static boolean save(){
-    	return Storage.tableToXml(Constants.XML_FILE_PATH, taskList);
-    }
-
-	public static String list(String parameters) {
-		return ListTask.listTask(taskList).toString();
-		//    	return "[LIST]Parameters entered are: " + parameters;
+    public static boolean addTaskToTaskArrayList(Task task){
+		Storage.getTaskList().add(task);
+		return true;
 	}
-
-
-	public static String validateString(String command, String input){
-
-		boolean isValid = validateParameter(command, input);
-		if(isValid){
-			return Constants.LOGIC_VALID_PARAMETER_MESSAGE;
-		}else{
-			return Constants.LOGIC_INVALID_PARAMETER_MESSAGE;
+    
+    public static String[] formatArray(String[] inputArray, String category){
+		
+		if(category.equals("timed")){
+			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
 		}
-
-	}//end validateString
-
-	/*
-	 * Valid incoming parameter
-	 * */
-	private static boolean validateParameter(String command, String param){
-		String[] inputArray = param.split("-");
-
-		if(inputArray.length > 0){
-			if(command.equalsIgnoreCase("add")){
-				return validateAddParameters(param);
-			}
-			else if(command.equalsIgnoreCase("edit")){
-				return validateEditParameters(param);
-			}
-			else if(command.equalsIgnoreCase("mark")){
-				return validateMarkParameters(param);
-			}
-			else if(command.equalsIgnoreCase("delete")){
-				return validateDeleteParameters(param);
-			}
-		}
-
-		return false;
-	}
-
-	private static boolean validateMarkParameters(String param){
-		String[] inputArray = param.split("-");
-		inputArray=trimLeadingTrailingSpacesInArray(inputArray);
-		int taskId=Integer.parseInt(inputArray[0]);
-		boolean isTaskExists= isTaskInList(taskId);
-		if(isTaskExists){
-			if(inputArray[1].equalsIgnoreCase("done") || inputArray[1].equalsIgnoreCase("undone")){
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private static boolean validateEditParameters(String param){
-		System.out.println("inside editpara");
-		String[] inputArray = param.split("-");
-		inputArray=trimLeadingTrailingSpacesInArray(inputArray);
-		String[] newArray=new String[12];
-		for (int i = 0; i < inputArray.length; i++) {
-			System.out.println("iA   "+inputArray[i] +" "+i);
-		}
-		System.arraycopy(inputArray, 1, newArray, 0, 1);	//copy title into postion 0 of newArray
-	
-		if(inputArray.length==4){
-			System.arraycopy(inputArray, 2, newArray, 3, 2);	//copy end date and time to 3 and 4 of newArray  This follows the constants
-    		
-    	}else if(inputArray.length==6){
-    		System.arraycopy(inputArray, 2, newArray, 1, 1);
-    		System.arraycopy(inputArray, 3, newArray, 2, 1);
-    		System.arraycopy(inputArray, 4, newArray, 3, 1);
-    		System.arraycopy(inputArray, 5, newArray, 4, 1);
-    	}
-		/*for (int i = 0; i < inputArray.length; i++) {
-			System.out.println("iA   "+newArray[i] +" "+i);
-		}*/
-		for (int i = 0; i < newArray.length; i++) {
-			System.out.println("nA   "+newArray[i] +" "+i);
+		else{
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
 		}
 		
-		int taskId=Integer.parseInt(inputArray[0]);
-		boolean isTaskExists= isTaskInList(taskId);
-		if(isTaskExists){
-			System.out.println("task exists"+inputArray.length);
-			int taskIndex=getTaskIndexInList(taskId);
-			Task task=taskList.get(taskIndex);
-			
-			if(inputArray.length==2){
-				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE])){	//edit id -title 
-					return true;
-				}
-			}
-			else if(inputArray.length==4){
-				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME]))){
-					return true;
-				}	
-				/*if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]))
-					System.out.println("title true");
-				if(TokenValidation.isDateValid(newArray[1]))
-					System.out.println("date true");
-				if(TokenValidation.isTimeValid(newArray[2]))
-					System.out.println("time true");*/
-			}
-			else if(inputArray.length==6){
-				if(TokenValidation.isTitleValid(newArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(newArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(newArray[Constants.ARRAY_INDEX_START_TIME])) && (TokenValidation.isStartDateBeforeThanEndDate(newArray[Constants.ARRAY_INDEX_START_DATE], newArray[Constants.ARRAY_INDEX_END_DATE], newArray[Constants.ARRAY_INDEX_START_TIME], newArray[Constants.ARRAY_INDEX_END_TIME]))){
-					return true;
-				}
-			}
-		}
-		return false;
+		
+		return inputArray;
 	}
-
-	private static boolean validateDeleteParameters(String param){
-
-		if(param.isEmpty()){
-			return false;
+	
+	public static Task constructNewTask(String[] inputArray){
+		Task newTask = null;
+		
+		String[] newArray = new String[Constants.ARRAY_SIZE];
+		if(inputArray.length==Constants.FLOATING_TASK 
+				|| inputArray.length==Constants.TIMED_TASK){
+			System.arraycopy(inputArray, 0, newArray, 0, inputArray.length); //copy inputArray into newArray
 		}
-
-		String input = param.substring(1);
-		try { 
-			int id = Integer.parseInt(input); 
-			// if it is a number
-			if( id < 1 || id > taskList.get(taskList.size()-1).getID()){
-				return false;
-			}
-			return true;
-
-		} catch(NumberFormatException e) { //if it is not a number
-			if(!input.equalsIgnoreCase("a")){
-				return false;
-			}
-			return true;
+		else if(inputArray.length==Constants.DEADLINE_TASK){
+			System.arraycopy(inputArray, 0, newArray, 0, 1); //copy title of inputArray into newArray postition
+			System.arraycopy(inputArray, 1, newArray, 3, inputArray.length-1); //copy end date and end time of inputArray into newArray postition
 		}
-
-	}
-
+		
+		if(inputArray.length==Constants.DEADLINE_TASK){
+			newArray = formatArray(newArray,"deadline"); //add in epoh time for parser
+		}
+		else if(inputArray.length==Constants.TIMED_TASK){
+			newArray = formatArray(newArray,"timed"); //add in epoh time for parser
+		}
+		
+		newTask = new Task(newArray); //id will auto generate inside Task class
+		
+		return newTask;	
+	}//end constructNewTask
+	
 	private static boolean isTaskInList(int taskId){
-		for(Task t: taskList){
+		for(Task t: Storage.getTaskList()){
 			if(t.getID()==taskId){
 				return true;
 			}
 		}
 		return false;
 	}
-
-	private static int getTaskIndexInList(int taskId){
-		for (int i = 0; i < taskList.size(); i++) {
-			if(taskList.get(i).getID()==taskId)
-				return i;
-		}
-		return -1;
-	}
-
-	private static boolean validateAddParameters(String param){
-		String[] inputArray = param.split("-");
-		inputArray=trimLeadingTrailingSpacesInArray(inputArray);
-
-
-		if(inputArray.length==1){
-			return TokenValidation.isTitleValid((inputArray[Constants.ARRAY_INDEX_TITLE]));
-		}
-
-		else if(inputArray.length==3){
-			if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[1])) && (TokenValidation.isTimeValid(inputArray[2]))){
-				return true;
-			}
-		}
-		else if(inputArray.length==5){
-			if(TokenValidation.isTitleValid(inputArray[Constants.ARRAY_INDEX_TITLE]) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_END_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_END_TIME])) && (TokenValidation.isDateValid(inputArray[Constants.ARRAY_INDEX_START_DATE])) && (TokenValidation.isTimeValid(inputArray[Constants.ARRAY_INDEX_START_TIME])) && TokenValidation.isStartDateBeforeThanEndDate(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME], inputArray[Constants.ARRAY_INDEX_END_TIME])){
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private static String[] trimLeadingTrailingSpacesInArray(String[] temp){
-		for (int i = 0; i < temp.length; i++) {
-			temp[i]=temp[i].trim();
-		}
-		return temp;
-	}
-	public static void formatArray(String[] inputArray, String category){
 	
-		if(category.equals("timed")){
-			startMiliseconds=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
-			endMiliseconds=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
+	private static Task editTimedTask(Task extractedTask, String[] tokens) {
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[1])){
+			extractedTask.setTitle(tokens[1]);//0
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[2])){	//check startdate
+			extractedTask.setStartDate(tokens[2]);//1
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[3])){//check starttime
+			extractedTask.setStartTime(tokens[3]);//2
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[4])){	//check enddate
+			extractedTask.setEndDate(tokens[4]);//3
+		}else{
+			
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[5])){//check endtime
+			extractedTask.setEndTime(tokens[5]);//4
+		}else{
+			
 		}
-		else if(category.equals("deadline")){
-			System.out.println("hjsdhafjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk  "+inputArray[Constants.ARRAY_INDEX_END_DATE]+" "+inputArray[Constants.ARRAY_INDEX_END_TIME]);
-			endMiliseconds=String.valueOf(Parser.convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
-			System.out.println(endMiliseconds);
+		
+		return extractedTask;
+	}
+
+	private static Task editDeadlineTask(Task extractedTask, String[] tokens) {
+
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[1])){
+			extractedTask.setTitle(tokens[1]);//0
+		}else{
+			
 		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[2])){	//check enddate
+			extractedTask.setEndDate(tokens[2]);//3
+		}else{
+			
+		}
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[3])){//check endtime
+			extractedTask.setEndTime(tokens[3]);//4
+		}else{
+			
+		}
+		return extractedTask;
+	}
+
+	private static Task editFloatingTask(Task extractedTask, String title) {
+		extractedTask.setTitle(title);
+		return extractedTask;
+	}
+	
+	public static long convertDateToMillisecond(String date, String time){
+		//date format dd/mm/yyyy
+		//time format HH:mm;	
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy HH:mm");
+		String combined=date+" "+time;
+		Date date1 = null;
+		try {
+			date1=sdf.parse(combined);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date1);
+		
+		return cal.getTimeInMillis();
 	}
 }

@@ -12,9 +12,16 @@ public class Constants {
 	public static String DELETE_COMMAND = "delete -<TaskID>";
 	
 	//Parser Message 
-	public static String WRONG_CMD_MESSAGE = "No/Wrong command detected!";
-	public static String WRONG_PARAMETER_MESSAGE = "No/Wrong parameters detected!";
-	public static String CORRECT_INPUT_MESSAGE = "valid";
+	public static final String MESSAGE_EMPTY_STRING = "No input detected!";
+	public static final String MESSAGE_WRONG_COMMAND = "No/Wrong command detected!";
+	public static final String MESSAGE_WRONG_PARAMETERS = "No/Wrong parameters detected!";
+	public static final String MESSAGE_VALID_INPUT = "Valid";
+	public static final int TOKEN_NUM_ADD_ONE = 1;
+	public static final int TOKEN_NUM_ADD_THREE = 3;
+	public static final int TOKEN_NUM_ADD_FIVE = 5;
+	public static final int TOKEN_NUM_EDIT_TWO = 2;
+	public static final int TOKEN_NUM_EDIT_FOUR = 4;
+	public static final int TOKEN_NUM_EDIT_SIX = 6;
 	
 	//Logic Message
 	public static String LOGIC_INVALID_PARAMETER_MESSAGE = "Invalid parameters detected!";
@@ -23,12 +30,17 @@ public class Constants {
 	public static String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
 	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
 	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
-	public static String LOGIC_SUCCESS_DELETE_ALL_TASK = "Successfully delete all task.";
+	public static String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
 	public static String LOGIC_FAIL_MARK_TASK = "Failed to mark task.";
 	public static String LOGIC_FAIL_DELETE_TASK = "Failed to delete task.";
+	public static String LOGIC_FAIL_DELETE_ALL_TASKS = "Failed to delete all tasks.";
 	public static String LOGIC_DELETE_TASK_NOT_FOUND = "No such task existed.";
+	public static String LOGIC_EDIT_TASK_NOT_FOUND = "No such task existed.";
+	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
+	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
+	
 	
 	public static String XML_FILE_PATH = "init_task.xml";
 	
@@ -64,9 +76,9 @@ public class Constants {
 	public static final int EDIT_DEADLINE_TASK=3;
 	public static final int EDIT_TIMED_TASK=5;
 	
-	public static final String ADD_COMMAND_VALUE = "add";
-	public static final String EDIT_COMMAND_VALUE = "edit";
-	public static final String DELETE_COMMAND_VALUE = "delete";
+	public static final String VALUE_ADD = "add";
+	public static final String VALUE_EDIT = "edit";
+	public static final String VALUE_DELETE = "delete";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";

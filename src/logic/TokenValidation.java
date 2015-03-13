@@ -1,25 +1,14 @@
 package logic;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.joda.time.*;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 
 public class TokenValidation {
 
 	private static String[] inputArray=new String[8];
-	//Calendar date=Calendar.getInstance();
-	private static DateTimeFormatter dtf=DateTimeFormat.forPattern("dd/MM/yyyy");
-	private static LocalDate inputLocalDate;
-	private static LocalDate localDate=new LocalDate();
-	private static LocalTime localTime=new LocalTime();
-	
-
 
 	public static boolean isTitleValid(String title){
 		if(!title.isEmpty()){
@@ -31,13 +20,16 @@ public class TokenValidation {
 	
 	public static boolean isDateValid(String myDate){
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		Date testDate;
+		
 		sdf.setLenient(false);
 		if(myDate.length()!=sdf.toPattern().length()){
 			return false;
 		}
-		Date testDate;
+		
 		try {
 			testDate = sdf.parse(myDate);
+			
 		} catch (ParseException e) {
 			return false;
 		}

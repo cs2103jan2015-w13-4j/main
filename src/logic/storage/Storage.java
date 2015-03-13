@@ -1,34 +1,24 @@
 package logic.storage;
 
-import logic.Parser;
-import logic.Task;
-import logic.Constants;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
+
+import logic.Constants;
+import logic.Parser;
+import logic.Task;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 
 public class Storage {
@@ -435,11 +425,7 @@ public class Storage {
 	 public static int getMaxNumberOfTasks(){
 		 return max_number_of_tasks;
 	 }
-	 
-	 private static void setMaxNumberOfTasks(int num){
-		 max_number_of_tasks = num;
-	 }
-	 
+	  
 	 public static int getNextAvailableID(){
 		 //return max_number_of_tasks + 1;
 		 int lastID = 0;

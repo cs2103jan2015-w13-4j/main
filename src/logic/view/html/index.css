@@ -42,11 +42,6 @@
     padding:0.5em;
 }
 
-.section-with-border{
-    //display:block;
-    //border:0.1em solid #CDCDCD;
-    //box-shadow: 0em 0.2em 1em #DDD;
-}
 
 .section-title-div{
     display:block;
@@ -64,7 +59,7 @@
 
 .section-subtitle{
     margin-top:0.5em;
-    color:##2C4557;
+    color:#2C4557;
     font-size:1.2em;
 }
 
@@ -125,7 +120,7 @@
 
 /*=========== COLORS ============*/
 .link-blue{
-    #FF704D;
+    color:#FF704D;
 }
 
 
