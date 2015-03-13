@@ -83,24 +83,27 @@ public class Parser {
 	
 	private static boolean checkAddTokens(String[] tokens) {
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
-			return TokenValidation.isTitleValid((tokens[Constants.ARRAY_INDEX_TITLE]));
+			return TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]));
 		}
 		
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
-			if(TokenValidation.isTitleValid(tokens[Constants.ARRAY_INDEX_TITLE]) 
-					&& (TokenValidation.isDateValid(tokens[1])) 
-					&& (TokenValidation.isTimeValid(tokens[2]))){
+			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE]) 
+					&& (TokenValidation.isDateValid(tokens[Constants.ADD_TOKEN_DEADLINE_ENDDATE])) 
+					&& (TokenValidation.isTimeValid(tokens[Constants.ADD_TOKEN_DEADLINE_ENDTIME]))){
 				return true;
 			}
 		}
 		
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
-			if(TokenValidation.isTitleValid(tokens[Constants.ARRAY_INDEX_TITLE]) 
-					&& (TokenValidation.isDateValid(tokens[1])) 
-					&& (TokenValidation.isTimeValid(tokens[2])) 
-					&& (TokenValidation.isDateValid(tokens[3])) 
-					&& (TokenValidation.isTimeValid(tokens[4])) 
-					&& TokenValidation.isStartDateBeforeThanEndDate(tokens[1], tokens[2], tokens[3], tokens[4])){
+			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE]) 
+					&& (TokenValidation.isDateValid(tokens[Constants.ADD_TOKEN_TIMED_STARTDATE])) 
+					&& (TokenValidation.isTimeValid(tokens[Constants.ADD_TOKEN_TIMED_STARTTIME])) 
+					&& (TokenValidation.isDateValid(tokens[Constants.ADD_TOKEN_TIMED_ENDDATE])) 
+					&& (TokenValidation.isTimeValid(tokens[Constants.ADD_TOKEN_TIMED_ENDTIME])) 
+					&& TokenValidation.isStartDateBeforeThanEndDate(tokens[Constants.ADD_TOKEN_TIMED_STARTDATE]
+							, tokens[Constants.ADD_TOKEN_TIMED_ENDDATE]
+									, tokens[Constants.ADD_TOKEN_TIMED_STARTTIME]
+											, tokens[Constants.ADD_TOKEN_TIMED_ENDTIME])){
 				return true;
 			}
 		}
@@ -109,26 +112,29 @@ public class Parser {
 	
 	private static boolean checkEditTokens(String[] tokens) {		
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
-				if(TokenValidation.isTitleValid(tokens[1])){	//edit id -title 
+				if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
 					return true;
 				}
 			}
 			
 			else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-				if(TokenValidation.isTitleValid(tokens[1]) 
-						&& (TokenValidation.isDateValid(tokens[2])) 
-						&& (TokenValidation.isTimeValid(tokens[3]))){
+				if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
+						&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])) 
+						&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]))){
 					return true;
 				}	
 			}
 			
 			else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-				if(TokenValidation.isTitleValid(tokens[1]) 
-						&& (TokenValidation.isDateValid(tokens[2])) 
-						&& (TokenValidation.isTimeValid(tokens[3])) 
-						&& (TokenValidation.isDateValid(tokens[4])) 
-						&& (TokenValidation.isTimeValid(tokens[5])) 
-						&& (TokenValidation.isStartDateBeforeThanEndDate(tokens[2], tokens[3], tokens[4], tokens[5]))){
+				if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
+						&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])) 
+						&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])) 
+						&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])) 
+						&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])) 
+						&& (TokenValidation.isStartDateBeforeThanEndDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
+								, tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
+										, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]
+												, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]))){
 					return true;
 				}
 			}

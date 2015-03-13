@@ -66,13 +66,13 @@ public class Logic {
 			int taskIndex = findTaskIndex(taskId);
 			Task extractedTask = Storage.getTaskList().get(taskIndex);
 			
-			if(tokens.length==2){
+			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
 				
-			}else if(tokens.length==4){
+			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
 				extractedTask=editDeadlineTask(extractedTask, tokens);
 
-			}else if(tokens.length==6){
+			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
 				extractedTask=editTimedTask(extractedTask, tokens);
 
 			}
@@ -83,7 +83,7 @@ public class Logic {
 			}
 			else if(tokens.length==6){//timed task
 				extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[3], tokens[4]));
+				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
 			}
 
 			Storage.getTaskList().remove(taskIndex);
@@ -193,24 +193,24 @@ public class Logic {
 	}
 	
 	private static Task editTimedTask(Task extractedTask, String[] tokens) {
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[1])){
-			extractedTask.setTitle(tokens[1]);//0
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
+			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}else{
 			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[2])){	//check startdate
-			extractedTask.setStartDate(tokens[2]);//1
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])){	//check startdate
+			extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
 		}else{
 			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[3])){//check starttime
-			extractedTask.setStartTime(tokens[3]);//2
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])){//check starttime
+			extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
 		}else{
 			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[4])){	//check enddate
-			extractedTask.setEndDate(tokens[4]);//3
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])){	//check enddate
+			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3
 		}else{
 			
-		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[5])){//check endtime
-			extractedTask.setEndTime(tokens[5]);//4
+		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])){//check endtime
+			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
 		}else{
 			
 		}
@@ -220,18 +220,18 @@ public class Logic {
 
 	private static Task editDeadlineTask(Task extractedTask, String[] tokens) {
 
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[1])){
-			extractedTask.setTitle(tokens[1]);//0
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
+			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}else{
 			
 		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[2])){	//check enddate
-			extractedTask.setEndDate(tokens[2]);//3
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])){	//check enddate
+			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);//3
 		}else{
 			
 		}
-		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[3])){//check endtime
-			extractedTask.setEndTime(tokens[3]);//4
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME])){//check endtime
+			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);//4
 		}else{
 			
 		}
@@ -239,7 +239,9 @@ public class Logic {
 	}
 
 	private static Task editFloatingTask(Task extractedTask, String title) {
-		extractedTask.setTitle(title);
+		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(title)){
+			extractedTask.setTitle(title);
+		}
 		return extractedTask;
 	}
 	

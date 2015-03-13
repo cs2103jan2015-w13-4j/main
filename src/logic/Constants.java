@@ -22,6 +22,20 @@ public class Constants {
 	public static final int TOKEN_NUM_EDIT_TWO = 2;
 	public static final int TOKEN_NUM_EDIT_FOUR = 4;
 	public static final int TOKEN_NUM_EDIT_SIX = 6;
+	public static final int EDIT_TOKEN_TITLE = 1;
+	public static final int EDIT_TOKEN_DEADLINE_ENDDATE = 2;
+	public static final int EDIT_TOKEN_DEADLINE_ENDTIME = 3;
+	public static final int EDIT_TOKEN_TIMED_STARTDATE = 2;
+	public static final int EDIT_TOKEN_TIMED_STARTTIME = 3;
+	public static final int EDIT_TOKEN_TIMED_ENDDATE = 4;
+	public static final int EDIT_TOKEN_TIMED_ENDTIME = 5;
+	public static final int ADD_TOKEN_TITLE = 0;
+	public static final int ADD_TOKEN_DEADLINE_ENDDATE = 1;
+	public static final int ADD_TOKEN_DEADLINE_ENDTIME = 2;
+	public static final int ADD_TOKEN_TIMED_STARTDATE = 1;
+	public static final int ADD_TOKEN_TIMED_STARTTIME = 2;
+	public static final int ADD_TOKEN_TIMED_ENDDATE = 3;
+	public static final int ADD_TOKEN_TIMED_ENDTIME = 4;
 	
 	//Logic Message
 	public static String LOGIC_INVALID_PARAMETER_MESSAGE = "Invalid parameters detected!";
