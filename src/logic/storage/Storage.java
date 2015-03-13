@@ -2,10 +2,12 @@ package logic.storage;
 
 import logic.Parser;
 import logic.Task;
+import logic.Constants;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,22 +33,22 @@ import org.w3c.dom.Element;
 
 public class Storage {
 
-	static int max_number_of_tasks;
-	static String data_folder_location="";
+	private static int max_number_of_tasks;
+	private static String data_folder_location="";
 	
-	static final String NODE_ROOT_TAG = "tasks";
-	static final String NODE_TOTAL_TASK_TAG = "total_task";
-	static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
-	static final String NODE_SETTING_TAG="setting";
-	static final String NODE_DATA_FOLDER_LOCATION="data_folder_location";
-	static final String NODE_TASK_TAG = "task";
-	static final String NODE_TASK_ID_TAG = "id";
-	static final String NODE_TASK_TITLE_TAG = "title";
-	static final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
-	static final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
-	static final String NODE_TASK_IS_DONE_TAG = "is_done";
-	static final String NODE_TASK_CATEGORY_TAG = "category";
-	static final String NODE_TASK_PRIORITY_TAG = "priority";
+	private static final String NODE_ROOT_TAG = "tasks";
+	private static final String NODE_TOTAL_TASK_TAG = "total_task";
+	private static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
+	private static final String NODE_SETTING_TAG="setting";
+	private static final String NODE_DATA_FOLDER_LOCATION="data_folder_location";
+	private static final String NODE_TASK_TAG = "task";
+	private static final String NODE_TASK_ID_TAG = "id";
+	private static final String NODE_TASK_TITLE_TAG = "title";
+	private static final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
+	private static final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
+	private static final String NODE_TASK_IS_DONE_TAG = "is_done";
+	private static final String NODE_TASK_CATEGORY_TAG = "category";
+	private static final String NODE_TASK_PRIORITY_TAG = "priority";
 	/*
 	final String NODE_TASK_START_TIME_TAG = "start_time";
 	final String NODE_TASK_START_DATE_TAG = "start_date";
@@ -54,17 +56,38 @@ public class Storage {
 	final String NODE_TASK_END_DATE_TAG = "end_date";
 	*/
 	
+	private static ArrayList<Task> taskList = null;
+	
+	
 	
 	
 	//default constructor
 	public Storage(){
 	}
 	
+	
+	public boolean load(){
+		taskList = XmltoTable(Constants.XML_FILE_PATH);	
+		if(taskList != null){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean save(){
+		boolean isSaved = false;
+		isSaved = tableToXml(Constants.XML_FILE_PATH, taskList);
+		return isSaved;
+		
+	}
+	
+	
+
 	/*
 	 * Need XML file path to read
 	 * ArrayList of tasks for input
 	 * */
-	public static boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
+	private static boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
 		boolean isSaved = false;
 		try{
 			Node nRoot = null;
@@ -146,7 +169,7 @@ public class Storage {
 	 * ArrayList
 	 * value  task object
 	 * */
-	public static ArrayList<Task> XmltoTable(String xmlFilePath){
+	private static ArrayList<Task> XmltoTable(String xmlFilePath){
 		
 		ArrayList<Task> mArrayTask = new ArrayList<Task>();
 		
@@ -239,7 +262,7 @@ public class Storage {
 	}//end XMLtoJava
 	
 	
-
+/*
 	public static boolean XmlAddTask(String xmlFilePath, Task newTask){
 		boolean isSaved = false;
 		
@@ -293,7 +316,9 @@ public class Storage {
 		}	
 		
 	}
+*/
 	
+/*	
 	//Not in used
 	private static boolean xmlDeleteTask(String xmlFilePath, Task deleteTask){
 		boolean isSaved = false;
@@ -336,20 +361,19 @@ public class Storage {
 		}
 		
 	}
+*/
 	
 	private static void createNode(Node parent, String tagName, String value){
 		Document doc = parent.getOwnerDocument();
-		
 		//create a new node
 		Node mNode  = doc.createElement(tagName);
 		//set content of the node
 		mNode.setTextContent(value);
-		
 		//add new node to the parent node
 		parent.appendChild(mNode);
-		
 	}	
-	
+
+/*
 	private static Node searchNode(Document doc, String findID){
 		
 		Node findNode = null;
@@ -368,6 +392,7 @@ public class Storage {
 		return null;		
 		
 	}
+*/
 	
 	
 	private static boolean saveXml(Document doc, String xmlFilePath){
@@ -387,7 +412,6 @@ public class Storage {
 		}//end try
 		
 	}//end saveXML
-	
 	
 	
 	private static void xmlRemoveAllTask(Node node) {
@@ -417,13 +441,28 @@ public class Storage {
 	 }
 	 
 	 public static int getNextAvailableID(){
-		 return max_number_of_tasks + 1;
+		 //return max_number_of_tasks + 1;
+		 int lastID = 0;
+		 if(taskList != null){
+			for(Task mTask : taskList){
+				if(mTask.getID() > lastID){
+					lastID = mTask.getID();
+				}//end if 
+			}//end for
+			 
+		 }//end if 
+		 
+		 return lastID;
 	 }
 	 
 	 public static String getDataFolderLocation(){
 		 return data_folder_location;
 	 }
 	 
+	 public static ArrayList<Task> getTaskList(){
+		 return taskList;
+	 }
+
 	 public static void setDataFolderLocation(String location){
 		 data_folder_location = location;
 	 }
@@ -448,7 +487,6 @@ public class Storage {
 	 private static long convertStringToLong(String input){
 		 return Long.valueOf(input);
 	 }
-	 
 	 
 	 
 	 
