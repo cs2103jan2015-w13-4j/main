@@ -44,7 +44,7 @@ public class Parser {
 	}
 	*/
 	
-	public static String validateString(String userInput) {
+	public static String validateInput(String userInput) {
 		boolean isValidCommand = false;
 		boolean isValidParameter = false;
 		

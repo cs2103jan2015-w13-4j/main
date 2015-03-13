@@ -127,7 +127,7 @@ public class UIController {
 		userInput = cmdTextField.getText();
 
 		//1. Parser - check the incoming command string first
-		parserOutput = Parser.validateString(userInput);
+		parserOutput = Parser.validateInput(userInput);
 		if(!parserOutput.equals(Constants.CORRECT_INPUT_MESSAGE)){ //wrong commands and parameter
 			//print out the error message
 			txtStatus.setText(parserOutput);
