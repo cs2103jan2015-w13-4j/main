@@ -37,11 +37,9 @@ public class Parser {
 	}
 	
 	public static String[] getTokens(String input){
-		String[] arr = input.substring(input.indexOf(" ")).split("-");
+		String[] temp = input.split(" ",2);
+		String[] arr = temp[1].split("-");
 		trimWhiteSpace(arr);
-		System.out.println(arr[0]);
-		System.out.println(arr[1]);
-		
 		return arr;
 	}
 	
@@ -138,10 +136,8 @@ public class Parser {
 	}
 	
 	private static boolean checkDeleteTokens(String[] tokens) {
-		System.out.println(tokens[0]);
-		System.out.println(tokens[1]);
 		if(tokens.length != 1){
-			System.out.println("in1");
+			return false;
 		}
 
 		String input = tokens[0];
