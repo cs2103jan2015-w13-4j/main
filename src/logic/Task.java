@@ -114,6 +114,10 @@ public class Task {
 		return this.priority;
 	}
 	
+	public void setID(int id){
+		this.id = id;
+	}
+	
 	public void setTitle(String title){
 		this.title=title;
 	}

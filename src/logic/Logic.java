@@ -48,7 +48,7 @@ public class Logic {
     	Task newTask = null;
     	
     	newTask = constructNewTask(tokens);
-    	
+    	newTask.setID(Storage.getNextAvailableID());
     	isAddedToArray = addTaskToTaskArrayList(newTask);
     	isAddedToStorage = Storage.save();
     	

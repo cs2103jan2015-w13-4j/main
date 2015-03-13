@@ -438,7 +438,7 @@ public class Storage {
 			 
 		 }//end if 
 		 
-		 return lastID;
+		 return lastID + 1;
 	 }
 	 
 	 public static String getDataFolderLocation(){
