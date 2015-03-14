@@ -1,6 +1,7 @@
-package logic;
+package pista.logic;
 
-import logic.storage.Storage;
+import pista.Constants;
+import pista.storage.Storage;
 
 public class Task {
 	

@@ -1,7 +1,11 @@
-package logic.view;
+package pista.ui;
 
 import java.io.IOException;
 
+import pista.Constants;
+import pista.logic.Logic;
+import pista.logic.Task;
+import pista.parser.Parser;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,10 +24,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import logic.Constants;
-import logic.Logic;
-import logic.Parser;
-import logic.Task;
 
 //Contains all objects found in MainUI
 public class UIController {

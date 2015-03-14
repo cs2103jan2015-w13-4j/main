@@ -1,9 +1,11 @@
-package logic;
+package pista.parser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import pista.Constants;
 
 public class Parser {
 	

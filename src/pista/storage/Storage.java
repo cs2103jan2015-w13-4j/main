@@ -1,4 +1,4 @@
-package logic.storage;
+package pista.storage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import logic.Constants;
-import logic.Parser;
-import logic.Task;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import pista.Constants;
+import pista.logic.Task;
+import pista.parser.Parser;
 
 
 public class Storage {

@@ -1,4 +1,4 @@
-package logic.view;
+package pista.ui;
 
 import javafx.geometry.*;
 import javafx.scene.Node;
