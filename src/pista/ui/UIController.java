@@ -38,13 +38,13 @@ public class UIController {
 	private Button btnRefresh;
 	
 	@FXML
-	private Button addButton;
+	private Button btnAdd;
 	
 	@FXML
-	private Button editButton;
+	private Button btnEdit;
 
 	@FXML
-	private Button deleteButton;
+	private Button btnDelete;
 
 	@FXML
 	public TextField cmdTextField;

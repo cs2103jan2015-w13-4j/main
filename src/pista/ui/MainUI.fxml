@@ -25,9 +25,9 @@
                               </VBox>
                               <VBox layoutX="8.0" layoutY="198.0" spacing="5.0" AnchorPane.bottomAnchor="5.0">
                                  <children>
-                                    <Button fx:id="addButton" layoutX="14.0" layoutY="186.0" mnemonicParsing="false" onMouseClicked="#add_outline" prefHeight="30.0" prefWidth="70.0" text="Add" />
-                                    <Button fx:id="editButton" layoutX="14.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#edit_outline" prefHeight="30.0" prefWidth="70.0" text="Edit" />
-                                    <Button fx:id="deleteButton" layoutX="14.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#delete_outline" prefHeight="30.0" prefWidth="70.0" text="Delete" />
+                                    <Button fx:id="btnAdd" layoutX="14.0" layoutY="186.0" mnemonicParsing="false" onMouseClicked="#add_outline" prefHeight="30.0" prefWidth="70.0" text="Add" />
+                                    <Button fx:id="btnEdit" layoutX="14.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#edit_outline" prefHeight="30.0" prefWidth="70.0" text="Edit" />
+                                    <Button fx:id="btnDelete" layoutX="14.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#delete_outline" prefHeight="30.0" prefWidth="70.0" text="Delete" />
                                  </children>
                               </VBox>
                            </children>
