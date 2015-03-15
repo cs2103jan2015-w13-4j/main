@@ -20,11 +20,11 @@ public class Parser {
 			return Constants.MESSAGE_EMPTY_STRING;
 		} else {
 			String command = getCommand(input);
-			if (!checkCommand(command)) {
+			if (!isCommandValid(command)) {
 				return Constants.MESSAGE_WRONG_COMMAND;
 			} else {
 				String[] tokens = getTokens(input);
-				if (!checkTokens(command, tokens)) {
+				if (!isTokensValid(command, tokens)) {
 					return Constants.MESSAGE_WRONG_PARAMETERS;
 				} else {
 					return Constants.MESSAGE_VALID_INPUT;
@@ -55,7 +55,7 @@ public class Parser {
 	/*
 	 * Grabs user command and verify if matches the supported commands
 	 * Add, edit, delete*/
-	private static boolean checkCommand(String command){
+	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE)){ //check for command type		
 				return true;
@@ -70,7 +70,7 @@ public class Parser {
 	 * true=parameter exists
 	 * false=no parameters
 	 */
-	private static boolean checkTokens(String command, String[] tokens){
+	private static boolean isTokensValid(String command, String[] tokens){
 		switch(command) {
 			case Constants.VALUE_ADD:
 				return checkAddTokens(tokens);
