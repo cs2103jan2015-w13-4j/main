@@ -70,26 +70,5 @@ public class TokenValidation {
 		return false;
 	}
 	
-	public static boolean isRepeatValid(String repeat){
-		if (repeat.equalsIgnoreCase("n") || repeat.equalsIgnoreCase("r")) {
-			inputArray[Constants.ARRAY_INDEX_REPEAT]=repeat;
-			return true;
-		}
-		return false;
-	}
-	public static boolean isDelayTypeValid(String delayType){
-		if (delayType.equalsIgnoreCase("d") || delayType.equalsIgnoreCase("w") || delayType.equalsIgnoreCase("m") || delayType.equalsIgnoreCase("y")){
-			inputArray[Constants.ARRAY_INDEX_DELAYTYPE]=delayType;
-			return true;
-		}
-		return false;
-	}
-	public static boolean isRecurValid(String recur){
-		if (!recur.isEmpty()) {
-			inputArray[Constants.ARRAY_INDEX_RECUR]=recur;
-			return true;
-		}
-		return false;
-	}
 
 }
