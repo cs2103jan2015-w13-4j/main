@@ -97,4 +97,8 @@ public class Constants {
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";
 	
+	
+	//========== LOGGING ===========
+	public static final String LOG_FILE_NAME = "pista_log.txt";
+
 }

@@ -2,6 +2,7 @@ package pista.storage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,7 +20,7 @@ import org.w3c.dom.NodeList;
 import pista.Constants;
 import pista.logic.Task;
 import pista.parser.Parser;
-
+import pista.log.Logging;
 
 public class Storage {
 
@@ -39,6 +40,16 @@ public class Storage {
 	private static final String NODE_TASK_IS_DONE_TAG = "is_done";
 	private static final String NODE_TASK_CATEGORY_TAG = "category";
 	private static final String NODE_TASK_PRIORITY_TAG = "priority";
+	
+	//Assertion
+	private static final String ASSERT_INVALID_TASK_ID_MESSAGE = "Task ID is less than the total tasks";
+	
+	//Logging
+	private static final String LOG_STORAGE_LOAD_SUCCESS = "Successfully Load XML file to task list";
+	private static final String LOG_STORAGE_WRITE_XML_FILE_SUCCESS = "Successfully write into XML file";	
+	private static final String LOG_STORAGE_SAVE_SUCCESS = "Successfully save XML file";
+	private static final String LOG_STORAGE_SAVE_FAILURE = "Fail to save XML file";
+	
 	/*
 	final String NODE_TASK_START_TIME_TAG = "start_time";
 	final String NODE_TASK_START_DATE_TAG = "start_date";
@@ -48,13 +59,7 @@ public class Storage {
 	
 	private static ArrayList<Task> taskList = null;
 	
-	
-	
-	
-	//default constructor
-	public Storage(){
-	}
-	
+	private static Logging mLog = new Logging(Storage.class.getName(), Constants.LOG_FILE_NAME);
 	
 	public static boolean load(){
 		taskList = XmltoTable(Constants.XML_FILE_PATH);	
@@ -140,12 +145,15 @@ public class Storage {
 			isSaved = saveXml(doc, xmlFilePath);			
 	
 			if (isSaved){
+				mLog.logInfo(LOG_STORAGE_SAVE_SUCCESS);
 				return true;
 			}else{
+				mLog.logWarning(LOG_STORAGE_SAVE_FAILURE);
 				return false;
 			}
 			
 		}catch(Exception e){
+			mLog.logSevere(e.getMessage()); //logging
 			e.printStackTrace();
 			return false;
 		}
@@ -238,9 +246,10 @@ public class Storage {
 				}//end if 
 			}//end for
 			
-			
-			
+			mLog.logInfo(LOG_STORAGE_LOAD_SUCCESS);
+
 		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 		}//end try
 		
@@ -395,8 +404,11 @@ public class Storage {
 			transformer.transform(source, result);
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
 			
+			mLog.logInfo(LOG_STORAGE_WRITE_XML_FILE_SUCCESS);
+			
 			return true;
 		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;		
 		}//end try
