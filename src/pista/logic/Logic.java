@@ -9,8 +9,13 @@ import java.util.Date;
 import pista.Constants;
 import pista.storage.Storage;
 
+import java.util.logging.Logger;
+
+import pista.log.Logging;
 
 public class Logic {
+	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME_LOGIC);
+
 	public static String runCommand(String command, String[] tokens) {
 		String output = "";
 		switch(command) {
@@ -24,9 +29,9 @@ public class Logic {
 			output = delete(tokens) ;
 			break;
 		default:
+			assert false:"invalid comand in runCommand: "+command;
 			break;
 		}
-		
 		return output;
 	}
 	
@@ -54,8 +59,10 @@ public class Logic {
     	isAddedToStorage = Storage.save();
     	
     	if(isAddedToArray && isAddedToStorage){
+    		mLog.logInfo(String.format(Constants.LOG_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
     		return Constants.LOGIC_SUCCESS_ADD_TASK;
     	}else{
+    		mLog.logInfo(Constants.LOG_FAIL_ADD_TASK);
     		return Constants.LOGIC_FAIL_ADD_TASK;
     	}
     }
@@ -90,10 +97,12 @@ public class Logic {
 			Storage.getTaskList().remove(taskIndex);
 			Storage.getTaskList().add(extractedTask);
 			Storage.save();
-
+			
+			mLog.logInfo(String.format(Constants.LOG_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
 		else{
+			mLog.logInfo(Constants.LOG_FAIL_EDIT_TASK);
 			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
 		}
 	}
@@ -141,8 +150,12 @@ public class Logic {
     }
     
     public static boolean addTaskToTaskArrayList(Task task){
-		Storage.getTaskList().add(task);
-		return true;
+		if(Storage.getTaskList().add(task)){
+			return true;
+		}else{
+			assert false:"unable to add task to arraylist";
+		}
+		return false;
 	}
     
     public static String[] formatArray(String[] inputArray, String category){

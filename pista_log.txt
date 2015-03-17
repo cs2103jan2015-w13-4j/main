@@ -1,14 +1,54 @@
-Mar 16, 2015 9:08:15 PM pista.log.Logging logInfo
-INFO: Successfully Load XML file to task list.
-Mar 16, 2015 9:22:26 PM pista.log.Logging logInfo
+Mar 17, 2015 12:15:39 PM pista.log.Logging logInfo
 INFO: Successfully Load XML file to task list
-Mar 16, 2015 9:22:38 PM pista.log.Logging logInfo
+Mar 17, 2015 12:15:49 PM pista.log.Logging logInfo
+INFO: Successfully get next available ID
+Mar 17, 2015 12:15:49 PM pista.log.Logging logInfo
+INFO: Successfully get next available ID
+Mar 17, 2015 12:15:49 PM pista.log.Logging logInfo
 INFO: Successfully write into XML file
-Mar 16, 2015 9:22:38 PM pista.log.Logging logInfo
+Mar 17, 2015 12:15:49 PM pista.log.Logging logInfo
 INFO: Successfully save XML file
-Mar 16, 2015 9:43:37 PM pista.log.Logging logInfo
+Mar 17, 2015 12:16:04 PM pista.log.Logging logInfo
 INFO: Successfully Load XML file to task list
-Mar 17, 2015 8:56:50 AM pista.log.Logging logInfo
+Mar 17, 2015 12:16:07 PM pista.log.Logging logInfo
+INFO: Successfully get next available ID
+Mar 17, 2015 12:16:07 PM pista.log.Logging logInfo
+INFO: Successfully get next available ID
+Mar 17, 2015 12:16:07 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:16:07 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:16:22 PM pista.log.Logging logInfo
 INFO: Successfully Load XML file to task list
-Mar 17, 2015 8:57:02 AM pista.log.Logging logInfo
+Mar 17, 2015 12:16:30 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:16:30 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:21:41 PM pista.log.Logging logInfo
 INFO: Successfully Load XML file to task list
+Mar 17, 2015 12:21:51 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:21:51 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:24:27 PM pista.log.Logging logInfo
+INFO: Successfully Load XML file to task list
+Mar 17, 2015 12:24:32 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:24:32 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:24:34 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:24:34 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:24:36 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:24:36 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:24:38 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:24:38 PM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 17, 2015 12:24:40 PM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 17, 2015 12:24:40 PM pista.log.Logging logInfo
+INFO: Successfully save XML file

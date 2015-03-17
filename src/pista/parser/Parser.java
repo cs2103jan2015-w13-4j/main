@@ -60,6 +60,7 @@ public class Parser {
 				command.equalsIgnoreCase(Constants.VALUE_DELETE)){ //check for command type		
 				return true;
 			}else{
+				assert false:"unacceptable command typed: "+command;
 				return false;
 			}//end if
 
@@ -109,37 +110,39 @@ public class Parser {
 				return true;
 			}
 		}
+		assert false:"Tokens number in add function are "+tokens.length +" allowed length are 1,3,5";
 		return false;
 	}
 	
 	private static boolean checkEditTokens(String[] tokens) {		
-			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
-				if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
-					return true;
-				}
+		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
+				return true;
 			}
-			
-			else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-				if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
-						&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])) 
-						&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]))){
-					return true;
-				}	
+		}
+
+		else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
+					&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])) 
+					&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]))){
+				return true;
+			}	
+		}
+
+		else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
+					&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])) 
+					&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])) 
+					&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])) 
+					&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])) 
+					&& (TokenValidation.isStartDateBeforeThanEndDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
+							, tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
+									, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]
+											, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]))){
+				return true;
 			}
-			
-			else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-				if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
-						&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])) 
-						&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])) 
-						&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])) 
-						&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])) 
-						&& (TokenValidation.isStartDateBeforeThanEndDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
-								, tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
-										, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]
-												, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]))){
-					return true;
-				}
-			}
+		}
+		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
 		return false;
 	}
 	
