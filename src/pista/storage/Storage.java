@@ -42,13 +42,20 @@ public class Storage {
 	private static final String NODE_TASK_PRIORITY_TAG = "priority";
 	
 	//Assertion
-	private static final String ASSERT_INVALID_TASK_ID_MESSAGE = "Task ID is less than the total tasks";
+	private static final String ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE = "List of task is not initialize";
+	private static final String ASSERT_XML_FILE_PATH_EMPTY_MESSAGE = "XML file path is empty";
+	private static final String ASSERT_XML_DOCUMENT_NULL_MESSAGE = "XML document is not initialize";
+	private static final String ASSERT_XML_DOCUMENT_ROOT_NULL_MESSAGE = "XML root is undefined or null";
+	private static final String ASSERT_XML_NODE_NULL_MESSAGE = "XML node is undefined or null";
+	private static final String ASSERT_XML_NODE_LIST_NULL_MESSAGE = "XML node list is undefined or null";
+	
 	
 	//Logging
 	private static final String LOG_STORAGE_LOAD_SUCCESS = "Successfully Load XML file to task list";
 	private static final String LOG_STORAGE_WRITE_XML_FILE_SUCCESS = "Successfully write into XML file";	
 	private static final String LOG_STORAGE_SAVE_SUCCESS = "Successfully save XML file";
 	private static final String LOG_STORAGE_SAVE_FAILURE = "Fail to save XML file";
+	private static final String LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS = "Successfully get next available ID";
 	
 	/*
 	final String NODE_TASK_START_TIME_TAG = "start_time";
@@ -84,7 +91,12 @@ public class Storage {
 	 * */
 	private static boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
 		boolean isSaved = false;
-		try{
+		boolean isAllNodesRemove = false;
+		try{	
+			//assertion
+			assert(mArrayTask != null) : ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE;
+			
+			//start of XML
 			Node nRoot = null;
 			Node nTask = null;
 			Node nTotal = null;
@@ -98,7 +110,10 @@ public class Storage {
 			normalize(doc);
 			
 			//remove all nodes from XML
-			xmlRemoveAllTask(doc);
+			isAllNodesRemove = xmlRemoveAllTask(doc);
+			if(!isAllNodesRemove){ //if failed to remove all task nodes
+				return false;
+			}
 			
 			//create a new root node
 			nRoot = doc.createElement(NODE_ROOT_TAG);
@@ -152,6 +167,11 @@ public class Storage {
 				return false;
 			}
 			
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return false;
+			
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage()); //logging
 			e.printStackTrace();
@@ -172,6 +192,9 @@ public class Storage {
 		ArrayList<Task> mArrayTask = new ArrayList<Task>();
 		
 		try{
+			//assertion
+			assert(!(xmlFilePath.equals("")) || !(xmlFilePath.isEmpty())) : ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+			
 			File mXmlFile = new File(xmlFilePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -248,12 +271,14 @@ public class Storage {
 			
 			mLog.logInfo(LOG_STORAGE_LOAD_SUCCESS);
 
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 		}//end try
-		
-		
 		
 		
 		return mArrayTask;
@@ -397,6 +422,11 @@ public class Storage {
 	private static boolean saveXml(Document doc, String xmlFilePath){
 		//Save the document
 		try{
+			
+			//assertion
+			assert(doc != null): ASSERT_XML_DOCUMENT_NULL_MESSAGE;
+			assert(!(xmlFilePath.equals("")) || !(xmlFilePath.isEmpty())) :	ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+			
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -407,6 +437,12 @@ public class Storage {
 			mLog.logInfo(LOG_STORAGE_WRITE_XML_FILE_SUCCESS);
 			
 			return true;
+			
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return false;
+			
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
@@ -416,22 +452,53 @@ public class Storage {
 	}//end saveXML
 	
 	
-	private static void xmlRemoveAllTask(Node node) {
-		 
-		 NodeList nl = node.getChildNodes();
-		 for(int i=0; i< nl.getLength(); i++){
+	private static boolean xmlRemoveAllTask(Node node) {
+		try{
 			
-			 Node n = nl.item(i); 
-				 
-			 node.removeChild(n);
-		 }//end for	 
-		 
+			assert(node != null) : ASSERT_XML_NODE_NULL_MESSAGE;
+			NodeList mNodeList = node.getChildNodes();
+			assert(mNodeList != null) : ASSERT_XML_NODE_LIST_NULL_MESSAGE;
+			
+			if(mNodeList != null){
+				for(int i=0; i< mNodeList.getLength(); i++){
+					
+					Node n = mNodeList.item(i);  
+					node.removeChild(n);
+				}//end for	
+			}
+			
+			return true;
+			
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			return false;
+			
+		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
+			return false;
+		}
+		
+		
 	}//end removeAllFromXML
 	 
 	 
 	 private static void normalize(Document doc){
-		 Element root = doc.getDocumentElement();
-		 root.normalize();		 
+		 //normalize is not a complusory to do
+		 
+		 
+		 try{
+			 assert(doc != null) : ASSERT_XML_DOCUMENT_NULL_MESSAGE;
+			 
+			 if(doc != null){
+				 Element root = doc.getDocumentElement();
+				 assert(root != null) : ASSERT_XML_DOCUMENT_ROOT_NULL_MESSAGE;
+				 root.normalize();	
+			 }
+			 
+		 }catch(AssertionError e){
+			 	mLog.logWarning(e.getMessage());
+		 }
+		 	 
 	 }
 
 	 public static int getMaxNumberOfTasks(){
@@ -441,16 +508,27 @@ public class Storage {
 	 public static int getNextAvailableID(){
 		 //return max_number_of_tasks + 1;
 		 int lastID = 0;
-		 if(taskList != null){
-			for(Task mTask : taskList){
-				if(mTask.getID() > lastID){
-					lastID = mTask.getID();
-				}//end if 
-			}//end for
-			 
-		 }//end if 
 		 
-		 return lastID + 1;
+		 try{
+			 assert(taskList != null) : ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE;
+			 
+			 if(taskList != null){
+				for(Task mTask : taskList){
+					if(mTask.getID() > lastID){
+						lastID = mTask.getID();
+					}//end if 
+				}//end for
+				 
+			 }//end if 
+			  
+			 mLog.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
+			 return lastID + 1;
+			 
+		 }catch(AssertionError e){
+			 mLog.logSevere(e.getMessage());
+			 return 0;
+		 }
+		 
 	 }
 	 
 	 public static String getDataFolderLocation(){

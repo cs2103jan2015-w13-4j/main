@@ -8,3 +8,7 @@ Mar 16, 2015 9:22:38 PM pista.log.Logging logInfo
 INFO: Successfully save XML file
 Mar 16, 2015 9:43:37 PM pista.log.Logging logInfo
 INFO: Successfully Load XML file to task list
+Mar 17, 2015 8:56:50 AM pista.log.Logging logInfo
+INFO: Successfully Load XML file to task list
+Mar 17, 2015 8:57:02 AM pista.log.Logging logInfo
+INFO: Successfully Load XML file to task list
