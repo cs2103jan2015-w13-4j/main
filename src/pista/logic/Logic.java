@@ -113,24 +113,31 @@ public class Logic {
     	if(input.equalsIgnoreCase("a")){
     		clearList();
     		if(Storage.save()){
+    			mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
     			return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
     		}else{
+    			mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
     			return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
     		}
     	}else {
     		int id = Integer.parseInt(input);
     		int index = findTaskIndex(id);
-    		
+ 
     		if( index > -1){
+    			Task temp = Storage.getTaskList().get(index);
     			Storage.getTaskList().remove(index);
+    			mLog.logInfo(String.format(Constants.LOG_SUCCESS_DELETE_TASK, temp.getTitle()));
     		}else{
+    			mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
     			return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
     		}	
     	}
     	
     	if (Storage.save()){
+    		mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
     		return Constants.LOGIC_SUCCESS_DELETE_TASK;
     	}else{
+    		mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
     		return Constants.LOGIC_FAIL_DELETE_TASK;
     	}
     }

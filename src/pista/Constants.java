@@ -102,6 +102,7 @@ public class Constants {
 	public static final String LOG_FILE_NAME = "pista_log.txt";
 	public static final String LOG_FILE_NAME_LOGIC = "pista_log_logic.txt";
 	public static final String LOG_SUCCESS_ADD_TASK="Successfully added %s task of %s category into list";
+	public static final String LOG_SUCCESS_DELETE_TASK = "Successfully delete %s task out of list";
 	public static final String LOG_FAIL_ADD_TASK="Fail to add task into list";
 	public static final String LOG_SUCCESS_EDIT_TASK="Successfully edited %s of category %s task";
 	public static final String LOG_FAIL_EDIT_TASK="Fail to edit task it is not found in list";
