@@ -52,3 +52,5 @@ Mar 17, 2015 12:24:40 PM pista.log.Logging logInfo
 INFO: Successfully write into XML file
 Mar 17, 2015 12:24:40 PM pista.log.Logging logInfo
 INFO: Successfully save XML file
+Mar 17, 2015 12:31:54 PM pista.log.Logging logInfo
+INFO: Successfully added floatedd task of floating category into list

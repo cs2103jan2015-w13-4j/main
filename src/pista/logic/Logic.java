@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import pista.log.Logging;
 
 public class Logic {
-	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME_LOGIC);
+	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
 
 	public static String runCommand(String command, String[] tokens) {
 		String output = "";
