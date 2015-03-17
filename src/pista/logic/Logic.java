@@ -30,11 +30,11 @@ public class Logic {
 			break;
 		default:
 			assert false:"invalid comand in runCommand: "+command;
-			break;
+		break;
 		}
 		return output;
 	}
-	
+
 	public static String load(){
 		if(Storage.load()){
 			return Constants.LOGIC_SUCCESS_LOAD_XML;
@@ -42,41 +42,41 @@ public class Logic {
 			return Constants.LOGIC_FAIL_LOAD_XML;
 		}
 	}
-	
+
 	public static ArrayList<Task> getStorageList(){
 		return Storage.getTaskList();
 	}
-	
+
 	public static String add(String[] tokens){
-    	boolean isAddedToStorage = false;
-    	boolean isAddedToArray = false;
-    	
-    	Task newTask = null;
-    	
-    	newTask = constructNewTask(tokens);
-    	newTask.setID(Storage.getNextAvailableID());
-    	isAddedToArray = addTaskToTaskArrayList(newTask);
-    	isAddedToStorage = Storage.save();
-    	
-    	if(isAddedToArray && isAddedToStorage){
-    		mLog.logInfo(String.format(Constants.LOG_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
-    		return Constants.LOGIC_SUCCESS_ADD_TASK;
-    	}else{
-    		mLog.logInfo(Constants.LOG_FAIL_ADD_TASK);
-    		return Constants.LOGIC_FAIL_ADD_TASK;
-    	}
-    }
-	
+		boolean isAddedToStorage = false;
+		boolean isAddedToArray = false;
+
+		Task newTask = null;
+
+		newTask = constructNewTask(tokens);
+		newTask.setID(Storage.getNextAvailableID());
+		isAddedToArray = addTaskToTaskArrayList(newTask);
+		isAddedToStorage = Storage.save();
+
+		if(isAddedToArray && isAddedToStorage){
+			mLog.logInfo(String.format(Constants.LOG_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
+			return Constants.LOGIC_SUCCESS_ADD_TASK;
+		}else{
+			mLog.logInfo(Constants.LOG_FAIL_ADD_TASK);
+			return Constants.LOGIC_FAIL_ADD_TASK;
+		}
+	}
+
 	public static String edit(String[] tokens){
 
 		int taskId=Integer.parseInt(tokens[0]);
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
 			Task extractedTask = Storage.getTaskList().get(taskIndex);
-			
+
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
-				
+
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
 				extractedTask=editDeadlineTask(extractedTask, tokens);
 
@@ -97,7 +97,7 @@ public class Logic {
 			Storage.getTaskList().remove(taskIndex);
 			Storage.getTaskList().add(extractedTask);
 			Storage.save();
-			
+
 			mLog.logInfo(String.format(Constants.LOG_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
@@ -106,57 +106,63 @@ public class Logic {
 			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
 		}
 	}
-	
-    //delete tasks by id or all
-    public static String delete(String[] tokens){  	
-    	String input = tokens[0];
-    	if(input.equalsIgnoreCase("a")){
-    		clearList();
-    		if(Storage.save()){
-    			mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
-    			return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
-    		}else{
-    			mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
-    			return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
-    		}
-    	}else {
-    		int id = Integer.parseInt(input);
-    		int index = findTaskIndex(id);
- 
-    		if( index > -1){
-    			Task temp = Storage.getTaskList().get(index);
-    			Storage.getTaskList().remove(index);
-    			mLog.logInfo(String.format(Constants.LOG_SUCCESS_DELETE_TASK, temp.getTitle()));
-    		}else{
-    			mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
-    			return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
-    		}	
-    	}
-    	
-    	if (Storage.save()){
-    		mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
-    		return Constants.LOGIC_SUCCESS_DELETE_TASK;
-    	}else{
-    		mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
-    		return Constants.LOGIC_FAIL_DELETE_TASK;
-    	}
-    }
-    
-    //find the index of the task by a certain parameter, can expands it further
-    public static Integer findTaskIndex(int id){
+
+	//delete tasks by id or all
+	public static String delete(String[] tokens){  	
+		String input = tokens[0];
+		if(input.equalsIgnoreCase("a")){
+			clearList();
+			if(Storage.save()){
+				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
+				return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
+			}else{
+				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
+				return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
+			}
+		}else {
+			int id = Integer.parseInt(input);
+			int index = findTaskIndex(id);
+
+			try{
+				if( index > -1){
+					assert index < Storage.getTaskList().size() : "Index out of bound";
+					Task temp = Storage.getTaskList().get(index);
+					Storage.getTaskList().remove(index);
+					mLog.logInfo(String.format(Constants.LOG_SUCCESS_DELETE_TASK, temp.getTitle()));
+				}else{
+					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
+					return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
+				}
+			}catch(AssertionError e){
+				mLog.logSevere(e.getMessage());
+				e.printStackTrace();
+			}
+
+			if (Storage.save()){
+				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
+				return Constants.LOGIC_SUCCESS_DELETE_TASK;
+			}else{
+				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
+				return Constants.LOGIC_FAIL_DELETE_TASK;
+			}
+		}
+	}
+
+	//find the index of the task by a certain parameter, can expands it further
+	public static Integer findTaskIndex(int id){
 		for (int i = 0;i < Storage.getTaskList().size();i++){
 			if(Storage.getTaskList().get(i).getID() == id){
 				return i;
 			}
 		}
 		return -1;
-    }
-    
-    public static void clearList(){
-    	Storage.getTaskList().clear();
-    }
-    
-    public static boolean addTaskToTaskArrayList(Task task){
+	}
+
+	public static void clearList(){
+		Storage.getTaskList().clear();
+	}
+
+	public static boolean addTaskToTaskArrayList(Task task){
 		if(Storage.getTaskList().add(task)){
 			return true;
 		}else{
@@ -164,9 +170,9 @@ public class Logic {
 		}
 		return false;
 	}
-    
-    public static String[] formatArray(String[] inputArray, String category){
-		
+
+	public static String[] formatArray(String[] inputArray, String category){
+
 		if(category.equals("timed")){
 			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
 			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));	
@@ -174,14 +180,14 @@ public class Logic {
 		else{
 			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
 		}
-		
-		
+
+
 		return inputArray;
 	}
-	
+
 	public static Task constructNewTask(String[] inputArray){
 		Task newTask = null;
-		
+
 		String[] newArray = new String[Constants.ARRAY_SIZE];
 		if(inputArray.length==Constants.FLOATING_TASK 
 				|| inputArray.length==Constants.TIMED_TASK){
@@ -191,19 +197,19 @@ public class Logic {
 			System.arraycopy(inputArray, 0, newArray, 0, 1); //copy title of inputArray into newArray postition
 			System.arraycopy(inputArray, 1, newArray, 3, inputArray.length-1); //copy end date and end time of inputArray into newArray postition
 		}
-		
+
 		if(inputArray.length==Constants.DEADLINE_TASK){
 			newArray = formatArray(newArray,"deadline"); //add in epoh time for parser
 		}
 		else if(inputArray.length==Constants.TIMED_TASK){
 			newArray = formatArray(newArray,"timed"); //add in epoh time for parser
 		}
-		
+
 		newTask = new Task(newArray); //id will auto generate inside Task class
-		
+
 		return newTask;	
 	}//end constructNewTask
-	
+
 	private static boolean isTaskInList(int taskId){
 		for(Task t: Storage.getTaskList()){
 			if(t.getID()==taskId){
@@ -212,30 +218,30 @@ public class Logic {
 		}
 		return false;
 	}
-	
+
 	private static Task editTimedTask(Task extractedTask, String[] tokens) {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}else{
-			
+
 		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])){	//check startdate
 			extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
 		}else{
-			
+
 		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])){//check starttime
 			extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
 		}else{
-			
+
 		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])){	//check enddate
 			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3
 		}else{
-			
+
 		}if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])){//check endtime
 			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
 		}else{
-			
+
 		}
-		
+
 		return extractedTask;
 	}
 
@@ -244,17 +250,17 @@ public class Logic {
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}else{
-			
+
 		}
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])){	//check enddate
 			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);//3
 		}else{
-			
+
 		}
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME])){//check endtime
 			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);//4
 		}else{
-			
+
 		}
 		return extractedTask;
 	}
@@ -265,7 +271,7 @@ public class Logic {
 		}
 		return extractedTask;
 	}
-	
+
 	public static long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
@@ -278,10 +284,10 @@ public class Logic {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date1);
-		
+
 		return cal.getTimeInMillis();
 	}
 }
