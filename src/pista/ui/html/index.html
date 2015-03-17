@@ -39,11 +39,11 @@ your time fast and efficient.
                     <h5 class="section-title bold ">List of Commands</h5>
                     <p class="section-paragraph">The following are commands that the user can use to perform necessary functions in our program.</p>
                     <ol class="section-order-list">
-                        <li><a href="#section-add">Add</a></li>
-                        <li><a href="#section-edit">Edit</a></li>
-                        <li><a href="#section-delete">Delete</a></li>
-                        <li><a href="#section-list">List</a></li>
-                        <li><a href="#section-search">Search</a></li>
+                        <li><a href="#section-add">Add Task</a></li>
+                        <li><a href="#section-edit">Edit Task</a></li>
+                        <li><a href="#section-delete">Delete Task</a></li>
+                        <li><a href="#section-list">List Tasks</a></li>
+                        <li><a href="#section-search">Find Tasks</a></li>
                     </ol>
                     
                 </div>
@@ -57,7 +57,7 @@ your time fast and efficient.
                     <h4 class="section-subtitle semi-bold">Synopsis</h4>
                         <p class="section-paragraph indent">
                             To add an:
-                            <ol>
+                            <ol class="section-synopsis-order-list">
                                 <li>
                                     Event: <b>add</b> <i>&lt;title&gt; -[startDate] -[startTime] -[endDate] -[endTime]</i>
                                 </li>
@@ -76,14 +76,14 @@ your time fast and efficient.
                         </p>                
                     
                     <h4 class="section-subtitle semi-bold">Description</h4>
-                    <p class="section-paragraph indent">This command will add a new task.</p>
+                    <p class="section-paragraph indent">This command will add a new event, deadline, or task based on the input parameters.</p>
                     
-                    <h4 class="section-subtitle semi-bold">Complusory</h4>
+                    <h4 class="section-subtitle semi-bold">Field</h4>
                     <p  class="section-paragraph indent">  
                         <i>&lt;title&gt;</i>
                     </p>
                     <p class="section-paragraph indent">
-e.g. "Hello World"<br/>Make sure the title is enclosed by double quotations.
+e.g. Project Meeting<br/>Title field do not need "-".
                     </p>
                    
                     <h4 class="section-subtitle semi-bold">Parameter</h4>
@@ -95,7 +95,7 @@ e.g. "Hello World"<br/>Make sure the title is enclosed by double quotations.
                         <li class="list-item indent">To enter a day of the week, enter the first three letters of the day (i.e. "mon", 
                             "thu", or "sun"). By default, the system will recognise the entry is meant for current week.</li>
                         <li class="list-item indent">
-                            To specify a date, enter the date in the given format: <i>DDMMYY</i></li>
+                            To specify a date, enter the date in the given format: <i>DD/MM/YY</i></li>
                     </p>
         
                     <p class="section-paragraph indent">
@@ -103,49 +103,37 @@ e.g. "Hello World"<br/>Make sure the title is enclosed by double quotations.
                     </p>
                     <p class="section-paragraph indent">
                         <li class="list-item indent">Default start time: current system time</li>
-                        <li class="list-item indent">Default end time: 2359 for the current system date</li>
-                        <li class="list-item indent">General format: <i>HHMM</i></li>
+                        <li class="list-item indent">Default end time: 23:59 for the current system date</li>
+                        <li class="list-item indent">General format: <i>HH:MM</i></li>
                     </p>
   
-                    <p class="section-paragraph indent">
-                        <i>[repeat]</i>
-                    </p>
-        
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">Short hand format to specify if the task reoccurs.<br/>-n : non reoccurring task<br/>-r : reoccurring task</li>
-                    </p>
-
-
-                    <p class="section-paragraph indent">
-                        <i>[delayType recur] </i>
-                    </p>
-        
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">
-                            delaytype: To specify type of delay.<br/>
-                            -d : day<br/>
-                            -w: week<br/>
-                            -m: month<br/>
-                            -y : year
-                        </li>
-                        
-                        <li class="list-item indent">
-                            recur: numeric value to specify number of recurrence<br/>
-                            e.g : -1 : 1 day/month/year<br/>
-                            -8 : 8 days/months/years
-                        </li>
-                    </p>
-                </div>
+                 </div>
        
     <!-- ====================== EDIT ========================-->
                 <a name="section-edit"></a>
                 <div class="section-title-div">
-                    <h5 class="section-title bold ">Edit</h5>
+                    <h5 class="section-title bold ">Edit Task</h5>
                 </div>
                 <div id="edit-content" class="section">
                     <h4 class="section-subtitle semi-bold">Synopsis</h4>
                     <p class="section-paragraph indent">
-                        <b>edit</b> <i>&lt;taskId&gt;</i> to [newTitle] [newDate] [newTime[duration]] [newRepeat] [delayType recur]
+                        To edit:
+                        <ol class="section-synopsis-order-list">
+                            <li>
+                                Event: <b>edit</b> <i>&lt;taskId&gt;</i> -[newTitle] -[newStartDate] -[newStartTime] -[newEndDate] -[newEndTime]
+                            </li>
+                                
+                            <li>
+                                Deadline: <b>edit</b> <i>&lt;taskId&gt;</i> -[newTitle] -[newEndDate] -[newEndTime]
+                            </li>
+                                
+                            <li>
+                                Task: <b>edit</b> <i>&lt;taskId&gt;</i> -[newTitle]
+                            </li>
+                        </ol>
+                        
+                        
+                        
                     </p>
                     
                     <p class="section-paragraph indent">
@@ -156,15 +144,14 @@ e.g. "Hello World"<br/>Make sure the title is enclosed by double quotations.
                     <h4 class="section-subtitle semi-bold">Description</h4>
                     
                     <p class="section-paragraph indent">
-                    This command will edit current saved task. Return error if the system is unable to find the task.
+                    This command will edit current saved task.<br/> Return error if the system is unable to find the task.
                     </p>
                     
                     
-                    <h4 class="section-subtitle semi-bold">Complusory</h4>
+                    <h4 class="section-subtitle semi-bold">Field</h4>
                    
                     <p class="section-paragraph indent">
                         <i>&lt;taskId&gt;</i>
-                        
                     </p>
                     <p class="section-paragraph indent">
 Task id will be the number that is assigned to the task.   
@@ -176,7 +163,6 @@ Task id will be the number that is assigned to the task.
                         <i>[newTitle]</i>
                     </p>            
                     <p class="section-paragraph indent">
-                        <li class="list-item indent">Default value: system date</li>
                         <li class="list-item indent">If a new title is not specified in the command, system will assume the title
 remains the same</li>
                         <li class="list-item indent">
@@ -184,56 +170,26 @@ remains the same</li>
                     </p>
         
                     <p class="section-paragraph indent">
-                        <i>[newDate]</i>
+                        <i>[newStartDate] / [newEndDate]</i>
                     </p>
                     <p class="section-paragraph indent">
-                        <li class="list-item indent">Default start time: current system time</li>
-                        <li class="list-item indent">Default end time: 2359 for the current system date</li>
-                        <li class="list-item indent">If this is not specified in command, system will assume the date remains the same</li>
+                        <li class="list-item indent">Default value: sysem date</li>
+                        <li class="list-item indent">If this is not specified in command, system will assume the date remains the same
+                        </li>
                         <li class="list-item indent">To enter a day of the week, enter the first three letters of the day (i.e. "mon",
-"thu", or "sun"). By default, the system will recognise the entry is meant for current week.</li>
-                        <li class="list-item indent">To specify a date, enter the date in the given format: <i>DDMMYY</i></li>
+"thu", or "sun"). By default, the system will recognise the entry is meant for current week.
+                        </li>
+                        <li class="list-item indent">To specify a date, enter the date in the given format: <i>DD/MM/YY</i></li>
                     </p>
   
                     <p class="section-paragraph indent">
-                        <i>[newTime]</i>
+                        <i>[newStartTime] / [newEndTime]</i>
                     </p>
                     <p class="section-paragraph indent">
-                        <li class="list-item indent">If time is not specified in command, system will assumes the time remains the
-same</li>
+                        <li class="list-item indent">If time is not specified in command, system will assumes the time remains the same</li>
                         <li class="list-item indent">Default start time: current system time</li>
-                        <li class="list-item indent">Default end time: 2359 for the current system date</li>
-                        <li class="list-item indent">General format: <i>HHMM</i></li>
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-                        <i>[newRepeat]</i>
-                    </p>
-        
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">If this is not specified in command, the system will assume that the value remains
-the same.</li>
-                        <li class="list-item indent">Short hand format to specify if the task reoccurs.<br/>e.g: -n : non reoccurring task<br/>-r : reoccurring task</li>
-                    </p>
-
-                    <p class="section-paragraph indent">
-                        <i>[delayType recur] </i>
-                    </p>
-        
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">
-                            delaytype: To specify type of delay.<br/>
-                            -d : day<br/>
-                            -w: week<br/>
-                            -m: month<br/>
-                            -y : year
-                        </li>
-                        
-                        <li class="list-item indent">
-                            recur: numeric value to specify number of recurrence<br/>
-                            e.g : -1 : 1 day/month/year<br/>
-                            -8 : 8 days/months/years
-                        </li>
+                        <li class="list-item indent">Default end time: 23:59 for the current system date</li>
+                        <li class="list-item indent">General format: <i>HH:MM</i></li>
                     </p>
                     
                     <h4 class="section-subtitle semi-bold">Command Example</h4>
@@ -249,34 +205,36 @@ the same.</li>
                 </div>
     
     
-    
     <!-- ====================== DELETE ========================-->
                 <a name="section-delete"></a>
                 <div class="section-title-div">
-                    <h5 class="section-title bold ">Delete</h5>
+                    <h5 class="section-title bold ">Delete Task</h5>
                 </div>
                 <div id="delete-content" class="section">
                     <h4 class="section-subtitle semi-bold">Synopsis</h4>
                     <p class="section-paragraph indent">
-                        <b>delete</b> <i>&lt;taskId&gt;</i>
+                        <b>delete</b> <i>&lt;taskID&gt;</i>
                     </p>
                     
                     <p class="section-paragraph indent">
-                        <i>[parameters]</i> - fields in square brackets are optional parameters<br/>
-<i>&lt;title&gt;</i> - field in arrow brackets is a compulsory field
+                        To delete all task:
+                        <br/>
+                        <i><b>delete</b> a</i>
+                    </p>
+                    
+                    <p class="section-paragraph indent">
+                        <i>&lt;field&gt;</i> - field in arrow brackets is a compulsory field
                     </p>
                     
                     <h4 class="section-subtitle semi-bold">Description</h4>
                     
                     <p class="section-paragraph indent">
-                    This command will delete selected saved task.<br/>
-Return error if the system is unable to find the task.<br/>
-If the task has repetitions, all repetitions will be deleted.
+                    This command will delete selected saved task.<br/>Return error if the system is unable to find the task.
                     </p>
                     
-                    <h4 class="section-subtitle semi-bold">Complusory</h4>
+                    <h4 class="section-subtitle semi-bold">Field</h4>
                     <p class="section-paragraph indent">
-                        <i>&lt;taskId&gt;</i>
+                        <i>&lt;taskID&gt;</i>
                     </p>
                     
                     <p  class="section-paragraph indent">
@@ -288,7 +246,7 @@ Task id will be the number that is beside the task title in the list view
        <!-- ====================== LIST ========================-->        
                 <a name="section-list"></a>
                 <div class="section-title-div">
-                    <h5 class="section-title bold ">List</h5>
+                    <h5 class="section-title bold ">List Tasks</h5>
                 </div>
                 <div id="search-content" class="section">
                     <h4 class="section-subtitle semi-bold">Synopsis</h4>
@@ -306,10 +264,10 @@ Task id will be the number that is beside the task title in the list view
                     </p>
                 </div>
 
-    <!-- ====================== SEARCH ========================-->
+    <!-- ====================== Find ========================-->
                 <a name="section-search"></a>
                 <div class="section-title-div">
-                    <h5 class="section-title bold ">Search</h5>
+                    <h5 class="section-title bold ">Find Tasks</h5>
                 </div>
                 <div id="search-content" class="section">
                     <h4 class="section-subtitle semi-bold">Synopsis</h4>
