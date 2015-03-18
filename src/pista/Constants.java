@@ -106,5 +106,5 @@ public class Constants {
 	public static final String LOG_FAIL_ADD_TASK="Fail to add task into list";
 	public static final String LOG_SUCCESS_EDIT_TASK="Successfully edited %s of category %s task";
 	public static final String LOG_FAIL_EDIT_TASK="Fail to edit task it is not found in list";
-
+	public static final String LOG_ON_ENTER = "Executed user command: ";
 }

@@ -3,6 +3,7 @@ package pista.ui;
 import java.io.IOException;
 
 import pista.Constants;
+import pista.log.Logging;
 import pista.logic.Logic;
 import pista.logic.Task;
 import pista.parser.Parser;
@@ -27,7 +28,7 @@ import javafx.util.Callback;
 
 //Contains all objects found in MainUI
 public class UIController {
-
+	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
 	public String userInput = null;
 
 	//Objects
@@ -128,7 +129,7 @@ public class UIController {
 		txtStatus.setText(logicOutput);
 
 		showTaskListInListView();
-
+		mLog.logInfo(Constants.LOG_ON_ENTER + userInput);
 	}
 
 	@FXML
