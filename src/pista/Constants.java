@@ -109,6 +109,6 @@ public class Constants {
 	public static final String LOG_RUN_ON_ENTER = "Executed user command: ";
 	public static final String LOG_ON_ENTER_SUCCESS = "Successfully executed user command: ";
 	public static final String LOG_FAIL_VALIDATEINPUT = "Failed validateInput: ";
-	public static final String LOG_SUCCESS_VALIDATEINPUT = "validateInput successful";
+	public static final String LOG_SUCCESS_VALIDATE_INPUT = "Successful Validate Input";
 	
 }

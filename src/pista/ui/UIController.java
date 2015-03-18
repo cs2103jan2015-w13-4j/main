@@ -121,7 +121,7 @@ public class UIController {
 			mLog.logInfo(Constants.LOG_FAIL_VALIDATEINPUT + parserOutput);
 			return; //exit method
 		}
-		mLog.logInfo(Constants.LOG_SUCCESS_VALIDATEINPUT + parserOutput);
+		mLog.logInfo(Constants.LOG_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
 		command = Parser.getCommand(userInput);
 		tokens = Parser.getTokens(userInput);
