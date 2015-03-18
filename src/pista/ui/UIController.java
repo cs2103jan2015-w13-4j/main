@@ -112,14 +112,16 @@ public class UIController {
 		String command = "";
 		
 		userInput = cmdTextField.getText();
-		
+		mLog.logInfo(Constants.LOG_RUN_ON_ENTER + userInput);
 		parserOutput = Parser.validateInput(userInput);
 		
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
 			txtStatus.setText(parserOutput);
+			mLog.logInfo(Constants.LOG_FAIL_VALIDATEINPUT + parserOutput);
 			return; //exit method
 		}
+		mLog.logInfo(Constants.LOG_SUCCESS_VALIDATEINPUT + parserOutput);
 		
 		command = Parser.getCommand(userInput);
 		tokens = Parser.getTokens(userInput);
@@ -129,7 +131,6 @@ public class UIController {
 		txtStatus.setText(logicOutput);
 
 		showTaskListInListView();
-		mLog.logInfo(Constants.LOG_ON_ENTER + userInput);
 	}
 
 	@FXML
