@@ -59,10 +59,10 @@ public class Logic {
 		isAddedToStorage = Storage.save();
 
 		if(isAddedToArray && isAddedToStorage){
-			mLog.logInfo(String.format(Constants.LOG_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
+			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_ADD_TASK;
 		}else{
-			mLog.logInfo(Constants.LOG_FAIL_ADD_TASK);
+			mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
 			return Constants.LOGIC_FAIL_ADD_TASK;
 		}
 	}
@@ -98,11 +98,11 @@ public class Logic {
 			Storage.getTaskList().add(extractedTask);
 			Storage.save();
 
-			mLog.logInfo(String.format(Constants.LOG_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
+			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
 		else{
-			mLog.logInfo(Constants.LOG_FAIL_EDIT_TASK);
+			mLog.logInfo(Constants.LOG_LOGIC_FAIL_EDIT_TASK);
 			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
 		}
 	}
@@ -128,7 +128,7 @@ public class Logic {
 					assert index < Storage.getTaskList().size() : "Index out of bound";
 					Task temp = Storage.getTaskList().get(index);
 					Storage.getTaskList().remove(index);
-					mLog.logInfo(String.format(Constants.LOG_SUCCESS_DELETE_TASK, temp.getTitle()));
+					mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 				}else{
 					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
 					return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
@@ -290,4 +290,18 @@ public class Logic {
 
 		return cal.getTimeInMillis();
 	}
+	
+	/*filePath is file directory + file name*/
+	public static boolean createNewXMLFile(String newFilePath){
+		boolean isCreated = false;
+		
+		//assert(!newFilePath.equals("") || !newFilePath.isEmpty()) :  ;
+
+		if(!newFilePath.equals("") || !newFilePath.isEmpty()){
+			isCreated = Storage.createNewXml(newFilePath);
+		}
+		
+		return isCreated;
+	}
+	
 }

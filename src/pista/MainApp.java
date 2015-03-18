@@ -2,6 +2,10 @@ package pista;
 
 import java.io.IOException;
 
+import pista.log.Logging;
+import pista.logic.Logic;
+import pista.parser.Parser;
+import pista.storage.Storage;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +18,11 @@ public class MainApp extends Application {
 	private Stage primaryStage;
     private BorderPane rootLayout;
     
+    private Parser mParser;
+    private Logic mLogic;
+    private Storage mStorage;
+    private Logging mLog;
+    
     //initialises the stage
     @Override
     public void start(Stage primaryStage) {
@@ -23,6 +32,7 @@ public class MainApp extends Application {
         initRootLayout();
         showMainUI();
     }
+    
     
     //sets up the base root layout inclusive of the menu bar
     public void initRootLayout() {

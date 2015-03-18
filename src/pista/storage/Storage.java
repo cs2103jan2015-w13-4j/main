@@ -31,7 +31,7 @@ public class Storage {
 	private static final String NODE_TOTAL_TASK_TAG = "total_task";
 	private static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
 	private static final String NODE_SETTING_TAG="setting";
-	private static final String NODE_DATA_FOLDER_LOCATION="data_folder_location";
+	private static final String NODE_SETTING_DATA_FOLDER_LOCATION="data_folder_location";
 	private static final String NODE_TASK_TAG = "task";
 	private static final String NODE_TASK_ID_TAG = "id";
 	private static final String NODE_TASK_TITLE_TAG = "title";
@@ -41,6 +41,7 @@ public class Storage {
 	private static final String NODE_TASK_CATEGORY_TAG = "category";
 	private static final String NODE_TASK_PRIORITY_TAG = "priority";
 	
+	
 	//Assertion
 	private static final String ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE = "List of task is not initialize";
 	private static final String ASSERT_XML_FILE_PATH_EMPTY_MESSAGE = "XML file path is empty";
@@ -49,13 +50,14 @@ public class Storage {
 	private static final String ASSERT_XML_NODE_NULL_MESSAGE = "XML node is undefined or null";
 	private static final String ASSERT_XML_NODE_LIST_NULL_MESSAGE = "XML node list is undefined or null";
 	
-	
 	//Logging
 	private static final String LOG_STORAGE_LOAD_SUCCESS = "Successfully Load XML file to task list";
 	private static final String LOG_STORAGE_WRITE_XML_FILE_SUCCESS = "Successfully write into XML file";	
 	private static final String LOG_STORAGE_SAVE_SUCCESS = "Successfully save XML file";
 	private static final String LOG_STORAGE_SAVE_FAILURE = "Fail to save XML file";
 	private static final String LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS = "Successfully get next available ID";
+	private static final String LOG_STORAGE_CREATE_NEW_FILE_SUCCESS = "Successfully create new XML file";
+	private static final String LOG_STORAGE_CREATE_NEW_FILE_FAILURE = "Fail to create new XML file";
 	
 	/*
 	final String NODE_TASK_START_TIME_TAG = "start_time";
@@ -69,7 +71,7 @@ public class Storage {
 	private static Logging mLog = new Logging(Storage.class.getName(), Constants.LOG_FILE_NAME);
 	
 	public static boolean load(){
-		taskList = XmltoTable(Constants.XML_FILE_PATH);	
+		taskList = XmltoTable(Constants.XML_FILE_NAME);	
 		if(taskList != null){
 			return true;
 		}
@@ -78,13 +80,18 @@ public class Storage {
 	
 	public static boolean save(){
 		boolean isSaved = false;
-		isSaved = tableToXml(Constants.XML_FILE_PATH, taskList);
+		isSaved = tableToXml(Constants.XML_FILE_NAME, taskList);
 		return isSaved;
-		
 	}
 	
-	
+	public static boolean createNewXml(String newXmlFilePath){
+		boolean isCreateNew = false;
+		isCreateNew = tableToXml(newXmlFilePath, taskList);
+		return isCreateNew;
+	}
 
+	
+	
 	/*
 	 * Need XML file path to read
 	 * ArrayList of tasks for input
@@ -129,7 +136,7 @@ public class Storage {
 			
 			//add setting
 			nSetting = doc.createElement(NODE_SETTING_TAG);
-			createNode(nSetting, NODE_DATA_FOLDER_LOCATION, data_folder_location);
+			createNode(nSetting, NODE_SETTING_DATA_FOLDER_LOCATION, data_folder_location);
 			//add setting node to root
 			nRoot.appendChild(nSetting);
 			
@@ -285,7 +292,13 @@ public class Storage {
 		
 	}//end XMLtoJava
 	
-	
+	 public static boolean XmlSaveDataLocation(String xmlFileName){
+			 
+		 return true;
+		 
+	 }
+	 
+	 
 /*
 	public static boolean XmlAddTask(String xmlFilePath, Task newTask){
 		boolean isSaved = false;
@@ -418,7 +431,6 @@ public class Storage {
 	}
 */
 	
-	
 	private static boolean saveXml(Document doc, String xmlFilePath){
 		//Save the document
 		try{
@@ -484,8 +496,6 @@ public class Storage {
 	 
 	 private static void normalize(Document doc){
 		 //normalize is not a complusory to do
-		 
-		 
 		 try{
 			 assert(doc != null) : ASSERT_XML_DOCUMENT_NULL_MESSAGE;
 			 
@@ -501,6 +511,7 @@ public class Storage {
 		 	 
 	 }
 
+	 
 	 public static int getMaxNumberOfTasks(){
 		 return max_number_of_tasks;
 	 }

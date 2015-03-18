@@ -112,16 +112,16 @@ public class UIController {
 		String command = "";
 		
 		userInput = cmdTextField.getText();
-		mLog.logInfo(Constants.LOG_RUN_ON_ENTER + userInput);
+		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
 		parserOutput = Parser.validateInput(userInput);
 		
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
 			txtStatus.setText(parserOutput);
-			mLog.logInfo(Constants.LOG_FAIL_VALIDATEINPUT + parserOutput);
+			mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
 			return; //exit method
 		}
-		mLog.logInfo(Constants.LOG_SUCCESS_VALIDATE_INPUT + parserOutput);
+		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
 		command = Parser.getCommand(userInput);
 		tokens = Parser.getTokens(userInput);

@@ -55,19 +55,21 @@ public class Constants {
 	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
 	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
 	
+	public static String XML_FILE_NAME = "init_task.xml";
+	public static String XML_FILE_PATH = "";
 	
-	public static String XML_FILE_PATH = "init_task.xml";
+	public static final String MAIN_UI_LAYOUT_PATH = "ui/MainUI.fxml";
+	public static final String ROOT_LAYOUT_PATH = "ui/RootLayout.fxml";
+	public static final String LISTVIEW_LAYOUT_PATH = "ui/customListView.fxml";
+	public static final String SETTING_LAYOUT_PATH = "SettingLayout.fxml";
 	
-	public static String MAIN_UI_LAYOUT_PATH = "ui/MainUI.fxml";
-	public static String ROOT_LAYOUT_PATH = "ui/RootLayout.fxml";
-	public static String LISTVIEW_LAYOUT_PATH = "ui/customListView.fxml";
+	public static final String SETTING_LAYOUT_TITLE = "Setting";
+	
 	
 	public static String STATUS_DONE="done";
 	public static String STATUS_UNDONE="undone";
 	
-	
 	public static final int ARRAY_SIZE = 10;
-	
 	public static final int ARRAY_INDEX_TITLE = 0;
 	public static final int ARRAY_INDEX_START_DATE = 1;
 	public static final int ARRAY_INDEX_START_TIME = 2;
@@ -100,15 +102,19 @@ public class Constants {
 	
 	//========== LOGGING ===========
 	public static final String LOG_FILE_NAME = "pista_log.txt";
-	public static final String LOG_FILE_NAME_LOGIC = "pista_log_logic.txt";
-	public static final String LOG_SUCCESS_ADD_TASK="Successfully added %s task of %s category into list";
-	public static final String LOG_SUCCESS_DELETE_TASK = "Successfully delete %s task out of list";
-	public static final String LOG_FAIL_ADD_TASK="Fail to add task into list";
-	public static final String LOG_SUCCESS_EDIT_TASK="Successfully edited %s of category %s task";
-	public static final String LOG_FAIL_EDIT_TASK="Fail to edit task it is not found in list";
-	public static final String LOG_RUN_ON_ENTER = "Executed user command: ";
-	public static final String LOG_ON_ENTER_SUCCESS = "Successfully executed user command: ";
-	public static final String LOG_FAIL_VALIDATEINPUT = "Failed validateInput: ";
-	public static final String LOG_SUCCESS_VALIDATE_INPUT = "Successful Validate Input";
+	public static final String LOG_LOGIC_SUCCESS_ADD_TASK="Successfully added %s task of %s category into list";
+	public static final String LOG_LOGIC_SUCCESS_DELETE_TASK = "Successfully delete %s task out of list";
+	public static final String LOG_LOGIC_FAIL_ADD_TASK="Fail to add task into list";
+	public static final String LOG_LOGIC_SUCCESS_EDIT_TASK="Successfully edited %s of category %s task";
+	public static final String LOG_LOGIC_FAIL_EDIT_TASK="Fail to edit task it is not found in list";
+	public static final String LOG_UI_RUN_ON_ENTER = "Executed user command: ";
+	public static final String LOG_UI_SUCCESS_RUN_ON_ENTER = "Successfully executed user command: ";
+	public static final String LOG_UI_FAIL_VALIDATE_INPUT = "Failed validateInput: ";
+	public static final String LOG_UI_SUCCESS_VALIDATE_INPUT = "Successful Validate Input";
+
 	
+	
+	
+	//Setting
+	public static final String SETTING_DEFAULT_FOLDER_PATH = System.getProperty("user.home") + "\\"+"Desktop";
 }
