@@ -55,8 +55,8 @@ public class Constants {
 	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
 	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
 	
-	public static String XML_FILE_NAME = "init_task.xml";
-	public static String XML_FILE_PATH = "";
+	//public static String XML_FILE_NAME = "init_task.xml";
+	//public static String XML_FILE_PATH = "";
 	
 	public static final String MAIN_UI_LAYOUT_PATH = "ui/MainUI.fxml";
 	public static final String ROOT_LAYOUT_PATH = "ui/RootLayout.fxml";

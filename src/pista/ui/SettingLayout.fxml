@@ -13,6 +13,8 @@
             <Text layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Directory" />
             <TextField fx:id="txtBoxDirectory" editable="false" layoutX="14.0" layoutY="34.0" prefHeight="31.0" prefWidth="389.0" />
             <Button fx:id="btnBrowse" layoutX="408.0" layoutY="34.0" mnemonicParsing="false" onAction="#onButtonBrowseClick" text="Browse..." />
+            <Button fx:id="btnSave" layoutX="408.0" layoutY="234.0" mnemonicParsing="false" onAction="#onButtonSaveClick" prefHeight="31.0" prefWidth="78.0" text="Save" />
+            <Text fx:id="txtStatus" layoutX="15.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="470.6708984375" />
          </children>
       </AnchorPane>
    </center>

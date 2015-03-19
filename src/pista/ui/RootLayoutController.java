@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class RootLayoutController {
+	
+	private SettingLayoutController mSettingCtrl = null;
+	private UIController mUICtrl = null;
+
 	@FXML
     void onMenuItemSettingClick(ActionEvent event) {
 		Stage stage = new Stage();
@@ -25,13 +29,16 @@ public class RootLayoutController {
 		//stage.setMaxWidth(600);
 		//stage.setMinHeight(600);
 		//stage.setMinWidth(400);
-
-		FXMLLoader loader = new FXMLLoader();
-		
-        loader.setLocation(getClass().getResource(Constants.SETTING_LAYOUT_PATH));
-        BorderPane rootLayout;
 		try {
+			FXMLLoader loader = new FXMLLoader();
+			
+	        loader.setLocation(getClass().getResource(Constants.SETTING_LAYOUT_PATH));
+	        BorderPane rootLayout;
 			rootLayout = (BorderPane) loader.load();
+			
+			mSettingCtrl  = loader.getController(); //setting page will not capture rootcontroller during initialize
+	        mSettingCtrl.setRootController(this); //setting will capture rootcontroller after initialize
+	        
 			Scene scene = new Scene(rootLayout, 500, 300);
 	        
 			stage.setScene(scene);    
@@ -42,4 +49,19 @@ public class RootLayoutController {
 			e.printStackTrace();
 		}
     }
+	
+	public void setUIController(UIController ctrl){
+    	mUICtrl = ctrl;
+    }
+	
+	public void hello(){
+		System.out.println("hello");
+	}
+	
+	public boolean refreshUIListView(){
+		boolean isUpdated = mUICtrl.showTaskListInListView();
+		return isUpdated;
+	}
+	
+	
 }

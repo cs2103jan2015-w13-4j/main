@@ -1,6 +1,10 @@
 package pista.storage;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -26,6 +30,9 @@ public class Storage {
 
 	private static int max_number_of_tasks;
 	private static String data_folder_location="";
+	
+	
+	private static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><setting><data_folder_location>[new_file_path]</data_folder_location></setting></tasks>";
 	
 	private static final String NODE_ROOT_TAG = "tasks";
 	private static final String NODE_TOTAL_TASK_TAG = "total_task";
@@ -71,7 +78,7 @@ public class Storage {
 	private static Logging mLog = new Logging(Storage.class.getName(), Constants.LOG_FILE_NAME);
 	
 	public static boolean load(){
-		taskList = XmltoTable(Constants.XML_FILE_NAME);	
+		taskList = XmltoTable(getDataFolderLocation());	
 		if(taskList != null){
 			return true;
 		}
@@ -80,16 +87,116 @@ public class Storage {
 	
 	public static boolean save(){
 		boolean isSaved = false;
-		isSaved = tableToXml(Constants.XML_FILE_NAME, taskList);
+		isSaved = tableToXml(getDataFolderLocation(), taskList);
 		return isSaved;
 	}
 	
-	public static boolean createNewXml(String newXmlFilePath){
-		boolean isCreateNew = false;
-		isCreateNew = tableToXml(newXmlFilePath, taskList);
-		return isCreateNew;
-	}
+	
+	public static boolean overwriteNewXmlFile(String newPath){
+		//filepath exist
+		try {
+			String newXmlString = XML_DEFAULT_STRING.replace("[new_file_path]", newPath);
+			File file = new File(newPath);
 
+			//exist and either length is 0 or not valid xml format
+			FileWriter fileWriter = new FileWriter(file,false); //overwrite the file
+			
+			BufferedWriter bufferFileWriter  = new BufferedWriter(fileWriter);
+	        fileWriter.append(newXmlString); //write the default xml string
+	        bufferFileWriter.close();
+	        
+			fileWriter.close();
+
+			return true;
+		} catch (IOException e) {
+			//Log
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	public static boolean isFileFormatValid(String xmlFilePath){
+		//Do a small test on e selected xml file
+		try{
+			File mXmlFile = new File(xmlFilePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(mXmlFile);
+			
+			Node nRoot = doc.getDocumentElement(); //get root
+			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
+			Node nTotalValue = nTotalList.item(0);
+			NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
+			Node nDataFolderLocation = nSettings.item(0);
+
+			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeNull(nDataFolderLocation) ||
+					isNodeListNull(nTotalList) || isNodeListNull(nSettings)){
+				return false; //not valid XML format
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	private static boolean isNodeNull(Node n){
+		if(n == null){
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean isNodeListNull(NodeList n){
+		if(n == null){
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isFileExist(String filePath){
+
+		try{
+			File file = new File(filePath);
+			if(file.exists()){
+				return true;
+			}
+			//not exist
+			return false;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	public static boolean isFileEmpty(String filePath){
+		
+		try {
+			File file = new File(filePath);
+			FileInputStream fis = new FileInputStream(file);  
+
+			int b = fis.read();
+			if (b == -1)  {
+				return true; //is empty
+			}
+			
+			return false;
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return true;
+		}  
+		
+		
+			
+	} 
 	
 	
 	/*
@@ -281,12 +388,13 @@ public class Storage {
 		}catch(AssertionError e){
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
+			mArrayTask = null;
 			
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
+			mArrayTask = null;
 		}//end try
-		
 		
 		return mArrayTask;
 		
@@ -544,6 +652,11 @@ public class Storage {
 	 
 	 public static String getDataFolderLocation(){
 		 return data_folder_location;
+	 }
+	 
+	 public static boolean initTaskList(){
+		 taskList = new ArrayList<Task>();
+		 return true;
 	 }
 	 
 	 public static ArrayList<Task> getTaskList(){

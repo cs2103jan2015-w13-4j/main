@@ -31,6 +31,9 @@ public class UIController {
 	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
 	public String userInput = null;
 
+	private RootLayoutController mRootCtrl = null;
+	private SettingLayoutController mSettingCtrl = null;
+	
 	//Objects
 	@FXML
 	private Button btnHelp;
@@ -62,15 +65,12 @@ public class UIController {
 	@FXML
 	private ListView<Task> listview_task_fx_id;
 
-	public void delete() {
-		cmdTextField.setText(Constants.DELETE_COMMAND);
-	}
-
+	
 	@FXML
 	void onHelp(ActionEvent event) {
 		Stage stage = new Stage();
 
-		stage.setTitle("Web View");
+		stage.setTitle("Help");
 		stage.initModality(Modality.NONE);
 		stage.initStyle(StageStyle.DECORATED);
 		stage.setResizable(false);
@@ -138,12 +138,14 @@ public class UIController {
 		String logicOutput = "";
 		
 		clearContent();
-		
+
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
 		
+		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
+			showTaskListInListView();
+		}
 		
-		showTaskListInListView();
 
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
@@ -173,17 +175,23 @@ public class UIController {
 	}
 
 
-	private void showTaskListInListView(){
-		ObservableList<Task> myObservableList = FXCollections.observableList(Logic.getStorageList());
-		listview_task_fx_id.setItems(null); 
-		listview_task_fx_id.setItems(myObservableList);
+	public boolean showTaskListInListView(){
+		try{
+			ObservableList<Task> myObservableList = FXCollections.observableList(Logic.getStorageList());
+			listview_task_fx_id.setItems(null); 
+			listview_task_fx_id.setItems(myObservableList);
+			
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+		
 	}
 	
 
 	private void clearContent(){
 		txtStatus.setText("");
 	}
-
 
 
 }

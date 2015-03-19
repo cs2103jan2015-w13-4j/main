@@ -6,6 +6,8 @@ import pista.log.Logging;
 import pista.logic.Logic;
 import pista.parser.Parser;
 import pista.storage.Storage;
+import pista.ui.RootLayoutController;
+import pista.ui.UIController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,6 +25,11 @@ public class MainApp extends Application {
     private Storage mStorage;
     private Logging mLog;
     
+    
+    private UIController mUICtrl = null;
+    private RootLayoutController mRootCtrl = null;
+    
+    
     //initialises the stage
     @Override
     public void start(Stage primaryStage) {
@@ -30,7 +37,10 @@ public class MainApp extends Application {
         this.primaryStage.setTitle(Constants.PRODUCT_NAME);
 
         initRootLayout();
-        showMainUI();
+        initMainUI();
+        
+        mRootCtrl.setUIController(mUICtrl);
+
     }
     
     
@@ -42,6 +52,8 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource(Constants.ROOT_LAYOUT_PATH));
             rootLayout = (BorderPane) loader.load();
 
+            mRootCtrl = loader.getController();
+            
             // Show the scene containing the root layout
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
@@ -52,13 +64,15 @@ public class MainApp extends Application {
     }
     
 	//sets up inside the base root layout the main UI
-    public void showMainUI() {
+    public void initMainUI() {
         try {
             // Load MainUI
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PATH));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
+            mUICtrl = loader.getController();
+            
             // Set MainUI into the center of RootLayout
             rootLayout.setCenter(personOverview);
         } catch (IOException e) {

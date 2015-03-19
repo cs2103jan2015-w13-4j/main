@@ -58,3 +58,9 @@ Mar 18, 2015 11:46:56 AM pista.log.Logging logInfo
 INFO: Successfully added meeting task of timed category into list
 Mar 18, 2015 11:46:56 AM pista.log.Logging logInfo
 INFO: Executed user command: add meeting -20/01/2016 -10:25 -20/01/2016 -23:00
+Mar 19, 2015 4:14:01 PM pista.log.Logging logInfo
+INFO: Executed user command: add 123
+Mar 19, 2015 4:14:01 PM pista.log.Logging logInfo
+INFO: Successful Validate InputValid
+Mar 19, 2015 4:14:01 PM pista.log.Logging logInfo
+INFO: Successfully added 123 task of floating category into list

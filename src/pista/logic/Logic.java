@@ -291,17 +291,64 @@ public class Logic {
 		return cal.getTimeInMillis();
 	}
 	
-	/*filePath is file directory + file name*/
-	public static boolean createNewXMLFile(String newFilePath){
+	public static boolean checkFileBeforeSave(String newFilePath){
+		if(!validateIsFileExist(newFilePath)){
+			return false;
+		}
+		
+		if(!validateIsFileEmpty(newFilePath) && !validateFileFormat(newFilePath)){
+			return false;
+		}
+		
+		return true;	
+	}
+	
+	public static boolean checkFileDuringSave(String newFilePath){
 		boolean isCreated = false;
 		
-		//assert(!newFilePath.equals("") || !newFilePath.isEmpty()) :  ;
-
-		if(!newFilePath.equals("") || !newFilePath.isEmpty()){
-			isCreated = Storage.createNewXml(newFilePath);
+		if(Storage.isFileEmpty(newFilePath)){ //if empty, overwrite new xml format 
+			isCreated = overwriteFile(newFilePath);
+		}else{
+			isCreated = loadExistingFile(newFilePath); //not empty and format is correct
 		}
 		
 		return isCreated;
+	}
+	
+	private static boolean validateIsFileExist(String newFilePath){
+		if(!Storage.isFileExist(newFilePath)){ //not exist
+			return false; //maybe file is deleted after choosing
+		}
+		return true;
+	}
+	
+	private static boolean validateIsFileEmpty(String newFilePath){
+		if(Storage.isFileEmpty(newFilePath)){
+			//create xml nodes and format into the file
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean validateFileFormat(String newFilePath){
+		if(Storage.isFileFormatValid(newFilePath)){ //if valid
+			return true;
+		}
+		return false;
+	}
+	
+	private static boolean overwriteFile(String newFilePath){
+		Storage.initTaskList();
+		Storage.setDataFolderLocation(newFilePath);
+		boolean isOverwrite = Storage.overwriteNewXmlFile(newFilePath);
+		return isOverwrite;
+	}
+	
+	private static boolean loadExistingFile(String newFilePath){
+		//read file
+		Storage.setDataFolderLocation(newFilePath);
+		boolean isLoaded = Storage.load(); //load the file into tasklist	
+		return isLoaded;
 	}
 	
 }
