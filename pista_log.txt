@@ -1,0 +1,18 @@
+Mar 20, 2015 7:56:17 AM pista.log.Logging logSevere
+SEVERE: hello
+Mar 20, 2015 7:56:47 AM pista.log.Logging logSevere
+SEVERE: hello
+Mar 20, 2015 7:56:58 AM pista.log.Logging logSevere
+SEVERE: List of task is not initialize
+Mar 20, 2015 7:56:58 AM pista.log.Logging logSevere
+SEVERE: List of task is not initialize
+Mar 20, 2015 7:57:09 AM pista.log.Logging logInfo
+INFO: Successfully get next available ID
+Mar 20, 2015 7:57:09 AM pista.log.Logging logInfo
+INFO: Successfully get next available ID
+Mar 20, 2015 7:57:09 AM pista.log.Logging logInfo
+INFO: Successfully write into XML file
+Mar 20, 2015 7:57:09 AM pista.log.Logging logInfo
+INFO: Successfully save XML file
+Mar 20, 2015 7:57:09 AM pista.log.Logging logInfo
+INFO: Successfully added 123 task of floating category into list

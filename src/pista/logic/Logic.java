@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import pista.log.Logging;
 
 public class Logic {
-	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
+	//private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
 
 	public static String runCommand(String command, String[] tokens) {
 		String output = "";
@@ -59,10 +59,10 @@ public class Logic {
 		isAddedToStorage = Storage.save();
 
 		if(isAddedToArray && isAddedToStorage){
-			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
+			Logging.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_ADD_TASK;
 		}else{
-			mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
+			//mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
 			return Constants.LOGIC_FAIL_ADD_TASK;
 		}
 	}
@@ -98,11 +98,11 @@ public class Logic {
 			Storage.getTaskList().add(extractedTask);
 			Storage.save();
 
-			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
+			//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
 		else{
-			mLog.logInfo(Constants.LOG_LOGIC_FAIL_EDIT_TASK);
+			//mLog.logInfo(Constants.LOG_LOGIC_FAIL_EDIT_TASK);
 			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
 		}
 	}
@@ -113,10 +113,10 @@ public class Logic {
 		if(input.equalsIgnoreCase("a")){
 			clearList();
 			if(Storage.save()){
-				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
+				//mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
 				return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
 			}else{
-				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
+				//mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
 				return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
 			}
 		}else {
@@ -128,21 +128,21 @@ public class Logic {
 					assert index < Storage.getTaskList().size() : "Index out of bound";
 					Task temp = Storage.getTaskList().get(index);
 					Storage.getTaskList().remove(index);
-					mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
+					//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 				}else{
-					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
+					//mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
 					return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
 				}
 			}catch(AssertionError e){
-				mLog.logSevere(e.getMessage());
+				//mLog.logSevere(e.getMessage());
 				e.printStackTrace();
 			}
 
 			if (Storage.save()){
-				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
+				//mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
 				return Constants.LOGIC_SUCCESS_DELETE_TASK;
 			}else{
-				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
+				//mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
 				return Constants.LOGIC_FAIL_DELETE_TASK;
 			}
 		}

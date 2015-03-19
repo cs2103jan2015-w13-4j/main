@@ -31,7 +31,6 @@ public class Storage {
 	private static int max_number_of_tasks;
 	private static String data_folder_location="";
 	
-	
 	private static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><setting><data_folder_location>[new_file_path]</data_folder_location></setting></tasks>";
 	
 	private static final String NODE_ROOT_TAG = "tasks";
@@ -80,7 +79,6 @@ public class Storage {
 	public static boolean init(){
 		boolean hasInitLog = false;
 		hasInitLog = Logging.initLog(Storage.class.getName(), Constants.LOG_FILE_NAME);
-		
 		return hasInitLog;
 	}
 	
@@ -393,7 +391,7 @@ public class Storage {
 			Logging.logInfo(LOG_STORAGE_LOAD_SUCCESS);
 
 		}catch(AssertionError e){
-			Logging.logSevere(e.getMessage());
+			Logging.logSevere("hello");
 			e.printStackTrace();
 			mArrayTask = null;
 			

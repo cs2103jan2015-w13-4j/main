@@ -29,7 +29,7 @@ import javafx.util.Callback;
 
 //Contains all objects found in MainUI
 public class UIController {
-	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
+	//private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
 	public String userInput = null;
 
 	//Objects
@@ -110,16 +110,16 @@ public class UIController {
 		String command = "";
 		
 		userInput = cmdTextField.getText();
-		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
+		//mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
 		parserOutput = Parser.validateInput(userInput);
 		
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
 			txtStatus.setText(parserOutput);
-			mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
+			//mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
 			return; //exit method
 		}
-		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
+		//mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
 		command = Parser.getCommand(userInput);
 		tokens = Parser.getTokens(userInput);
@@ -136,18 +136,14 @@ public class UIController {
 		String logicOutput = "";
 		
 		clearContent();
-
+		Storage.init();
+		
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
 		
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			showTaskListInListView();
 		}
-		
-		
-		Storage.init();
-		
-		
 		
 
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
