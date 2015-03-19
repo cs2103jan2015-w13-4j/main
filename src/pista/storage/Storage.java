@@ -75,7 +75,14 @@ public class Storage {
 	
 	private static ArrayList<Task> taskList = null;
 	
-	private static Logging mLog = new Logging(Storage.class.getName(), Constants.LOG_FILE_NAME);
+	//private static Logging mLog = new Logging(Storage.class.getName(), Constants.LOG_FILE_NAME);
+	
+	public static boolean init(){
+		boolean hasInitLog = false;
+		hasInitLog = Logging.initLog(Storage.class.getName(), Constants.LOG_FILE_NAME);
+		
+		return hasInitLog;
+	}
 	
 	public static boolean load(){
 		taskList = XmltoTable(getDataFolderLocation());	
@@ -274,20 +281,20 @@ public class Storage {
 			isSaved = saveXml(doc, xmlFilePath);			
 	
 			if (isSaved){
-				mLog.logInfo(LOG_STORAGE_SAVE_SUCCESS);
+				Logging.logInfo(LOG_STORAGE_SAVE_SUCCESS);
 				return true;
 			}else{
-				mLog.logWarning(LOG_STORAGE_SAVE_FAILURE);
+				Logging.logWarning(LOG_STORAGE_SAVE_FAILURE);
 				return false;
 			}
 			
 		}catch(AssertionError e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 			
 		}catch(Exception e){
-			mLog.logSevere(e.getMessage()); //logging
+			Logging.logSevere(e.getMessage()); //logging
 			e.printStackTrace();
 			return false;
 		}
@@ -383,15 +390,15 @@ public class Storage {
 				}//end if 
 			}//end for
 			
-			mLog.logInfo(LOG_STORAGE_LOAD_SUCCESS);
+			Logging.logInfo(LOG_STORAGE_LOAD_SUCCESS);
 
 		}catch(AssertionError e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			e.printStackTrace();
 			mArrayTask = null;
 			
 		}catch(Exception e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			e.printStackTrace();
 			mArrayTask = null;
 		}//end try
@@ -554,17 +561,17 @@ public class Storage {
 			transformer.transform(source, result);
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
 			
-			mLog.logInfo(LOG_STORAGE_WRITE_XML_FILE_SUCCESS);
+			Logging.logInfo(LOG_STORAGE_WRITE_XML_FILE_SUCCESS);
 			
 			return true;
 			
 		}catch(AssertionError e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 			
 		}catch(Exception e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;		
 		}//end try
@@ -590,11 +597,11 @@ public class Storage {
 			return true;
 			
 		}catch(AssertionError e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			return false;
 			
 		}catch(Exception e){
-			mLog.logSevere(e.getMessage());
+			Logging.logSevere(e.getMessage());
 			return false;
 		}
 		
@@ -614,7 +621,7 @@ public class Storage {
 			 }
 			 
 		 }catch(AssertionError e){
-			 	mLog.logWarning(e.getMessage());
+			 Logging.logWarning(e.getMessage());
 		 }
 		 	 
 	 }
@@ -640,11 +647,11 @@ public class Storage {
 				 
 			 }//end if 
 			  
-			 mLog.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
+			 Logging.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
 			 return lastID + 1;
 			 
 		 }catch(AssertionError e){
-			 mLog.logSevere(e.getMessage());
+			 Logging.logSevere(e.getMessage());
 			 return 0;
 		 }
 		 

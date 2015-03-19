@@ -7,6 +7,7 @@ import pista.log.Logging;
 import pista.logic.Logic;
 import pista.logic.Task;
 import pista.parser.Parser;
+import pista.storage.Storage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,9 +32,6 @@ public class UIController {
 	private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
 	public String userInput = null;
 
-	private RootLayoutController mRootCtrl = null;
-	private SettingLayoutController mSettingCtrl = null;
-	
 	//Objects
 	@FXML
 	private Button btnHelp;
@@ -146,6 +144,11 @@ public class UIController {
 			showTaskListInListView();
 		}
 		
+		
+		Storage.init();
+		
+		
+		
 
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
@@ -172,7 +175,7 @@ public class UIController {
 			}
 		});
 
-	}
+	}//end initialize
 
 
 	public boolean showTaskListInListView(){

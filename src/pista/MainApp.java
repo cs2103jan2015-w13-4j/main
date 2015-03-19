@@ -19,12 +19,7 @@ public class MainApp extends Application {
 	
 	private Stage primaryStage;
     private BorderPane rootLayout;
-    
-    private Parser mParser;
-    private Logic mLogic;
-    private Storage mStorage;
-    private Logging mLog;
-    
+      
     
     private UIController mUICtrl = null;
     private RootLayoutController mRootCtrl = null;
