@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,15 +20,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import pista.Constants;
+import pista.log.CustomLogging;
 import pista.logic.Task;
 import pista.parser.Parser;
-import pista.log.Logging;
 
 public class Storage {
 
 	private static int max_number_of_tasks;
-	private static String data_folder_location="";
+	private static String data_folder_location = "";
 	
 	private static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><setting><data_folder_location>[new_file_path]</data_folder_location></setting></tasks>";
 	
@@ -74,12 +72,16 @@ public class Storage {
 	
 	private static ArrayList<Task> taskList = null;
 	
-	//private static Logging mLog = new Logging(Storage.class.getName(), Constants.LOG_FILE_NAME);
+	private static CustomLogging mLog = null;
 	
-	public static boolean init(){
-		boolean hasInitLog = false;
-		hasInitLog = Logging.initLog(Storage.class.getName(), Constants.LOG_FILE_NAME);
-		return hasInitLog;
+	public static boolean initLogging(){
+		try{
+			mLog = CustomLogging.getInstance(Storage.class.getName());
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}	
 	}
 	
 	public static boolean load(){
@@ -104,7 +106,7 @@ public class Storage {
 			File file = new File(newPath);
 
 			//exist and either length is 0 or not valid xml format
-			FileWriter fileWriter = new FileWriter(file,false); //overwrite the file
+			FileWriter fileWriter = new FileWriter(file, false); //overwrite the file
 			
 			BufferedWriter bufferFileWriter  = new BufferedWriter(fileWriter);
 	        fileWriter.append(newXmlString); //write the default xml string
@@ -114,7 +116,7 @@ public class Storage {
 
 			return true;
 		} catch (IOException e) {
-			//Log
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
@@ -141,6 +143,7 @@ public class Storage {
 			}
 
 		}catch (Exception e){
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
@@ -174,6 +177,7 @@ public class Storage {
 			return false;
 			
 		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
@@ -194,7 +198,7 @@ public class Storage {
 			return false;
 		
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return true;
 		}  
@@ -279,20 +283,20 @@ public class Storage {
 			isSaved = saveXml(doc, xmlFilePath);			
 	
 			if (isSaved){
-				Logging.logInfo(LOG_STORAGE_SAVE_SUCCESS);
+				mLog.logInfo(LOG_STORAGE_SAVE_SUCCESS);
 				return true;
 			}else{
-				Logging.logWarning(LOG_STORAGE_SAVE_FAILURE);
+				mLog.logWarning(LOG_STORAGE_SAVE_FAILURE);
 				return false;
 			}
 			
 		}catch(AssertionError e){
-			Logging.logSevere(e.getMessage());
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 			
 		}catch(Exception e){
-			Logging.logSevere(e.getMessage()); //logging
+			mLog.logSevere(e.getMessage()); //logging
 			e.printStackTrace();
 			return false;
 		}
@@ -388,15 +392,15 @@ public class Storage {
 				}//end if 
 			}//end for
 			
-			Logging.logInfo(LOG_STORAGE_LOAD_SUCCESS);
+			mLog.logInfo(LOG_STORAGE_LOAD_SUCCESS);
 
 		}catch(AssertionError e){
-			Logging.logSevere("hello");
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			mArrayTask = null;
 			
 		}catch(Exception e){
-			Logging.logSevere(e.getMessage());
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			mArrayTask = null;
 		}//end try
@@ -404,12 +408,6 @@ public class Storage {
 		return mArrayTask;
 		
 	}//end XMLtoJava
-	
-	 public static boolean XmlSaveDataLocation(String xmlFileName){
-			 
-		 return true;
-		 
-	 }
 	 
 	 
 /*
@@ -559,17 +557,17 @@ public class Storage {
 			transformer.transform(source, result);
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
 			
-			Logging.logInfo(LOG_STORAGE_WRITE_XML_FILE_SUCCESS);
+			mLog.logInfo(LOG_STORAGE_WRITE_XML_FILE_SUCCESS);
 			
 			return true;
 			
 		}catch(AssertionError e){
-			Logging.logSevere(e.getMessage());
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;
 			
 		}catch(Exception e){
-			Logging.logSevere(e.getMessage());
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return false;		
 		}//end try
@@ -595,11 +593,11 @@ public class Storage {
 			return true;
 			
 		}catch(AssertionError e){
-			Logging.logSevere(e.getMessage());
+			mLog.logSevere(e.getMessage());
 			return false;
 			
 		}catch(Exception e){
-			Logging.logSevere(e.getMessage());
+			mLog.logSevere(e.getMessage());
 			return false;
 		}
 		
@@ -619,7 +617,7 @@ public class Storage {
 			 }
 			 
 		 }catch(AssertionError e){
-			 Logging.logWarning(e.getMessage());
+			 mLog.logWarning(e.getMessage());
 		 }
 		 	 
 	 }
@@ -645,11 +643,11 @@ public class Storage {
 				 
 			 }//end if 
 			  
-			 Logging.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
+			 mLog.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
 			 return lastID + 1;
 			 
 		 }catch(AssertionError e){
-			 Logging.logSevere(e.getMessage());
+			 mLog.logSevere(e.getMessage());
 			 return 0;
 		 }
 		 

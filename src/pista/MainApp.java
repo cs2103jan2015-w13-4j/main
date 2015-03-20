@@ -2,7 +2,7 @@ package pista;
 
 import java.io.IOException;
 
-import pista.log.Logging;
+import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.parser.Parser;
 import pista.storage.Storage;

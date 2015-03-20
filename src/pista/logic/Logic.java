@@ -11,11 +11,21 @@ import pista.storage.Storage;
 
 import java.util.logging.Logger;
 
-import pista.log.Logging;
+import pista.log.CustomLogging;
 
 public class Logic {
-	//private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
-
+	private static CustomLogging mLog = null;
+	
+	public static boolean initLogging(){
+		try{
+			mLog = CustomLogging.getInstance(Storage.class.getName());
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+	
 	public static String runCommand(String command, String[] tokens) {
 		String output = "";
 		switch(command) {
@@ -59,10 +69,10 @@ public class Logic {
 		isAddedToStorage = Storage.save();
 
 		if(isAddedToArray && isAddedToStorage){
-			Logging.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
+			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_ADD_TASK;
 		}else{
-			//mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
+			mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
 			return Constants.LOGIC_FAIL_ADD_TASK;
 		}
 	}

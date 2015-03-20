@@ -37,8 +37,6 @@ public class SettingLayoutController {
     @FXML
     private Text txtStatus;
     
-    private MainApp mApp = null;
-    private UIController mUICtrl = null;
     private RootLayoutController mRootCtrl = null;
     
     private boolean isValidFile = false;

@@ -3,7 +3,7 @@ package pista.ui;
 import java.io.IOException;
 
 import pista.Constants;
-import pista.log.Logging;
+import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.logic.Task;
 import pista.parser.Parser;
@@ -29,7 +29,8 @@ import javafx.util.Callback;
 
 //Contains all objects found in MainUI
 public class UIController {
-	//private static Logging mLog = new Logging(Logic.class.getName(), Constants.LOG_FILE_NAME);
+	
+	private static CustomLogging mLog = null;
 	public String userInput = null;
 
 	//Objects
@@ -90,6 +91,16 @@ public class UIController {
 		//listview_task_fx_id.setItems(myObservableList);
 	}
 
+	public static boolean initLogging(){
+		try{
+			mLog = CustomLogging.getInstance(Storage.class.getName());
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+	
 	public void add_outline() {
 		cmdTextField.setText(Constants.ADD_COMMAND);
 	}
@@ -110,20 +121,21 @@ public class UIController {
 		String command = "";
 		
 		userInput = cmdTextField.getText();
-		//mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
-		parserOutput = Parser.validateInput(userInput);
 		
+		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
+		
+		parserOutput = Parser.validateInput(userInput);
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
 			txtStatus.setText(parserOutput);
-			//mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
+			mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
 			return; //exit method
 		}
-		//mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
+		
+		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
 		command = Parser.getCommand(userInput);
 		tokens = Parser.getTokens(userInput);
-		
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);
@@ -136,7 +148,10 @@ public class UIController {
 		String logicOutput = "";
 		
 		clearContent();
-		Storage.init();
+		
+		initLogging();
+		Storage.initLogging();
+		Logic.initLogging();
 		
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
@@ -149,7 +164,6 @@ public class UIController {
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
 			public ListCell<Task> call(ListView<Task> param) {
-				//final Tooltip tooltip = new Tooltip();
 				final TaskListCell mCell = new TaskListCell();
 				return mCell;
 			}//end call
@@ -163,9 +177,9 @@ public class UIController {
 					Task oldTask, Task newTask) {
 				if(newTask != null){
 					System.out.println("Selected : " + newTask.getID() + " - " + 
-				newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+
-							newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+
-				newTask.getEndTime()+ " - "+newTask.getCategory());
+										newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+
+										newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+
+										newTask.getEndTime()+ " - "+newTask.getCategory());
 
 				}
 			}
@@ -182,12 +196,12 @@ public class UIController {
 			
 			return true;
 		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
 			return false;
 		}
 		
 	}
 	
-
 	private void clearContent(){
 		txtStatus.setText("");
 	}

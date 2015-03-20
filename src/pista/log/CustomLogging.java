@@ -4,25 +4,37 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class Logging {
+import pista.Constants;
+
+public class CustomLogging {
 	
-	private static Logger logger = null;
+	private static CustomLogging mLogging = null;
+	private static Logger mLogger = null;
 	private static FileHandler fh = null;
 	
-	public Logging(String className, String logFileName){
+	private CustomLogging(){ //make sure this class cannot be instantiate
 	}
 	
-	public static boolean initLog(String className, String logFileName){
-		logger = Logger.getLogger(className);
+	//Implement singleton pattern
+	public static CustomLogging getInstance(String className){
+		mLogging = new CustomLogging();
+		mLogging.initLog(className, Constants.LOG_FILE_NAME);
+		return mLogging;
+	}
+	
+	private boolean initLog(String className, String logFileName){
+		mLogger = Logger.getLogger(className);
 		try {
+			/*
 			if(fh != null){
 				fh.flush();
 				fh.close();
 				fh = null;
 			}
+			*/
 			
 			fh = new FileHandler(logFileName, true);
-			logger.addHandler(fh);
+			mLogger.addHandler(fh);
 			
 			SimpleFormatter formatter = new SimpleFormatter(); 
 			fh.setFormatter(formatter); 
@@ -42,7 +54,7 @@ public class Logging {
 		
 	}
 	
-	public static boolean closeLog(){
+	public boolean closeLog(){
 		try{
 			if(fh != null){
 				fh.close();
@@ -57,41 +69,41 @@ public class Logging {
 		
 	}
 	
-	public static boolean logInfo(String msg){
-		if(logger != null){
-			logger.info(msg);
+	public boolean logInfo(String msg){
+		if(mLogger != null){
+			mLogger.info(msg);
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean logSevere(String msg){
-		if(logger != null){
-			logger.severe(msg);
+	public boolean logSevere(String msg){
+		if(mLogger != null){
+			mLogger.severe(msg);
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean logWarning(String msg){
-		if(logger != null){
-			logger.warning(msg);
+	public boolean logWarning(String msg){
+		if(mLogger != null){
+			mLogger.warning(msg);
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean logFine(String msg){
-		if(logger != null){
-			logger.fine(msg);
+	public boolean logFine(String msg){
+		if(mLogger != null){
+			mLogger.fine(msg);
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean logConfig(String msg){
-		if(logger != null){
-			logger.config(msg);
+	public boolean logConfig(String msg){
+		if(mLogger != null){
+			mLogger.config(msg);
 			return true;
 		}
 		return false;
