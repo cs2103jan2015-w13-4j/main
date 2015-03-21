@@ -3,6 +3,7 @@ package pista.ui;
 import java.io.IOException;
 
 import pista.Constants;
+import pista.CustomPreferences;
 import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.logic.Task;
@@ -31,8 +32,10 @@ import javafx.util.Callback;
 public class UIController {
 	
 	private static CustomLogging mLog = null;
+	private CustomPreferences mPrefs = null;
+	
 	public String userInput = null;
-
+	
 	//Objects
 	@FXML
 	private Button btnHelp;
@@ -91,7 +94,7 @@ public class UIController {
 		//listview_task_fx_id.setItems(myObservableList);
 	}
 
-	public static boolean initLogging(){
+	public boolean initLogging(){
 		try{
 			mLog = CustomLogging.getInstance(Storage.class.getName());
 			return true;
@@ -99,6 +102,28 @@ public class UIController {
 			e.printStackTrace();
 			return false;
 		}		
+	}
+	
+	private boolean initPreferences(){
+		try{
+			mPrefs = CustomPreferences.getInstance();
+	    	mPrefs.initPreference(UIController.class.getName());
+	    	return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+    }
+	
+	private String getPreferenceFilePath(){
+		try{
+			String filePath = "";
+			filePath = mPrefs.getPreferenceStringValue(Constants.PREFERENCE_DATA_FILE_PATH_KEY);
+			return filePath;
+		}catch(Exception e){
+			e.printStackTrace();
+			return "";
+		}
 	}
 	
 	public void add_outline() {
@@ -147,11 +172,13 @@ public class UIController {
 	public void initialize() {
 		String logicOutput = "";
 		
-		clearContent();
+		this.clearContent();
+		this.initPreferences(); //initialize preferences
+		this.initLogging(); //initialize logging
 		
-		initLogging();
-		Storage.initLogging();
-		Logic.initLogging();
+		Storage.setDataFolderLocation(getPreferenceFilePath());
+		Storage.initLogging(); //initialize Storage logging
+		Logic.initLogging(); //initialize Logic logging
 		
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
@@ -160,7 +187,6 @@ public class UIController {
 			showTaskListInListView();
 		}
 		
-
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
 			public ListCell<Task> call(ListView<Task> param) {

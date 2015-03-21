@@ -108,11 +108,11 @@ public class Logic {
 			Storage.getTaskList().add(extractedTask);
 			Storage.save();
 
-			//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
+			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
 		else{
-			//mLog.logInfo(Constants.LOG_LOGIC_FAIL_EDIT_TASK);
+			mLog.logInfo(Constants.LOG_LOGIC_FAIL_EDIT_TASK);
 			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
 		}
 	}
@@ -123,10 +123,10 @@ public class Logic {
 		if(input.equalsIgnoreCase("a")){
 			clearList();
 			if(Storage.save()){
-				//mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
+				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
 				return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
 			}else{
-				//mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
+				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
 				return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
 			}
 		}else {
@@ -144,15 +144,15 @@ public class Logic {
 					return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
 				}
 			}catch(AssertionError e){
-				//mLog.logSevere(e.getMessage());
+				mLog.logSevere(e.getMessage());
 				e.printStackTrace();
 			}
 
 			if (Storage.save()){
-				//mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
+				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
 				return Constants.LOGIC_SUCCESS_DELETE_TASK;
 			}else{
-				//mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
+				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
 				return Constants.LOGIC_FAIL_DELETE_TASK;
 			}
 		}
@@ -290,16 +290,23 @@ public class Logic {
 		Date date1 = null;
 		try {
 			date1=sdf.parse(combined);
+			
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date1);
+
+			return cal.getTimeInMillis();
+			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
+			return 0L;
 		}
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date1);
-
-		return cal.getTimeInMillis();
+		
 	}
+	
+	
+	//============= API FOR SETTING PAGE ======================
 	
 	public static boolean checkFileBeforeSave(String newFilePath){
 		if(!validateIsFileExist(newFilePath)){

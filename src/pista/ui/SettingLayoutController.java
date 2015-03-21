@@ -3,6 +3,7 @@ package pista.ui;
 import java.io.File;
 
 import pista.Constants;
+import pista.CustomPreferences;
 import pista.MainApp;
 import pista.logic.Logic;
 import pista.storage.Storage;
@@ -41,8 +42,32 @@ public class SettingLayoutController {
     
     private boolean isValidFile = false;
     
+    private CustomPreferences mPrefs = null;
+    
+	private boolean initPreferences(){
+		try{
+			mPrefs = CustomPreferences.getInstance();
+	    	mPrefs.initPreference(UIController.class.getName());
+	    	return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+    }
+	
+	private boolean setPreferenceFilePath(String newPath){
+		try{
+			mPrefs.savePreference(Constants.PREFERENCE_DATA_FILE_PATH_KEY, newPath);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+    
     @FXML
 	public void initialize() {
+    	initPreferences();
     	setTextStatus("");
     	setTextBoxDirectory(Storage.getDataFolderLocation());
     }
@@ -90,6 +115,7 @@ public class SettingLayoutController {
             		setTextStatus(STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
             	}
             	
+            	setPreferenceFilePath(chosenFilePath);
             	refreshUIListView();
             	
         	}catch(AssertionError e){

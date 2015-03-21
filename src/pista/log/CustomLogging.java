@@ -8,7 +8,7 @@ import pista.Constants;
 
 public class CustomLogging {
 	
-	private static CustomLogging mLogging = null;
+	private static CustomLogging mLogging = new CustomLogging();
 	private static Logger mLogger = null;
 	private static FileHandler fh = null;
 	
@@ -17,7 +17,6 @@ public class CustomLogging {
 	
 	//Implement singleton pattern
 	public static CustomLogging getInstance(String className){
-		mLogging = new CustomLogging();
 		mLogging.initLog(className, Constants.LOG_FILE_NAME);
 		return mLogging;
 	}

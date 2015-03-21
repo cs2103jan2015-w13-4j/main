@@ -113,8 +113,10 @@ public class Constants {
 	public static final String LOG_UI_SUCCESS_VALIDATE_INPUT = "Successful Validate Input";
 
 	
-	
-	
 	//Setting
 	public static final String SETTING_DEFAULT_FOLDER_PATH = System.getProperty("user.home") + "\\"+"Desktop";
+	
+	
+	//Preferences
+	public static final String PREFERENCE_DATA_FILE_PATH_KEY = "file_path";
 }
