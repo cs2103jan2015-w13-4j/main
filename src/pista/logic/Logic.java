@@ -15,6 +15,17 @@ import pista.log.CustomLogging;
 
 public class Logic {
 	private static CustomLogging mLog = null;
+	private static Storage mStorage = null;
+	
+	public static boolean initStorage(){
+		try{
+			mStorage = Storage.getInstance();
+		return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
 	
 	public static boolean initLogging(){
 		try{
@@ -46,7 +57,7 @@ public class Logic {
 	}
 
 	public static String load(){
-		if(Storage.load()){
+		if(mStorage.load()){
 			return Constants.LOGIC_SUCCESS_LOAD_XML;
 		}else{
 			return Constants.LOGIC_FAIL_LOAD_XML;
@@ -54,7 +65,7 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		return Storage.getTaskList();
+		return mStorage.getTaskList();
 	}
 
 	public static String add(String[] tokens){
@@ -64,9 +75,9 @@ public class Logic {
 		Task newTask = null;
 
 		newTask = constructNewTask(tokens);
-		newTask.setID(Storage.getNextAvailableID());
+		newTask.setID(mStorage.getNextAvailableID());
 		isAddedToArray = addTaskToTaskArrayList(newTask);
-		isAddedToStorage = Storage.save();
+		isAddedToStorage = mStorage.save();
 
 		if(isAddedToArray && isAddedToStorage){
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
@@ -82,7 +93,7 @@ public class Logic {
 		int taskId=Integer.parseInt(tokens[0]);
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
-			Task extractedTask = Storage.getTaskList().get(taskIndex);
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
 
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
@@ -104,9 +115,9 @@ public class Logic {
 				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
 			}
 
-			Storage.getTaskList().remove(taskIndex);
-			Storage.getTaskList().add(extractedTask);
-			Storage.save();
+			mStorage.getTaskList().remove(taskIndex);
+			mStorage.getTaskList().add(extractedTask);
+			mStorage.save();
 
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
@@ -122,7 +133,7 @@ public class Logic {
 		String input = tokens[0];
 		if(input.equalsIgnoreCase("a")){
 			clearList();
-			if(Storage.save()){
+			if(mStorage.save()){
 				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
 				return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
 			}else{
@@ -135,9 +146,9 @@ public class Logic {
 
 			try{
 				if( index > -1){
-					assert index < Storage.getTaskList().size() : "Index out of bound";
-					Task temp = Storage.getTaskList().get(index);
-					Storage.getTaskList().remove(index);
+					assert index < mStorage.getTaskList().size() : "Index out of bound";
+					Task temp = mStorage.getTaskList().get(index);
+					mStorage.getTaskList().remove(index);
 					//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 				}else{
 					//mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
@@ -148,7 +159,7 @@ public class Logic {
 				e.printStackTrace();
 			}
 
-			if (Storage.save()){
+			if (mStorage.save()){
 				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
 				return Constants.LOGIC_SUCCESS_DELETE_TASK;
 			}else{
@@ -160,8 +171,8 @@ public class Logic {
 
 	//find the index of the task by a certain parameter, can expands it further
 	public static Integer findTaskIndex(int id){
-		for (int i = 0;i < Storage.getTaskList().size();i++){
-			if(Storage.getTaskList().get(i).getID() == id){
+		for (int i = 0;i < mStorage.getTaskList().size();i++){
+			if(mStorage.getTaskList().get(i).getID() == id){
 				return i;
 			}
 		}
@@ -169,11 +180,11 @@ public class Logic {
 	}
 
 	public static void clearList(){
-		Storage.getTaskList().clear();
+		mStorage.getTaskList().clear();
 	}
 
 	public static boolean addTaskToTaskArrayList(Task task){
-		if(Storage.getTaskList().add(task)){
+		if(mStorage.getTaskList().add(task)){
 			return true;
 		}else{
 			assert false:"unable to add task to arraylist";
@@ -221,7 +232,7 @@ public class Logic {
 	}//end constructNewTask
 
 	private static boolean isTaskInList(int taskId){
-		for(Task t: Storage.getTaskList()){
+		for(Task t: mStorage.getTaskList()){
 			if(t.getID()==taskId){
 				return true;
 			}
@@ -323,7 +334,7 @@ public class Logic {
 	public static boolean checkFileDuringSave(String newFilePath){
 		boolean isCreated = false;
 		
-		if(Storage.isFileEmpty(newFilePath)){ //if empty, overwrite new xml format 
+		if(mStorage.isFileEmpty(newFilePath)){ //if empty, overwrite new xml format 
 			isCreated = overwriteFile(newFilePath);
 		}else{
 			isCreated = loadExistingFile(newFilePath); //not empty and format is correct
@@ -333,14 +344,14 @@ public class Logic {
 	}
 	
 	private static boolean validateIsFileExist(String newFilePath){
-		if(!Storage.isFileExist(newFilePath)){ //not exist
+		if(!mStorage.isFileExist(newFilePath)){ //not exist
 			return false; //maybe file is deleted after choosing
 		}
 		return true;
 	}
 	
 	private static boolean validateIsFileEmpty(String newFilePath){
-		if(Storage.isFileEmpty(newFilePath)){
+		if(mStorage.isFileEmpty(newFilePath)){
 			//create xml nodes and format into the file
 			return true;
 		}
@@ -348,23 +359,23 @@ public class Logic {
 	}
 	
 	private static boolean validateFileFormat(String newFilePath){
-		if(Storage.isFileFormatValid(newFilePath)){ //if valid
+		if(mStorage.isFileFormatValid(newFilePath)){ //if valid
 			return true;
 		}
 		return false;
 	}
 	
 	private static boolean overwriteFile(String newFilePath){
-		Storage.initTaskList();
-		Storage.setDataFolderLocation(newFilePath);
-		boolean isOverwrite = Storage.overwriteNewXmlFile(newFilePath);
+		mStorage.initTaskList();
+		mStorage.setDataFolderLocation(newFilePath);
+		boolean isOverwrite = mStorage.overwriteNewXmlFile(newFilePath);
 		return isOverwrite;
 	}
 	
 	private static boolean loadExistingFile(String newFilePath){
 		//read file
-		Storage.setDataFolderLocation(newFilePath);
-		boolean isLoaded = Storage.load(); //load the file into tasklist	
+		mStorage.setDataFolderLocation(newFilePath);
+		boolean isLoaded = mStorage.load(); //load the file into tasklist	
 		return isLoaded;
 	}
 	

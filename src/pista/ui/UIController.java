@@ -33,6 +33,7 @@ public class UIController {
 	
 	private static CustomLogging mLog = null;
 	private CustomPreferences mPrefs = null;
+	private Storage mStorage;
 	
 	public String userInput = null;
 	
@@ -94,6 +95,16 @@ public class UIController {
 		//listview_task_fx_id.setItems(myObservableList);
 	}
 
+	public boolean initStorage(){
+		try{
+			mStorage = Storage.getInstance();
+		return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+	
 	public boolean initLogging(){
 		try{
 			mLog = CustomLogging.getInstance(Storage.class.getName());
@@ -173,12 +184,14 @@ public class UIController {
 		String logicOutput = "";
 		
 		this.clearContent();
+		this.initStorage();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
 		
-		Storage.setDataFolderLocation(getPreferenceFilePath());
-		Storage.initLogging(); //initialize Storage logging
+		mStorage.setDataFolderLocation(getPreferenceFilePath());
+		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
+		Logic.initStorage();
 		
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);

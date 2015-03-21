@@ -17,6 +17,10 @@ import javafx.stage.FileChooser;
 
 public class SettingLayoutController {
 
+	private static SettingLayoutController mSettingLayoutCtrl = new SettingLayoutController();
+	private Storage mStorage;
+	
+	
 	private final String ASSERT_EMPTY_XML_FILE_PATH_MESSAGE = "File path is empty";
 	private final String STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
 	private final String STATUS_INVALID_XML_FILE_PATH_MESSAGE  = "Either your file is not empty or invalid format.";
@@ -44,7 +48,21 @@ public class SettingLayoutController {
     
     private CustomPreferences mPrefs = null;
     
-	private boolean initPreferences(){
+    public static SettingLayoutController getInstance(){
+    	return mSettingLayoutCtrl;
+    }
+    
+    public boolean initStorage(){
+		try{
+			mStorage = Storage.getInstance();
+		return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+    
+	protected boolean initPreferences(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
 	    	mPrefs.initPreference(UIController.class.getName());
@@ -55,7 +73,7 @@ public class SettingLayoutController {
 		}
     }
 	
-	private boolean setPreferenceFilePath(String newPath){
+	protected boolean setPreferenceFilePath(String newPath){
 		try{
 			mPrefs.savePreference(Constants.PREFERENCE_DATA_FILE_PATH_KEY, newPath);
 			return true;
@@ -67,9 +85,10 @@ public class SettingLayoutController {
     
     @FXML
 	public void initialize() {
+    	initStorage();
     	initPreferences();
     	setTextStatus("");
-    	setTextBoxDirectory(Storage.getDataFolderLocation());
+    	setTextBoxDirectory(mStorage.getDataFolderLocation());
     }
     
     

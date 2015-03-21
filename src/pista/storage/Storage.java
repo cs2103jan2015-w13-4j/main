@@ -26,6 +26,8 @@ import pista.parser.Parser;
 
 public class Storage {
 
+	private static final Storage mStorage = new Storage();
+	
 	private static int max_number_of_tasks;
 	private static String data_folder_location = "";
 	
@@ -70,11 +72,17 @@ public class Storage {
 	final String NODE_TASK_END_DATE_TAG = "end_date";
 	*/
 	
-	private static ArrayList<Task> taskList = null;
+	private ArrayList<Task> taskList = null;
 	
 	private static CustomLogging mLog = null;
 	
-	public static boolean initLogging(){
+	private Storage(){}
+	
+	public static Storage getInstance(){
+		return mStorage;
+	}
+	
+	public boolean initLogging(){
 		try{
 			mLog = CustomLogging.getInstance(Storage.class.getName());
 			return true;
@@ -84,7 +92,7 @@ public class Storage {
 		}	
 	}
 	
-	public static boolean load(){
+	public boolean load(){
 		taskList = XmltoTable(getDataFolderLocation());	
 		if(taskList != null){
 			return true;
@@ -92,14 +100,14 @@ public class Storage {
 		return false;
 	}
 	
-	public static boolean save(){
+	public boolean save(){
 		boolean isSaved = false;
 		isSaved = tableToXml(getDataFolderLocation(), taskList);
 		return isSaved;
 	}
 	
 	
-	public static boolean overwriteNewXmlFile(String newPath){
+	public boolean overwriteNewXmlFile(String newPath){
 		//filepath exist
 		try {
 			String newXmlString = XML_DEFAULT_STRING.replace("[new_file_path]", newPath);
@@ -123,7 +131,7 @@ public class Storage {
 	}
 	
 	
-	public static boolean isFileFormatValid(String xmlFilePath){
+	public boolean isFileFormatValid(String xmlFilePath){
 		//Do a small test on e selected xml file
 		try{
 			File mXmlFile = new File(xmlFilePath);
@@ -152,21 +160,21 @@ public class Storage {
 		
 	}
 	
-	private static boolean isNodeNull(Node n){
+	private boolean isNodeNull(Node n){
 		if(n == null){
 			return true;
 		}
 		return false;
 	}
 	
-	private static boolean isNodeListNull(NodeList n){
+	private boolean isNodeListNull(NodeList n){
 		if(n == null){
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean isFileExist(String filePath){
+	public boolean isFileExist(String filePath){
 
 		try{
 			File file = new File(filePath);
@@ -184,7 +192,7 @@ public class Storage {
 
 	}
 	
-	public static boolean isFileEmpty(String filePath){
+	public boolean isFileEmpty(String filePath){
 		
 		try {
 			File file = new File(filePath);
@@ -202,17 +210,14 @@ public class Storage {
 			e.printStackTrace();
 			return true;
 		}  
-		
-		
-			
-	} 
 	
+	} 
 	
 	/*
 	 * Need XML file path to read
 	 * ArrayList of tasks for input
 	 * */
-	private static boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
+	private boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
 		boolean isSaved = false;
 		boolean isAllNodesRemove = false;
 		try{	
@@ -310,7 +315,7 @@ public class Storage {
 	 * ArrayList
 	 * value  task object
 	 * */
-	private static ArrayList<Task> XmltoTable(String xmlFilePath){
+	private ArrayList<Task> XmltoTable(String xmlFilePath){
 		
 		ArrayList<Task> mArrayTask = new ArrayList<Task>();
 		
@@ -511,7 +516,7 @@ public class Storage {
 	}
 */
 	
-	private static void createNode(Node parent, String tagName, String value){
+	private void createNode(Node parent, String tagName, String value){
 		Document doc = parent.getOwnerDocument();
 		//create a new node
 		Node mNode  = doc.createElement(tagName);
@@ -542,7 +547,7 @@ public class Storage {
 	}
 */
 	
-	private static boolean saveXml(Document doc, String xmlFilePath){
+	private boolean saveXml(Document doc, String xmlFilePath){
 		//Save the document
 		try{
 			
@@ -575,7 +580,7 @@ public class Storage {
 	}//end saveXML
 	
 	
-	private static boolean xmlRemoveAllTask(Node node) {
+	private boolean xmlRemoveAllTask(Node node) {
 		try{
 			
 			assert(node != null) : ASSERT_XML_NODE_NULL_MESSAGE;
@@ -605,7 +610,7 @@ public class Storage {
 	}//end removeAllFromXML
 	 
 	 
-	 private static void normalize(Document doc){
+	 private void normalize(Document doc){
 		 //normalize is not a complusory to do
 		 try{
 			 assert(doc != null) : ASSERT_XML_DOCUMENT_NULL_MESSAGE;
@@ -623,11 +628,11 @@ public class Storage {
 	 }
 
 	 
-	 public static int getMaxNumberOfTasks(){
+	 public int getMaxNumberOfTasks(){
 		 return max_number_of_tasks;
 	 }
 	  
-	 public static int getNextAvailableID(){
+	 public int getNextAvailableID(){
 		 //return max_number_of_tasks + 1;
 		 int lastID = 0;
 		 
@@ -653,41 +658,41 @@ public class Storage {
 		 
 	 }
 	 
-	 public static String getDataFolderLocation(){
+	 public String getDataFolderLocation(){
 		 return data_folder_location;
 	 }
 	 
-	 public static boolean initTaskList(){
+	 public boolean initTaskList(){
 		 taskList = new ArrayList<Task>();
 		 return true;
 	 }
 	 
-	 public static ArrayList<Task> getTaskList(){
+	 public ArrayList<Task> getTaskList(){
 		 return taskList;
 	 }
 
-	 public static void setDataFolderLocation(String location){
+	 public void setDataFolderLocation(String location){
 		 data_folder_location = location;
 	 }
 	 
 	 /*Conversion*/
-	 private static String convertIntToString(int input){
+	 private String convertIntToString(int input){
 		 return String.valueOf(input);
 	 }
 	 
-	 private static int convertStringToInt(String input){
+	 private int convertStringToInt(String input){
 		 return Integer.parseInt(input);
 	 }
 	 
-	 private static String convertBooleanToString(boolean input){
+	 private String convertBooleanToString(boolean input){
 		 return String.valueOf(input);
 	 }
 	 
-	 private static String convertLongToString(long input){
+	 private String convertLongToString(long input){
 		 return String.valueOf(input);
 	 }
 	 
-	 private static long convertStringToLong(String input){
+	 private long convertStringToLong(String input){
 		 return Long.valueOf(input);
 	 }
 	 

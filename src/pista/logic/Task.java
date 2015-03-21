@@ -4,7 +4,7 @@ import pista.Constants;
 import pista.storage.Storage;
 
 public class Task {
-	
+	private Storage mStorage;
 	private String title="";
 	//private String description;
 	private int id;
@@ -24,9 +24,10 @@ public class Task {
 	 * deadline	has end date/time only
 	 * floating does not have start and end date/time*/
 	public Task(String[] inputArray){
+		initStorage();
 		this.title=inputArray[Constants.ARRAY_INDEX_TITLE];
 		//this.description=inputArray[ARRAY_INDEX_TITLE]);
-		this.id= Storage.getNextAvailableID();
+		this.id= mStorage.getNextAvailableID();
 		this.startDate=inputArray[Constants.ARRAY_INDEX_START_DATE];
 		this.startTime=inputArray[Constants.ARRAY_INDEX_START_TIME];
 		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
@@ -48,7 +49,16 @@ public class Task {
 		
 	}
 	
-
+	public boolean initStorage(){
+		try{
+			mStorage = Storage.getInstance();
+		return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+	
 	/*Used for importing all tasks from XML*/
 	public Task(int id, String title, long startMs, long endMs, String startTime, String startDate, String endTime, String endDate, 
 				String category, String priority, boolean isDone){
