@@ -38,7 +38,7 @@ public class MainParser {
 	 * [0] - command type
 	 * [1] - parameter in string 
 	 * */
-	
+
 	public static MainParser validateInput(String input) {
 		MainParser mp = new MainParser();
 		if (isEmptyString(input)) {
@@ -63,40 +63,40 @@ public class MainParser {
 			}
 		}
 	}
-	
+
 	public static String getCommand(String input){
 		String command=input.split(" ",2)[0];
 		return command;
 	}
-	
+
 	public static String[] getTokens(String input){
 		String[] temp = input.split(" ",2);
 		String[] arr = temp[1].split("-");
 		trimWhiteSpace(arr);
 		return arr;
 	}
-	
+
 	public static boolean isEmptyString(String input){
 		if(input.isEmpty()){
 			return true;
 		}
 		return false;
 	}
-	
+
 	/*
 	 * Grabs user command and verify if matches the supported commands
 	 * Add, edit, delete*/
 	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE)){ //check for command type		
-				return true;
-			}else{
-				assert false:"unacceptable command typed: "+command;
-				return false;
-			}//end if
+			return true;
+		}else{
+			assert false:"unacceptable command typed: "+command;
+		return false;
+		}//end if
 
 	}//end checkCommand
-	
+
 	/*
 	 * check parameters
 	 * true=parameter exists
@@ -165,12 +165,21 @@ public class MainParser {
 	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
 		Parser parser = new Parser();
 		List<DateGroup> groups;
-		String interpretOutputDateFromNatty;
-		String interpretOutputTimeFromNatty;
+		String interpretOutputDateFromNatty="";
+		String interpretOutputTimeFromNatty="";
+		SimpleDateFormat actualNattyFormat = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		;
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
 			groups = parser.parse(tokens[dateIndex]);
-			interpretOutputDateFromNatty = intrepretInputNatty(groups);
-			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty)){
+			try {
+				interpretOutputDateFromNatty = sdf.format(actualNattyFormat.parse(intrepretInputNatty(groups)));
+			} catch (ParseException e1) {
+				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
+				return false;
+			}
+			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
 				mp.setMessage(Constants.MESSAGE_INVALID_DATE_INPUT);
 				return false;
 			}else{
@@ -179,8 +188,13 @@ public class MainParser {
 		}
 		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
 			groups = parser.parse(tokens[timeIndex]);
-			interpretOutputTimeFromNatty = intrepretInputNatty(groups);
-			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty)){
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(actualNattyFormat.parse(intrepretInputNatty(groups)));
+			} catch (ParseException e1) {
+				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
+				return false;
+			}
+			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
 				mp.setMessage(Constants.MESSAGE_INVALID_TIME_INPUT);
 				return false;
 			}else{
@@ -194,13 +208,13 @@ public class MainParser {
 		List dates = null;
 		for(DateGroup group: groups){
 			dates = group.getDates();
-		}
-		if(!dates.toString().isEmpty()){
 			return dates.toString();
 		}
-		return "Natty cannot work";
+
+		return "";
+
 	}
-	
+
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {	
 		mp.setTokens(tokens);
 		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
@@ -246,8 +260,9 @@ public class MainParser {
 		return false;
 	}
 
-	
+
 	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
+		mp.setTokens(tokens);
 		if(tokens.length != 1){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
@@ -271,20 +286,20 @@ public class MainParser {
 			return true;
 		}
 	}
-	
+
 	public static String convertMillisecondToDate(long ms){
 		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
-		 return date.split(" ",2)[0];
-		 
-	 }//end /convertMillisecondToDate
-	
+		return date.split(" ",2)[0];
+
+	}//end /convertMillisecondToDate
+
 	public static String convertMillisecondToTime(long ms){
 		//get time in HH:mm
 		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
 		return date.split(" ",2)[1];
-		 
+
 	}
-		
+
 	public static long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
@@ -297,13 +312,13 @@ public class MainParser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date1);
-		
+
 		return cal.getTimeInMillis();
 	}
-	
+
 	public static int stringToInt(String input){
 		return Integer.parseInt(input.trim());
 	}

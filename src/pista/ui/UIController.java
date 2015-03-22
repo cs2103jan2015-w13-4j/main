@@ -172,8 +172,11 @@ public class UIController {
 		
 		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
-		command = MainParser.getCommand(userInput);
-		tokens = MainParser.getTokens(userInput);
+		command = mp.getCommand();
+		tokens = mp.getTokens();
+		for (int i = 0; i < tokens.length; i++) {
+			System.out.println(tokens[i]);
+		}
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);

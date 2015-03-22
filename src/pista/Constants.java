@@ -22,6 +22,8 @@ public class Constants {
 	public static final String MESSAGE_INVALID_TOKEN_LENGTH = "Invalid token length";
 	public static final String MESSAGE_ID_LESS_THAN_ONE = "ID cannot be less than one";
 	public static final String MESSAGE_INVALID_SHORTHAND = "invalid shorthand for delete";
+  public static final String MESSAGE_INVALD_NATTY_DATE = "Unable to interpret the date format you have typed";
+  public static final String MESSAGE_INVALD_NATTY_TIME = "Unable to interpret the time format you have typed";
 	public static final int TOKEN_NUM_ADD_ONE = 1;
 	public static final int TOKEN_NUM_ADD_THREE = 3;
 	public static final int TOKEN_NUM_ADD_FIVE = 5;
