@@ -7,15 +7,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 import pista.Constants;
-import pista.storage.Storage;
-
-import java.util.logging.Logger;
-
 import pista.log.CustomLogging;
+import pista.storage.Storage;
 
 public class Logic {
 	private static CustomLogging mLog = null;
 	private static Storage mStorage = null;
+	private static ArrayList<Storage> undoList = new ArrayList<Storage>();
 	
 	public static boolean initStorage(){
 		try{
@@ -69,6 +67,7 @@ public class Logic {
 	}
 
 	public static String add(String[] tokens){
+		saveState();
 		boolean isAddedToStorage = false;
 		boolean isAddedToArray = false;
 
@@ -89,7 +88,7 @@ public class Logic {
 	}
 
 	public static String edit(String[] tokens){
-
+		saveState();
 		int taskId=Integer.parseInt(tokens[0]);
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
@@ -130,6 +129,7 @@ public class Logic {
 
 	//delete tasks by id or all
 	public static String delete(String[] tokens){  	
+		saveState();
 		String input = tokens[0];
 		if(input.equalsIgnoreCase("a")){
 			clearList();
@@ -147,7 +147,7 @@ public class Logic {
 			try{
 				if( index > -1){
 					assert index < mStorage.getTaskList().size() : "Index out of bound";
-					Task temp = mStorage.getTaskList().get(index);
+					//Task temp = mStorage.getTaskList().get(index);
 					mStorage.getTaskList().remove(index);
 					//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 				}else{
@@ -267,7 +267,6 @@ public class Logic {
 	}
 
 	private static Task editDeadlineTask(Task extractedTask, String[] tokens) {
-
 		if(!Constants.DEFAULT_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}else{
@@ -293,6 +292,14 @@ public class Logic {
 		return extractedTask;
 	}
 
+	private static String undo(){
+		if(!undoList.isEmpty()){
+			mStorage = undoList.get(undoList.size()-1);
+			return Constants.LOGIC_SUCCESS_UNDO;
+		}
+		return Constants.LOGIC_FAIL_UNDO;
+	}
+	
 	public static long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
@@ -377,6 +384,15 @@ public class Logic {
 		mStorage.setDataFolderLocation(newFilePath);
 		boolean isLoaded = mStorage.load(); //load the file into tasklist	
 		return isLoaded;
+	}
+	
+	private static void saveState(){
+		if(undoList.size() < 3){
+			undoList.add(Storage.getInstance());
+		}else{
+			undoList.remove(0);
+			undoList.add(Storage.getInstance());
+		}
 	}
 	
 }

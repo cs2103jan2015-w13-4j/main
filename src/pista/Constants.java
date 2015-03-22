@@ -45,6 +45,7 @@ public class Constants {
 	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
 	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
 	public static String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
+	public static String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
 	public static String LOGIC_FAIL_MARK_TASK = "Failed to mark task.";
@@ -54,6 +55,7 @@ public class Constants {
 	public static String LOGIC_EDIT_TASK_NOT_FOUND = "No such task existed.";
 	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
 	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
+	public static String LOGIC_FAIL_UNDO = "Failed to undo the last action";
 	
 	//public static String XML_FILE_NAME = "init_task.xml";
 	//public static String XML_FILE_PATH = "";

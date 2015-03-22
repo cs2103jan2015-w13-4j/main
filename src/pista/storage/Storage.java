@@ -670,6 +670,10 @@ public class Storage {
 	 public ArrayList<Task> getTaskList(){
 		 return taskList;
 	 }
+	 
+	 public void setTaskList(ArrayList<Task> tl){
+		 taskList = tl;
+	 }
 
 	 public void setDataFolderLocation(String location){
 		 data_folder_location = location;
