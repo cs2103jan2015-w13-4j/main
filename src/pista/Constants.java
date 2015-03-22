@@ -100,6 +100,7 @@ public class Constants {
 	public static final String VALUE_EDIT = "edit";
 	public static final String VALUE_DELETE = "delete";
 	public static final String VALUE_UNDO = "undo";
+	public static final String VALUE_REDO = "redo";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";

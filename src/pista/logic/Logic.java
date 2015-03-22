@@ -51,6 +51,9 @@ public class Logic {
 		case Constants.VALUE_UNDO:
 			output = undo() ;
 			break;
+		case Constants.VALUE_REDO:
+			output = redo() ;
+			break;
 		default:
 			assert false:"invalid comand in runCommand: "+command;
 		break;
