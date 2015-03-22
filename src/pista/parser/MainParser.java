@@ -107,7 +107,7 @@ public class MainParser {
 		case Constants.VALUE_ADD:
 			return checkAddTokens(mp, tokens);
 		case Constants.VALUE_EDIT:
-			return checkEditTokens(tokens);
+			return checkEditTokens(mp, tokens);
 		case Constants.VALUE_DELETE:
 			return checkDeleteTokens(tokens);
 		default:
@@ -115,7 +115,7 @@ public class MainParser {
 		}
 	}
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
-		Parser parser = new Parser();
+ 		Parser parser = new Parser();
 		mp.setTokens(tokens);
 
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
@@ -196,40 +196,57 @@ public class MainParser {
 		for(DateGroup group: groups){
 			dates = group.getDates();
 		}
-		return dates.toString();
+		if(!dates.toString().isEmpty()){
+			return dates.toString();
+		}
+		return "Natty cannot work";
 	}
 	
-	private static boolean checkEditTokens(String[] tokens) {		
+	private boolean checkEditTokens(MainParser mp, String[] tokens) {	
+		mp.setTokens(tokens);
 		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
+				//mp.setValidToken(true);
 				return true;
 			}
 		}
 
 		else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
-					&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])) 
-					&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]))){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])) {
+				if(!isDateAndTimeValid(mp, tokens, Constants.EDIT_TOKEN_DEADLINE_ENDDATE, 
+						Constants.EDIT_TOKEN_DEADLINE_ENDTIME)){
+					return false;
+				}
 				return true;
-			}	
+			}			
+			return false;
 		}
 
 		else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE]) 
-					&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])) 
-					&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])) 
-					&& (TokenValidation.isDateValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])) 
-					&& (TokenValidation.isTimeValid(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])) 
-					&& (TokenValidation.isStartDateBeforeThanEndDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
-							, tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
-									, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]
-											, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]))){
-				return true;
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){
+				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, 
+						Constants.EDIT_TOKEN_TIMED_STARTDATE, Constants.EDIT_TOKEN_TIMED_STARTTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, 
+						Constants.EDIT_TOKEN_TIMED_ENDDATE, Constants.EDIT_TOKEN_TIMED_ENDTIME);
+				if(startDateTimeValid && endDateTimeValid){
+					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTDATE),
+							mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDDATE), 
+							mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTTIME), 
+							mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDTIME))){
+						return true;
+					}else{
+						mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+						return false;
+					}
+				}
+				return false;
 			}
+			return false;
 		}
 		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
 		return false;
 	}
+
 	
 	private static boolean checkDeleteTokens(String[] tokens) {
 		if(tokens.length != 1){
