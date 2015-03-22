@@ -317,7 +317,7 @@ public class Logic {
 		if(!redoList.isEmpty()){
 			saveToUndo(mStorage);
 			mStorage = redoList.get(redoList.size()-1);
-			undoList.remove(redoList.size()-1);
+			redoList.remove(redoList.size()-1);
 			return Constants.LOGIC_SUCCESS_REDO;
 		}
 		return Constants.LOGIC_SUCCESS_REDO;
