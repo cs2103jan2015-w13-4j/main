@@ -14,6 +14,7 @@ public class Logic {
 	private static CustomLogging mLog = null;
 	private static Storage mStorage = null;
 	private static ArrayList<Storage> undoList = new ArrayList<Storage>();
+	private static ArrayList<Storage> redoList = new ArrayList<Storage>();
 	
 	public static boolean initStorage(){
 		try{
@@ -47,6 +48,9 @@ public class Logic {
 		case Constants.VALUE_DELETE:
 			output = delete(tokens) ;
 			break;
+		case Constants.VALUE_UNDO:
+			output = undo() ;
+			break;
 		default:
 			assert false:"invalid comand in runCommand: "+command;
 		break;
@@ -67,7 +71,7 @@ public class Logic {
 	}
 
 	public static String add(String[] tokens){
-		saveState();
+		Storage currentState = mStorage;
 		boolean isAddedToStorage = false;
 		boolean isAddedToArray = false;
 
@@ -80,6 +84,7 @@ public class Logic {
 
 		if(isAddedToArray && isAddedToStorage){
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
+			updateRedoAndUndo(currentState);
 			return Constants.LOGIC_SUCCESS_ADD_TASK;
 		}else{
 			mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
@@ -88,7 +93,7 @@ public class Logic {
 	}
 
 	public static String edit(String[] tokens){
-		saveState();
+		Storage currentState = mStorage;
 		int taskId=Integer.parseInt(tokens[0]);
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
@@ -117,7 +122,8 @@ public class Logic {
 			mStorage.getTaskList().remove(taskIndex);
 			mStorage.getTaskList().add(extractedTask);
 			mStorage.save();
-
+			updateRedoAndUndo(currentState);
+			
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
@@ -128,12 +134,13 @@ public class Logic {
 	}
 
 	//delete tasks by id or all
-	public static String delete(String[] tokens){  	
-		saveState();
+	public static String delete(String[] tokens){
+		Storage currentState = mStorage;
 		String input = tokens[0];
 		if(input.equalsIgnoreCase("a")){
 			clearList();
 			if(mStorage.save()){
+				updateRedoAndUndo(currentState);
 				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
 				return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
 			}else{
@@ -160,6 +167,7 @@ public class Logic {
 			}
 
 			if (mStorage.save()){
+				updateRedoAndUndo(currentState);
 				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
 				return Constants.LOGIC_SUCCESS_DELETE_TASK;
 			}else{
@@ -294,10 +302,22 @@ public class Logic {
 
 	private static String undo(){
 		if(!undoList.isEmpty()){
+			saveToRedo();
 			mStorage = undoList.get(undoList.size()-1);
+			undoList.remove(undoList.size()-1);
 			return Constants.LOGIC_SUCCESS_UNDO;
 		}
 		return Constants.LOGIC_FAIL_UNDO;
+	}
+	
+	private static String redo(){
+		if(!redoList.isEmpty()){
+			saveToUndo(mStorage);
+			mStorage = redoList.get(redoList.size()-1);
+			undoList.remove(redoList.size()-1);
+			return Constants.LOGIC_SUCCESS_REDO;
+		}
+		return Constants.LOGIC_SUCCESS_REDO;
 	}
 	
 	public static long convertDateToMillisecond(String date, String time){
@@ -386,13 +406,30 @@ public class Logic {
 		return isLoaded;
 	}
 	
-	private static void saveState(){
+	private static void saveToUndo(Storage currState){
 		if(undoList.size() < 3){
-			undoList.add(Storage.getInstance());
+			undoList.add(currState);
 		}else{
 			undoList.remove(0);
-			undoList.add(Storage.getInstance());
+			undoList.add(currState);
 		}
 	}
 	
+	private static void saveToRedo(){
+		if(redoList.size() < 3){
+			redoList.add(undoList.get(undoList.size()-1));
+		}else{
+			redoList.remove(0);
+			redoList.add(undoList.get(undoList.size()-1));
+		}
+	}
+	
+	private static void clearRedo(){
+		redoList.clear();
+	}
+	
+	private static void updateRedoAndUndo(Storage s){
+		clearRedo();
+		saveToUndo(s);
+	}
 }

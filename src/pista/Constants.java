@@ -46,6 +46,7 @@ public class Constants {
 	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
 	public static String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
 	public static String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";
+	public static String LOGIC_SUCCESS_REDO = "Successfully redo";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
 	public static String LOGIC_FAIL_MARK_TASK = "Failed to mark task.";
@@ -56,6 +57,7 @@ public class Constants {
 	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
 	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
 	public static String LOGIC_FAIL_UNDO = "Failed to undo the last action";
+	public static String LOGIC_FAIL_REDO = "Failed to redo";
 	
 	//public static String XML_FILE_NAME = "init_task.xml";
 	//public static String XML_FILE_PATH = "";
@@ -97,6 +99,7 @@ public class Constants {
 	public static final String VALUE_ADD = "add";
 	public static final String VALUE_EDIT = "edit";
 	public static final String VALUE_DELETE = "delete";
+	public static final String VALUE_UNDO = "undo";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";
