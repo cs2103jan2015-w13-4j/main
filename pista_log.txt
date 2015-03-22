@@ -412,6 +412,7 @@ Mar 22, 2015 8:11:41 PM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
 Mar 22, 2015 8:11:41 PM pista.log.CustomLogging logInfo
 INFO: Successfully delete task.
+<<<<<<< HEAD
 Mar 22, 2015 8:54:08 PM pista.log.CustomLogging logInfo
 INFO: Successfully Load XML file to task list
 Mar 22, 2015 8:54:23 PM pista.log.CustomLogging logInfo
@@ -624,3 +625,29 @@ Mar 22, 2015 11:47:33 PM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
 Mar 22, 2015 11:47:33 PM pista.log.CustomLogging logInfo
 INFO: Successfully added deadline task of deadline category into list
+=======
+Mar 22, 2015 9:20:00 PM pista.log.CustomLogging logSevere
+SEVERE: Content is not allowed in prolog.
+Mar 22, 2015 9:20:10 PM pista.log.CustomLogging logSevere
+SEVERE: Content is not allowed in prolog.
+Mar 22, 2015 9:20:18 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meeting
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 22, 2015 9:20:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully added meeting task of floating category into list
+Mar 22, 2015 9:20:37 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 22, 2015 9:20:37 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: No/Wrong command detected!
+>>>>>>> 1914dfcfe395421e7739229cef576ce979b93be1
