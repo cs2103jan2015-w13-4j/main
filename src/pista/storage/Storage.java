@@ -36,8 +36,8 @@ public class Storage {
 	private static final String NODE_ROOT_TAG = "tasks";
 	private static final String NODE_TOTAL_TASK_TAG = "total_task";
 	private static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
-	private static final String NODE_SETTING_TAG="setting";
-	private static final String NODE_SETTING_DATA_FOLDER_LOCATION="data_folder_location";
+	//private static final String NODE_SETTING_TAG="setting";
+	//private static final String NODE_SETTING_DATA_FOLDER_LOCATION="data_folder_location";
 	private static final String NODE_TASK_TAG = "task";
 	private static final String NODE_TASK_ID_TAG = "id";
 	private static final String NODE_TASK_TITLE_TAG = "title";
@@ -109,14 +109,14 @@ public class Storage {
 	public boolean overwriteNewXmlFile(String newPath){
 		//filepath exist
 		try {
-			String newXmlString = XML_DEFAULT_STRING.replace("[new_file_path]", newPath);
+			//String newXmlString = XML_DEFAULT_STRING.replace("[new_file_path]", newPath);
 			File file = new File(newPath);
 
 			//exist and either length is 0 or not valid xml format
 			FileWriter fileWriter = new FileWriter(file, false); //overwrite the file
 			
 			BufferedWriter bufferFileWriter  = new BufferedWriter(fileWriter);
-	        fileWriter.append(newXmlString); //write the default xml string
+	        fileWriter.append(XML_DEFAULT_STRING); //write the default xml string
 	        bufferFileWriter.close();
 	        
 			fileWriter.close();
@@ -141,11 +141,10 @@ public class Storage {
 			Node nRoot = doc.getDocumentElement(); //get root
 			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
 			Node nTotalValue = nTotalList.item(0);
-			NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
-			Node nDataFolderLocation = nSettings.item(0);
+			//NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
+			//Node nDataFolderLocation = nSettings.item(0);
 
-			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeNull(nDataFolderLocation) ||
-					isNodeListNull(nTotalList) || isNodeListNull(nSettings)){
+			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeListNull(nTotalList)){
 				return false; //not valid XML format
 			}
 
@@ -225,7 +224,7 @@ public class Storage {
 			Node nRoot = null;
 			Node nTask = null;
 			Node nTotal = null;
-			Node nSetting = null;
+			//Node nSetting = null;
 			
 			File mXmlFile = new File(xmlFilePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -253,10 +252,10 @@ public class Storage {
 			nRoot.appendChild(nTotal);
 			
 			//add setting
-			nSetting = doc.createElement(NODE_SETTING_TAG);
-			createNode(nSetting, NODE_SETTING_DATA_FOLDER_LOCATION, data_folder_location);
+			//nSetting = doc.createElement(NODE_SETTING_TAG);
+			//createNode(nSetting, NODE_SETTING_DATA_FOLDER_LOCATION, data_folder_location);
 			//add setting node to root
-			nRoot.appendChild(nSetting);
+			//nRoot.appendChild(nSetting);
 			
 			
 			//add task nodes
@@ -333,9 +332,9 @@ public class Storage {
 			max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent()); //get total number
 			
 			//Get settings from XML
-			NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
-			Node nDataFolderLocation = nSettings.item(0);
-			data_folder_location = nDataFolderLocation.getTextContent(); //get folder directory
+			//NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
+			//Node nDataFolderLocation = nSettings.item(0);
+			//data_folder_location = nDataFolderLocation.getTextContent(); //get folder directory
 			
 			NodeList nList = doc.getElementsByTagName(NODE_TASK_TAG);
 			

@@ -104,3 +104,41 @@ Mar 22, 2015 6:10:31 PM pista.log.CustomLogging logInfo
 INFO: Successfully Load XML file to task list
 Mar 22, 2015 6:10:54 PM pista.log.CustomLogging logInfo
 INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:12:59 PM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 7:13:13 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:14:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:14:56 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:16:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:16:15 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:16:28 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add float
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 22, 2015 7:16:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully added float task of floating category into list
+Mar 22, 2015 7:16:39 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 4
+Mar 22, 2015 7:16:39 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 22, 2015 7:16:39 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 22, 2015 7:16:39 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 22, 2015 7:16:39 PM pista.log.CustomLogging logInfo
+INFO: Successfully delete task.

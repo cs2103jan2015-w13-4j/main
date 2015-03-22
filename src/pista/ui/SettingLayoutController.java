@@ -4,6 +4,7 @@ import java.io.File;
 
 import pista.Constants;
 import pista.CustomPreferences;
+import pista.CustomPreferences_bak;
 import pista.MainApp;
 import pista.logic.Logic;
 import pista.storage.Storage;
@@ -19,7 +20,6 @@ public class SettingLayoutController {
 
 	private static SettingLayoutController mSettingLayoutCtrl = new SettingLayoutController();
 	private Storage mStorage;
-	
 	
 	private final String ASSERT_EMPTY_XML_FILE_PATH_MESSAGE = "File path is empty";
 	private final String STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
@@ -66,7 +66,7 @@ public class SettingLayoutController {
 	protected boolean initPreferences(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
-	    	mPrefs.load();
+	    	mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
 	    	
 	    	return true;
 		}catch(Exception e){
@@ -77,19 +77,8 @@ public class SettingLayoutController {
 	
 	protected boolean setPreferenceFilePath(String newPath){
 		try{
-			mPrefs.setFileLocation(newPath);
+			mPrefs.setPreferenceFileLocation(newPath);
 			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	protected boolean savePreference(){
-		boolean isSaved = false;
-		try{
-			isSaved = mPrefs.save();
-			return isSaved;
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
@@ -102,7 +91,7 @@ public class SettingLayoutController {
     	initStorage();
     	initPreferences();
     	setTextStatus("");
-    	setTextBoxDirectory(mPrefs.getFileLocation());
+    	setTextBoxDirectory(mPrefs.getPreferenceFileLocation());
     }
     
     
@@ -149,12 +138,13 @@ public class SettingLayoutController {
             		setTextStatus(STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
             	}
             	
-            	setPreferenceFilePath(chosenFilePath);
-            	isPrefSave = savePreference();
+            	isPrefSave = setPreferenceFilePath(chosenFilePath); //save preferences
             	
             	if(!isPrefSave){ //unable to save
             		setTextStatus(STATUS_FAIL_TO_SAVE);
+            		
             	}else{ //saved successfully
+            		mStorage.setDataFolderLocation(chosenFilePath); //set new path to storage
             		refreshUIListView();
             	}
 

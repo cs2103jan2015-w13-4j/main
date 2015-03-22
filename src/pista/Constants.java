@@ -124,6 +124,7 @@ public class Constants {
 	
 	
 	//Preferences
+	public static final String PREFERENCE_URL_PATH = "pista/preference";
 	public static final String PREFERENCE_XML_DEFAULT_FILE_PATH = "preferences.xml";
 	public static final String PREFERENCE_XML_ROOT_NODE = "preferences";
 	public static final String PREFERENCE_XML_SETTING_NODE = "setting";
