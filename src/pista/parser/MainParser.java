@@ -2,9 +2,12 @@ package pista.parser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
@@ -170,7 +173,7 @@ public class MainParser {
 		SimpleDateFormat actualNattyFormat = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
-		;
+		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
 			groups = parser.parse(tokens[dateIndex]);
 			try {
@@ -328,5 +331,31 @@ public class MainParser {
 			temp[i]=temp[i].trim();
 		}
 		return temp;
+	}
+	private static String flexibleDateFormat(String myDate){
+		StringBuffer sb=new StringBuffer();
+		ArrayList<String> aL=new ArrayList<String>();
+		aL.add(".");
+		aL.add("/");
+		for(String pattern : aL){
+			if(StringUtils.countMatches(myDate, pattern)==2){
+				String[] temp = null;
+				if(pattern.equals(".")){
+					temp = myDate.split("\\.");
+				}else{
+					temp = myDate.split("/");
+				}
+				for (int i = 0; i < temp.length-1; i++) {
+					int extractedValue = Integer.parseInt(temp[i]);
+					if(extractedValue < 10 && extractedValue > 0 ){
+						sb.append("0");
+						sb.append(temp[i]+"/");
+					}
+				}
+				sb.append(temp[temp.length-1]);
+				return sb.toString();
+			}
+		}
+		return myDate;
 	}
 }
