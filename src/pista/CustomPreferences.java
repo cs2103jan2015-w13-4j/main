@@ -2,37 +2,31 @@ package pista;
 
 import java.util.prefs.Preferences;
 
-
 public class CustomPreferences {
 
 	private static CustomPreferences mCustomPref = new CustomPreferences();
 	private Preferences mPrefs = null;
 	
-	private CustomPreferences(){} //make sure this class cannot be instantiate
-	
 	public static CustomPreferences getInstance(){
 		return mCustomPref;
 	}
 	
-
 	public boolean initPreference(String className){
 		try{
 			//mPrefs = Preferences.userNodeForPackage(getClass());
-			mPrefs = Preferences.userRoot().node(className);
-			
+			mPrefs = Preferences.userRoot().node(className); 
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
-			
 			return false;
 		}
 		
 	}
 	
-	public boolean savePreference(String name, String value){
+	private boolean savePreference(String name, String value){
 		try{
 			if(mPrefs == null){			
-				initPreference(getClass().getName());
+				initPreference(Constants.PREFERENCE_URL_PATH);
 			}	
 			mPrefs.put(name, value);
 			return true;
@@ -42,10 +36,10 @@ public class CustomPreferences {
 		}
 	}
 	
-	public boolean savePreference(String name, int value){
+	private boolean savePreference(String name, int value){
 		try{
 			if(mPrefs == null){
-				initPreference(getClass().getName());
+				initPreference(Constants.PREFERENCE_URL_PATH);
 			}
 			mPrefs.putInt(name, value);
 			return true;
@@ -55,10 +49,10 @@ public class CustomPreferences {
 		}
 	}
 
-	public boolean savePreference(String name, boolean value){
+	private boolean savePreference(String name, boolean value){
 		try{
 			if(mPrefs == null){
-				initPreference(getClass().getName());
+				initPreference(Constants.PREFERENCE_URL_PATH);
 			}
 			mPrefs.putBoolean(name, value);
 			return true;
@@ -68,23 +62,31 @@ public class CustomPreferences {
 		}
 	}
 	
-	public String getPreferenceStringValue(String name){
+	private String getPreferenceStringValue(String key){
 		if(mPrefs == null){ return ""; }
-		String value = mPrefs.get(name, "");
+		String value = mPrefs.get(key, "");
 		return value;
 	}
 	
-	public int getPreferenceIntValue(String name){
+	private int getPreferenceIntValue(String key){
 		if(mPrefs == null){ return 0; }
-		int value = mPrefs.getInt(name, 0);
+		int value = mPrefs.getInt(key, 0);
 		return value;
 	}
 	
-	public boolean getPreferenceBooleanValue(String name){
+	private boolean getPreferenceBooleanValue(String key){
 		if(mPrefs == null){ return false; }
-		boolean value = mPrefs.getBoolean(name, false);
+		boolean value = mPrefs.getBoolean(key, false);
 		return value;
 	}
 	
+	public boolean setPreferenceFileLocation(String value){
+		boolean isSet = this.savePreference(Constants.PREFERENCE_XML_FILE_LOCATION_NODE, value);
+		return isSet;
+	}
 	
+	public String getPreferenceFileLocation(){
+		String value = this.getPreferenceStringValue(Constants.PREFERENCE_XML_FILE_LOCATION_NODE);
+		return value;
+	}
 }

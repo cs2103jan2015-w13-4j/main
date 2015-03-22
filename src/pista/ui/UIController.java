@@ -3,11 +3,12 @@ package pista.ui;
 import java.io.IOException;
 
 import pista.Constants;
+import pista.CustomPreferences_bak;
 import pista.CustomPreferences;
 import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.logic.Task;
-import pista.parser.Parser;
+import pista.parser.MainParser;
 import pista.storage.Storage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -118,7 +119,8 @@ public class UIController {
 	private boolean initPreferences(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
-	    	mPrefs.initPreference(UIController.class.getName());
+			mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
+			
 	    	return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -129,7 +131,7 @@ public class UIController {
 	private String getPreferenceFilePath(){
 		try{
 			String filePath = "";
-			filePath = mPrefs.getPreferenceStringValue(Constants.PREFERENCE_DATA_FILE_PATH_KEY);
+			filePath = mPrefs.getPreferenceFileLocation();
 			return filePath;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -159,8 +161,8 @@ public class UIController {
 		userInput = cmdTextField.getText();
 		
 		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
-		
-		parserOutput = Parser.validateInput(userInput);
+		MainParser mp = MainParser.validateInput(userInput);
+		parserOutput = mp.getMessage();
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
 			txtStatus.setText(parserOutput);
@@ -170,8 +172,8 @@ public class UIController {
 		
 		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
-		command = Parser.getCommand(userInput);
-		tokens = Parser.getTokens(userInput);
+		command = MainParser.getCommand(userInput);
+		tokens = MainParser.getTokens(userInput);
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);
@@ -189,6 +191,7 @@ public class UIController {
 		this.initLogging(); //initialize logging
 		
 		mStorage.setDataFolderLocation(getPreferenceFilePath());
+		
 		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();

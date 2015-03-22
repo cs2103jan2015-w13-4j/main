@@ -4,6 +4,7 @@ import java.io.File;
 
 import pista.Constants;
 import pista.CustomPreferences;
+import pista.CustomPreferences_bak;
 import pista.MainApp;
 import pista.logic.Logic;
 import pista.storage.Storage;
@@ -20,12 +21,12 @@ public class SettingLayoutController {
 	private static SettingLayoutController mSettingLayoutCtrl = new SettingLayoutController();
 	private Storage mStorage;
 	
-	
 	private final String ASSERT_EMPTY_XML_FILE_PATH_MESSAGE = "File path is empty";
 	private final String STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
 	private final String STATUS_INVALID_XML_FILE_PATH_MESSAGE  = "Either your file is not empty or invalid format.";
 	private final String STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE = "Failed to load selected file.";
 	private final String STATUS_FAIL_TO_SAVE_DUE_TO_INVALID_FILE_MESSAGE = "Please ensure your file is valid before saving.";
+	private final String STATUS_FAIL_TO_SAVE = "Unable to save setting. Please try again.";
 	private final String STATUS_APPLICATION_ERROR_MESSAGE = "Application error. Please contact the administrator";
 	private final String STATUS_SUCCESS_FILE_CREATED_MESSAGE = "[new_file_path] is loaded.";
 	private String chosenFilePath = "";
@@ -65,7 +66,8 @@ public class SettingLayoutController {
 	protected boolean initPreferences(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
-	    	mPrefs.initPreference(UIController.class.getName());
+	    	mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
+	    	
 	    	return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -75,20 +77,21 @@ public class SettingLayoutController {
 	
 	protected boolean setPreferenceFilePath(String newPath){
 		try{
-			mPrefs.savePreference(Constants.PREFERENCE_DATA_FILE_PATH_KEY, newPath);
+			mPrefs.setPreferenceFileLocation(newPath);
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}
 	}
+	
     
     @FXML
 	public void initialize() {
     	initStorage();
     	initPreferences();
     	setTextStatus("");
-    	setTextBoxDirectory(mStorage.getDataFolderLocation());
+    	setTextBoxDirectory(mPrefs.getPreferenceFileLocation());
     }
     
     
@@ -121,7 +124,8 @@ public class SettingLayoutController {
     @FXML
     void onButtonSaveClick(ActionEvent event) {
     	boolean isFileCreated = false;
-    
+    	boolean isPrefSave = false;
+    	
     	if(isValidFile){		
         	try{
             	isFileCreated = Logic.checkFileDuringSave(chosenFilePath);
@@ -134,9 +138,16 @@ public class SettingLayoutController {
             		setTextStatus(STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
             	}
             	
-            	setPreferenceFilePath(chosenFilePath);
-            	refreshUIListView();
+            	isPrefSave = setPreferenceFilePath(chosenFilePath); //save preferences
             	
+            	if(!isPrefSave){ //unable to save
+            		setTextStatus(STATUS_FAIL_TO_SAVE);
+            		
+            	}else{ //saved successfully
+            		mStorage.setDataFolderLocation(chosenFilePath); //set new path to storage
+            		refreshUIListView();
+            	}
+
         	}catch(AssertionError e){
         		//log
         		e.printStackTrace();
