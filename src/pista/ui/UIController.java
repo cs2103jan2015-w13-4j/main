@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import pista.Constants;
 import pista.CustomPreferences;
+import pista.CustomPreferences_v2;
 import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.logic.Task;
@@ -33,6 +34,7 @@ public class UIController {
 	
 	private static CustomLogging mLog = null;
 	private CustomPreferences mPrefs = null;
+	private CustomPreferences_v2 mPrefs_v2 = null;
 	private Storage mStorage;
 	
 	public String userInput = null;
@@ -119,8 +121,13 @@ public class UIController {
 		try{
 			mPrefs = CustomPreferences.getInstance();
 			mPrefs.load();
-	    	//mPrefs.getFileLocation();
+			
+			mPrefs_v2 = CustomPreferences_v2.getInstance();
+			mPrefs_v2.init("pista/preference"); //UIController.class.getName()
 	    	
+			
+			mPrefs_v2.setPreferences("test", "abcdefg");
+			System.out.println(mPrefs_v2.getPreference("test"));
 	    	return true;
 		}catch(Exception e){
 			e.printStackTrace();
