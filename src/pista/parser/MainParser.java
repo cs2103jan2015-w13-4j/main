@@ -109,13 +109,12 @@ public class MainParser {
 		case Constants.VALUE_EDIT:
 			return checkEditTokens(mp, tokens);
 		case Constants.VALUE_DELETE:
-			return checkDeleteTokens(tokens);
+			return checkDeleteTokens(mp, tokens);
 		default:
 			return false;
 		}
 	}
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
- 		Parser parser = new Parser();
 		mp.setTokens(tokens);
 
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
@@ -248,8 +247,9 @@ public class MainParser {
 	}
 
 	
-	private static boolean checkDeleteTokens(String[] tokens) {
+	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
 		if(tokens.length != 1){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 
@@ -258,12 +258,14 @@ public class MainParser {
 			int id = Integer.parseInt(input); 
 			// if it is a number
 			if( id < 1 ){
+				mp.setMessage(Constants.MESSAGE_ID_LESS_THAN_ONE);
 				return false;
 			}
 			return true;
 
 		} catch(NumberFormatException e) { //if it is not a number
 			if(!input.equalsIgnoreCase("a")){
+				mp.setMessage(Constants.MESSAGE_INVALID_SHORTHAND);
 				return false;
 			}
 			return true;
