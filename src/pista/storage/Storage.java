@@ -105,8 +105,7 @@ public class Storage {
 		isSaved = tableToXml(getDataFolderLocation(), taskList);
 		return isSaved;
 	}
-	
-	
+		
 	public boolean overwriteNewXmlFile(String newPath){
 		//filepath exist
 		try {
@@ -157,7 +156,6 @@ public class Storage {
 		}
 		
 		return true;
-		
 	}
 	
 	private boolean isNodeNull(Node n){
@@ -175,7 +173,6 @@ public class Storage {
 	}
 	
 	public boolean isFileExist(String filePath){
-
 		try{
 			File file = new File(filePath);
 			if(file.exists()){
@@ -189,7 +186,6 @@ public class Storage {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 	
 	public boolean isFileEmpty(String filePath){
@@ -220,6 +216,7 @@ public class Storage {
 	private boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
 		boolean isSaved = false;
 		boolean isAllNodesRemove = false;
+		
 		try{	
 			//assertion
 			assert(mArrayTask != null) : ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE;

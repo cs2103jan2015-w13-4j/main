@@ -124,5 +124,11 @@ public class Constants {
 	
 	
 	//Preferences
-	public static final String PREFERENCE_DATA_FILE_PATH_KEY = "file_path";
+	public static final String PREFERENCE_XML_DEFAULT_FILE_PATH = "preferences.xml";
+	public static final String PREFERENCE_XML_ROOT_NODE = "preferences";
+	public static final String PREFERENCE_XML_SETTING_NODE = "setting";
+	public static final String PREFERENCE_XML_FILE_LOCATION_NODE = "file_location";
+	public static final String PREFERENCE_XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><preferences><setting><file_location></file_location></setting></preferences>";
+	
+	
 }

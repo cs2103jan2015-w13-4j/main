@@ -118,7 +118,9 @@ public class UIController {
 	private boolean initPreferences(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
-	    	mPrefs.initPreference(UIController.class.getName());
+			mPrefs.load();
+	    	//mPrefs.getFileLocation();
+	    	
 	    	return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -129,7 +131,7 @@ public class UIController {
 	private String getPreferenceFilePath(){
 		try{
 			String filePath = "";
-			filePath = mPrefs.getPreferenceStringValue(Constants.PREFERENCE_DATA_FILE_PATH_KEY);
+			filePath = mPrefs.getFileLocation();
 			return filePath;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -189,6 +191,7 @@ public class UIController {
 		this.initLogging(); //initialize logging
 		
 		mStorage.setDataFolderLocation(getPreferenceFilePath());
+		
 		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();

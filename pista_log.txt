@@ -46,3 +46,57 @@ Mar 20, 2015 3:55:09 PM pista.log.CustomLogging logSevere
 SEVERE: XML file path is empty
 Mar 21, 2015 4:03:25 PM pista.log.CustomLogging logSevere
 SEVERE: XML file path is empty
+Mar 22, 2015 10:08:26 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 10:08:39 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 10:08:44 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 10:09:31 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 10:11:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 10:17:39 AM pista.log.CustomLogging logSevere
+SEVERE: D:\Workspace\main\init_task.xml (The system cannot find the file specified)
+Mar 22, 2015 10:17:53 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meeting
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 22, 2015 10:17:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meeting task of floating category into list
+Mar 22, 2015 11:00:27 AM pista.log.CustomLogging logSevere
+SEVERE: null
+Mar 22, 2015 11:03:30 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 11:03:47 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 11:04:01 AM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 11:19:05 AM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 11:19:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 11:19:29 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 11:19:46 AM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 11:20:04 AM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 11:22:01 AM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 11:22:18 AM pista.log.CustomLogging logSevere
+SEVERE: XML file path is empty
+Mar 22, 2015 11:22:26 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 22, 2015 11:22:46 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
