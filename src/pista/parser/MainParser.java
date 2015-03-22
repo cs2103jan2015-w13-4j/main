@@ -74,9 +74,13 @@ public class MainParser {
 
 	public static String[] getTokens(String input){
 		String[] temp = input.split(" ",2);
-		String[] arr = temp[1].split("-");
-		trimWhiteSpace(arr);
-		return arr;
+		if(temp.length > 1){
+			String[] arr = temp[1].split("-");
+			trimWhiteSpace(arr);
+			return arr;
+		}else{
+			return null;
+		}
 	}
 
 	public static boolean isEmptyString(String input){
@@ -271,7 +275,7 @@ public class MainParser {
 
 	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
 		mp.setTokens(tokens);
-		if(tokens.length != 1){
+		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
