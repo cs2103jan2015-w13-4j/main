@@ -4,30 +4,61 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.Parser;
 
 import pista.Constants;
 
-public class Parser {
-	
+public class MainParser {
+
+	String command="";
+	String[] tokens;
+	String message="";
+	boolean validTokens=false;
+
+
+	public MainParser(){
+		tokens=null;
+	}
+
+	public String getCommand(){return command;}
+	public String[] getTokens(){return tokens;}
+	public String getItemInTokenIndex(int index){return tokens[index];}
+	public String getMessage(){return message;}
+	public boolean getValidTokens(){return validTokens;}
+	private void setCommand(String command){this.command = command;}
+	private void setTokens(String[] tokens){this.tokens = tokens;}
+	private void setMessage(String message){this.message = message;}
+	private void setValidToken(boolean status){this.validTokens = status;}
+	private void setIndexInToken(int index, String input){this.tokens[index] = input;}	
 	/*
 	 * tokens
 	 * [0] - command type
 	 * [1] - parameter in string 
 	 * */
 	
-	public static String validateInput(String input) {
+	public static MainParser validateInput(String input) {
+		MainParser mp = new MainParser();
 		if (isEmptyString(input)) {
-			return Constants.MESSAGE_EMPTY_STRING;
+			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
+			return mp;
 		} else {
 			String command = getCommand(input);
 			if (!isCommandValid(command)) {
-				return Constants.MESSAGE_WRONG_COMMAND;
+				mp.setMessage(Constants.MESSAGE_WRONG_COMMAND);
+				return mp;
 			} else {
 				String[] tokens = getTokens(input);
-				if (!isTokensValid(command, tokens)) {
-					return Constants.MESSAGE_WRONG_PARAMETERS;
+				mp.setValidToken(mp.isTokensValid(mp, command, tokens));
+				if (!mp.getValidTokens()) {
+					//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
+					return mp;
 				} else {
-					return Constants.MESSAGE_VALID_INPUT;
+					mp.setCommand(command);
+					mp.setMessage(Constants.MESSAGE_VALID_INPUT);
+					return mp;
 				}
 			}
 		}
@@ -71,47 +102,101 @@ public class Parser {
 	 * true=parameter exists
 	 * false=no parameters
 	 */
-	private static boolean isTokensValid(String command, String[] tokens){
+	private boolean isTokensValid(MainParser mp, String command, String[] tokens){
 		switch(command) {
-			case Constants.VALUE_ADD:
-				return checkAddTokens(tokens);
-			case Constants.VALUE_EDIT:
-				return checkEditTokens(tokens);
-			case Constants.VALUE_DELETE:
-				return checkDeleteTokens(tokens);
-			default:
-				return false;
+		case Constants.VALUE_ADD:
+			return checkAddTokens(mp, tokens);
+		case Constants.VALUE_EDIT:
+			return checkEditTokens(tokens);
+		case Constants.VALUE_DELETE:
+			return checkDeleteTokens(tokens);
+		default:
+			return false;
 		}
 	}
-	
-	private static boolean checkAddTokens(String[] tokens) {
+	private boolean checkAddTokens(MainParser mp, String[] tokens) {
+		Parser parser = new Parser();
+		mp.setTokens(tokens);
+
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
-			return TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]));
+			mp.setValidToken(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE])));
+			return true;
 		}
-		
+
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
-			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE]) 
-					&& (TokenValidation.isDateValid(tokens[Constants.ADD_TOKEN_DEADLINE_ENDDATE])) 
-					&& (TokenValidation.isTimeValid(tokens[Constants.ADD_TOKEN_DEADLINE_ENDTIME]))){
+			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])){
+				if(!isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_DEADLINE_ENDDATE, 
+						Constants.ADD_TOKEN_DEADLINE_ENDTIME)){
+					//mp.setValidToken(false);
+					return false;
+				}
+				//mp.setValidToken(true);
 				return true;
 			}
+			//mp.setValidToken(false);
+			return false;
 		}
-		
+
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
-			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE]) 
-					&& (TokenValidation.isDateValid(tokens[Constants.ADD_TOKEN_TIMED_STARTDATE])) 
-					&& (TokenValidation.isTimeValid(tokens[Constants.ADD_TOKEN_TIMED_STARTTIME])) 
-					&& (TokenValidation.isDateValid(tokens[Constants.ADD_TOKEN_TIMED_ENDDATE])) 
-					&& (TokenValidation.isTimeValid(tokens[Constants.ADD_TOKEN_TIMED_ENDTIME])) 
-					&& TokenValidation.isStartDateBeforeThanEndDate(tokens[Constants.ADD_TOKEN_TIMED_STARTDATE]
-							, tokens[Constants.ADD_TOKEN_TIMED_ENDDATE]
-									, tokens[Constants.ADD_TOKEN_TIMED_STARTTIME]
-											, tokens[Constants.ADD_TOKEN_TIMED_ENDTIME])){
-				return true;
+			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])) {
+				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
+				if(startDateTimeValid && endDateTimeValid){
+					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE),
+							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE), 
+							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME), 
+							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME))){
+						//mp.setValidToken(true);
+						return true;
+					}else{
+						mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+						return false;
+					}
+				}
+				return false;
+			}
+			return false;
+		}
+
+		assert false:"Tokens number in add function are "+tokens.length +" allowed length are 1,3,5";
+		//mp.setValidToken(false);
+		return false;
+	}
+
+	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
+		Parser parser = new Parser();
+		List<DateGroup> groups;
+		String interpretOutputDateFromNatty;
+		String interpretOutputTimeFromNatty;
+		if(!TokenValidation.isDateValid(tokens[dateIndex])){
+			groups = parser.parse(tokens[dateIndex]);
+			interpretOutputDateFromNatty = intrepretInputNatty(groups);
+			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty)){
+				mp.setMessage(Constants.MESSAGE_INVALID_DATE_INPUT);
+				return false;
+			}else{
+				mp.setIndexInToken(dateIndex, interpretOutputDateFromNatty);
 			}
 		}
-		assert false:"Tokens number in add function are "+tokens.length +" allowed length are 1,3,5";
-		return false;
+		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
+			groups = parser.parse(tokens[timeIndex]);
+			interpretOutputTimeFromNatty = intrepretInputNatty(groups);
+			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty)){
+				mp.setMessage(Constants.MESSAGE_INVALID_TIME_INPUT);
+				return false;
+			}else{
+				mp.setIndexInToken(timeIndex, interpretOutputTimeFromNatty);
+			}
+		}
+		return true;
+	}
+
+	private static String intrepretInputNatty(List<DateGroup> groups) {
+		List dates = null;
+		for(DateGroup group: groups){
+			dates = group.getDates();
+		}
+		return dates.toString();
 	}
 	
 	private static boolean checkEditTokens(String[] tokens) {		

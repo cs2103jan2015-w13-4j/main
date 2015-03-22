@@ -22,7 +22,7 @@ import org.w3c.dom.NodeList;
 
 import pista.log.CustomLogging;
 import pista.logic.Task;
-import pista.parser.Parser;
+import pista.parser.MainParser;
 
 public class Storage {
 
@@ -366,10 +366,10 @@ public class Storage {
 					m_start_millisecond = eElement.getElementsByTagName(NODE_TASK_START_MILLISECOND_TAG).item(0).getTextContent();
 					m_end_millisecond = eElement.getElementsByTagName(NODE_TASK_END_MILLISECOND_TAG).item(0).getTextContent();
 					
-					m_start_time = Parser.convertMillisecondToTime(Long.valueOf(m_start_millisecond));
-					m_end_time = Parser.convertMillisecondToTime(Long.valueOf(m_end_millisecond));
-					m_start_date = Parser.convertMillisecondToDate(Long.valueOf(m_start_millisecond));
-					m_end_date = Parser.convertMillisecondToDate(Long.valueOf(m_end_millisecond));
+					m_start_time = MainParser.convertMillisecondToTime(Long.valueOf(m_start_millisecond));
+					m_end_time = MainParser.convertMillisecondToTime(Long.valueOf(m_end_millisecond));
+					m_start_date = MainParser.convertMillisecondToDate(Long.valueOf(m_start_millisecond));
+					m_end_date = MainParser.convertMillisecondToDate(Long.valueOf(m_end_millisecond));
 							
 					m_is_done = Boolean.parseBoolean(eElement.getElementsByTagName(NODE_TASK_IS_DONE_TAG).item(0).getTextContent());
 					m_category = eElement.getElementsByTagName(NODE_TASK_CATEGORY_TAG).item(0).getTextContent();

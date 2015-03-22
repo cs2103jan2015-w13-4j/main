@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import pista.log.CustomLogging;
 import pista.logic.Logic;
-import pista.parser.Parser;
+import pista.parser.MainParser;
 import pista.storage.Storage;
 import pista.ui.RootLayoutController;
 import pista.ui.UIController;

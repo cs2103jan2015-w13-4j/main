@@ -16,6 +16,12 @@ public class Constants {
 	public static final String MESSAGE_WRONG_COMMAND = "No/Wrong command detected!";
 	public static final String MESSAGE_WRONG_PARAMETERS = "No/Wrong parameters detected!";
 	public static final String MESSAGE_VALID_INPUT = "Valid";
+	public static final String MESSAGE_STARTDATE_GREATER_THAN_ENDDATE = "Start date cannot be greater than end date";
+	public static final String MESSAGE_INVALID_DATE_INPUT = "Invalid date input";
+	public static final String MESSAGE_INVALID_TIME_INPUT = "Invalid time input";
+	public static final String MESSAGE_INVALID_TOKEN_LENGTH = "Invalid token length";
+	public static final String MESSAGE_ID_LESS_THAN_ONE = "ID cannot be less than one";
+	public static final String MESSAGE_INVALID_SHORTHAND = "invalid shorthand for delete";
 	public static final int TOKEN_NUM_ADD_ONE = 1;
 	public static final int TOKEN_NUM_ADD_THREE = 3;
 	public static final int TOKEN_NUM_ADD_FIVE = 5;

@@ -8,7 +8,7 @@ import pista.CustomPreferences;
 import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.logic.Task;
-import pista.parser.Parser;
+import pista.parser.MainParser;
 import pista.storage.Storage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -161,8 +161,8 @@ public class UIController {
 		userInput = cmdTextField.getText();
 		
 		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
-		
-		parserOutput = Parser.validateInput(userInput);
+		MainParser mp = MainParser.validateInput(userInput);
+		parserOutput = mp.getMessage();
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
 			txtStatus.setText(parserOutput);
@@ -172,8 +172,8 @@ public class UIController {
 		
 		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
-		command = Parser.getCommand(userInput);
-		tokens = Parser.getTokens(userInput);
+		command = MainParser.getCommand(userInput);
+		tokens = MainParser.getTokens(userInput);
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);
