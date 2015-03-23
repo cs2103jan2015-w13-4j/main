@@ -211,6 +211,7 @@ public class MainParser {
 		List dates = null;
 		for(DateGroup group: groups){
 			dates = group.getDates();
+			System.out.println(dates.toString()+"      sdfasdfsdf");
 			return dates.toString();
 		}
 
