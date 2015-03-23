@@ -668,7 +668,7 @@ public class Storage {
 	 }
 	 
 	 public void setTaskList(ArrayList<Task> tl){
-		 taskList = tl;
+		 taskList = new ArrayList<Task>(tl);
 	 }
 
 	 public void setDataFolderLocation(String location){

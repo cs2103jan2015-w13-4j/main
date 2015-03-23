@@ -739,3 +739,193 @@ Mar 23, 2015 1:03:36 AM pista.log.CustomLogging logInfo
 INFO: Executed user command: delete
 Mar 23, 2015 1:03:36 AM pista.log.CustomLogging logInfo
 INFO: Failed validateInput: Invalid token length
+Mar 23, 2015 10:44:03 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meeting2
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 10:44:12 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meeting2 task of floating category into list
+Mar 23, 2015 10:44:16 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 10:44:16 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 10:46:26 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 10:50:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meeting4
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 10:50:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meeting4 task of floating category into list
+Mar 23, 2015 10:50:51 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 10:50:51 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 10:50:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 10:50:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 10:50:54 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 10:58:01 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meeting5
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 10:58:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meeting5 task of floating category into list
+Mar 23, 2015 10:58:16 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 10:58:16 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 10:58:16 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 10:58:16 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 10:58:18 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:01:43 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meet6
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:02:03 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meet6 task of floating category into list
+Mar 23, 2015 11:02:07 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 11:02:07 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:02:07 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:02:07 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:02:12 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:06:53 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meet7
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:07:06 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meet7 task of floating category into list
+Mar 23, 2015 11:07:08 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 11:07:08 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:07:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:07:08 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:07:13 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:09:34 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add task8
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:09:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully added task8 task of floating category into list
+Mar 23, 2015 11:09:43 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 11:09:43 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:09:43 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:09:44 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:09:55 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: redo
+Mar 23, 2015 11:09:55 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:09:55 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:09:55 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:15:46 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add meet9
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:15:52 AM pista.log.CustomLogging logInfo
+INFO: Successfully added meet9 task of floating category into list
+Mar 23, 2015 11:15:56 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: undo
+Mar 23, 2015 11:15:56 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:15:56 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:15:56 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 23, 2015 11:15:58 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: redo
+Mar 23, 2015 11:15:58 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 23, 2015 11:15:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 23, 2015 11:15:58 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file

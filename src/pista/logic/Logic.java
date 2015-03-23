@@ -13,8 +13,8 @@ import pista.storage.Storage;
 public class Logic {
 	private static CustomLogging mLog = null;
 	private static Storage mStorage = null;
-	private static ArrayList<Storage> undoList = new ArrayList<Storage>();
-	private static ArrayList<Storage> redoList = new ArrayList<Storage>();
+	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
+	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
 	
 	public static boolean initStorage(){
 		try{
@@ -74,7 +74,7 @@ public class Logic {
 	}
 
 	public static String add(String[] tokens){
-		Storage currentState = mStorage;
+		ArrayList<Task> currentState = getCurrentState();
 		boolean isAddedToStorage = false;
 		boolean isAddedToArray = false;
 
@@ -96,7 +96,7 @@ public class Logic {
 	}
 
 	public static String edit(String[] tokens){
-		Storage currentState = mStorage;
+		ArrayList<Task> currentState = getCurrentState();
 		int taskId=Integer.parseInt(tokens[0]);
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
@@ -138,7 +138,7 @@ public class Logic {
 
 	//delete tasks by id or all
 	public static String delete(String[] tokens){
-		Storage currentState = mStorage;
+		ArrayList<Task> currentState = getCurrentState();
 		String input = tokens[0];
 		if(input.equalsIgnoreCase("a")){
 			clearList();
@@ -305,9 +305,11 @@ public class Logic {
 
 	private static String undo(){
 		if(!undoList.isEmpty()){
-			saveToRedo();
-			mStorage = undoList.get(undoList.size()-1);
+			ArrayList<Task> currentState = getCurrentState();
+			saveToRedo(currentState);
+			mStorage.setTaskList(undoList.get(undoList.size()-1));
 			undoList.remove(undoList.size()-1);
+			mStorage.save();
 			return Constants.LOGIC_SUCCESS_UNDO;
 		}
 		return Constants.LOGIC_FAIL_UNDO;
@@ -315,9 +317,11 @@ public class Logic {
 	
 	private static String redo(){
 		if(!redoList.isEmpty()){
-			saveToUndo(mStorage);
-			mStorage = redoList.get(redoList.size()-1);
+			ArrayList<Task> currentState = getCurrentState();
+			saveToUndo(currentState);
+			mStorage.setTaskList(redoList.get(redoList.size()-1));
 			redoList.remove(redoList.size()-1);
+			mStorage.save();
 			return Constants.LOGIC_SUCCESS_REDO;
 		}
 		return Constants.LOGIC_SUCCESS_REDO;
@@ -409,7 +413,7 @@ public class Logic {
 		return isLoaded;
 	}
 	
-	private static void saveToUndo(Storage currState){
+	private static void saveToUndo(ArrayList<Task> currState){
 		if(undoList.size() < 3){
 			undoList.add(currState);
 		}else{
@@ -418,12 +422,12 @@ public class Logic {
 		}
 	}
 	
-	private static void saveToRedo(){
+	private static void saveToRedo(ArrayList<Task> currState){
 		if(redoList.size() < 3){
-			redoList.add(undoList.get(undoList.size()-1));
+			redoList.add(currState);
 		}else{
 			redoList.remove(0);
-			redoList.add(undoList.get(undoList.size()-1));
+			redoList.add(currState);
 		}
 	}
 	
@@ -431,8 +435,13 @@ public class Logic {
 		redoList.clear();
 	}
 	
-	private static void updateRedoAndUndo(Storage s){
+	private static void updateRedoAndUndo(ArrayList<Task> s){
 		clearRedo();
 		saveToUndo(s);
+	}
+	
+	private static ArrayList<Task> getCurrentState() {
+		ArrayList<Task> currentState = new ArrayList<Task>(mStorage.getTaskList());
+		return currentState;
 	}
 }
