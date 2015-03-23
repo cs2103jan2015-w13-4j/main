@@ -2,6 +2,10 @@ package pista.ui;
 
 import java.io.IOException;
 
+import org.controlsfx.control.Notifications;
+import org.controlsfx.control.StatusBar;
+import org.scenicview.ScenicView;
+
 import pista.Constants;
 import pista.CustomPreferences_bak;
 import pista.CustomPreferences;
@@ -86,6 +90,8 @@ public class UIController {
 		Scene scene = new Scene(new Browser(), 500,700, Color.web("#666970"));
 		stage.setScene(scene);    
 		stage.show();
+		Notifications.create().title("test").text("sdfasdfsdf").showConfirm();
+		
 	}
 
 	@FXML
