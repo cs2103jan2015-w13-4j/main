@@ -74,9 +74,13 @@ public class MainParser {
 
 	public static String[] getTokens(String input){
 		String[] temp = input.split(" ",2);
-		String[] arr = temp[1].split("-");
-		trimWhiteSpace(arr);
-		return arr;
+		if(temp.length > 1){
+			String[] arr = temp[1].split("-");
+			trimWhiteSpace(arr);
+			return arr;
+		}else{
+			return null;
+		}
 	}
 
 	public static boolean isEmptyString(String input){
@@ -91,7 +95,8 @@ public class MainParser {
 	 * Add, edit, delete*/
 	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
-				command.equalsIgnoreCase(Constants.VALUE_DELETE)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
+				command.equalsIgnoreCase(Constants.VALUE_UNDO)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -113,6 +118,10 @@ public class MainParser {
 			return checkEditTokens(mp, tokens);
 		case Constants.VALUE_DELETE:
 			return checkDeleteTokens(mp, tokens);
+		case Constants.VALUE_REDO:
+			return true;
+		case Constants.VALUE_UNDO:
+			return true;
 		default:
 			return false;
 		}
@@ -267,7 +276,7 @@ public class MainParser {
 
 	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
 		mp.setTokens(tokens);
-		if(tokens.length != 1){
+		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
