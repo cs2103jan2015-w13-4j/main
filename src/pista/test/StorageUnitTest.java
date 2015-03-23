@@ -5,16 +5,22 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import pista.CustomPreferences;
 import pista.storage.Storage;
 
 public class StorageUnitTest {
 
-	private Storage mStorage;
-	private String dummyFilePath = "init_task.xml";
+	private Storage mStorage = null;
+	private CustomPreferences mPrefs = null;
+	
+	private String dummyFilePath = "";
 
 	@Before
 	public void init(){
 		mStorage = Storage.getInstance();	
+		mPrefs = CustomPreferences.getInstance();
+		
+		dummyFilePath = mPrefs.getPreferenceFileLocation();
 	}
 	
 	@Test

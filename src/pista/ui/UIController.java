@@ -180,9 +180,6 @@ public class UIController {
 		
 		command = mp.getCommand();
 		tokens = mp.getTokens();
-		for (int i = 0; i < tokens.length; i++) {
-			System.out.println(tokens[i]);
-		}
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);
