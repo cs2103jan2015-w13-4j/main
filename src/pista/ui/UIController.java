@@ -3,7 +3,6 @@ package pista.ui;
 import java.io.IOException;
 
 import pista.Constants;
-import pista.CustomPreferences_bak;
 import pista.CustomPreferences;
 import pista.log.CustomLogging;
 import pista.logic.Logic;
@@ -20,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -38,6 +38,8 @@ public class UIController {
 	
 	public String userInput = null;
 	
+	private static String CSS_CLASS_BACKGROUND = "background";
+	private static String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
 	//Objects
 	@FXML
 	private Button btnHelp;
@@ -69,6 +71,12 @@ public class UIController {
 	@FXML
 	private ListView<Task> listview_task_fx_id;
 
+    @FXML
+    private AnchorPane anchorPane1;
+
+    @FXML
+    private SplitPane splitPane1;
+    
 	
 	@FXML
 	void onHelp(ActionEvent event) {
@@ -190,8 +198,12 @@ public class UIController {
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
 		
-		mStorage.setDataFolderLocation(getPreferenceFilePath());
+		splitPane1.getStyleClass().addAll(CSS_CLASS_BACKGROUND);
+		anchorPane1.getStyleClass().addAll(CSS_CLASS_BACKGROUND);
+		txtStatus.getStyleClass().addAll(CSS_CLASS_TEXT_BACKGROUND);
 		
+		
+		mStorage.setDataFolderLocation(getPreferenceFilePath());
 		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();
@@ -207,6 +219,7 @@ public class UIController {
 			@Override
 			public ListCell<Task> call(ListView<Task> param) {
 				final TaskListCell mCell = new TaskListCell();
+				mCell.setUIParent(UIController.this);
 				return mCell;
 			}//end call
 		});

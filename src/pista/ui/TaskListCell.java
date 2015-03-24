@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -26,10 +27,15 @@ public class TaskListCell extends ListCell<Task> {
     
     private final String TASK_LIST_CELL = "task-list-cell";
     private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
+    private final String TASK_LIST_CELL_ID_BLACK_CLASS = "task-list-cell-id-black";
+    private final String TASK_LIST_CELL_ID_RED_CLASS = "task-list-cell-id-red";
+    private final String TASK_LIST_CELL_ID_GREEN_CLASS = "task-list-cell-id-green";
+    private final String TASK_LIST_CELL_ID_YELLOW_CLASS = "task-list-cell-id-yellow";
+    
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
-    private final String TASK_LIST_ICON_CLASS = "task-list-icon";
-    private final String FONT_AWESOME = "FontAwesome";
+    private final String TASK_LIST_CELL_DONE_CLASS = "task-list-cell-done";
+    
     
     private final int MAX_CHARACTER_IN_TITLE = 40;
     
@@ -46,7 +52,7 @@ public class TaskListCell extends ListCell<Task> {
     private Label lblStartDateTime = new Label();
     private Label lblEndDateTime = new Label();
     private CheckBox checkBox = new CheckBox();
-    
+    private UIController mUIParent = null;
     
     private String getID = "";
     private String getTitle = "";
@@ -59,12 +65,10 @@ public class TaskListCell extends ListCell<Task> {
     
     
     public TaskListCell() {
-    	getStyleClass().add(TASK_LIST_CELL);
         configureGrid(); 
-        configureIsDone();
-        configureIcon();
-        configureTitle();
-        configureDateTime();
+        configureCheckBoxIsDone();
+        configureLabelTitle();
+        configureLabelDateTime();
         configureVBoxRight();
         addControlsToVBox();
         addControlsToGrid();            
@@ -87,51 +91,64 @@ public class TaskListCell extends ListCell<Task> {
         
     }
     
-    private void configureIcon() {
+    //private void configureIcon() {
         //icon.setFont(Font.font(FONT_AWESOME, FontWeight.BOLD, 24));
         //icon.getStyleClass().add(CACHE_LIST_ICON_CLASS);
+    //}
+    
+    private void setCellBackground(boolean isDone){
+    	if(isDone){
+    		getStyleClass().add(TASK_LIST_CELL_DONE_CLASS);
+    	}else{
+    		getStyleClass().add(TASK_LIST_CELL);
+    	}
     }
     
-    private void configureIsDone(){
-    	configureCheckBox(checkBox);
-    }
-    
-    private void configureCheckBox(CheckBox cb){
-    	cb.setOnAction(eh);
+    private void configureCheckBoxIsDone(){
+    	checkBox.setOnAction(eh);
     }
     
     private void configureVBoxRight(){
     	vBoxRight.setPadding(new Insets(10, 0, 0, 0));
     }
     
-    private void configureID(int type){
-    	if(type != -2){
-    		if(type == 1){
-    			
-    		}else if (type == -1){
-    			
-    		}else{
-    			
-    		}
-    		lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, "task-list-cell-id-green");
-    	}else{
-    		lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS);
+    private void configureLabelID(int type){
+    	//System.out.println("type - " + type);
+
+		if(type == 1){
+			lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_RED_CLASS);
+		}
+		
+		if (type == -1 || type == 0){
+			lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_YELLOW_CLASS);
+		}
+    	
+    	if (type == -2){
+    		lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_BLACK_CLASS);
+    	}
+    	
+    	if (type == 3){ //is done
+    		lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_GREEN_CLASS);
+    	}
+    	
+    	if(type == 4){
+    		lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_BLACK_CLASS);
     	}
     	
     }
     
-    private void configureTitle() {
+    private void configureLabelTitle() {
     	lblTitle.getStyleClass().add(TASK_LIST_CELL_TITLE_CLASS);
     }
     
-    private void configureDateTime() {
+    private void configureLabelDateTime() {
     	lblStartDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
     	lblEndDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
-    	configureLabel(lblStartDateTime);
-    	configureLabel(lblEndDateTime);  	
+    	configureLabels(lblStartDateTime);
+    	configureLabels(lblEndDateTime);  	
     }
     
-    private void configureLabel(Label lbl){
+    private void configureLabels(Label lbl){
     	lbl.setMaxWidth(Double.POSITIVE_INFINITY);
     	lbl.setMaxHeight(Double.POSITIVE_INFINITY);
     }
@@ -171,7 +188,7 @@ public class TaskListCell extends ListCell<Task> {
         getStartTime = mTask.getStartTime();
         getEndTime = mTask.getEndTime();
         getIsDone = mTask.getIsDone();
-        
+
         if(mTask.getTitle().length() > MAX_CHARACTER_IN_TITLE){
         	getTitle = getTitle.substring(0, MAX_CHARACTER_IN_TITLE) + "...";
         }
@@ -196,7 +213,15 @@ public class TaskListCell extends ListCell<Task> {
         }
         //setStyleClassDependingOnFoundState(mTask);  
         
-        configureID(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
+        if(getIsDone){ //task is done or floating
+        	configureLabelID(3); //green
+        }else if (getCategory.equals("floating")){
+        	configureLabelID(4);
+        }else{
+        	configureLabelID(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
+        }
+        
+        setCellBackground(getIsDone);
         
         setGraphic(grid);
 		
@@ -237,6 +262,15 @@ public class TaskListCell extends ListCell<Task> {
 	            
 	            String getTaskID = chk.getId().replace("checkBox_", "").trim();
 	            
+	            if(chk.isSelected()){
+	            	getIsDone = true;         	
+	            }else{
+	            	getIsDone = false;
+	            }
+	            
+	            setCellBackground(getIsDone);
+	            refreshUIControllerParentListView();
+	            
 /*
 	            if ("chk 1".equals(chk.getText())) {
 	                chk2.setSelected(!chk1.isSelected());
@@ -248,4 +282,14 @@ public class TaskListCell extends ListCell<Task> {
 	    }//end handle
 	};
 	
+	
+	public void setUIParent(UIController ui){
+		mUIParent = ui;
+	}
+	
+	public void refreshUIControllerParentListView(){
+		if(mUIParent != null){
+			mUIParent.showTaskListInListView();
+		}
+	}
 }

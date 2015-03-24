@@ -84,14 +84,28 @@ public class TokenValidation {
 		try {
 			Date currentFormatDate = sdf.parse(currentDateTime);
 			Date inputFormatDate = sdf.parse(inputDateTime);
-			if(inputFormatDate.before(currentFormatDate)){
-				return -1; //input smaller than current
-			}else if (inputFormatDate.after(currentFormatDate)){
-				return 1; //input larger than current
-			}else{
-				return 0; //input == current
+			
+			Long currentDateMs = currentFormatDate.getTime();
+			Long inputDateMs = inputFormatDate.getTime();
+			
+			//System.out.println(currentDateMs + " " + inputDateMs);
+
+			if((currentDateMs < inputDateMs) || (inputDateMs - currentDateMs == 86400000L)){
+				return -1; //current smaller than input	
 			}
+			
+			if (currentDateMs > inputDateMs){ //exceed deadline
+				return 1; //current larger than input 			
+			}
+			
+			if (currentDateMs == inputDateMs){
+				return 0; //current == input 	
+			}
+			
+			return -2; //task is still early
+			
 		} catch (ParseException e) {
+			//System.out.println(e.getMessage());
 			e.printStackTrace();
 			return -2;
 		}

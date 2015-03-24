@@ -10,6 +10,10 @@
 	-fx-font-weight: bold;
 }
 
+.task-list-cell-id-black{
+	-fx-text-fill: #000000;
+}
+
 .task-list-cell-id-green{
 	-fx-text-fill: #00C13F;
 }
@@ -58,4 +62,8 @@
 
 .task-list-cell:selected .task-list-cell-datetime{
 	-fx-text-fill: #FFFFFF;
+}
+
+.task-list-cell-done {
+	-fx-background-color: #EEEEEE;
 }
