@@ -52,18 +52,40 @@
 	-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);
 }
 
-.task-list-cell:selected {
-	-fx-background-color: #4294DE;
+.task-list-cell:filled:hover{
+	-fx-background-color: #8AD5F090; /*#56C5FF */
+	/* type, color, radius, spread, offset-x, offset, y */
+	-fx-effect: dropshadow(three-pass-box, #E2F4FB, 10, 0.7, 0, -1);
 }
 
-.task-list-cell:selected .task-list-cell-title{
+.task-list-cell:filled:selected {
+	-fx-background-color: #24ADDEF2; /* #4294DE*/
+}
+
+.task-list-cell:filled:selected .task-list-cell-title{
 	-fx-text-fill: #FFFFFF;
 }
 
-.task-list-cell:selected .task-list-cell-datetime{
+.task-list-cell:filled:selected .task-list-cell-datetime{
 	-fx-text-fill: #FFFFFF;
 }
 
 .task-list-cell-done {
 	-fx-background-color: #EEEEEE;
+}
+
+.task-list-cell-done:filled:hover{
+	-fx-background-color: #E6E6E6F2;
+}
+
+.task-list-cell-done:filled:selected {
+	-fx-background-color: #E3E3E3FF;
+}
+
+.task-list-cell-done:filled:selected .task-list-cell-title{
+	-fx-text-fill: #000000;
+}
+
+.task-list-cell-done:filled:selected .task-list-cell-datetime{
+	-fx-text-fill: #666666;
 }

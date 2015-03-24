@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import pista.logic.Logic;
 import pista.logic.Task;
 import pista.parser.MainParser;
 import pista.parser.TokenValidation;
@@ -98,8 +99,10 @@ public class TaskListCell extends ListCell<Task> {
     
     private void setCellBackground(boolean isDone){
     	if(isDone){
+    		getStyleClass().remove(TASK_LIST_CELL);
     		getStyleClass().add(TASK_LIST_CELL_DONE_CLASS);
     	}else{
+    		getStyleClass().remove(TASK_LIST_CELL_DONE_CLASS);
     		getStyleClass().add(TASK_LIST_CELL);
     	}
     }
@@ -256,6 +259,8 @@ public class TaskListCell extends ListCell<Task> {
 	EventHandler eh = new EventHandler<ActionEvent>() {
 	    @Override
 	    public void handle(ActionEvent event) {
+	    	boolean isUpdated = false;
+	    	
 	        if (event.getSource() instanceof CheckBox) {
 	            CheckBox chk = (CheckBox) event.getSource();
 	            System.out.println(chk.getId());
@@ -268,16 +273,13 @@ public class TaskListCell extends ListCell<Task> {
 	            	getIsDone = false;
 	            }
 	            
-	            setCellBackground(getIsDone);
-	            refreshUIControllerParentListView();
-	            
-/*
-	            if ("chk 1".equals(chk.getText())) {
-	                chk2.setSelected(!chk1.isSelected());
-	            } else if ("chk 2".equals(chk.getText())) {
-	                chk1.setSelected(!chk2.isSelected());
+	            isUpdated = updateTaskDoneStatus(Integer.parseInt(getTaskID), getIsDone);
+	            if(isUpdated){
+	            	setCellBackground(getIsDone);
+		            refreshUIControllerParentListView();
 	            }
-*/
+	            
+	            
 	        }//end if
 	    }//end handle
 	};
@@ -287,9 +289,14 @@ public class TaskListCell extends ListCell<Task> {
 		mUIParent = ui;
 	}
 	
-	public void refreshUIControllerParentListView(){
+	private void refreshUIControllerParentListView(){
 		if(mUIParent != null){
 			mUIParent.showTaskListInListView();
 		}
+	}
+	
+	private boolean updateTaskDoneStatus(int id, boolean newDone){
+		boolean isUpdated = Logic.updateTaskIsDone(id, newDone);
+		return isUpdated;
 	}
 }

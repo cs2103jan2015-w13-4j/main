@@ -413,6 +413,8 @@ public class Logic {
 		return isLoaded;
 	}
 	
+	
+	//================================= UNDO & REDO =================================
 	private static void saveToUndo(ArrayList<Task> currState){
 		if(undoList.size() < 3){
 			undoList.add(currState);
@@ -444,4 +446,26 @@ public class Logic {
 		ArrayList<Task> currentState = new ArrayList<Task>(mStorage.getTaskList());
 		return currentState;
 	}
+	
+	
+	//============== LISTVIEW CUSTOM CELL ===========
+	public static boolean updateTaskIsDone(int id, boolean newDone){
+		try{
+			boolean isUpdated = false;
+			for(Task t : mStorage.getTaskList()){
+				if(t.getID() == id){
+					t.setIsDone(newDone);
+				}
+			}
+			
+			isUpdated = mStorage.save();
+			return isUpdated;
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 }
