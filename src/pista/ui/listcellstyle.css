@@ -1,11 +1,37 @@
-.task-list-title {
+.task-list-style {
+	-fx-background-color: #FFFFFF; 
+	-fx-padding: 2; 
+	-fx-hgap: 2; 
+	-fx-vgap: 2;
+}
+
+.task-list-cell-id {
+	-fx-font-size: 1.2em;
+	-fx-font-weight: bold;
+}
+
+.task-list-cell-id-green{
+	-fx-text-fill: #00C13F;
+}
+
+.task-list-cell-id-yellow{
+	-fx-text-fill: #E1B700;
+}
+
+.task-list-cell-id-red{
+	-fx-text-fill: #FF2E12;
+}
+
+
+.task-list-cell-title {
     -fx-font-size: 1.2em;
     -fx-font-weight: bold;
 }
 
-.task-list-datetime {
+.task-list-cell-datetime {
  	-fx-font-size: 0.9em;
 	-fx-font-weight: normal;
+	-fx-text-fill: #666666;
  
 }
 
@@ -16,4 +42,20 @@
  
 .task-list-found .cache-list-icon {
     -fx-text-fill: #669900;
+}
+
+.task-list-cell {
+	-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);
+}
+
+.task-list-cell:selected {
+	-fx-background-color: #4294DE;
+}
+
+.task-list-cell:selected .task-list-cell-title{
+	-fx-text-fill: #FFFFFF;
+}
+
+.task-list-cell:selected .task-list-cell-datetime{
+	-fx-text-fill: #FFFFFF;
 }

@@ -1,6 +1,8 @@
 package pista.parser;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,4 +73,28 @@ public class TokenValidation {
 	}
 	
 
+	public static int compareWithCurrentDate(String inputDate, String inputTime){
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Calendar cal = Calendar.getInstance();
+
+		String currentDateTime = dateFormat.format(cal.getTime()); //2014/08/06 16:00:22
+		String inputDateTime = inputDate + " " + inputTime;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		try {
+			Date currentFormatDate = sdf.parse(currentDateTime);
+			Date inputFormatDate = sdf.parse(inputDateTime);
+			if(inputFormatDate.before(currentFormatDate)){
+				return -1; //input smaller than current
+			}else if (inputFormatDate.after(currentFormatDate)){
+				return 1; //input larger than current
+			}else{
+				return 0; //input == current
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return -2;
+		}
+
+	}
 }
