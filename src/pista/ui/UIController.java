@@ -63,7 +63,7 @@ public class UIController {
 	private Text txtStatus;
 
 	@FXML
-	private Button enterButton;
+	private Button btnEnter;
 
 	@FXML
 	private AnchorPane anchorRightPane_fx_id;
