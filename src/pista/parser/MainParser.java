@@ -134,7 +134,6 @@ public class MainParser {
 			return false;
 		}
 		mp.setTokens(tokens);
-		System.out.println("what is the token length "+tokens.length);
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
 			if(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]))){
 				return true;
@@ -160,7 +159,7 @@ public class MainParser {
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])) {
 				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
-				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_ENDDATE, Constants.ADD_TOKEN_TIMED_ENDTIME);
 				if(startDateTimeValid && endDateTimeValid){
 					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE),
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE), 
@@ -192,7 +191,7 @@ public class MainParser {
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
 		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
-
+		System.out.println("current date index "+dateIndex);
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
 			groups = parser.parse(tokens[dateIndex]);
 			try {
@@ -362,8 +361,9 @@ public class MainParser {
 		aL.add(".");
 		aL.add("/");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-		if(myDate.length()!=sdf.toPattern().length()){
+		//if(myDate.length()!=sdf.toPattern().length()){
 			for(String pattern : aL){
+				System.out.println("current pattern"+pattern);
 				if(StringUtils.countMatches(myDate, pattern)==2){
 					String[] temp = null;
 					if(pattern.equals(".")){
@@ -377,6 +377,7 @@ public class MainParser {
 						if(extractedValue < 10 && extractedValue > 0){
 							sb.append("0");
 							sb.append(Integer.valueOf(temp[i])+"/");
+							System.out.println(sb.toString() + "sdfsadf");
 						}else {
 							sb.append(Integer.valueOf(extractedValue)+"/");
 						}
@@ -385,7 +386,7 @@ public class MainParser {
 					return sb.toString();
 				}
 			}
-		}
+		//}
 		return myDate;
 	}
 }
