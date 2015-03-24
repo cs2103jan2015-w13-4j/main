@@ -11,24 +11,24 @@
         <menus>
             <Menu mnemonicParsing="false" text="Task">
               <items>
-                <MenuItem mnemonicParsing="false" text="Add" />
-                  <MenuItem mnemonicParsing="false" text="Edit" />
-                  <MenuItem mnemonicParsing="false" text="Delete" />
+                <MenuItem mnemonicParsing="false" onAction="#onTaskAddClick" text="Add" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTaskEditClick" text="Edit" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTaskDeleteClick" text="Delete" />
               </items>
             </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="Action">
                <items>
                   <MenuItem mnemonicParsing="false" text="Undo" />
                   <MenuItem mnemonicParsing="false" text="Redo" />
                </items></Menu>
           <Menu mnemonicParsing="false" text="View">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Refresh" />
+                  <MenuItem mnemonicParsing="false" onAction="#onViewRefreshClick" text="Refresh" />
                </items>
             </Menu>
           <Menu fx:id="menuItemUserGuide" mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="User Guide" />
+              <MenuItem mnemonicParsing="false" onAction="#onHelpUserGuideClick" text="User Guide" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Settings">
