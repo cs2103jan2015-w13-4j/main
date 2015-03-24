@@ -20,7 +20,7 @@ public class PreferencesUnitTest {
 	
 	@Test
 	public void test_init_preference() {
-		assertEquals("Initializing preferences", true, mPrefs.initPreference(Constants.PREFERENCE_URL_PATH));
+		assertEquals("Initializing correct preferences", true, mPrefs.initPreference(Constants.PREFERENCE_URL_PATH));
 	}
 
 	@Test

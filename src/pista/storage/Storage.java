@@ -31,7 +31,7 @@ public class Storage {
 	private static int max_number_of_tasks;
 	private static String data_folder_location = "";
 	
-	private static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><setting><data_folder_location>[new_file_path]</data_folder_location></setting></tasks>";
+	private static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><task/></tasks>";
 	
 	private static final String NODE_ROOT_TAG = "tasks";
 	private static final String NODE_TOTAL_TASK_TAG = "total_task";
@@ -79,6 +79,9 @@ public class Storage {
 	private Storage(){}
 	
 	public static Storage getInstance(){
+		if(mLog == null){
+			mStorage.initLogging();
+		}
 		return mStorage;
 	}
 	
@@ -138,13 +141,19 @@ public class Storage {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(mXmlFile);
 			
-			Node nRoot = doc.getDocumentElement(); //get root
-			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
-			Node nTotalValue = nTotalList.item(0);
+			Node nRoot = null;
+			nRoot = doc.getDocumentElement(); //get root
+			NodeList nTotalList = null;
+			nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
+			Node nTotalValue = null;
+			nTotalValue = nTotalList.item(0);
+			NodeList nTaskList = null;
+			nTaskList = doc.getElementsByTagName(NODE_TASK_TAG);
+			
 			//NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
 			//Node nDataFolderLocation = nSettings.item(0);
 
-			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeListNull(nTotalList)){
+			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeListNull(nTotalList) || isNodeListNull(nTaskList)){
 				return false; //not valid XML format
 			}
 
