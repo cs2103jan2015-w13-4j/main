@@ -159,6 +159,7 @@ public class UIController {
 		cmdTextField.setText(Constants.DELETE_COMMAND);
 	}
 	
+	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
 		String[] tokens = null;
