@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,8 +56,8 @@ public class MainParser {
 				return mp;
 			} else {
 				String[] tokens = getTokens(input);
-				mp.setValidToken(mp.isTokensValid(mp, command, tokens));
-				if (!mp.getValidTokens()) {
+				//mp.setValidToken(mp.isTokensValid(mp, command, tokens));
+				if (!mp.isTokensValid(mp, command, tokens)) {
 					//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
 					return mp;
 				} else {
@@ -127,11 +129,18 @@ public class MainParser {
 		}
 	}
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
 		mp.setTokens(tokens);
-
+		System.out.println("what is the token length "+tokens.length);
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
-			mp.setValidToken(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE])));
-			return true;
+			if(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]))){
+				return true;
+			}
+			mp.setMessage(Constants.MESSAGE_EMPTY_TITLE);
+			return false;
 		}
 
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
@@ -183,6 +192,7 @@ public class MainParser {
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
 		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
+
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
 			groups = parser.parse(tokens[dateIndex]);
 			try {
@@ -220,7 +230,6 @@ public class MainParser {
 		List dates = null;
 		for(DateGroup group: groups){
 			dates = group.getDates();
-			System.out.println(dates.toString()+"      sdfasdfsdf");
 			return dates.toString();
 		}
 
@@ -229,6 +238,10 @@ public class MainParser {
 	}
 
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {	
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
 		mp.setTokens(tokens);
 		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
@@ -270,6 +283,7 @@ public class MainParser {
 			return false;
 		}
 		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
+		mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
 		return false;
 	}
 
@@ -347,23 +361,29 @@ public class MainParser {
 		ArrayList<String> aL=new ArrayList<String>();
 		aL.add(".");
 		aL.add("/");
-		for(String pattern : aL){
-			if(StringUtils.countMatches(myDate, pattern)==2){
-				String[] temp = null;
-				if(pattern.equals(".")){
-					temp = myDate.split("\\.");
-				}else{
-					temp = myDate.split("/");
-				}
-				for (int i = 0; i < temp.length-1; i++) {
-					int extractedValue = Integer.parseInt(temp[i]);
-					if(extractedValue < 10 && extractedValue > 0 ){
-						sb.append("0");
-						sb.append(temp[i]+"/");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		if(myDate.length()!=sdf.toPattern().length()){
+			for(String pattern : aL){
+				if(StringUtils.countMatches(myDate, pattern)==2){
+					String[] temp = null;
+					if(pattern.equals(".")){
+						temp = myDate.split("\\.");
+					}else{
+						temp = myDate.split("/");
 					}
+					for (int i = 0; i < temp.length-1; i++) {
+						int extractedValue = Integer.parseInt(temp[i]);
+						//to fix d/m/yyyy to dd/MM/yyyy
+						if(extractedValue < 10 && extractedValue > 0){
+							sb.append("0");
+							sb.append(Integer.valueOf(temp[i])+"/");
+						}else {
+							sb.append(Integer.valueOf(extractedValue)+"/");
+						}
+					}
+					sb.append(temp[temp.length-1]);;
+					return sb.toString();
 				}
-				sb.append(temp[temp.length-1]);
-				return sb.toString();
 			}
 		}
 		return myDate;

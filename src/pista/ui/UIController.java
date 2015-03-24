@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.StatusBar;
-import org.scenicview.ScenicView;
 
 import pista.Constants;
 import pista.CustomPreferences_bak;

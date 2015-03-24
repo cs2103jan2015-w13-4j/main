@@ -179,7 +179,23 @@ public class Logic {
 			}
 		}
 	}
+	public static String mark(String[] tokens){ 
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		Task extractedTask = mStorage.getTaskList().get(taskIndex);
+		String status=tokens[1];
 
+		if(Constants.STATUS_DONE.equalsIgnoreCase(status)){
+			extractedTask.setIsDone(true);
+		}
+		else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
+			extractedTask.setIsDone(false);
+		}
+
+		mStorage.getTaskList().remove(taskIndex);
+		mStorage.getTaskList().add(extractedTask);
+		mStorage.save();
+		return Constants.LOGIC_SUCCESS_MARK_TASK;
+	}//end mark
 	//find the index of the task by a certain parameter, can expands it further
 	public static Integer findTaskIndex(int id){
 		for (int i = 0;i < mStorage.getTaskList().size();i++){

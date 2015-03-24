@@ -28,17 +28,13 @@ public class TokenValidation {
 		if(Constants.DEFAULT_VALUE.equalsIgnoreCase(myDate)){
 			return true;
 		}
-		if(myDate.length()!=sdf.toPattern().length()){
-			return false;
-		}
 		
 		try {
 			testDate = sdf.parse(myDate);
-			
+			return true;
 		} catch (ParseException e) {
 			return false;
 		}
-		return true;
 	}
 
 	public static boolean isTimeValid(String myTime){
