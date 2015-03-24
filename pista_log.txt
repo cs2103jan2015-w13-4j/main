@@ -1209,3 +1209,135 @@ Mar 24, 2015 11:08:34 PM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
 Mar 24, 2015 11:08:34 PM pista.log.CustomLogging logInfo
 INFO: Successfully added floated task of floating category into list
+Mar 24, 2015 11:10:04 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add floatedtask
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 24, 2015 11:15:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully added floatedtask task of floating category into list
+Mar 24, 2015 11:18:29 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 24, 2015 11:18:33 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete a
+Mar 24, 2015 11:18:33 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 24, 2015 11:18:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 24, 2015 11:18:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 24, 2015 11:18:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully delete all task.
+Mar 24, 2015 11:45:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 24, 2015 11:54:57 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add deadline -12/1/15 -15:16
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 24, 2015 11:55:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully added deadline task of deadline category into list
+Mar 24, 2015 11:59:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:00:15 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete a
+Mar 25, 2015 12:00:15 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 25, 2015 12:00:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:00:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:00:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully delete all task.
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add deadline
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:00:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully added deadline task of floating category into list
+Mar 25, 2015 12:09:27 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add deadline -7/5/2015 -noon
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:09:45 AM pista.log.CustomLogging logInfo
+INFO: Successfully added deadline task of deadline category into list
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add deadline -7/5/15 -noon
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:09:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully added deadline task of deadline category into list
+Mar 25, 2015 12:11:38 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:20:23 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add timed -sun -noon -next mon -night
+Mar 25, 2015 12:20:24 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 25, 2015 12:20:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:20:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:20:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:20:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:20:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully added timed task of timed category into list
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: add test -yesterday -noon
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:21:15 AM pista.log.CustomLogging logInfo
+INFO: Successfully added test task of deadline category into list

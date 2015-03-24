@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -185,17 +183,23 @@ public class MainParser {
 	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
 		Parser parser = new Parser();
 		List<DateGroup> groups;
+		String requiredNattyInputFormat = "";
 		String interpretOutputDateFromNatty="";
 		String interpretOutputTimeFromNatty="";
-		SimpleDateFormat actualNattyFormat = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
 		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
-		System.out.println("current date index "+dateIndex);
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
-			groups = parser.parse(tokens[dateIndex]);
+			requiredNattyInputFormat = nattyInputFormat(tokens, dateIndex);
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[dateIndex]);
+			}
+	
 			try {
-				interpretOutputDateFromNatty = sdf.format(actualNattyFormat.parse(intrepretInputNatty(groups)));
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(intrepretInputNatty(groups)));
 			} catch (ParseException e1) {
 				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
 				return false;
@@ -210,7 +214,7 @@ public class MainParser {
 		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
 			groups = parser.parse(tokens[timeIndex]);
 			try {
-				interpretOutputTimeFromNatty = sdf2.format(actualNattyFormat.parse(intrepretInputNatty(groups)));
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(intrepretInputNatty(groups)));
 			} catch (ParseException e1) {
 				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
 				return false;
@@ -223,6 +227,17 @@ public class MainParser {
 			}
 		}
 		return true;
+	}
+
+	private static String nattyInputFormat(String[] tokens, int dateIndex) {
+		String requiredNattyInputDateFormat = "";
+		String[] temp = tokens[dateIndex].split("/");
+		if(StringUtils.countMatches(tokens[dateIndex], "/")==2){
+			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0] +"/"+ temp [2];
+		}else if (StringUtils.countMatches(tokens[dateIndex], "/")==1){
+			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0];
+		}
+		return requiredNattyInputDateFormat;
 	}
 
 	private static String intrepretInputNatty(List<DateGroup> groups) {
@@ -361,32 +376,28 @@ public class MainParser {
 		aL.add(".");
 		aL.add("/");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-		//if(myDate.length()!=sdf.toPattern().length()){
-			for(String pattern : aL){
-				System.out.println("current pattern"+pattern);
-				if(StringUtils.countMatches(myDate, pattern)==2){
-					String[] temp = null;
-					if(pattern.equals(".")){
-						temp = myDate.split("\\.");
-					}else{
-						temp = myDate.split("/");
-					}
-					for (int i = 0; i < temp.length-1; i++) {
-						int extractedValue = Integer.parseInt(temp[i]);
-						//to fix d/m/yyyy to dd/MM/yyyy
-						if(extractedValue < 10 && extractedValue > 0){
-							sb.append("0");
-							sb.append(Integer.valueOf(temp[i])+"/");
-							System.out.println(sb.toString() + "sdfsadf");
-						}else {
-							sb.append(Integer.valueOf(extractedValue)+"/");
-						}
-					}
-					sb.append(temp[temp.length-1]);;
-					return sb.toString();
+		for(String pattern : aL){
+			if(StringUtils.countMatches(myDate, pattern)==2){
+				String[] temp = null;
+				if(pattern.equals(".")){
+					temp = myDate.split("\\.");
+				}else{
+					temp = myDate.split("/");
 				}
+				for (int i = 0; i < temp.length-1; i++) {
+					int extractedValue = Integer.parseInt(temp[i]);
+					//to fix d/m/yyyy to dd/MM/yyyy
+					if(extractedValue < 10 && extractedValue > 0){
+						sb.append("0");
+						sb.append(Integer.valueOf(temp[i])+"/");
+					}else {
+						sb.append(Integer.valueOf(extractedValue)+"/");
+					}
+				}
+				sb.append(temp[temp.length-1]);;
+				return sb.toString();
 			}
-		//}
+		}
 		return myDate;
 	}
 }
