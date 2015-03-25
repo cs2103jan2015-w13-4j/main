@@ -1704,3 +1704,9 @@ INFO: Successfully added deadline task of timed category into list
 >>>>>>> origin/master
 Mar 25, 2015 7:34:07 PM pista.log.CustomLogging logInfo
 INFO: Successfully Load XML file to task list
+Mar 25, 2015 7:35:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 7:38:30 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 7:51:07 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
