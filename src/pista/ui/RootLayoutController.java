@@ -17,6 +17,18 @@ public class RootLayoutController {
 	private SettingLayoutController mSettingCtrl = null;
 	private UIController mUICtrl = null;
 	
+	private static String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
+	
+    @FXML
+    private BorderPane borderPaneRoot;
+    
+    
+    @FXML
+	public void initialize() {
+    	System.out.println("hello");
+    	borderPaneRoot.getStyleClass().addAll(CSS_CLASS_IMAGE_BACKGROUND);
+    }
+    
 	@FXML
 	void onTaskAddClick(ActionEvent event) {
 		mUICtrl.add_outline();
@@ -34,10 +46,10 @@ public class RootLayoutController {
 	
 	@FXML
 	void onActionUndoClick(ActionEvent event) {
-		mUICtrl.cmdTextField.setText("undo");
+		mUICtrl.txtBoxCommand.setText("undo");
 		try {
 			mUICtrl.enter();
-			mUICtrl.cmdTextField.clear();
+			mUICtrl.txtBoxCommand.clear();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,10 +58,10 @@ public class RootLayoutController {
 	
 	@FXML
 	void onActionRedoClick(ActionEvent event) {
-		mUICtrl.cmdTextField.setText("redo");
+		mUICtrl.txtBoxCommand.setText("redo");
 		try {
 			mUICtrl.enter();
-			mUICtrl.cmdTextField.clear();
+			mUICtrl.txtBoxCommand.clear();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

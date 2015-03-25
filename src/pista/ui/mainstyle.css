@@ -1,3 +1,8 @@
+* {
+	-fx-font-family: "Segoe UI", "Arial";
+}
+
+
 .root-window-style{
 	-fx-border-insets: 23;
   	-fx-background-insets: 23;
@@ -9,12 +14,82 @@
   	-fx-effect: dropshadow(three-pass-box, rgba(100, 100, 100, 1), 24, 0.5, 0, 0);
 }
 
-.background {	
+.image-background {	
 	-fx-background-color: linear-gradient(rgb(224,228,233) 0%, derive(rgb(224,228,233),-20%) 100%);
 	-fx-background-image: url("images/noise-texture.png");
 	-fx-background-repeat: repeat; 
 }
 
+.transparent-background {
+	-fx-background-color: transparent;
+}
+
 .text-background {
 	-fx-background-color: transparent;
+}
+
+.list-view-style{
+	-fx-background-insets: 0 ;
+	-fx-background-color: transparent;
+}
+
+.list-view-style .scroll-bar:horizontal ,
+.list-view-style .scroll-bar:vertical{
+ 	-fx-background-color:transparent;
+}
+
+.list-view-style .scroll-bar .increment-button ,
+.list-view-style .scroll-bar .decrement-button {
+    /*-fx-background-color:transparent;*/
+    -fx-background-radius: 2em;
+}
+
+
+
+.list-view-style  .scroll-bar .increment-arrow,
+.list-view-style  .scroll-bar .decrement-arrow {
+    -fx-text-fill: #88c6fb;
+}
+
+
+.list-view-style .scroll-bar:horizontal .track,
+.list-view-style .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color:derive(gray,80%);
+    -fx-background-radius: 2em;
+    -fx-border-radius:2em;
+}
+
+
+.list-view-style .scroll-bar:horizontal .thumb,
+.list-view-style .scroll-bar:vertical .thumb {
+    -fx-background-color: linear-gradient(to right, #e4fbff, #cee6fb, #a5d3fb, #88c6fb, #d5faff);	        
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+.list-view-style .scroll-bar:horizontal .thumb:pressed,
+.list-view-style .scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: #88c6fb;	        
+}
+
+
+.text-box-style{
+	-fx-border-color: #000000;
+	-fx-border-radius: 5px;
+}
+
+.button-style{
+	-fx-background-color: rgba(0,0,0,0.08),
+				        linear-gradient(#5a61af, #51536d),
+				        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%);
+    -fx-padding: 7 10 7 10;
+    -fx-text-fill: #242d35;
+    -fx-font-size: 14px;
+}
+
+.text-status-style {
+	-fx-font-size: 14px;
+	-fx-text-fill: #ffffff;
+	-fx-text
 }
