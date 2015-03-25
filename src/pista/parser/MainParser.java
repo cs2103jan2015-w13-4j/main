@@ -95,7 +95,7 @@ public class MainParser {
 	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
-				command.equalsIgnoreCase(Constants.VALUE_UNDO)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -117,12 +117,12 @@ public class MainParser {
 			return checkEditTokens(mp, tokens);
 		case Constants.VALUE_DELETE:
 			return checkDeleteTokens(mp, tokens);
+		case Constants.VALUE_MARK:
+			return checkMarkTokens(mp, tokens);
 		case Constants.VALUE_REDO:
 			return true;
 		case Constants.VALUE_UNDO:
 			return true;
-		case Constants.VALUE_MARK:
-			return checkMarkTokens(mp, tokens);
 		default:
 			return false;
 		}

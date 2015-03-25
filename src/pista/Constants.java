@@ -62,11 +62,12 @@ public class Constants {
 	public static String LOGIC_SUCCESS_REDO = "Successfully redo";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
-	public static String LOGIC_FAIL_MARK_TASK = "Failed to mark task.";
+	public static String LOGIC_FAIL_MARK_NOT_FOUND_TASK = "Failed to mark task as it is not found.";
 	public static String LOGIC_FAIL_DELETE_TASK = "Failed to delete task.";
 	public static String LOGIC_FAIL_DELETE_ALL_TASKS = "Failed to delete all tasks.";
 	public static String LOGIC_DELETE_TASK_NOT_FOUND = "No such task existed.";
 	public static String LOGIC_EDIT_TASK_NOT_FOUND = "No such task existed.";
+	public static String LOGIC_MARK_TASK_NOT_FOUND = "Unable to mark as no such task existed.";
 	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
 	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
 	public static String LOGIC_FAIL_UNDO = "Failed to undo the last action";

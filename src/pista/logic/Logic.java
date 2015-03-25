@@ -101,7 +101,7 @@ public class Logic {
 			mStorage.save();
 			return Constants.LOGIC_SUCCESS_MARK_TASK;
 		}
-		return Constants.LOGIC_FAIL_MARK_TASK;
+		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
 	}//end mark
 
 	public static String add(String[] tokens){
