@@ -1515,3 +1515,9 @@ Mar 25, 2015 3:54:32 PM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
 Mar 25, 2015 3:54:32 PM pista.log.CustomLogging logInfo
 INFO: Successfully added deadline task of timed category into list
+Mar 25, 2015 7:45:28 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 7:45:34 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 5
+Mar 25, 2015 7:45:34 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid

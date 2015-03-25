@@ -16,24 +16,24 @@ public class Logic {
 	private static Storage mStorage = null;
 	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
-	
+
 	private Logic(){}
-	
+
 	public static Logic getInstance(){
 		initStorage();
 		return mLogic;
 	}
-	
+
 	public static boolean initStorage(){
 		try{
 			mStorage = Storage.getInstance();
-		return true;
+			return true;
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}		
 	}
-	
+
 	public static boolean initLogging(){
 		try{
 			mLog = CustomLogging.getInstance(Storage.class.getName());
@@ -43,7 +43,7 @@ public class Logic {
 			return false;
 		}		
 	}
-	
+
 	public static String runCommand(String command, String[] tokens) {
 		String output = "";
 		switch(command) {
@@ -61,6 +61,9 @@ public class Logic {
 			break;
 		case Constants.VALUE_REDO:
 			output = redo() ;
+			break;
+		case Constants.VALUE_MARK:
+			output = mark(tokens) ;
 			break;
 		default:
 			assert false:"invalid comand in runCommand: "+command;
@@ -80,6 +83,26 @@ public class Logic {
 	public static ArrayList<Task> getStorageList(){
 		return mStorage.getTaskList();
 	}
+
+	public static String mark(String[] tokens){ 
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		if(taskIndex != -1){
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			String status=tokens[1];
+
+			if(Constants.STATUS_DONE.equalsIgnoreCase(status)){
+				extractedTask.setIsDone(true);
+			}
+			else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
+				extractedTask.setIsDone(false);
+			}
+			mStorage.getTaskList().remove(taskIndex);
+			mStorage.getTaskList().add(extractedTask);
+			mStorage.save();
+			return Constants.LOGIC_SUCCESS_MARK_TASK;
+		}
+		return Constants.LOGIC_FAIL_MARK_TASK;
+	}//end mark
 
 	public static String add(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
@@ -134,7 +157,7 @@ public class Logic {
 			mStorage.getTaskList().add(extractedTask);
 			mStorage.save();
 			updateRedoAndUndo(currentState);
-			
+
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
 			return Constants.LOGIC_SUCCESS_EDIT_TASK;
 		}
@@ -323,7 +346,7 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_UNDO;
 	}
-	
+
 	private static String redo(){
 		if(!redoList.isEmpty()){
 			ArrayList<Task> currentState = getCurrentState();
@@ -335,7 +358,7 @@ public class Logic {
 		}
 		return Constants.LOGIC_SUCCESS_REDO;
 	}
-	
+
 	public static long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
@@ -344,55 +367,55 @@ public class Logic {
 		Date date1 = null;
 		try {
 			date1=sdf.parse(combined);
-			
+
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date1);
 
 			return cal.getTimeInMillis();
-			
+
 		} catch (ParseException e) {
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
 			return 0L;
 		}
 
-		
+
 	}
-	
-	
+
+
 	//============= API FOR SETTING PAGE ======================
-	
+
 	public static boolean checkFileBeforeSave(String newFilePath){
 		if(!validateIsFileExist(newFilePath)){
 			return false;
 		}
-		
+
 		if(!validateIsFileEmpty(newFilePath) && !validateFileFormat(newFilePath)){
 			return false;
 		}
-		
+
 		return true;	
 	}
-	
+
 	public static boolean checkFileDuringSave(String newFilePath){
 		boolean isCreated = false;
-		
+
 		if(mStorage.isFileEmpty(newFilePath)){ //if empty, overwrite new xml format 
 			isCreated = overwriteFile(newFilePath);
 		}else{
 			isCreated = loadExistingFile(newFilePath); //not empty and format is correct
 		}
-		
+
 		return isCreated;
 	}
-	
+
 	private static boolean validateIsFileExist(String newFilePath){
 		if(!mStorage.isFileExist(newFilePath)){ //not exist
 			return false; //maybe file is deleted after choosing
 		}
 		return true;
 	}
-	
+
 	private static boolean validateIsFileEmpty(String newFilePath){
 		if(mStorage.isFileEmpty(newFilePath)){
 			//create xml nodes and format into the file
@@ -400,29 +423,29 @@ public class Logic {
 		}
 		return false;
 	}
-	
+
 	private static boolean validateFileFormat(String newFilePath){
 		if(mStorage.isFileFormatValid(newFilePath)){ //if valid
 			return true;
 		}
 		return false;
 	}
-	
+
 	private static boolean overwriteFile(String newFilePath){
 		mStorage.initTaskList();
 		mStorage.setDataFolderLocation(newFilePath);
 		boolean isOverwrite = mStorage.overwriteNewXmlFile(newFilePath);
 		return isOverwrite;
 	}
-	
+
 	private static boolean loadExistingFile(String newFilePath){
 		//read file
 		mStorage.setDataFolderLocation(newFilePath);
 		boolean isLoaded = mStorage.load(); //load the file into tasklist	
 		return isLoaded;
 	}
-	
-	
+
+
 	//================================= UNDO & REDO =================================
 	private static void saveToUndo(ArrayList<Task> currState){
 		if(undoList.size() < 3){
@@ -432,7 +455,7 @@ public class Logic {
 			undoList.add(currState);
 		}
 	}
-	
+
 	private static void saveToRedo(ArrayList<Task> currState){
 		if(redoList.size() < 3){
 			redoList.add(currState);
@@ -441,22 +464,22 @@ public class Logic {
 			redoList.add(currState);
 		}
 	}
-	
+
 	private static void clearRedo(){
 		redoList.clear();
 	}
-	
+
 	private static void updateRedoAndUndo(ArrayList<Task> s){
 		clearRedo();
 		saveToUndo(s);
 	}
-	
+
 	private static ArrayList<Task> getCurrentState() {
 		ArrayList<Task> currentState = new ArrayList<Task>(mStorage.getTaskList());
 		return currentState;
 	}
-	
-	
+
+
 	//============== LISTVIEW CUSTOM CELL ===========
 	public static boolean updateTaskIsDone(int id, boolean newDone){
 		try{
@@ -466,15 +489,15 @@ public class Logic {
 					t.setIsDone(newDone);
 				}
 			}
-			
+
 			isUpdated = mStorage.save();
 			return isUpdated;
-		
+
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}
-		
+
 	}
-	
+
 }
