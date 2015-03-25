@@ -1423,3 +1423,37 @@ INFO: Successfully Load XML file to task list
 Mar 25, 2015 7:23:25 AM pista.log.CustomLogging logInfo
 >>>>>>> ba1d2c54e5581f3e41423c263a935d73f1f43153
 INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:23:31 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:23:36 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:23:36 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:23:36 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:23:36 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:23:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:23:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:23:39 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 25, 2015 12:23:39 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 25, 2015 12:27:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:30:25 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:36:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:43:41 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:43:54 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:45:16 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:45:33 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 25, 2015 12:46:38 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list

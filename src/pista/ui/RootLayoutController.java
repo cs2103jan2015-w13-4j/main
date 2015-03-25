@@ -88,10 +88,11 @@ public class RootLayoutController {
 			mSettingCtrl  = loader.getController(); //setting page will not capture rootcontroller during initialize
 	        mSettingCtrl.setRootController(this); //setting will capture rootcontroller after initialize
 	        
-			Scene scene = new Scene(rootLayout, 500, 300);
-	        
-			stage.setScene(scene);    
+			Scene scene = new Scene(rootLayout, 500, 300);		
+			
+			stage.setScene(scene);   
 			stage.show();
+			
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
