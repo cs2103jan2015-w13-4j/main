@@ -18,8 +18,10 @@ public class LogicTest {
 	
 	@Test
 	public void deleteTest(){
+		// boundary case of positive value within the size of the taskList
 		assertEquals(tLogic.delete(new String[] {"a"}),Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
 		assertEquals(tLogic.delete(new String[] {"1"}),Constants.LOGIC_SUCCESS_DELETE_TASK);
+		assertEquals(tLogic.delete(new String[] {"0"}),Constants.LOGIC_DELETE_TASK_NOT_FOUND);
 		assertEquals(tLogic.delete(new String[] {"1000"}),Constants.LOGIC_DELETE_TASK_NOT_FOUND);
 	}
 }
