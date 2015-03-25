@@ -11,10 +11,18 @@ import pista.log.CustomLogging;
 import pista.storage.Storage;
 
 public class Logic {
+	private static final Logic mLogic = new Logic();
 	private static CustomLogging mLog = null;
 	private static Storage mStorage = null;
 	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
+	
+	private Logic(){}
+	
+	public static Logic getInstance(){
+		initStorage();
+		return mLogic;
+	}
 	
 	public static boolean initStorage(){
 		try{
@@ -159,6 +167,7 @@ public class Logic {
 					assert index < mStorage.getTaskList().size() : "Index out of bound";
 					//Task temp = mStorage.getTaskList().get(index);
 					mStorage.getTaskList().remove(index);
+					return Constants.LOGIC_SUCCESS_DELETE_TASK;
 					//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 				}else{
 					//mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
