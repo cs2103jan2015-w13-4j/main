@@ -7,56 +7,34 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane1" prefHeight="438.0" prefWidth="607.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
+<AnchorPane fx:id="anchorPaneMain" maxHeight="535.0" maxWidth="660.0" minHeight="535.0" minWidth="660.0" prefHeight="535.0" prefWidth="660.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
    <children>
-      <SplitPane fx:id="splitPane1" dividerPositions="0.8657718120805369" orientation="VERTICAL" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+      <VBox fx:id="vBoxMainArea" maxHeight="535.0" maxWidth="650.0" minHeight="535.0" minWidth="650.0" prefHeight="535.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ListView id="listview_task" fx:id="listview_task_fx_id" maxHeight="400.0" maxWidth="650.0" minHeight="450.0" minWidth="650.0" prefHeight="450.0" prefWidth="650.0" stylesheets="@listcellstyle.css" />
+            <HBox fx:id="hBoxInputArea" prefHeight="55.0" prefWidth="598.0" spacing="5.0">
                <children>
-                  <SplitPane dividerPositions="0.14759535655058043" layoutX="63.0" layoutY="14.0" prefHeight="210.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                           <children>
-                              <VBox layoutX="14.0" layoutY="14.0" spacing="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
-                                 <children>
-                                    <Button id="btnHelp" fx:id="btnHelp" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onHelp" prefHeight="30.0" prefWidth="70.0" text="Help" />
-                                    <Button id="btnRefresh" fx:id="btnRefresh" layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onAction="#onRefresh" prefHeight="30.0" prefWidth="70.0" text="Refresh" />
-                                 </children>
-                              </VBox>
-                              <VBox layoutX="8.0" layoutY="198.0" spacing="5.0" AnchorPane.bottomAnchor="5.0">
-                                 <children>
-                                    <Button fx:id="btnAdd" layoutX="14.0" layoutY="186.0" mnemonicParsing="false" onMouseClicked="#add_outline" prefHeight="30.0" prefWidth="70.0" text="Add" />
-                                    <Button fx:id="btnEdit" layoutX="14.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#edit_outline" prefHeight="30.0" prefWidth="70.0" text="Edit" />
-                                    <Button fx:id="btnDelete" layoutX="14.0" layoutY="266.0" mnemonicParsing="false" onMouseClicked="#delete_outline" prefHeight="30.0" prefWidth="70.0" text="Delete" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                      	<AnchorPane id="anchorRightPane" fx:id="anchorRightPane_fx_id" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@listcellstyle.css">
-                           <children>
-                              <ListView id="listview_task" fx:id="listview_task_fx_id" layoutX="216.0" layoutY="59.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                           </children>
-                  		</AnchorPane>
-                    </items>
-                  </SplitPane>
+                  <TextField fx:id="txtBoxCommand" onAction="#enter" prefHeight="25.0" prefWidth="570.0" promptText="Command">
+                     <HBox.margin>
+                        <Insets left="5.0" top="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="btnEnter" layoutX="532.0" layoutY="29.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onMouseClicked="#enter" prefWidth="60.0" text="Enter">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="119.0" prefWidth="605.0">
-               <children>
-                  <HBox layoutX="5.0" layoutY="5.0" prefHeight="82.0" prefWidth="598.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                     <children>
-                        <TextField fx:id="cmdTextField" onAction="#enter" prefHeight="25.0" prefWidth="545.0" />
-                        <Button fx:id="btnEnter" layoutX="532.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#enter" text="Enter">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-      <Text id="txtStatus" fx:id="txtStatus" layoutX="5.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="595.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="412.0" />
+            </HBox>
+            <Text id="txtStatus" fx:id="txtStatus" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="640.0">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </Text>
+         </children>
+      </VBox>
    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </AnchorPane>

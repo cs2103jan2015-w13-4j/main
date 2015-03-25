@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="470.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.RootLayoutController" stylesheets="@mainstyle.css">
+<BorderPane fx:id="borderPaneRoot" maxHeight="575.0" maxWidth="660.0" minHeight="575.0" minWidth="660.0" prefHeight="575.0" prefWidth="660.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.RootLayoutController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>

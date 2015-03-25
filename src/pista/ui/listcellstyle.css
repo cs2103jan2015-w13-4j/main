@@ -1,3 +1,7 @@
+* {
+	-fx-font-family: "Segoe UI";
+}
+
 .task-list-style {
 	-fx-background-color: #FFFFFF; 
 	-fx-padding: 2; 
@@ -36,7 +40,6 @@
  	-fx-font-size: 0.9em;
 	-fx-font-weight: normal;
 	-fx-text-fill: #666666;
- 
 }
 
 .task-list-icon {

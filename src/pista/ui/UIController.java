@@ -22,6 +22,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -38,45 +40,36 @@ public class UIController {
 	
 	public String userInput = null;
 	
-	private static String CSS_CLASS_BACKGROUND = "background";
+	private static String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
 	private static String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
+	private static String CSS_CLASS_TRANSPARENT_BACKGROUND = "transparent-background";
+	private static String CSS_CLASS_LIST_VIEW = "list-view-style";
+	private static String CSS_CLASS_TEXT_BOX = "text-box-style";
+	private static String CSS_CLASS_BUTTON = "button-style";
+	private static String CSS_CLASS_TEXT_STATUS = "text-status-style";
+	
 	//Objects
 	@FXML
-	private Button btnHelp;
+    private AnchorPane anchorPaneMain;
 
-	@FXML
-	private Button btnRefresh;
-	
-	@FXML
-	private Button btnAdd;
-	
-	@FXML
-	private Button btnEdit;
+    @FXML
+    private HBox hBoxInputArea;
 
-	@FXML
-	private Button btnDelete;
+    @FXML
+    private Text txtStatus;
 
-	@FXML
-	public TextField cmdTextField;
+    @FXML
+    private Button btnEnter;
 
-	@FXML
-	private Text txtStatus;
+    @FXML
+    public TextField txtBoxCommand;
 
-	@FXML
-	private Button btnEnter;
-
-	@FXML
-	private AnchorPane anchorRightPane_fx_id;
+    @FXML
+    private VBox vBoxMainArea;
 
 	@FXML
 	private ListView<Task> listview_task_fx_id;
 
-    @FXML
-    private AnchorPane anchorPane1;
-
-    @FXML
-    private SplitPane splitPane1;
-    
 	
 	@FXML
 	void onHelp(ActionEvent event) {
@@ -99,9 +92,6 @@ public class UIController {
 	@FXML
 	void onRefresh(ActionEvent event) {
 		this.initialize();
-		//ObservableList<Task> myObservableList = FXCollections.observableList(Logic.taskList);
-		//listview_task_fx_id.setItems(null); 
-		//listview_task_fx_id.setItems(myObservableList);
 	}
 
 	public boolean initStorage(){
@@ -148,15 +138,15 @@ public class UIController {
 	}
 	
 	public void add_outline() {
-		cmdTextField.setText(Constants.ADD_COMMAND);
+		txtBoxCommand.setText(Constants.ADD_COMMAND);
 	}
 	
 	public void edit_outline() {
-		cmdTextField.setText(Constants.EDIT_COMMAND);
+		txtBoxCommand.setText(Constants.EDIT_COMMAND);
 	}
 	
 	public void delete_outline() {
-		cmdTextField.setText(Constants.DELETE_COMMAND);
+		txtBoxCommand.setText(Constants.DELETE_COMMAND);
 	}
 	
 	@FXML
@@ -167,7 +157,7 @@ public class UIController {
 		String logicOutput = "";
 		String command = "";
 		
-		userInput = cmdTextField.getText();
+		userInput = txtBoxCommand.getText();
 		
 		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
 		MainParser mp = MainParser.validateInput(userInput);
@@ -199,9 +189,11 @@ public class UIController {
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
 		
-		splitPane1.getStyleClass().addAll(CSS_CLASS_BACKGROUND);
-		anchorPane1.getStyleClass().addAll(CSS_CLASS_BACKGROUND);
-		txtStatus.getStyleClass().addAll(CSS_CLASS_TEXT_BACKGROUND);
+		anchorPaneMain.getStyleClass().addAll(CSS_CLASS_TRANSPARENT_BACKGROUND);
+		txtStatus.getStyleClass().addAll(CSS_CLASS_TEXT_BACKGROUND, CSS_CLASS_TEXT_STATUS);
+		txtBoxCommand.getStyleClass().addAll(CSS_CLASS_TEXT_BOX);
+		btnEnter.getStyleClass().addAll(CSS_CLASS_BUTTON);
+		
 		
 		
 		mStorage.setDataFolderLocation(getPreferenceFilePath());
@@ -216,6 +208,7 @@ public class UIController {
 			showTaskListInListView();
 		}
 		
+		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW);
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
 			public ListCell<Task> call(ListView<Task> param) {
