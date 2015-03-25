@@ -95,7 +95,7 @@ public class MainParser {
 	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
-				command.equalsIgnoreCase(Constants.VALUE_UNDO)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -117,6 +117,8 @@ public class MainParser {
 			return checkEditTokens(mp, tokens);
 		case Constants.VALUE_DELETE:
 			return checkDeleteTokens(mp, tokens);
+		case Constants.VALUE_MARK:
+			return checkMarkTokens(mp, tokens);
 		case Constants.VALUE_REDO:
 			return true;
 		case Constants.VALUE_UNDO:
@@ -125,6 +127,21 @@ public class MainParser {
 			return false;
 		}
 	}
+
+	private boolean checkMarkTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		String status = tokens[1];
+		if(Constants.MARK_DONE.equalsIgnoreCase(status) || Constants.MARK_UNDONE.equalsIgnoreCase(status)){
+			return true;
+		}
+		mp.setMessage(Constants.INVALID_MARK);
+		return false;
+	}
+
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -197,7 +214,7 @@ public class MainParser {
 			}else{
 				groups = parser.parse(tokens[dateIndex]);
 			}
-	
+
 			try {
 				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(intrepretInputNatty(groups)));
 			} catch (ParseException e1) {
@@ -228,7 +245,7 @@ public class MainParser {
 		}
 		return true;
 	}
-	
+
 	private static String nattyInputFormat(String[] tokens, int dateIndex) {
 		String requiredNattyInputDateFormat = "";
 		String[] temp = tokens[dateIndex].split("/");
@@ -239,7 +256,7 @@ public class MainParser {
 		}
 		return requiredNattyInputDateFormat;
 	}
-	
+
 	private static String intrepretInputNatty(List<DateGroup> groups) {
 		List dates = null;
 		for(DateGroup group: groups){
@@ -297,7 +314,7 @@ public class MainParser {
 			return false;
 		}
 		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
-        mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
+		mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
 		return false;
 	}
 
