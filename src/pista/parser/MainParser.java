@@ -127,12 +127,19 @@ public class MainParser {
 		}
 	}
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
-		mp.setTokens(tokens);
-
-		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
-			mp.setValidToken(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE])));
-			return true;
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
 		}
+		mp.setTokens(tokens);
+		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
+			if(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]))){
+				return true;
+			}
+			mp.setMessage(Constants.MESSAGE_EMPTY_TITLE);
+			return false;
+		}
+
 
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])){
@@ -151,7 +158,7 @@ public class MainParser {
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])) {
 				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
-				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_ENDDATE, Constants.ADD_TOKEN_TIMED_ENDTIME);
 				if(startDateTimeValid && endDateTimeValid){
 					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE),
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE), 
@@ -227,7 +234,11 @@ public class MainParser {
 
 	}
 
-	private boolean checkEditTokens(MainParser mp, String[] tokens) {	
+	private boolean checkEditTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
 		mp.setTokens(tokens);
 		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
@@ -269,6 +280,7 @@ public class MainParser {
 			return false;
 		}
 		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
+        mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
 		return false;
 	}
 
@@ -346,6 +358,7 @@ public class MainParser {
 		ArrayList<String> aL=new ArrayList<String>();
 		aL.add(".");
 		aL.add("/");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		for(String pattern : aL){
 			if(StringUtils.countMatches(myDate, pattern)==2){
 				String[] temp = null;
@@ -356,12 +369,15 @@ public class MainParser {
 				}
 				for (int i = 0; i < temp.length-1; i++) {
 					int extractedValue = Integer.parseInt(temp[i]);
-					if(extractedValue < 10 && extractedValue > 0 ){
+					//to fix d/m/yyyy to dd/MM/yyyy
+					if(extractedValue < 10 && extractedValue > 0){
 						sb.append("0");
-						sb.append(temp[i]+"/");
+						sb.append(Integer.valueOf(temp[i])+"/");
+					}else {
+						sb.append(Integer.valueOf(extractedValue)+"/");
 					}
 				}
-				sb.append(temp[temp.length-1]);
+				sb.append(temp[temp.length-1]);;
 				return sb.toString();
 			}
 		}
