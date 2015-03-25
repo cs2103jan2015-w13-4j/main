@@ -16,7 +16,56 @@ public class RootLayoutController {
 	
 	private SettingLayoutController mSettingCtrl = null;
 	private UIController mUICtrl = null;
-
+	
+	@FXML
+	void onTaskAddClick(ActionEvent event) {
+		mUICtrl.add_outline();
+	}
+	
+	@FXML
+	void onTaskEditClick(ActionEvent event) {
+		mUICtrl.edit_outline();
+	}
+	
+	@FXML
+	void onTaskDeleteClick(ActionEvent event) {
+		mUICtrl.delete_outline();
+	}
+	
+	@FXML
+	void onActionUndoClick(ActionEvent event) {
+		mUICtrl.cmdTextField.setText("undo");
+		try {
+			mUICtrl.enter();
+			mUICtrl.cmdTextField.clear();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	void onActionRedoClick(ActionEvent event) {
+		mUICtrl.cmdTextField.setText("redo");
+		try {
+			mUICtrl.enter();
+			mUICtrl.cmdTextField.clear();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	void onViewRefreshClick(ActionEvent event) {
+		mUICtrl.onRefresh(event);
+	}
+	
+	@FXML
+	void onHelpUserGuideClick(ActionEvent event) {
+		mUICtrl.onHelp(event);
+	}
+	
 	@FXML
     void onMenuItemSettingClick(ActionEvent event) {
 		Stage stage = new Stage();
@@ -54,14 +103,8 @@ public class RootLayoutController {
     	mUICtrl = ctrl;
     }
 	
-	public void hello(){
-		System.out.println("hello");
-	}
-	
 	public boolean refreshUIListView(){
 		boolean isUpdated = mUICtrl.showTaskListInListView();
 		return isUpdated;
 	}
-	
-	
 }

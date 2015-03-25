@@ -25,20 +25,22 @@ public class TokenValidation {
 	public static boolean isDateValid(String myDate){
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		Date testDate;
-		if(myDate.length()!=sdf.toPattern().length()){
-			return false;
-		}	
+		
 		sdf.setLenient(false);
 		if(Constants.DEFAULT_VALUE.equalsIgnoreCase(myDate)){
 			return true;
 		}
+		if(myDate.length()!=sdf.toPattern().length()){
+			return false;
+		}
 		
 		try {
 			testDate = sdf.parse(myDate);
-			return true;
+			
 		} catch (ParseException e) {
 			return false;
 		}
+		return true;
 	}
 
 	public static boolean isTimeValid(String myTime){
@@ -70,6 +72,7 @@ public class TokenValidation {
 		return false;
 	}
 	
+
 	public static int compareWithCurrentDate(String inputDate, String inputTime){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Calendar cal = Calendar.getInstance();
@@ -108,6 +111,4 @@ public class TokenValidation {
 		}
 
 	}
-	
-
 }

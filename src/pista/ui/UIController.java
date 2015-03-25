@@ -231,11 +231,21 @@ public class UIController {
 			@Override      
 			public void changed(ObservableValue<? extends Task> ov,
 					Task oldTask, Task newTask) {
+				if(oldTask != null){
+					System.out.println("Selected old task : " + oldTask.getID() + " - " + 
+							oldTask.getIsDone());
+				}
+				
 				if(newTask != null){
-					System.out.println("Selected : " + newTask.getID() + " - " + 
+					System.out.println("Selected new task : " + newTask.getID() + " - " + 
+										newTask.getIsDone());
+					/*
+					 * System.out.println("Selected : " + newTask.getID() + " - " + 
 										newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+
 										newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+
 										newTask.getEndTime()+ " - "+newTask.getCategory());
+					 * 
+					 */
 
 				}
 			}

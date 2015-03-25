@@ -54,8 +54,8 @@ public class MainParser {
 				return mp;
 			} else {
 				String[] tokens = getTokens(input);
-				//mp.setValidToken(mp.isTokensValid(mp, command, tokens));
-				if (!mp.isTokensValid(mp, command, tokens)) {
+				mp.setValidToken(mp.isTokensValid(mp, command, tokens));
+				if (!mp.getValidTokens()) {
 					//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
 					return mp;
 				} else {
@@ -127,17 +127,11 @@ public class MainParser {
 		}
 	}
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
 		mp.setTokens(tokens);
+
 		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
-			if(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]))){
-				return true;
-			}
-			mp.setMessage(Constants.MESSAGE_EMPTY_TITLE);
-			return false;
+			mp.setValidToken(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE])));
+			return true;
 		}
 
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
@@ -157,7 +151,7 @@ public class MainParser {
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])) {
 				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
-				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_ENDDATE, Constants.ADD_TOKEN_TIMED_ENDTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
 				if(startDateTimeValid && endDateTimeValid){
 					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE),
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE), 
@@ -183,23 +177,16 @@ public class MainParser {
 	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
 		Parser parser = new Parser();
 		List<DateGroup> groups;
-		String requiredNattyInputFormat = "";
 		String interpretOutputDateFromNatty="";
 		String interpretOutputTimeFromNatty="";
-		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat actualNattyFormat = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
 		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
-			requiredNattyInputFormat = nattyInputFormat(tokens, dateIndex);
-			if(!requiredNattyInputFormat.isEmpty()){
-				groups = parser.parse(requiredNattyInputFormat);
-			}else{
-				groups = parser.parse(tokens[dateIndex]);
-			}
-	
+			groups = parser.parse(tokens[dateIndex]);
 			try {
-				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(intrepretInputNatty(groups)));
+				interpretOutputDateFromNatty = sdf.format(actualNattyFormat.parse(intrepretInputNatty(groups)));
 			} catch (ParseException e1) {
 				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
 				return false;
@@ -214,7 +201,7 @@ public class MainParser {
 		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
 			groups = parser.parse(tokens[timeIndex]);
 			try {
-				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(intrepretInputNatty(groups)));
+				interpretOutputTimeFromNatty = sdf2.format(actualNattyFormat.parse(intrepretInputNatty(groups)));
 			} catch (ParseException e1) {
 				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
 				return false;
@@ -229,17 +216,6 @@ public class MainParser {
 		return true;
 	}
 
-	private static String nattyInputFormat(String[] tokens, int dateIndex) {
-		String requiredNattyInputDateFormat = "";
-		String[] temp = tokens[dateIndex].split("/");
-		if(StringUtils.countMatches(tokens[dateIndex], "/")==2){
-			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0] +"/"+ temp [2];
-		}else if (StringUtils.countMatches(tokens[dateIndex], "/")==1){
-			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0];
-		}
-		return requiredNattyInputDateFormat;
-	}
-
 	private static String intrepretInputNatty(List<DateGroup> groups) {
 		List dates = null;
 		for(DateGroup group: groups){
@@ -252,10 +228,6 @@ public class MainParser {
 	}
 
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {	
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
 		mp.setTokens(tokens);
 		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
@@ -297,7 +269,6 @@ public class MainParser {
 			return false;
 		}
 		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
-		mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
 		return false;
 	}
 
@@ -375,7 +346,6 @@ public class MainParser {
 		ArrayList<String> aL=new ArrayList<String>();
 		aL.add(".");
 		aL.add("/");
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		for(String pattern : aL){
 			if(StringUtils.countMatches(myDate, pattern)==2){
 				String[] temp = null;
@@ -386,15 +356,12 @@ public class MainParser {
 				}
 				for (int i = 0; i < temp.length-1; i++) {
 					int extractedValue = Integer.parseInt(temp[i]);
-					//to fix d/m/yyyy to dd/MM/yyyy
-					if(extractedValue < 10 && extractedValue > 0){
+					if(extractedValue < 10 && extractedValue > 0 ){
 						sb.append("0");
-						sb.append(Integer.valueOf(temp[i])+"/");
-					}else {
-						sb.append(Integer.valueOf(extractedValue)+"/");
+						sb.append(temp[i]+"/");
 					}
 				}
-				sb.append(temp[temp.length-1]);;
+				sb.append(temp[temp.length-1]);
 				return sb.toString();
 			}
 		}
