@@ -73,20 +73,7 @@ public class UIController {
 	
 	@FXML
 	void onHelp(ActionEvent event) {
-		Stage stage = new Stage();
-
-		stage.setTitle("Help");
-		stage.initModality(Modality.NONE);
-		stage.initStyle(StageStyle.DECORATED);
-		stage.setResizable(false);
-		//stage.setMaxHeight(800);
-		//stage.setMaxWidth(600);
-		//stage.setMinHeight(600);
-		//stage.setMinWidth(400);
-
-		Scene scene = new Scene(new Browser(), 500,700, Color.web("#666970"));
-		stage.setScene(scene);    
-		stage.show();
+		showHelp();
 	}
 
 	@FXML
@@ -173,10 +160,15 @@ public class UIController {
 		
 		command = mp.getCommand();
 		tokens = mp.getTokens();
+		
 		logicOutput = Logic.runCommand(command, tokens);
-
+		
 		txtStatus.setText(logicOutput);
 
+		if(command.equals(Constants.VALUE_HELP)){
+			showHelp();
+		}
+		
 		showTaskListInListView();
 	}
 
@@ -259,6 +251,25 @@ public class UIController {
 			return false;
 		}
 		
+	}
+	
+	public boolean showHelp(){
+		Stage stage = new Stage();
+
+		stage.setTitle("Help");
+		stage.initModality(Modality.NONE);
+		stage.initStyle(StageStyle.DECORATED);
+		stage.setResizable(false);
+		//stage.setMaxHeight(800);
+		//stage.setMaxWidth(600);
+		//stage.setMinHeight(600);
+		//stage.setMinWidth(400);
+
+		Scene scene = new Scene(new Browser(), 500,700, Color.web("#666970"));
+		stage.setScene(scene);    
+		stage.show();
+		
+		return true;
 	}
 	
 	private void clearContent(){

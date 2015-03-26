@@ -64,8 +64,10 @@ public class Logic {
 			output = redo() ;
 			break;
 		case Constants.VALUE_MARK:
-			output = mark(tokens) ;
+			output = mark(tokens);
 			break;
+		case Constants.VALUE_HELP:
+			output = help();
 		default:
 			assert false:"invalid comand in runCommand: "+command;
 		break;
@@ -87,6 +89,10 @@ public class Logic {
 		return mStorage.getTaskList();
 	}
 
+	public static String help(){
+		return Constants.LOGIC_SUCCESS_HELP;
+	}
+	
 	public static String mark(String[] tokens){ 
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
