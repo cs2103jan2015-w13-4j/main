@@ -84,9 +84,45 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
+		sortOverView();
+		return mStorage.getTaskList();
+	}
+	
+	public static void sortOverView(){
 		ComparatorTask comparatorTask = new ComparatorTask();
 		Collections.sort(mStorage.getTaskList(), comparatorTask);
-		return mStorage.getTaskList();
+	}
+	
+	public static void sortTitleAscending(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.titleComparator);
+	}
+	
+	public static void sortTitleDescending(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.titleComparator));
+	}
+	
+	public static void sortIsDoneUndone(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.isDoneComparator);
+	}
+	
+	public static void sortIsDoneCompleted(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.isDoneComparator));
+	}
+	
+	public static void sortAscendingStartDate(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.ascendingStartDateComparator);
+	}
+	
+	public static void sortDescendingStartDate(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.descendingStartDateComparator));
+	}
+	
+	public static void sortAscendingEndDate(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.endDateComparator);
+	}
+	
+	public static void sortDescendingEndDate(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.endDateComparator));
 	}
 
 	public static String help(){
