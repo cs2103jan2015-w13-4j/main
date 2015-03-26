@@ -68,6 +68,10 @@ public class Logic {
 			break;
 		case Constants.VALUE_HELP:
 			output = help();
+			break;
+		case Constants.VALUE_LIST:
+			output = list(tokens);
+			break;
 		default:
 			assert false:"invalid comand in runCommand: "+command;
 		break;
@@ -84,10 +88,10 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		sortOverView();
+		//sortOverView();
 		return mStorage.getTaskList();
 	}
-	
+
 	public static void sortOverView(){
 		ComparatorTask comparatorTask = new ComparatorTask();
 		Collections.sort(mStorage.getTaskList(), comparatorTask);
@@ -128,7 +132,31 @@ public class Logic {
 	public static String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
-	
+	public static String list(String[] tokens){ 
+		String sortType=tokens[0];
+		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
+		if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
+			sortAscendingEndDate();
+		}else if(Constants.LIST_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
+			sortDescendingEndDate();
+		}else if(Constants.LIST_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
+			sortAscendingStartDate();
+		}else if(Constants.LIST_DESCENDING_START_DATE.equalsIgnoreCase(sortType) ){
+			sortDescendingStartDate();
+		}else if(Constants.LIST_ASCENDING_TITLE.equalsIgnoreCase(sortType)){
+			sortTitleAscending();
+		}else if(Constants.LIST_DESCENDING_TITLE.equals(sortType)){
+			sortTitleDescending();
+		}else if(Constants.LIST_ISDONE_COMPLETED.equalsIgnoreCase(sortType) ){
+			sortIsDoneCompleted();
+		}else if(Constants.LIST_ISDONE_UNDONE.equalsIgnoreCase(sortType) ){
+			sortIsDoneUndone();
+		}else if(Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
+			sortOverView();
+		}
+		mStorage.save();
+		return message;
+	}
 	public static String mark(String[] tokens){ 
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){

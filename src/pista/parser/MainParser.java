@@ -105,7 +105,7 @@ public class MainParser {
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
 				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK) ||
-				command.equalsIgnoreCase(Constants.VALUE_HELP)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -133,9 +133,32 @@ public class MainParser {
 			return true;
 		case Constants.VALUE_UNDO:
 			return true;
+		case Constants.VALUE_LIST:
+			return checkListTokens(mp, tokens);
 		default:
 			return false;
 		}
+	}
+	private boolean checkListTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		String sortType = tokens[0];
+		if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
+				Constants.LIST_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
+				Constants.LIST_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
+				Constants.LIST_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
+				Constants.LIST_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
+				Constants.LIST_DESCENDING_TITLE.equals(sortType) || 
+				Constants.LIST_ISDONE_COMPLETED.equals(sortType) || 
+				Constants.LIST_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
+				Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
+			return true;
+		}
+		mp.setMessage(Constants.MESSAGE_INVALID_LIST_FUNCTION);
+		return false;
 	}
 
 	private boolean checkMarkTokens(MainParser mp, String[] tokens) {

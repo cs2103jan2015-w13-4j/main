@@ -26,9 +26,19 @@ public class Constants {
   	public static final String MESSAGE_INVALD_NATTY_TIME = "Unable to interpret the time format you have typed";
   	public static final String MESSAGE_EMPTY_TITLE = "The title cannot be empty";
   	public static final String MESSAGE_EDIT_EMPTY_TOKENS = "Empty tokens detected for Edit function";
+  	public static final String MESSAGE_INVALID_LIST_FUNCTION = "The list function you have entered is invalid";
   	public static final String MARK_DONE = "done";
   	public static final String MARK_UNDONE = "undone";
 	public static final String INVALID_MARK = "You can only mark task as done or undone";
+	public static final String LIST_OVERVIEW = "overview";
+	public static final String LIST_ASCENDING_START_DATE = "ascending start date";
+	public static final String LIST_DESCENDING_START_DATE = "descending start date";
+	public static final String LIST_ASCENDING_END_DATE = "ascending end date";
+	public static final String LIST_DESCENDING_END_DATE = "descending end date";
+	public static final String LIST_ASCENDING_TITLE = "ascending title";
+	public static final String LIST_DESCENDING_TITLE = "descending title";
+	public static final String LIST_ISDONE_UNDONE = "undone";
+	public static final String LIST_ISDONE_COMPLETED = "completed";
 	public static final int TOKEN_NUM_ADD_ONE = 1;
 	public static final int TOKEN_NUM_ADD_THREE = 3;
 	public static final int TOKEN_NUM_ADD_FIVE = 5;
@@ -73,6 +83,7 @@ public class Constants {
 	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
 	public static String LOGIC_FAIL_UNDO = "Failed to undo the last action";
 	public static String LOGIC_FAIL_REDO = "Failed to redo";
+	public static String LOGIC_SUCESS_SORTED = "List is successfully sorted in %s";
 	
 	//public static String XML_FILE_NAME = "init_task.xml";
 	//public static String XML_FILE_PATH = "";
@@ -118,6 +129,7 @@ public class Constants {
 	public static final String VALUE_REDO = "redo";
 	public static final String VALUE_MARK = "mark";
 	public static final String VALUE_HELP = "help";
+	public static final String VALUE_LIST = "list";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";
