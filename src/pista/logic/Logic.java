@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 import pista.Constants;
@@ -81,6 +82,8 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
+		ComparatorTask comparatorTask = new ComparatorTask();
+		Collections.sort(mStorage.getTaskList(), comparatorTask);
 		return mStorage.getTaskList();
 	}
 
