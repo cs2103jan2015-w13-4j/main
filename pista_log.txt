@@ -2156,3 +2156,59 @@ Mar 26, 2015 8:18:43 PM pista.log.CustomLogging logInfo
 INFO: Executed user command: help
 Mar 26, 2015 8:18:43 PM pista.log.CustomLogging logInfo
 INFO: Successful Validate InputValid
+Mar 26, 2015 8:20:28 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:20:34 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:27:09 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:32:58 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:35:10 PM pista.log.CustomLogging logSevere
+SEVERE: Content is not allowed in prolog.
+Mar 26, 2015 8:35:19 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add 123
+Mar 26, 2015 8:35:19 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 26, 2015 8:35:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add 123
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 26, 2015 8:35:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully added 123 task of floating category into list
+Mar 26, 2015 8:36:03 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 102
+Mar 26, 2015 8:36:03 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 26, 2015 8:36:07 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 101
+Mar 26, 2015 8:36:07 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 26, 2015 8:36:12 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 4
+Mar 26, 2015 8:36:12 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 26, 2015 8:36:28 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:36:48 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 102
+Mar 26, 2015 8:36:48 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 26, 2015 8:37:38 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:38:46 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 26, 2015 8:38:49 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 102
+Mar 26, 2015 8:38:49 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
