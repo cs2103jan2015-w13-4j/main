@@ -56,6 +56,7 @@ public class Constants {
 	public static String LOGIC_SUCCESS_ADD_TASK = "Successfully add new task.";
 	public static String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
 	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
+	public static String LOGIC_SUCCESS_HELP = "Open help";
 	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
 	public static String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
 	public static String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";
@@ -116,6 +117,7 @@ public class Constants {
 	public static final String VALUE_UNDO = "undo";
 	public static final String VALUE_REDO = "redo";
 	public static final String VALUE_MARK = "mark";
+	public static final String VALUE_HELP = "help";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";

@@ -52,12 +52,21 @@ public class MainParser {
 			if (!isCommandValid(command)) {
 				mp.setMessage(Constants.MESSAGE_WRONG_COMMAND);
 				return mp;
-			} else {
-				String[] tokens = getTokens(input);
-				if (!mp.isTokensValid(mp, command, tokens)) {
-					//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
-					return mp;
-				} else {
+			} else {	
+
+				if(!command.equals(Constants.VALUE_HELP)){
+					String[] tokens = getTokens(input);
+
+					if (!mp.isTokensValid(mp, command, tokens)) {
+						//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
+						return mp;
+					} else {
+						mp.setCommand(command);
+						mp.setMessage(Constants.MESSAGE_VALID_INPUT);
+						return mp;
+					}
+				}else{ //help without tokens
+
 					mp.setCommand(command);
 					mp.setMessage(Constants.MESSAGE_VALID_INPUT);
 					return mp;
@@ -95,7 +104,8 @@ public class MainParser {
 	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
-				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK) ||
+				command.equalsIgnoreCase(Constants.VALUE_HELP)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
