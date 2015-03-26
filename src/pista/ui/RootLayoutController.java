@@ -25,7 +25,6 @@ public class RootLayoutController {
     
     @FXML
 	public void initialize() {
-    	System.out.println("hello");
     	borderPaneRoot.getStyleClass().addAll(CSS_CLASS_IMAGE_BACKGROUND);
     }
     
