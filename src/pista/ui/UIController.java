@@ -165,15 +165,17 @@ public class UIController {
 		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
 		command = mp.getCommand();
-		tokens = mp.getTokens();
 		
+		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
+			showHelp();
+			txtStatus.setText(Constants.LOGIC_SUCCESS_HELP);
+			return;
+		}
+		
+		tokens = mp.getTokens();
 		logicOutput = Logic.runCommand(command, tokens);
 		
 		txtStatus.setText(logicOutput);
-
-		if(logicOutput.equals(Constants.LOGIC_SUCCESS_HELP)){
-			showHelp();
-		}
 		
 		showTaskListInListView();
 	}
