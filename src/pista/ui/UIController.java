@@ -209,6 +209,7 @@ public class UIController {
 			showTaskListInListView();
 		}
 		
+		
 		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW);
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
