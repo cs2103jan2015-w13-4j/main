@@ -3349,3 +3349,65 @@ INFO: Successfully Load XML file to task list
 Mar 27, 2015 5:08:12 PM pista.log.CustomLogging logInfo
 INFO: Successfully Load XML file to task list
 >>>>>>> bd994de8ff74eb13368694402dc0bcebc4f58ab4
+Mar 27, 2015 9:25:58 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:47:14 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:47:47 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:52:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:53:19 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add timed -fri -night - thu - 3a
+Mar 27, 2015 9:53:20 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: Start date cannot be greater than end date
+Mar 27, 2015 9:53:35 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add timed -fri -night - next thu - 3a
+Mar 27, 2015 9:53:35 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: Start date cannot be greater than end date
+Mar 27, 2015 9:53:46 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add timed -fri -night - sun - 3a
+Mar 27, 2015 9:53:46 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: Start date cannot be greater than end date
+Mar 27, 2015 9:53:57 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add timed -fri -night -sun -noon
+Mar 27, 2015 9:53:57 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: Start date cannot be greater than end date
+Mar 27, 2015 9:54:42 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add timed -mon -night -sun -noon
+Mar 27, 2015 9:54:42 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: Start date cannot be greater than end date
+Mar 27, 2015 9:55:38 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:55:47 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add adsfsdf -mon -noon -fri -night
+Mar 27, 2015 9:55:48 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 27, 2015 9:55:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:55:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:55:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 27, 2015 9:55:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 27, 2015 9:55:48 PM pista.log.CustomLogging logInfo
+INFO: Successfully added adsfsdf task of timed category into list
+Mar 27, 2015 9:55:58 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add adsfsdf -fri -noon -thu -night
+Mar 27, 2015 9:55:58 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: Start date cannot be greater than end date
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add adsfsdf -fri -noon -2 thu -night
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 27, 2015 9:56:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully added adsfsdf task of timed category into list

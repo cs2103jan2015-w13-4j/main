@@ -2,6 +2,8 @@ package pista.logic;
 
 import java.util.Comparator;
 
+import pista.Constants;
+
 public class MiscComparator {
 
 	public static Comparator<Task> titleComparator = new Comparator<Task>(){
@@ -49,7 +51,7 @@ public class MiscComparator {
 			return 0;
 		}
 	};
-	
+
 	public static Comparator<Task> ascendingStartDateComparator = new Comparator<Task>(){
 		@Override
 		public int compare (Task one, Task two){
@@ -71,7 +73,7 @@ public class MiscComparator {
 			return 0;
 		}
 	};
-	
+
 	public static Comparator<Task> descendingStartDateComparator = new Comparator<Task>(){
 		@Override
 		public int compare (Task one, Task two){
@@ -91,6 +93,29 @@ public class MiscComparator {
 				return 1;
 			}
 			return 0;
+		}
+	};
+
+	public static Comparator<Task> taskCategoryComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			String catOne = one.getCategory();
+			String catTwo = two.getCategory();
+			Integer orderOne = taskOrder(catOne);
+			Integer orderTwo = taskOrder(catTwo);
+			System.out.println(one.getTitle() +" "+ orderOne);
+			System.out.println(two.getTitle() + " "+orderTwo);
+			return orderOne.compareTo(orderTwo);
+		}
+
+		private int taskOrder(String taskCategory){
+			if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+				return -1;
+			}else if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE)){
+				return 0;
+			}
+
+			return 1;	
 		}
 	};
 

@@ -104,7 +104,8 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		//sortOverView();
+		sortTypeOfTask();
+		//sortTitleAscending();
 		return mStorage.getTaskList();
 	}
 
@@ -115,6 +116,10 @@ public class Logic {
 	
 	public static void sortTitleAscending(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.titleComparator);
+	}
+	
+	public static void sortTypeOfTask(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.taskCategoryComparator);
 	}
 	
 	public static void sortTitleDescending(){
@@ -198,6 +203,8 @@ public class Logic {
 			sortIsDoneUndone();
 		}else if(Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
 			sortOverView();
+		}else if(Constants.LIST_TYPE.equalsIgnoreCase(sortType)){
+			
 		}
 		mStorage.save();
 		return message;

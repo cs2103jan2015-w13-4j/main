@@ -1,0 +1,32 @@
+Mar 27, 2015 9:48:45 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:57:55 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 27, 2015 9:57:58 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add adsfsdf -fri -noon -2 thu -night
+Mar 27, 2015 9:57:59 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 27, 2015 9:57:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:57:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:57:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 27, 2015 9:57:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 27, 2015 9:57:59 PM pista.log.CustomLogging logInfo
+INFO: Successfully added adsfsdf task of timed category into list
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: add adsfsdf -fri -noon -2 thu -night
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully get next available ID
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 27, 2015 9:58:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully added adsfsdf task of timed category into list

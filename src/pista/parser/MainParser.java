@@ -191,7 +191,8 @@ public class MainParser {
 				Constants.LIST_DESCENDING_TITLE.equals(sortType) || 
 				Constants.LIST_ISDONE_COMPLETED.equals(sortType) || 
 				Constants.LIST_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
-				Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
+				Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType) || 
+				Constants.LIST_TYPE.equalsIgnoreCase(sortType)){
 			return true;
 		}
 		mp.setMessage(Constants.MESSAGE_INVALID_LIST_FUNCTION);

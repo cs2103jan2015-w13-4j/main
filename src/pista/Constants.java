@@ -31,6 +31,7 @@ public class Constants {
   	public static final String MARK_DONE = "done";
   	public static final String MARK_UNDONE = "undone";
 	public static final String INVALID_MARK = "You can only mark task as done or undone";
+	public static final String LIST_TYPE = "type";
 	public static final String LIST_OVERVIEW = "overview";
 	public static final String LIST_ASCENDING_START_DATE = "ascending start date";
 	public static final String LIST_DESCENDING_START_DATE = "descending start date";
@@ -101,6 +102,9 @@ public class Constants {
 	public static final String SETTING_LAYOUT_PATH = "SettingLayout.fxml";
 	
 	public static final String SETTING_LAYOUT_TITLE = "Setting";
+	public static final String TASK_FLOATED = "floating";
+	public static final String TASK_DEADLINE = "deadline";
+	public static final String TASK_TIMED = "timed";
 	
 	
 	public static String STATUS_DONE="done";
