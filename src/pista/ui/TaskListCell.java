@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import pista.Constants;
 import pista.logic.Logic;
 import pista.logic.Task;
 import pista.parser.MainParser;
@@ -42,6 +43,9 @@ public class TaskListCell extends ListCell<Task> {
     
     private String DISPLAY_START_DATE_TIME = "from [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "to [datetime]"; 
+    
+    private final String DONE_COMMAND = "-" + Constants.MARK_DONE; //-done
+    private final String NOT_DONE_COMMAND = "-" + Constants.MARK_UNDONE; //-undone
     
 	private GridPane grid = new GridPane();
 	private VBox vBoxLeft = new VBox(0);
@@ -260,24 +264,31 @@ public class TaskListCell extends ListCell<Task> {
 	    @Override
 	    public void handle(ActionEvent event) {
 	    	boolean isUpdated = false;
+	    	String markCommandFormatString = "mark [id] [type]";
+	    	String markCommandEditedString = "";
 	    	
 	        if (event.getSource() instanceof CheckBox) {
 	            CheckBox chk = (CheckBox) event.getSource();
-	            System.out.println(chk.getId());
 	            
 	            String getTaskID = chk.getId().replace("checkBox_", "").trim();
 	            
 	            if(chk.isSelected()){
-	            	getIsDone = true;         	
+	            	getIsDone = true; 
+	            	markCommandEditedString = markCommandFormatString.replace("[id]", getTaskID).replace("[type]", DONE_COMMAND);
+	            	
 	            }else{
 	            	getIsDone = false;
+	            	markCommandEditedString = markCommandFormatString.replace("[id]", getTaskID).replace("[type]", NOT_DONE_COMMAND);
 	            }
 	            
+	            executeCommand(markCommandEditedString);
+	            /*
 	            isUpdated = updateTaskDoneStatus(Integer.parseInt(getTaskID), getIsDone);
 	            if(isUpdated){
 	            	setCellBackground(getIsDone);
 		            refreshUIControllerParentListView();
 	            }
+	            */
 	            
 	            
 	        }//end if
@@ -287,6 +298,37 @@ public class TaskListCell extends ListCell<Task> {
 	
 	public void setUIParent(UIController ui){
 		mUIParent = ui;
+	}
+	
+	private boolean executeCommand(String input){
+		String[] tokens = null;
+		String parserOutput = "";
+		String logicOutput = "";
+		String command = "";
+		
+		MainParser mp = MainParser.validateInput(input);
+		parserOutput = mp.getMessage();
+		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
+			setUIControllerParentTextStatus(parserOutput);
+			return false;
+		}
+		
+		command = mp.getCommand();
+		tokens = mp.getTokens();
+		
+		logicOutput = Logic.runCommand(command, tokens);
+		setUIControllerParentTextStatus(logicOutput);
+		
+		refreshUIControllerParentListView();
+		
+		return true;
+		
+	}
+	
+	private void setUIControllerParentTextStatus(String msg){
+		if(mUIParent != null){
+			mUIParent.setTextStatus(msg);
+		}
 	}
 	
 	private void refreshUIControllerParentListView(){

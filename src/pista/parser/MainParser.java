@@ -82,6 +82,7 @@ public class MainParser {
 
 	public static String[] getTokens(String input){
 		String[] temp = input.split(" ",2);
+
 		if(temp.length > 1){
 			String[] arr = temp[1].split("-");
 			trimWhiteSpace(arr);
@@ -105,7 +106,8 @@ public class MainParser {
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
 				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK) ||
-				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST) || 
+				command.equalsIgnoreCase(Constants.VALUE_SET)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -135,10 +137,45 @@ public class MainParser {
 			return true;
 		case Constants.VALUE_LIST:
 			return checkListTokens(mp, tokens);
+		case Constants.VALUE_SET:
+			return checkSetTokens(mp, tokens);
 		default:
 			return false;
 		}
 	}
+	
+	private boolean checkSetTokens(MainParser mp, String[] tokens){
+		String getType = "";
+		String getFileLocation = "";
+		
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		if(tokens.length <= 1){ //must have at least 2
+			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_LENGTH);
+			return false;
+		}
+		
+		getType = tokens[Constants.SET_TYPE_INDEX]; //index of type is 0
+		if(!getType.equalsIgnoreCase(Constants.SET_TYPE_FILE_LOCATION)){
+			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_TYPE);	
+			return false;
+		}
+		 
+		getFileLocation = tokens[Constants.SET_VALUE_INDEX];
+		if(!TokenValidation.isFileNameValid(getFileLocation)){
+			mp.setMessage(Constants.LOGIC_INVALID_SET_FILE_NAME);
+			return false;
+		}
+		
+		mp.setTokens(tokens);
+		return true;
+		
+	}
+	
+	
 	private boolean checkListTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);

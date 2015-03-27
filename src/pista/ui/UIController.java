@@ -124,6 +124,12 @@ public class UIController {
 		}
 	}
 	
+	public void setTextStatus(String msg){
+		if(txtStatus != null){
+			txtStatus.setText(msg);
+		}
+	}
+	
 	public void add_outline() {
 		txtBoxCommand.setText(Constants.ADD_COMMAND);
 	}
@@ -192,6 +198,7 @@ public class UIController {
 		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();
+		Logic.initPreference();
 		
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);

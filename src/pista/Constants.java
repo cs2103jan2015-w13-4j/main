@@ -6,10 +6,11 @@ public class Constants {
 	
 	public static String PRODUCT_NAME = "Pista";
 	
-	public static String FILENAME = "Tasks.txt";
-	public static String ADD_COMMAND = "add <Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
-	public static String EDIT_COMMAND = "edit <ID> -<Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
-	public static String DELETE_COMMAND = "delete -<TaskID>";
+	//public static String FILENAME = "Tasks.txt";
+	public static final String ADD_COMMAND = "add <Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
+	public static final String EDIT_COMMAND = "edit <ID> -<Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
+	public static final String DELETE_COMMAND = "delete -<TaskID>";
+	public static final String SET_COMMAND = "set <Type> -<Values>";
 	
 	//Parser Message 
 	public static final String MESSAGE_EMPTY_STRING = "No input detected!";
@@ -39,6 +40,8 @@ public class Constants {
 	public static final String LIST_DESCENDING_TITLE = "descending title";
 	public static final String LIST_ISDONE_UNDONE = "undone";
 	public static final String LIST_ISDONE_COMPLETED = "completed";
+	public static final String SET_TYPE_FILE_LOCATION = "file location";
+	public static final String SET_FILE_TYPE = ".xml";
 	public static final int TOKEN_NUM_ADD_ONE = 1;
 	public static final int TOKEN_NUM_ADD_THREE = 3;
 	public static final int TOKEN_NUM_ADD_FIVE = 5;
@@ -84,9 +87,13 @@ public class Constants {
 	public static String LOGIC_FAIL_UNDO = "Failed to undo the last action";
 	public static String LOGIC_FAIL_REDO = "Failed to redo";
 	public static String LOGIC_SUCESS_SORTED = "List is successfully sorted in %s";
-	
-	//public static String XML_FILE_NAME = "init_task.xml";
-	//public static String XML_FILE_PATH = "";
+	public static final String LOGIC_INVALID_SET_COMMAND_TYPE = "Invalid type for set command";
+	public static final String LOGIC_INVALID_SET_COMMAND_LENGTH = "Insufficient commands.";
+	public static final String LOGIC_INVALID_SET_FILE_NAME = "Incorrect file name.";
+	public static final String LOGIC_INVALID_SET_INVALID_FILE_FORMAT = "Either your file is not empty or invalid format.";
+	public static final String LOGIC_FAIL_SET_LOAD_FILE =  "Failed to load selected file.";
+	public static final String LOGIC_FAIL_SET_SAVE = "Fail to save setting.";
+	public static final String LOGIC_SUCCESS_SET_SAVE = "Sucessfully save setting.";
 	
 	public static final String MAIN_UI_LAYOUT_PATH = "ui/MainUI.fxml";
 	public static final String ROOT_LAYOUT_PATH = "ui/RootLayout.fxml";
@@ -108,8 +115,8 @@ public class Constants {
 	public static final int ARRAY_INDEX_REPEAT = 5;
 	public static final int ARRAY_INDEX_DELAYTYPE = 6;
 	public static final int ARRAY_INDEX_RECUR = 7;
-	public static int ARRAY_INDEX_START_MILLISECONDS = 8;
-	public static int ARRAY_INDEX_END_MILLISECONDS = 9;
+	public static final int ARRAY_INDEX_START_MILLISECONDS = 8;
+	public static final int ARRAY_INDEX_END_MILLISECONDS = 9;
 	public static final int ONE_DAY = 1;
 	public static final int ONE_WEEK = 1;
 	public static final int ONE_MONTH = 1;
@@ -121,6 +128,8 @@ public class Constants {
 	public static final int EDIT_FLOATING_TASK=2;
 	public static final int EDIT_DEADLINE_TASK=3;
 	public static final int EDIT_TIMED_TASK=5;
+	public static final int SET_TYPE_INDEX = 0;
+	public static final int SET_VALUE_INDEX = 1;
 	
 	public static final String VALUE_ADD = "add";
 	public static final String VALUE_EDIT = "edit";
@@ -130,6 +139,7 @@ public class Constants {
 	public static final String VALUE_MARK = "mark";
 	public static final String VALUE_HELP = "help";
 	public static final String VALUE_LIST = "list";
+	public static final String VALUE_SET = "set";
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";
