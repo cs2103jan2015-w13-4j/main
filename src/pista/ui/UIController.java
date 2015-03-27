@@ -171,7 +171,7 @@ public class UIController {
 		
 		txtStatus.setText(logicOutput);
 
-		if(command.equals(Constants.VALUE_HELP)){
+		if(logicOutput.equals(Constants.LOGIC_SUCCESS_HELP)){
 			showHelp();
 		}
 		
