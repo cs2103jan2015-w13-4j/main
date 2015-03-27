@@ -124,6 +124,12 @@ public class UIController {
 		}
 	}
 	
+	public void setTextStatus(String msg){
+		if(txtStatus != null){
+			txtStatus.setText(msg);
+		}
+	}
+	
 	public void add_outline() {
 		txtBoxCommand.setText(Constants.ADD_COMMAND);
 	}
@@ -159,15 +165,17 @@ public class UIController {
 		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 		
 		command = mp.getCommand();
-		tokens = mp.getTokens();
 		
+		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
+			showHelp();
+			txtStatus.setText(Constants.LOGIC_SUCCESS_HELP);
+			return;
+		}
+		
+		tokens = mp.getTokens();
 		logicOutput = Logic.runCommand(command, tokens);
 		
 		txtStatus.setText(logicOutput);
-
-		if(command.equals(Constants.VALUE_HELP)){
-			showHelp();
-		}
 		
 		showTaskListInListView();
 	}
@@ -192,6 +200,7 @@ public class UIController {
 		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();
+		Logic.initPreference();
 		
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
@@ -199,6 +208,7 @@ public class UIController {
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			showTaskListInListView();
 		}
+		
 		
 		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW);
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){

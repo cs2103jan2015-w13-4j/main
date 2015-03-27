@@ -9,8 +9,11 @@ import pista.storage.Storage;
 import pista.ui.RootLayoutController;
 import pista.ui.UIController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -75,7 +78,9 @@ public class MainApp extends Application {
             mUICtrl = loader.getController();
             
             // Set MainUI into the center of RootLayout
-            rootLayout.setCenter(personOverview);
+            rootLayout.setCenter(personOverview);      
+            
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

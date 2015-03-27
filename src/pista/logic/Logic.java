@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import pista.Constants;
+import pista.CustomPreferences;
 import pista.log.CustomLogging;
 import pista.storage.Storage;
 
@@ -15,6 +16,7 @@ public class Logic {
 	private static final Logic mLogic = new Logic();
 	private static CustomLogging mLog = null;
 	private static Storage mStorage = null;
+	private static CustomPreferences mPrefs = null;
 	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
 
@@ -22,9 +24,20 @@ public class Logic {
 
 	public static Logic getInstance(){
 		initStorage();
+		initPreference();
 		return mLogic;
 	}
 
+	public static boolean initPreference(){
+		try{
+			mPrefs = CustomPreferences.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}	
+	}
+	
 	public static boolean initStorage(){
 		try{
 			mStorage = Storage.getInstance();
@@ -71,6 +84,9 @@ public class Logic {
 			break;
 		case Constants.VALUE_LIST:
 			output = list(tokens);
+			break;
+		case Constants.VALUE_SET:
+			output = set(tokens);
 			break;
 		default:
 			assert false:"invalid comand in runCommand: "+command;
@@ -132,6 +148,35 @@ public class Logic {
 	public static String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
+	
+	private static String set(String[] tokens){
+		boolean isValidFile = false;
+		boolean isFileLoaded = false;
+		boolean isPrefSave = false;
+		
+		String getFileName = "";
+		
+		getFileName = tokens[Constants.SET_VALUE_INDEX];
+		isValidFile = checkFileBeforeSave(getFileName);
+		if(!isValidFile){
+			return Constants.LOGIC_INVALID_SET_INVALID_FILE_FORMAT;
+		}
+		
+		isFileLoaded = checkFileDuringSave(getFileName); //will save location, load XML file in storage
+		if(!isFileLoaded){
+			return Constants.LOGIC_FAIL_SET_LOAD_FILE;
+		}
+		
+		isPrefSave = mPrefs.setPreferenceFileLocation(getFileName); //save preferences
+		if(!isPrefSave){ //unable to save
+			return Constants.LOGIC_FAIL_SET_SAVE;
+		}
+		
+		return Constants.LOGIC_SUCCESS_SET_SAVE;
+		
+	}
+	
+	
 	public static String list(String[] tokens){ 
 		String sortType=tokens[0];
 		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
@@ -157,6 +202,7 @@ public class Logic {
 		mStorage.save();
 		return message;
 	}
+	
 	public static String mark(String[] tokens){ 
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
@@ -572,5 +618,6 @@ public class Logic {
 		}
 
 	}
-
+	
+	
 }

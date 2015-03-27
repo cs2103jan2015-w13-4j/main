@@ -14,6 +14,13 @@ public class TokenValidation {
 
 	private static String[] inputArray=new String[8];
 
+	public static boolean isFileNameValid(String name){
+		if(!name.isEmpty() && name.contains(Constants.SET_FILE_TYPE)){ //not empty and abc.xml
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean isTitleValid(String title){
 		if(!title.isEmpty()){
 			return true;

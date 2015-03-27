@@ -26,9 +26,9 @@
                   <MenuItem mnemonicParsing="false" onAction="#onViewRefreshClick" text="Refresh" />
                </items>
             </Menu>
-          <Menu fx:id="menuItemUserGuide" mnemonicParsing="false" text="Help">
+          <Menu fx:id="menuItemUserGuide" mnemonicParsing="true" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#onHelpUserGuideClick" text="User Guide" />
+              <MenuItem mnemonicParsing="true" onAction="#onHelpUserGuideClick" text="User Guide" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Settings">
