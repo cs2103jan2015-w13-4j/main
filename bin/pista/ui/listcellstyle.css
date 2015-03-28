@@ -10,7 +10,7 @@
 }
 
 .task-list-cell-id {
-	-fx-font-size: 1.2em;
+	-fx-font-size: 1.0em;
 	-fx-font-weight: bold;
 }
 
@@ -30,16 +30,22 @@
 	-fx-text-fill: #FF2E12;
 }
 
+.task-list-cell-box-red {
+	-fx-background-color: #FF2E12;
+	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
+}
+
+
 
 .task-list-cell-title {
-    -fx-font-size: 1.2em;
     -fx-font-weight: bold;
+    -fx-font-size: 1.0em;
 }
 
 .task-list-cell-datetime {
- 	-fx-font-size: 0.9em;
-	-fx-font-weight: normal;
-	-fx-text-fill: #666666;
+	-fx-font-weight: bold;
+	-fx-text-fill: #569CE3;
+	-fx-font-size: 0.9em;
 }
 
 .task-list-icon {
@@ -52,13 +58,17 @@
 }
 
 .task-list-cell {
-	-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);
+	/*-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);*/
+	-fx-background-color: rgba(255, 255, 255, 0.3);
+	-fx-background-insets: 5;
+	-fx-effect: dropshadow(three-pass-box, #F1F1F199, 6, 0, 0, 0);
+
 }
 
 .task-list-cell:filled:hover{
-	-fx-background-color: #8AD5F090; /*#56C5FF */
+	-fx-background-color: rgba(200, 200, 200, 0.2); /*#56C5FF #8AD5F090*/
 	/* type, color, radius, spread, offset-x, offset, y */
-	-fx-effect: dropshadow(three-pass-box, #E2F4FB, 10, 0.7, 0, -1);
+	/*-fx-effect: dropshadow(three-pass-box, #E2F4FB, 10, 0.7, 0, -1);*/
 }
 
 .task-list-cell:filled:selected {
@@ -92,3 +102,30 @@
 .task-list-cell-done:filled:selected .task-list-cell-datetime{
 	-fx-text-fill: #666666;
 }
+
+/*Check Box Styling */
+.check-box *.box {
+	-fx-border-color: #999999;
+	-fx-border-radius: 3;
+  	-fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.check-box .mark {
+    -fx-background-color: transparent;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.333333em; /* 4 -- this is half the size of the mark */
+    -fx-shape: "M0,4H2L3,6L6,0H8L4,8H2Z";
+}
+
+.check-box:indeterminate .mark {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+    -fx-shape: "M0,0H8V2H0Z";
+    -fx-scale-shape: false;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+}
+
+
+
