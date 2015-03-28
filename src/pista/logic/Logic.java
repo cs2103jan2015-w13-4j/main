@@ -89,6 +89,9 @@ public class Logic {
 		case Constants.VALUE_REMINDER:
 			output = reminder(tokens);
 			break;
+		case Constants.VALUE_PRIORITY:
+			output = priority(tokens);
+			break;
 		case Constants.VALUE_SET:
 			output = set(tokens);
 			break;
@@ -98,7 +101,19 @@ public class Logic {
 		}
 		return output;
 	}
-	
+	public static String priority(String[] tokens){
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		if(taskIndex != -1){
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			int prorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+			if(prorityScore >=0 && prorityScore <=3) {
+				extractedTask.setPriority(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+				reInsertTaskInToList(taskIndex, extractedTask);
+				return Constants.LOGIC_SUCCESS_PRIORITY_TASK;
+			}
+		}
+		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
+	}
 	public static String reminder(String[] tokens){
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		long reminderMS = 0L;
@@ -112,7 +127,7 @@ public class Logic {
 					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
 				}else{
 					extractedTask.setReminder(0L);
-					reInsertTask(taskIndex, extractedTask);
+					reInsertTaskInToList(taskIndex, extractedTask);
 					return Constants.LOGIC_SUCCESS_REMIND_OFF_TASK;
 				}
 			}else if (tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
@@ -123,7 +138,7 @@ public class Logic {
 				}else{
 					if(reminderMS <= endMS){
 						extractedTask.setReminder(reminderMS);
-						reInsertTask(taskIndex, extractedTask);
+						reInsertTaskInToList(taskIndex, extractedTask);
 						return Constants.LOGIC_SUCCESS_REMIND_TASK;
 					}else{
 						return Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK;
@@ -134,7 +149,7 @@ public class Logic {
 		return Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK;
 	}
 
-	private static void reInsertTask(int taskIndex, Task extractedTask) {
+	private static void reInsertTaskInToList(int taskIndex, Task extractedTask) {
 		mStorage.getTaskList().remove(taskIndex);
 		mStorage.getTaskList().add(extractedTask);
 		mStorage.save();
@@ -266,7 +281,7 @@ public class Logic {
 			else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
 				extractedTask.setIsDone(false);
 			}
-			reInsertTask(taskIndex, extractedTask);
+			reInsertTaskInToList(taskIndex, extractedTask);
 			return Constants.LOGIC_SUCCESS_MARK_TASK;
 		}
 		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
@@ -321,7 +336,7 @@ public class Logic {
 				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
 			}
 
-			reInsertTask(taskIndex, extractedTask);
+			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));

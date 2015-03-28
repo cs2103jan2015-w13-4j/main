@@ -16,7 +16,7 @@ public class Task {
 	private long startMilliseconds;
 	private long endMilliseconds;
 	private String category="";
-	private String priority = "";  
+	private String priority="";  
 	private long reminderTime=0L;
 	
 	/*3 catergory
