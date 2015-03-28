@@ -96,11 +96,11 @@ public class TaskListCell extends ListCell<Task> {
         grid.setPrefHeight(70.0);
         
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(1);
+        col1.setPercentWidth(2);
         col1.setHalignment(HPos.LEFT);
         
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(4);
+        col2.setPercentWidth(3);
         col2.setHalignment(HPos.CENTER);
         
         ColumnConstraints col3 = new ColumnConstraints();
@@ -141,8 +141,11 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureBoxColor(int type){
+    	vBoxColor.setMaxWidth(5.0);
+    	vBoxColor.setMinWidth(5.0);
+    	vBoxColor.setPrefWidth(5.0);
     	vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_RED_CLASS);
-    	vBoxDateTime.setAlignment(Pos.CENTER_LEFT);
+    	vBoxColor.setAlignment(Pos.CENTER_LEFT);
     }
     
     
