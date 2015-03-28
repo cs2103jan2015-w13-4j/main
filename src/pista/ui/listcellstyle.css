@@ -31,11 +31,36 @@
 }
 
 .task-list-cell-box-red {
-	-fx-background-color: #FF2E12;
+	-fx-background-color: #FF4444; /* #FF2E12  */
 	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
 }
 
+.task-list-cell-box-yellow {
+	-fx-background-color: #FFBB33;
+	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
+}
 
+.task-list-cell-box-green {
+	-fx-background-color: #99CC00;
+	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
+}
+
+.task-list-cell-box-purple {
+	-fx-background-color: #5133AB;
+	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
+}
+
+.task-list-cell-label-strike-through .text{
+	-fx-strikethrough: true;
+}
+
+.task-list-cell-text-is-done {
+	-fx-text-fill: #777777;
+}
+
+.task-list-cell-background-is-done {
+	-fx-background-color: rgba(150, 150, 150, 0.2);
+}
 
 .task-list-cell-title {
     -fx-font-weight: bold;
@@ -48,6 +73,7 @@
 	-fx-font-size: 0.9em;
 }
 
+/*
 .task-list-icon {
     -fx-text-fill: #444444;
     -fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 3, 0.0, 1, 1);
@@ -56,7 +82,8 @@
 .task-list-found .cache-list-icon {
     -fx-text-fill: #669900;
 }
-
+ */
+ 
 .task-list-cell {
 	/*-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);*/
 	-fx-background-color: rgba(255, 255, 255, 0.3);
@@ -83,6 +110,13 @@
 	-fx-text-fill: #FFFFFF;
 }
 
+
+.task-list-cell-alarm {
+	
+}
+
+
+/*
 .task-list-cell-done {
 	-fx-background-color: #EEEEEE;
 }
@@ -102,6 +136,10 @@
 .task-list-cell-done:filled:selected .task-list-cell-datetime{
 	-fx-text-fill: #666666;
 }
+
+*/
+
+
 
 /*Check Box Styling */
 .check-box *.box {
