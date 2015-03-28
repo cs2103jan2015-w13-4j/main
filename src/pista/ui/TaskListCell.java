@@ -4,17 +4,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.sun.javafx.geom.Rectangle;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import pista.Constants;
 import pista.logic.Logic;
@@ -34,6 +39,8 @@ public class TaskListCell extends ListCell<Task> {
     private final String TASK_LIST_CELL_ID_GREEN_CLASS = "task-list-cell-id-green";
     private final String TASK_LIST_CELL_ID_YELLOW_CLASS = "task-list-cell-id-yellow";
     
+    private final String TASK_LIST_CELL_BOX_RED_CLASS = "task-list-cell-box-red";
+    
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
     private final String TASK_LIST_CELL_DONE_CLASS = "task-list-cell-done";
@@ -48,8 +55,8 @@ public class TaskListCell extends ListCell<Task> {
     private final String NOT_DONE_COMMAND = "-" + Constants.MARK_UNDONE; //-undone
     
 	private GridPane grid = new GridPane();
-	private VBox vBoxLeft = new VBox(0);
-	private VBox vBoxRight = new VBox(0);
+	private VBox vBoxDateTime = new VBox(0);
+	private VBox vBoxCheckBox = new VBox(0);
 	
     //private Label icon = new Label();
 	private Label lblID = new Label();
@@ -58,6 +65,7 @@ public class TaskListCell extends ListCell<Task> {
     private Label lblEndDateTime = new Label();
     private CheckBox checkBox = new CheckBox();
     private UIController mUIParent = null;
+    private VBox vBoxColor = new VBox(0);
     
     private String getID = "";
     private String getTitle = "";
@@ -69,30 +77,51 @@ public class TaskListCell extends ListCell<Task> {
     private boolean getIsDone = false;
     
     
-    public TaskListCell() {
+    public TaskListCell() {   	
         configureGrid(); 
         configureCheckBoxIsDone();
         configureLabelTitle();
         configureLabelDateTime();
-        configureVBoxRight();
+        configureVBoxCheckBox();
         addControlsToVBox();
         addControlsToGrid();            
     }
     
     private void configureGrid() {
-        grid.setHgap(10);
-        grid.setVgap(4);
-        grid.setPadding(new Insets(5, 5, 5, 5));
+        //grid.setHgap(10);
+        //grid.setVgap(4);
+        grid.setPadding(new Insets(0, 2, 0, 2));
+        grid.setMaxHeight(70.0);
+        grid.setMinHeight(70.0);
+        grid.setPrefHeight(70.0);
         
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(10);
-        col1.setHalignment(HPos.CENTER);
+        col1.setPercentWidth(1);
+        col1.setHalignment(HPos.LEFT);
+        
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(80);
+        col2.setPercentWidth(4);
+        col2.setHalignment(HPos.CENTER);
+        
         ColumnConstraints col3 = new ColumnConstraints();
         col3.setPercentWidth(10);
-        col3.setHalignment(HPos.RIGHT);
-        grid.getColumnConstraints().addAll(col1, col2, col3);
+        col3.setHalignment(HPos.CENTER);
+        
+        ColumnConstraints col4 = new ColumnConstraints();
+        col4.setPercentWidth(63);
+        col4.setHalignment(HPos.LEFT);
+        
+        ColumnConstraints col5 = new ColumnConstraints();
+        col5.setPercentWidth(22);
+        col5.setHalignment(HPos.LEFT);
+        
+        
+        RowConstraints row1 = new RowConstraints();
+        row1.setValignment(VPos.CENTER);
+        row1.setPrefHeight(70.0);
+        grid.getRowConstraints().addAll(row1);
+        
+        grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
         
     }
     
@@ -111,17 +140,25 @@ public class TaskListCell extends ListCell<Task> {
     	}
     }
     
+    private void configureBoxColor(int type){
+    	vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_RED_CLASS);
+    	vBoxDateTime.setAlignment(Pos.CENTER_LEFT);
+    }
+    
+    
     private void configureCheckBoxIsDone(){
     	checkBox.setOnAction(eh);
     }
     
-    private void configureVBoxRight(){
-    	vBoxRight.setPadding(new Insets(10, 0, 0, 0));
+    private void configureVBoxCheckBox(){
+    	vBoxCheckBox.setPadding(new Insets(0, 0, 0, 0));
     }
     
     private void configureLabelID(int type){
     	//System.out.println("type - " + type);
-
+    	lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS);
+    	lblID.setAlignment(Pos.CENTER);
+    	/*
 		if(type == 1){
 			lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_RED_CLASS);
 		}
@@ -141,11 +178,13 @@ public class TaskListCell extends ListCell<Task> {
     	if(type == 4){
     		lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS, TASK_LIST_CELL_ID_BLACK_CLASS);
     	}
+    	*/
     	
     }
     
     private void configureLabelTitle() {
     	lblTitle.getStyleClass().add(TASK_LIST_CELL_TITLE_CLASS);
+    	lblTitle.setAlignment(Pos.CENTER_LEFT);
     }
     
     private void configureLabelDateTime() {
@@ -161,21 +200,30 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void addControlsToVBox(){
-    	vBoxLeft.getChildren().add(lblStartDateTime);
-    	vBoxLeft.getChildren().add(lblEndDateTime);
+    	vBoxDateTime.getChildren().add(lblStartDateTime);
+    	vBoxDateTime.getChildren().add(lblEndDateTime);
+    	vBoxDateTime.setAlignment(Pos.CENTER_LEFT);
     	
-    	vBoxRight.getChildren().add(checkBox);
-    	vBoxRight.setAlignment(Pos.TOP_RIGHT);
+    	vBoxCheckBox.getChildren().add(checkBox);
+    	vBoxCheckBox.setAlignment(Pos.CENTER);
     }
     
     private void addControlsToGrid() {
     	//add(node, column index, row index)
-    	grid.add(lblID, 0, 0); 
-    	GridPane.setRowSpan(lblID, 2);
-        grid.add(lblTitle, 1, 0);        
-        grid.add(vBoxLeft, 1, 1);
-        grid.add(vBoxRight, 2, 0);
-        GridPane.setRowSpan(vBoxRight, 2);
+    	grid.add(vBoxColor, 0, 0);
+    	vBoxColor.setPadding(new Insets(0, 0, 0, 5));
+    	
+    	grid.add(vBoxCheckBox, 1, 0);
+        //GridPane.setRowSpan(vBoxCheckBox, 2);
+    	grid.add(lblID, 2, 0); 
+    	
+    	//GridPane.setRowSpan(lblID, 2);
+        grid.add(lblTitle, 3, 0);
+        
+       // GridPane.setRowSpan(lblTitle, 2);
+        grid.add(vBoxDateTime, 4, 0);
+        
+        //GridPane.setRowSpan(vBoxDateTime, 2);
     }
     
     private void clearContent() {
@@ -227,6 +275,8 @@ public class TaskListCell extends ListCell<Task> {
         }else{
         	configureLabelID(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
         }
+        
+        configureBoxColor(0);
         
         setCellBackground(getIsDone);
         

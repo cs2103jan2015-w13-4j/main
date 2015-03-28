@@ -2,3 +2,5 @@ Mar 27, 2015 9:49:17 PM pista.log.CustomLogging logInfo
 INFO: Successfully Load XML file to task list
 Mar 27, 2015 9:49:17 PM pista.log.CustomLogging logSevere
 SEVERE: pista.logic.Task cannot be cast to java.lang.Comparable
+Mar 28, 2015 8:48:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
