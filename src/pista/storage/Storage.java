@@ -46,7 +46,7 @@ public class Storage {
 	private static final String NODE_TASK_IS_DONE_TAG = "is_done";
 	private static final String NODE_TASK_CATEGORY_TAG = "category";
 	private static final String NODE_TASK_PRIORITY_TAG = "priority";
-	
+	private static final String NODE_TASK_REMINDER_TIME_TAG = "reminder";
 	
 	//Assertion
 	private static final String ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE = "List of task is not initialize";
@@ -280,6 +280,7 @@ public class Storage {
 				createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(mTask.getIsDone()));
 				createNode(nTask, NODE_TASK_CATEGORY_TAG, mTask.getCategory());
 				createNode(nTask, NODE_TASK_PRIORITY_TAG, mTask.getPriority());
+				createNode(nTask, NODE_TASK_REMINDER_TIME_TAG, convertLongToString(mTask.getReminder()));
 				
 				//add task node to root
 				nRoot.appendChild(nTask);
@@ -368,6 +369,7 @@ public class Storage {
 					String m_category = "";
 					String m_priority = "";
 					boolean m_is_done = false;
+					String m_reminder = "";
 					
 					
 					m_id = Integer.parseInt(eElement.getElementsByTagName(NODE_TASK_ID_TAG).item(0).getTextContent());
@@ -383,6 +385,7 @@ public class Storage {
 					m_is_done = Boolean.parseBoolean(eElement.getElementsByTagName(NODE_TASK_IS_DONE_TAG).item(0).getTextContent());
 					m_category = eElement.getElementsByTagName(NODE_TASK_CATEGORY_TAG).item(0).getTextContent();
 					m_priority = eElement.getElementsByTagName(NODE_TASK_PRIORITY_TAG).item(0).getTextContent();
+					m_reminder = eElement.getElementsByTagName(NODE_TASK_REMINDER_TIME_TAG).item(0).getTextContent();
 					
 					//create new task object
 					mTask = new Task(m_id, 
@@ -395,7 +398,8 @@ public class Storage {
 									m_end_date,
 									m_category,
 									m_priority,
-									m_is_done);
+									m_is_done,
+									convertStringToLong(m_reminder));
 					
 					mArrayTask.add(mTask); //add new task into table
 					

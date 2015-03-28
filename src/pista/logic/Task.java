@@ -17,7 +17,7 @@ public class Task {
 	private long endMilliseconds;
 	private String category="";
 	private String priority = "";  
-	
+	private long reminderTime=0L;
 	
 	/*3 catergory
 	 * timed-has start date/time and end date/time
@@ -61,7 +61,7 @@ public class Task {
 	
 	/*Used for importing all tasks from XML*/
 	public Task(int id, String title, long startMs, long endMs, String startTime, String startDate, String endTime, String endDate, 
-				String category, String priority, boolean isDone){
+				String category, String priority, boolean isDone, long reminderTime){
 		this.id = id;
 		this.title = title;
 		this.startMilliseconds = startMs;
@@ -73,6 +73,7 @@ public class Task {
 		this.isDone = isDone;
 		this.category = category;
 		this.priority = priority;
+		this.reminderTime = reminderTime;
 	}
 	
 	public String getTitle(){
@@ -125,6 +126,10 @@ public class Task {
 		return this.priority;
 	}
 	
+	public long getReminder(){
+		return this.reminderTime;
+	}
+	
 	public void setID(int id){
 		this.id = id;
 	}
@@ -173,6 +178,10 @@ public class Task {
 	
 	public void setPriority(String p){
 		this.priority = p;
+	}
+	
+	public long setReminder(long reminderTime){
+		return this.reminderTime = reminderTime;
 	}
 
 	/*@Override

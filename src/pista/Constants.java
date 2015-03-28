@@ -28,9 +28,12 @@ public class Constants {
   	public static final String MESSAGE_EMPTY_TITLE = "The title cannot be empty";
   	public static final String MESSAGE_EDIT_EMPTY_TOKENS = "Empty tokens detected for Edit function";
   	public static final String MESSAGE_INVALID_LIST_FUNCTION = "The list function you have entered is invalid";
+  	public static final String REMINDER_OFF = "off";
+  	public static final String REMINDER_INVALID_STATUS = "only allowed to set reminder as off";
   	public static final String MARK_DONE = "done";
   	public static final String MARK_UNDONE = "undone";
 	public static final String INVALID_MARK = "You can only mark task as done or undone";
+	public static final String INVALID_REMINDER = "invalid reminder tokens paramter";
 	public static final String LIST_TYPE = "type";
 	public static final String LIST_OVERVIEW = "overview";
 	public static final String LIST_ASCENDING_START_DATE = "ascending start date";
@@ -43,6 +46,12 @@ public class Constants {
 	public static final String LIST_ISDONE_COMPLETED = "completed";
 	public static final String SET_TYPE_FILE_LOCATION = "file location";
 	public static final String SET_FILE_TYPE = ".xml";
+	public static final int TOKEN_NUM_REMINDER_OFF = 1;
+	public static final int TOKEN_NUM_REMINDER_TWO = 2;
+	public static final int TOKEN_NUM_REMINDER_THREE = 3;
+	public static final int REMINDER_ID = 0;
+	public static final int REMINDER_DATE = 1;
+	public static final int REMINDER_TIME = 2;
 	public static final int TOKEN_NUM_ADD_ONE = 1;
 	public static final int TOKEN_NUM_ADD_THREE = 3;
 	public static final int TOKEN_NUM_ADD_FIVE = 5;
@@ -77,6 +86,12 @@ public class Constants {
 	public static String LOGIC_SUCCESS_REDO = "Successfully redo";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
+	public static String LOGIC_SUCCESS_REMIND_TASK = "Successfully set reminder for task";
+  public static String LOGIC_SUCCESS_REMIND_OFF_TASK = "Successfully off reminder for task";
+	public static String LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK = "unable to set reminder as it is later than the end date";
+	public static String LOGIC_FAIL_REMIND_NOT_FOUND_TASK = "Failed to remind task as it is not found.";
+	public static String LOGIC_FAIL_REMIND_FLOATING_TASK = "you cannot set a reminder for floating task";
+	public static String LOGIC_FAIL_REMIND_off_FLOATING_TASK = "No reminder can be off for floating task";
 	public static String LOGIC_FAIL_MARK_NOT_FOUND_TASK = "Failed to mark task as it is not found.";
 	public static String LOGIC_FAIL_DELETE_TASK = "Failed to delete task.";
 	public static String LOGIC_FAIL_DELETE_ALL_TASKS = "Failed to delete all tasks.";
@@ -144,6 +159,8 @@ public class Constants {
 	public static final String VALUE_HELP = "help";
 	public static final String VALUE_LIST = "list";
 	public static final String VALUE_SET = "set";
+	public static final String VALUE_REMINDER = "remind";
+
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_VALUE="default";

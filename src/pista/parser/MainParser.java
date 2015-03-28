@@ -107,7 +107,8 @@ public class MainParser {
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
 				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK) ||
 				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST) || 
-				command.equalsIgnoreCase(Constants.VALUE_SET)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_SET) ||
+				command.equalsIgnoreCase(Constants.VALUE_REMINDER)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -135,47 +136,70 @@ public class MainParser {
 			return true;
 		case Constants.VALUE_UNDO:
 			return true;
-		case Constants.VALUE_LIST:
-			return checkListTokens(mp, tokens);
+		case Constants.VALUE_REMINDER:
+			return checkReminderTokens(mp, tokens);
 		case Constants.VALUE_SET:
 			return checkSetTokens(mp, tokens);
 		default:
 			return false;
 		}
 	}
-	
-	private boolean checkSetTokens(MainParser mp, String[] tokens){
-		String getType = "";
-		String getFileLocation = "";
-		
+	private boolean checkReminderTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
+		mp.setTokens(tokens);
+		if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
+			if(tokens[Constants.TOKEN_NUM_REMINDER_OFF].equalsIgnoreCase(Constants.REMINDER_OFF)){
+				return true;
+			}
+			mp.setMessage(Constants.REMINDER_INVALID_STATUS);
+			return false;
+		}else if(tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
+			//String taskId = tokens[TOKEN_REMINDER_ID];
+			if(!isDateAndTimeValid(mp, tokens, Constants.REMINDER_DATE, 
+					Constants.REMINDER_TIME)){
+				return false;
+			}
+			return true;
+		}
 		
+		mp.setMessage(Constants.INVALID_REMINDER);
+		return false;
+	}
+	private boolean checkSetTokens(MainParser mp, String[] tokens){
+		String getType = "";
+		String getFileLocation = "";
+
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+
 		if(tokens.length <= 1){ //must have at least 2
 			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_LENGTH);
 			return false;
 		}
-		
+
 		getType = tokens[Constants.SET_TYPE_INDEX]; //index of type is 0
 		if(!getType.equalsIgnoreCase(Constants.SET_TYPE_FILE_LOCATION)){
 			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_TYPE);	
 			return false;
 		}
-		 
+
 		getFileLocation = tokens[Constants.SET_VALUE_INDEX];
 		if(!TokenValidation.isFileNameValid(getFileLocation)){
 			mp.setMessage(Constants.LOGIC_INVALID_SET_FILE_NAME);
 			return false;
 		}
-		
+
 		mp.setTokens(tokens);
 		return true;
-		
+
 	}
-	
-	
+
+
 	private boolean checkListTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);

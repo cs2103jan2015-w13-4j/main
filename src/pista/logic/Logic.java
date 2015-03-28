@@ -10,6 +10,7 @@ import java.util.Date;
 import pista.Constants;
 import pista.CustomPreferences;
 import pista.log.CustomLogging;
+import pista.parser.MainParser;
 import pista.storage.Storage;
 
 public class Logic {
@@ -85,6 +86,9 @@ public class Logic {
 		case Constants.VALUE_LIST:
 			output = list(tokens);
 			break;
+		case Constants.VALUE_REMINDER:
+			output = reminder(tokens);
+			break;
 		case Constants.VALUE_SET:
 			output = set(tokens);
 			break;
@@ -93,6 +97,47 @@ public class Logic {
 		break;
 		}
 		return output;
+	}
+	
+	public static String reminder(String[] tokens){
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		long reminderMS = 0L;
+		long endMS = 0L;
+		String taskCategory = "";
+		if(taskIndex != -1){
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			taskCategory = extractedTask.getCategory();
+			if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
+				if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
+				}else{
+					extractedTask.setReminder(0L);
+					reInsertTask(taskIndex, extractedTask);
+					return Constants.LOGIC_SUCCESS_REMIND_OFF_TASK;
+				}
+			}else if (tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
+				endMS = extractedTask.getEndMilliseconds();
+				reminderMS = MainParser.convertDateToMillisecond(tokens[Constants.REMINDER_DATE], tokens[Constants.REMINDER_TIME]);
+				if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
+				}else{
+					if(reminderMS <= endMS){
+						extractedTask.setReminder(reminderMS);
+						reInsertTask(taskIndex, extractedTask);
+						return Constants.LOGIC_SUCCESS_REMIND_TASK;
+					}else{
+						return Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK;
+					}
+				}
+			}
+		}
+		return Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK;
+	}
+
+	private static void reInsertTask(int taskIndex, Task extractedTask) {
+		mStorage.getTaskList().remove(taskIndex);
+		mStorage.getTaskList().add(extractedTask);
+		mStorage.save();
 	}
 
 	public static String load(){
@@ -104,8 +149,7 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		sortTypeOfTask();
-		//sortTitleAscending();
+		sortOverView();
 		return mStorage.getTaskList();
 	}
 
@@ -222,9 +266,7 @@ public class Logic {
 			else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
 				extractedTask.setIsDone(false);
 			}
-			mStorage.getTaskList().remove(taskIndex);
-			mStorage.getTaskList().add(extractedTask);
-			mStorage.save();
+			reInsertTask(taskIndex, extractedTask);
 			return Constants.LOGIC_SUCCESS_MARK_TASK;
 		}
 		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
@@ -279,9 +321,7 @@ public class Logic {
 				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
 			}
 
-			mStorage.getTaskList().remove(taskIndex);
-			mStorage.getTaskList().add(extractedTask);
-			mStorage.save();
+			reInsertTask(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
