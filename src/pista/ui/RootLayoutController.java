@@ -116,7 +116,7 @@ public class RootLayoutController {
     }
 	
 	public boolean refreshUIListView(){
-		boolean isUpdated = mUICtrl.showTaskListInListView();
+		boolean isUpdated = mUICtrl.initTaskListInListView();
 		return isUpdated;
 	}
 }

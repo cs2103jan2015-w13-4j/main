@@ -7,19 +7,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPaneMain" maxHeight="535.0" maxWidth="660.0" minHeight="535.0" minWidth="660.0" prefHeight="535.0" prefWidth="660.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
+<AnchorPane fx:id="anchorPaneMain" maxHeight="535.0" maxWidth="910.0" minHeight="535.0" minWidth="910.0" prefHeight="535.0" prefWidth="910.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
    <children>
-      <VBox fx:id="vBoxMainArea" maxHeight="535.0" maxWidth="650.0" minHeight="535.0" minWidth="650.0" prefHeight="535.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="vBoxMainArea" maxHeight="535.0" maxWidth="900.0" minHeight="535.0" minWidth="900.0" prefHeight="535.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ListView id="listview_task" fx:id="listview_task_fx_id" maxHeight="400.0" maxWidth="650.0" minHeight="450.0" minWidth="650.0" prefHeight="450.0" prefWidth="650.0" stylesheets="@listcellstyle.css" />
+            <ListView id="listview_task" fx:id="listview_task_fx_id" maxHeight="400.0" maxWidth="900.0" minHeight="450.0" minWidth="900.0" prefHeight="450.0" prefWidth="900.0" stylesheets="@listcellstyle.css" />
             <HBox fx:id="hBoxInputArea" prefHeight="55.0" prefWidth="598.0" spacing="5.0">
                <children>
-                  <TextField fx:id="txtBoxCommand" onAction="#enter" prefHeight="25.0" prefWidth="570.0" promptText="Command">
+                  <TextField fx:id="txtBoxCommand" onAction="#enter" prefHeight="25.0" prefWidth="800.0" promptText="Command">
                      <HBox.margin>
                         <Insets left="5.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="btnEnter" layoutX="532.0" layoutY="29.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onMouseClicked="#enter" prefWidth="60.0" text="Enter">
+                  <Button fx:id="btnEnter" layoutX="532.0" layoutY="29.0" maxWidth="80.0" minWidth="80.0" mnemonicParsing="false" onMouseClicked="#enter" prefWidth="80.0" text="Enter">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" top="10.0" />
                      </HBox.margin>

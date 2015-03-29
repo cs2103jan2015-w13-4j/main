@@ -9,6 +9,10 @@
 	-fx-vgap: 2;
 }
 
+.list-cell:empty {
+    -fx-opacity: 0;
+}
+
 .task-list-cell-id {
 	-fx-font-size: 1.0em;
 	-fx-font-weight: bold;
@@ -111,8 +115,27 @@
 }
 
 
-.task-list-cell-alarm {
-	
+.task-list-cell-disable-alarm {
+	-fx-image: url("../../images/alarm_disable.png"); 
+
+}
+
+.task-list-cell-disable-alarm:hover {
+	-fx-image: url("../../images/alarm_disable_hover.png"); 
+	-fx-cursor: hand;
+}
+
+.task-list-cell-enable-alarm {
+	-fx-image: url("../../images/alarm_enable.png"); 
+}
+
+.task-list-cell-enable-alarm:hover {
+	-fx-image: url("../../images/alarm_enable_hover.png");
+	-fx-cursor: hand; 
+}
+
+.task-list-cell-is-done-alarm{
+	-fx-image: url("../../images/alarm_is_done.png");
 }
 
 

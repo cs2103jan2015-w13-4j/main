@@ -18,6 +18,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -49,6 +50,9 @@ public class TaskListCell extends ListCell<Task> {
     
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
+    private final String TASK_LIST_CELL_DISABLE_ALARM_CLASS = "task-list-cell-disable-alarm";
+    private final String TASK_LIST_CELL_ENABLE_ALARM_CLASS = "task-list-cell-enable-alarm";
+    private final String TASK_LIST_CELL_IS_DONE_ALARM_CLASS = "task-list-cell-is-done-alarm";
     
     private final String TASK_LIST_CELL_TEXT_IS_DONE_CLASS = "task-list-cell-text-is-done";
     private final String TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS = "task-list-cell-background-is-done";
@@ -75,7 +79,7 @@ public class TaskListCell extends ListCell<Task> {
     private CheckBox checkBox = new CheckBox();
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
-    private Image mImg = new Image("images/alarm.png");
+    
     private ImageView mImgView = new ImageView();
     
     private String getID = "";
@@ -86,6 +90,7 @@ public class TaskListCell extends ListCell<Task> {
     private  String getStartTime = "";
     private String getEndTime = "";
     private boolean getIsDone = false;
+    private Long getRemainder = 0L;
     
     
     public TaskListCell() {   	
@@ -101,8 +106,8 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureGrid() {
-        //grid.setHgap(10);
-        //grid.setVgap(4);
+        grid.setHgap(10);
+        grid.setVgap(4);
         grid.setPadding(new Insets(0, 2, 0, 2));
         grid.setMaxHeight(70.0);
         grid.setMinHeight(70.0);
@@ -117,11 +122,11 @@ public class TaskListCell extends ListCell<Task> {
         col2.setHalignment(HPos.CENTER);
         
         ColumnConstraints col3 = new ColumnConstraints(); //ID
-        col3.setPercentWidth(10);
+        col3.setPercentWidth(5);
         col3.setHalignment(HPos.CENTER);
         
         ColumnConstraints col4 = new ColumnConstraints(); //title
-        col4.setPercentWidth(55);
+        col4.setPercentWidth(60);
         col4.setHalignment(HPos.LEFT);
         
         ColumnConstraints col5 = new ColumnConstraints(); // alarm
@@ -131,7 +136,6 @@ public class TaskListCell extends ListCell<Task> {
         ColumnConstraints col6 = new ColumnConstraints(); //date time
         col6.setPercentWidth(20);
         col6.setHalignment(HPos.RIGHT);
-        
         
         RowConstraints row1 = new RowConstraints();
         row1.setValignment(VPos.CENTER);
@@ -156,13 +160,26 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureImageView(){
-    	mImgView.setImage(mImg);
+    	//mImgView.setImage(mImg);
     	mImgView.setFitWidth(20.0);
     	mImgView.setPreserveRatio(true);
     	mImgView.setSmooth(true);
     	mImgView.setCache(true);
+    	mImgView.addEventHandler(MouseEvent.MOUSE_CLICKED, imageEventHandler);
     }
     
+    private void setImageView(Long remainder, boolean isDone){
+    	if(!isDone){
+    		if(remainder > 0L){
+        		mImgView.getStyleClass().addAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
+        	}else{
+        		mImgView.getStyleClass().addAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
+        	}
+    	}else{
+    		mImgView.getStyleClass().addAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
+    	}
+    	
+    }
     
     private void configureBoxColor(int type){
     	vBoxColor.setMaxWidth(7.0);
@@ -252,7 +269,7 @@ public class TaskListCell extends ListCell<Task> {
         grid.add(lblTitle, 3, 0);
         
         grid.add(mImgView, 4, 0);
-        grid.setMargin(mImgView, new Insets(5));
+        GridPane.setMargin(mImgView, new Insets(5, 10, 5, 5));
        // GridPane.setRowSpan(lblTitle, 2);
         grid.add(vBoxDateTime, 5, 0);
         
@@ -276,7 +293,8 @@ public class TaskListCell extends ListCell<Task> {
         getStartTime = mTask.getStartTime();
         getEndTime = mTask.getEndTime();
         getIsDone = mTask.getIsDone();
-
+        getRemainder = mTask.getReminder();
+        
         if(mTask.getTitle().length() > MAX_CHARACTER_IN_TITLE){
         	getTitle = getTitle.substring(0, MAX_CHARACTER_IN_TITLE) + "...";
         }
@@ -311,7 +329,7 @@ public class TaskListCell extends ListCell<Task> {
         	configureBoxColor(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
         }
         
-        
+        setImageView(getRemainder, getIsDone); //set alarm icon - enable or disable
         setCellBackground(getIsDone);
         
         setGraphic(grid);
@@ -365,7 +383,10 @@ public class TaskListCell extends ListCell<Task> {
 	            	markCommandEditedString = markCommandFormatString.replace("[id]", getTaskID).replace("[type]", NOT_DONE_COMMAND);
 	            }
 	            
-	            executeCommand(markCommandEditedString);
+	            isUpdated = executeCommand(markCommandEditedString);
+	            if(isUpdated){
+	            	setCellBackground(getIsDone);
+	            }
 	            /*
 	            isUpdated = updateTaskDoneStatus(Integer.parseInt(getTaskID), getIsDone);
 	            if(isUpdated){
@@ -377,6 +398,15 @@ public class TaskListCell extends ListCell<Task> {
 	            
 	        }//end if
 	    }//end handle
+	};
+	
+	
+	EventHandler imageEventHandler = new EventHandler<MouseEvent>(){
+		@Override
+		public void handle(MouseEvent event) {
+			System.out.println("hello");
+		}
+		
 	};
 	
 	
@@ -417,7 +447,7 @@ public class TaskListCell extends ListCell<Task> {
 	
 	private void refreshUIControllerParentListView(){
 		if(mUIParent != null){
-			mUIParent.showTaskListInListView();
+			mUIParent.initTaskListInListView();
 		}
 	}
 	

@@ -177,7 +177,7 @@ public class UIController {
 		
 		txtStatus.setText(logicOutput);
 		
-		showTaskListInListView();
+		initTaskListInListView();
 	}
 
 	@FXML
@@ -194,8 +194,6 @@ public class UIController {
 		txtBoxCommand.getStyleClass().addAll(CSS_CLASS_TEXT_BOX);
 		btnEnter.getStyleClass().addAll(CSS_CLASS_BUTTON);
 		
-		
-		
 		mStorage.setDataFolderLocation(getPreferenceFilePath());
 		mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
@@ -206,10 +204,13 @@ public class UIController {
 		txtStatus.setText(logicOutput);
 		
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
-			showTaskListInListView();
+			initTaskListInListView();
 		}
-		
-		
+
+	}//end initialize
+
+
+	public boolean initTaskListInListView(){
 		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW);
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
 			@Override
@@ -226,30 +227,9 @@ public class UIController {
 			@Override      
 			public void changed(ObservableValue<? extends Task> ov,
 					Task oldTask, Task newTask) {
-				if(oldTask != null){
-					System.out.println("Selected old task : " + oldTask.getID() + " - " + 
-							oldTask.getIsDone());
-				}
-				
-				if(newTask != null){
-					System.out.println("Selected new task : " + newTask.getID() + " - " + 
-										newTask.getIsDone());
-					/*
-					 * System.out.println("Selected : " + newTask.getID() + " - " + 
-										newTask.getTitle()+ " - "+newTask.getStartDate()+ " - "+
-										newTask.getStartTime()+ " - "+newTask.getEndDate()+ " - "+
-										newTask.getEndTime()+ " - "+newTask.getCategory());
-					 * 
-					 */
-
-				}
 			}
 		});
-
-	}//end initialize
-
-
-	public boolean showTaskListInListView(){
+		
 		try{
 			ObservableList<Task> myObservableList = FXCollections.observableList(Logic.getStorageList());
 			listview_task_fx_id.setItems(null); 
@@ -259,9 +239,9 @@ public class UIController {
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage());
 			return false;
-		}
+		}//end try
 		
-	}
+	}//end initTaskListInListView
 	
 	public boolean showHelp(){
 		Stage stage = new Stage();
