@@ -108,27 +108,27 @@ public class TaskListCell extends ListCell<Task> {
         grid.setMinHeight(70.0);
         grid.setPrefHeight(70.0);
         
-        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col1 = new ColumnConstraints(); //color box
         col1.setPercentWidth(2);
         col1.setHalignment(HPos.LEFT);
         
-        ColumnConstraints col2 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints(); //check box
         col2.setPercentWidth(3);
         col2.setHalignment(HPos.CENTER);
         
-        ColumnConstraints col3 = new ColumnConstraints();
+        ColumnConstraints col3 = new ColumnConstraints(); //ID
         col3.setPercentWidth(10);
         col3.setHalignment(HPos.CENTER);
         
-        ColumnConstraints col4 = new ColumnConstraints();
-        col4.setPercentWidth(60);
+        ColumnConstraints col4 = new ColumnConstraints(); //title
+        col4.setPercentWidth(55);
         col4.setHalignment(HPos.LEFT);
         
-        ColumnConstraints col5 = new ColumnConstraints();
-        col5.setPercentWidth(5);
+        ColumnConstraints col5 = new ColumnConstraints(); // alarm
+        col5.setPercentWidth(10);
         col5.setHalignment(HPos.RIGHT);
         
-        ColumnConstraints col6 = new ColumnConstraints();
+        ColumnConstraints col6 = new ColumnConstraints(); //date time
         col6.setPercentWidth(20);
         col6.setHalignment(HPos.RIGHT);
         
@@ -153,14 +153,6 @@ public class TaskListCell extends ListCell<Task> {
     	}else{
     		getStyleClass().add(TASK_LIST_CELL);
     	}
-    	/*
-    	if(isDone){
-    		getStyleClass().remove(TASK_LIST_CELL);
-    		getStyleClass().add(TASK_LIST_CELL_DONE_CLASS);
-    	}else{
-    		getStyleClass().remove(TASK_LIST_CELL_DONE_CLASS);
-    		getStyleClass().add(TASK_LIST_CELL);
-    	}*/
     }
     
     private void configureImageView(){
@@ -260,6 +252,7 @@ public class TaskListCell extends ListCell<Task> {
         grid.add(lblTitle, 3, 0);
         
         grid.add(mImgView, 4, 0);
+        grid.setMargin(mImgView, new Insets(5));
        // GridPane.setRowSpan(lblTitle, 2);
         grid.add(vBoxDateTime, 5, 0);
         
