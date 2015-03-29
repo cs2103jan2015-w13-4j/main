@@ -37,13 +37,13 @@ public class TaskListCell extends ListCell<Task> {
     
     private final String TASK_LIST_CELL = "task-list-cell";
     private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
+    /*
     private final String TASK_LIST_CELL_ID_BLACK_CLASS = "task-list-cell-id-black";
     private final String TASK_LIST_CELL_ID_RED_CLASS = "task-list-cell-id-red";
     private final String TASK_LIST_CELL_ID_GREEN_CLASS = "task-list-cell-id-green";
     private final String TASK_LIST_CELL_ID_YELLOW_CLASS = "task-list-cell-id-yellow";
-    private final String TASK_LIST_CELL_ID_PURPLE_CLASS = "task-list-cell-box-purple";
-    
-    
+    */
+    private final String TASK_LIST_CELL_BOX_PURPLE_CLASS = "task-list-cell-box-purple";
     private final String TASK_LIST_CELL_BOX_RED_CLASS = "task-list-cell-box-red";
     private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "task-list-cell-box-yellow";
     private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "task-list-cell-box-green";
@@ -54,12 +54,19 @@ public class TaskListCell extends ListCell<Task> {
     private final String TASK_LIST_CELL_ENABLE_ALARM_CLASS = "task-list-cell-enable-alarm";
     private final String TASK_LIST_CELL_IS_DONE_ALARM_CLASS = "task-list-cell-is-done-alarm";
     
+    private final String TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS = "task-list-cell-priority-critical";
+    private final String TASK_LIST_CELL_PRIORITY_NORMAL_CLASS = "task-list-cell-priority-normal";
+    private final String TASK_LIST_CELL_PRIORITY_LOW_CLASS = "task-list-cell-priority-low";
+    private final String TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS = "task-list-cell-priority-default";
+    
+    
+    
     private final String TASK_LIST_CELL_TEXT_IS_DONE_CLASS = "task-list-cell-text-is-done";
     private final String TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS = "task-list-cell-background-is-done";
     
     private final String TASK_LIST_CELL_STRIKE_THROUGH_CLASS = "task-list-cell-label-strike-through";
     
-    private final int MAX_CHARACTER_IN_TITLE = 40;
+    private final int MAX_CHARACTER_IN_TITLE = 50;
     
     private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "To [datetime]"; 
@@ -80,17 +87,19 @@ public class TaskListCell extends ListCell<Task> {
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
     
-    private ImageView mImgView = new ImageView();
+    private ImageView mImgViewAlarm = new ImageView();
+    private ImageView mImgViewPriority = new ImageView();
     
     private String getID = "";
     private String getTitle = "";
     private String getCategory = "";
     private String getStartDate = "";
     private String getEndDate = "";
-    private  String getStartTime = "";
+    private String getStartTime = "";
     private String getEndTime = "";
     private boolean getIsDone = false;
     private Long getRemainder = 0L;
+    private String getPriority = "";
     
     
     public TaskListCell() {   	
@@ -129,20 +138,24 @@ public class TaskListCell extends ListCell<Task> {
         col4.setPercentWidth(60);
         col4.setHalignment(HPos.LEFT);
         
-        ColumnConstraints col5 = new ColumnConstraints(); // alarm
-        col5.setPercentWidth(10);
+        ColumnConstraints col5 = new ColumnConstraints(); // priority
+        col5.setPercentWidth(5);
         col5.setHalignment(HPos.RIGHT);
         
-        ColumnConstraints col6 = new ColumnConstraints(); //date time
-        col6.setPercentWidth(20);
+        ColumnConstraints col6 = new ColumnConstraints(); // alarm
+        col6.setPercentWidth(5);
         col6.setHalignment(HPos.RIGHT);
+        
+        ColumnConstraints col7 = new ColumnConstraints(); //date time
+        col7.setPercentWidth(20);
+        col7.setHalignment(HPos.RIGHT);
         
         RowConstraints row1 = new RowConstraints();
         row1.setValignment(VPos.CENTER);
         row1.setPrefHeight(70.0);
         grid.getRowConstraints().addAll(row1);
         
-        grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6);
+        grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7);
         
     }
     
@@ -161,24 +174,51 @@ public class TaskListCell extends ListCell<Task> {
     
     private void configureImageView(){
     	//mImgView.setImage(mImg);
-    	mImgView.setFitWidth(20.0);
-    	mImgView.setPreserveRatio(true);
-    	mImgView.setSmooth(true);
-    	mImgView.setCache(true);
-    	mImgView.addEventHandler(MouseEvent.MOUSE_CLICKED, imageEventHandler);
+    	//Alarm
+    	mImgViewAlarm.setFitWidth(20.0);
+    	mImgViewAlarm.setPreserveRatio(true);
+    	mImgViewAlarm.setSmooth(true);
+    	mImgViewAlarm.setCache(true);
+    	mImgViewAlarm.addEventHandler(MouseEvent.MOUSE_CLICKED, imageEventHandler);
+    	
+    	//Priority
+    	mImgViewPriority.setFitWidth(20.0);
+    	mImgViewPriority.setPreserveRatio(true);
+    	mImgViewPriority.setSmooth(true);
+    	mImgViewPriority.setCache(true);
+    	
     }
     
-    private void setImageView(Long remainder, boolean isDone){
+    private void setImageViewAlarm(Long remainder, boolean isDone){
     	if(!isDone){
     		if(remainder > 0L){
-        		mImgView.getStyleClass().addAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
+        		mImgViewAlarm.getStyleClass().addAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
         	}else{
-        		mImgView.getStyleClass().addAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
+        		mImgViewAlarm.getStyleClass().addAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
         	}
     	}else{
-    		mImgView.getStyleClass().addAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
+    		mImgViewAlarm.getStyleClass().addAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
     	}
     	
+    }
+    
+    private void setImageViewPriority(String lvlString){
+
+    	switch (lvlString){
+	    	case "1": //lowest
+	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_LOW_CLASS);
+	    		break;
+	    	case "2": //normal
+	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_NORMAL_CLASS);
+	    		break;
+	    	case "3": //highest
+	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS);
+	    		break;
+	    		
+	    	default: //either set nothing or error
+	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS);
+	    		break;
+    	}
     }
     
     private void configureBoxColor(int type){
@@ -196,7 +236,7 @@ public class TaskListCell extends ListCell<Task> {
     	}
     	
     	if (type == -2 || type == 4){
-    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_ID_PURPLE_CLASS);
+    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_PURPLE_CLASS);
     	}
     	
     	if (type == 3){ //is done
@@ -240,6 +280,8 @@ public class TaskListCell extends ListCell<Task> {
     private void strikeThroughLabels(){
     	lblTitle.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
     	lblID.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    	lblStartDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    	lblEndDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
     }
     
     private void isDoneLabel(){
@@ -262,18 +304,16 @@ public class TaskListCell extends ListCell<Task> {
     	vBoxColor.setPadding(new Insets(0, 0, 0, 5));
     	
     	grid.add(vBoxCheckBox, 1, 0);
-        //GridPane.setRowSpan(vBoxCheckBox, 2);
     	grid.add(lblID, 2, 0); 
-    	
-    	//GridPane.setRowSpan(lblID, 2);
+
         grid.add(lblTitle, 3, 0);
+        grid.add(mImgViewPriority, 4, 0);
+        GridPane.setMargin(mImgViewPriority, new Insets(5, 10, 5, 5));
         
-        grid.add(mImgView, 4, 0);
-        GridPane.setMargin(mImgView, new Insets(5, 10, 5, 5));
-       // GridPane.setRowSpan(lblTitle, 2);
-        grid.add(vBoxDateTime, 5, 0);
-        
-        //GridPane.setRowSpan(vBoxDateTime, 2);
+        grid.add(mImgViewAlarm, 5, 0);
+        GridPane.setMargin(mImgViewAlarm, new Insets(5, 10, 5, 5));
+        grid.add(vBoxDateTime, 6, 0);
+ 
     }
     
     private void clearContent() {
@@ -294,6 +334,7 @@ public class TaskListCell extends ListCell<Task> {
         getEndTime = mTask.getEndTime();
         getIsDone = mTask.getIsDone();
         getRemainder = mTask.getReminder();
+        getPriority = mTask.getPriority();
         
         if(mTask.getTitle().length() > MAX_CHARACTER_IN_TITLE){
         	getTitle = getTitle.substring(0, MAX_CHARACTER_IN_TITLE) + "...";
@@ -329,9 +370,9 @@ public class TaskListCell extends ListCell<Task> {
         	configureBoxColor(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
         }
         
-        setImageView(getRemainder, getIsDone); //set alarm icon - enable or disable
+        setImageViewPriority(getPriority);
+        setImageViewAlarm(getRemainder, getIsDone); //set alarm icon - enable or disable
         setCellBackground(getIsDone);
-        
         setGraphic(grid);
 		
     }

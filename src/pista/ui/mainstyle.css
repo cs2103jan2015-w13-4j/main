@@ -2,7 +2,6 @@
 	-fx-font-family: "Segoe UI", "Arial";
 }
 
-
 .root-window-style{
 	-fx-border-insets: 23;
   	-fx-background-insets: 23;
@@ -76,7 +75,7 @@
 
 .text-box-style{
 	-fx-border-color: #000000;
-	-fx-border-radius: 5px;
+	-fx-border-radius: 3px;
 }
 
 .button-style{
@@ -85,7 +84,10 @@
 				        linear-gradient(#5a61af, #51536d),
 				        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%);
     */
-    -fx-background-color: #50C0E9;
+	-fx-background-color: rgba(0,0,0,0.08),
+				        linear-gradient(#8AD5F0 0%,#50C0E9 10%, #2CB1E1 50%, #33B5E5 60%, #8AD5F0 100%);
+				        
+    /* -fx-background-color: #8AD5F0;  #50C0E9 */
     -fx-border-color: #16A5D7;
     -fx-padding: 7 10 7 10;
     -fx-text-fill: #242d35;
@@ -99,7 +101,7 @@
 	-fx-cursor: hand;
 }
 
-.button-style:hover {
+.button-style:pressed {
 	-fx-background-color: #0FA1D3;
 	-fx-border-color: #0FA1D3;
 	-fx-text-fill: #f2f2f2;
