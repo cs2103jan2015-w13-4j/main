@@ -175,14 +175,14 @@ public class TaskListCell extends ListCell<Task> {
     private void configureImageView(){
     	//mImgView.setImage(mImg);
     	//Alarm
-    	mImgViewAlarm.setFitWidth(20.0);
+    	mImgViewAlarm.setFitWidth(25.0);
     	mImgViewAlarm.setPreserveRatio(true);
     	mImgViewAlarm.setSmooth(true);
     	mImgViewAlarm.setCache(true);
     	mImgViewAlarm.addEventHandler(MouseEvent.MOUSE_CLICKED, imageEventHandler);
     	
     	//Priority
-    	mImgViewPriority.setFitWidth(20.0);
+    	mImgViewPriority.setFitWidth(25.0);
     	mImgViewPriority.setPreserveRatio(true);
     	mImgViewPriority.setSmooth(true);
     	mImgViewPriority.setCache(true);
@@ -222,9 +222,9 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureBoxColor(int type){
-    	vBoxColor.setMaxWidth(7.0);
-    	vBoxColor.setMinWidth(7.0);
-    	vBoxColor.setPrefWidth(7.0);
+    	vBoxColor.setMaxWidth(12.0);
+    	vBoxColor.setMinWidth(12.0);
+    	vBoxColor.setPrefWidth(12.0);
     	vBoxColor.setAlignment(Pos.CENTER_LEFT);  	
     	
     	if(type == 1){
