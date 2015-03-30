@@ -166,6 +166,7 @@ public class Constants {
 	public static final String VALUE_SET = "set";
 	public static final String VALUE_REMINDER = "remind";
 	public static final String VALUE_PRIORITY = "priority";
+	public static final String VALUE_SEARCH = "search";
 
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";

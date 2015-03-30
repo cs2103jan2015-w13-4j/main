@@ -109,7 +109,8 @@ public class MainParser {
 				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST) || 
 				command.equalsIgnoreCase(Constants.VALUE_SET) ||
 				command.equalsIgnoreCase(Constants.VALUE_REMINDER) ||
-				command.equalsIgnoreCase(Constants.VALUE_PRIORITY)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_PRIORITY) ||
+				command.equalsIgnoreCase(Constants.VALUE_SEARCH)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
