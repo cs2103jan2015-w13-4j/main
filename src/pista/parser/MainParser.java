@@ -144,10 +144,23 @@ public class MainParser {
 			return checkPriorityTokens(mp, tokens);
 		case Constants.VALUE_SET:
 			return checkSetTokens(mp, tokens);
+		case Constants.VALUE_SEARCH:
+			return checkSearchTokens(mp, tokens);
 		default:
 			return false;
 		}
 	}
+	
+	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		if(tokens == null || tokens.length != 1){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		mp.setTokens(tokens);
+		return true;
+	}
+	
 	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
