@@ -7,7 +7,11 @@ public class ComparatorTask implements Comparator <Task> {
 	public int compare(Task taskOne, Task taskTwo){
 		if(compareIsDone(taskOne.getIsDone(), taskTwo.getIsDone()) == 0){
 			if(compareDate(taskOne.getEndMilliseconds(), taskTwo.getEndMilliseconds()) == 0){
-				return compareTitle(taskOne.getTitle(), taskTwo.getTitle());
+				if(comparePriority(Integer.parseInt(taskOne.getPriority()), Integer.parseInt(taskTwo.getPriority())) == 0){
+					return compareTitle(taskOne.getTitle(), taskTwo.getTitle());
+				}else{
+					return comparePriority(Integer.parseInt(taskOne.getPriority()), Integer.parseInt(taskTwo.getPriority()));
+				}
 			}else{
 				return compareDate(taskOne.getEndMilliseconds(), taskTwo.getEndMilliseconds());
 			}
@@ -32,11 +36,11 @@ public class ComparatorTask implements Comparator <Task> {
 		}
 		return 0;
 	}
-	
+
 	private int compareTitle(String taskOneTitle, String taskTwoTitle){
 		return taskOneTitle.compareTo(taskTwoTitle);
 	}
-	
+
 	private int compareIsDone(boolean taskOneIsDone, boolean taskTwoIsDone){
 		if(taskOneIsDone == true && taskTwoIsDone == false){
 			return 1;
@@ -46,7 +50,7 @@ public class ComparatorTask implements Comparator <Task> {
 			return 0;
 		}
 	}
-	
+
 	private int comparePriority(int taskOnePriority, int taskTwoPriority){
 		if(taskOnePriority < taskTwoPriority ){
 			return 1;
@@ -56,6 +60,6 @@ public class ComparatorTask implements Comparator <Task> {
 			return 0;
 		}
 	}
-	
-	
+
+
 }

@@ -33,7 +33,7 @@ public class Task {
 		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
 		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
 		this.isDone=false;
-		this.priority ="";
+		this.priority ="0";
 		this.category="floating";
 		
 	
