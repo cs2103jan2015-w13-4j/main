@@ -109,7 +109,8 @@ public class MainParser {
 				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST) || 
 				command.equalsIgnoreCase(Constants.VALUE_SET) ||
 				command.equalsIgnoreCase(Constants.VALUE_REMINDER) ||
-				command.equalsIgnoreCase(Constants.VALUE_PRIORITY)){ //check for command type		
+				command.equalsIgnoreCase(Constants.VALUE_PRIORITY) ||
+				command.equalsIgnoreCase(Constants.VALUE_SEARCH)){ //check for command type		
 			return true;
 		}else{
 			assert false:"unacceptable command typed: "+command;
@@ -143,10 +144,23 @@ public class MainParser {
 			return checkPriorityTokens(mp, tokens);
 		case Constants.VALUE_SET:
 			return checkSetTokens(mp, tokens);
+		case Constants.VALUE_SEARCH:
+			return checkSearchTokens(mp, tokens);
 		default:
 			return false;
 		}
 	}
+	
+	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		if(tokens == null || tokens.length != 1){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		mp.setTokens(tokens);
+		return true;
+	}
+	
 	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);

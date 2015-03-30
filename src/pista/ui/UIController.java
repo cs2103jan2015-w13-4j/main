@@ -69,7 +69,6 @@ public class UIController {
 
 	@FXML
 	private ListView<Task> listview_task_fx_id;
-
 	
 	@FXML
 	void onHelp(ActionEvent event) {
@@ -209,7 +208,6 @@ public class UIController {
 
 	}//end initialize
 
-
 	public boolean initTaskListInListView(){
 		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW);
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
@@ -265,6 +263,4 @@ public class UIController {
 	private void clearContent(){
 		txtStatus.setText("");
 	}
-
-
 }
