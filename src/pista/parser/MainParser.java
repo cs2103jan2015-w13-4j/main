@@ -182,7 +182,7 @@ public class MainParser {
 			}
 			return true;
 		}
-		
+
 		mp.setMessage(Constants.INVALID_REMINDER);
 		return false;
 	}
@@ -382,11 +382,13 @@ public class MainParser {
 	}
 
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {
+		int clearValue = 0;
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
+		clearValue = getClearValue(tokens, clearValue);
 		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
 				//mp.setValidToken(true);
@@ -400,6 +402,10 @@ public class MainParser {
 						Constants.EDIT_TOKEN_DEADLINE_ENDTIME)){
 					return false;
 				}
+				if(clearValue != 0 && clearValue != 2){
+					mp.setMessage(Constants.MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT);
+					return false;
+				}
 				return true;
 			}			
 			return false;
@@ -411,18 +417,33 @@ public class MainParser {
 						Constants.EDIT_TOKEN_TIMED_STARTDATE, Constants.EDIT_TOKEN_TIMED_STARTTIME);
 				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, 
 						Constants.EDIT_TOKEN_TIMED_ENDDATE, Constants.EDIT_TOKEN_TIMED_ENDTIME);
-				if(startDateTimeValid && endDateTimeValid){
-					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTDATE),
-							mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDDATE), 
-							mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTTIME), 
-							mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDTIME))){
-						return true;
-					}else{
-						mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+				if(clearValue == 4){
+					return true;
+				}else if (clearValue == 2){
+					if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDDATE)) 
+							&& !Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDTIME))){
+						mp.setMessage(Constants.MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT_TIMED_TO_DEADLINE);
 						return false;
+					}else{
+						return true;
 					}
+				}else if (clearValue == 0){
+					if(startDateTimeValid && endDateTimeValid){
+						if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTDATE),
+								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDDATE), 
+								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTTIME), 
+								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDTIME))){						
+							return true;
+						}else{
+							mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+							return false;
+						}
+					}
+					return false;
+				}else{
+					mp.setMessage(Constants.MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT);
+					return false;
 				}
-				return false;
 			}
 			return false;
 		}
@@ -529,5 +550,13 @@ public class MainParser {
 			}
 		}
 		return myDate;
+	}
+	private static int getClearValue(String[] tokens, int clearValue) {
+		for(String temp : tokens){
+			if(Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(temp)){
+				clearValue++;
+			}
+		}
+		return clearValue;
 	}
 }

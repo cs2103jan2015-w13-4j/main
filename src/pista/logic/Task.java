@@ -40,11 +40,12 @@ public class Task {
 	private void setCategoryInConstructor(String[] inputArray) {
 		if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]==null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
 			this.category="floating";
-		}else if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null){
+		}else if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
 			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
 			this.category="deadline";
-		}else if(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]!=null){
+		}else{
 			this.startMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]);
+			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
 			this.category="timed";
 		}
 	}

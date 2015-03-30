@@ -47,6 +47,9 @@ public class Constants {
 	public static final String LIST_ISDONE_COMPLETED = "completed";
 	public static final String SET_TYPE_FILE_LOCATION = "file location";
 	public static final String SET_FILE_TYPE = ".xml";
+	public static final String MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
+	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT = "Invalid clear count. To change from Timed to floated task, there must be 4 clear count. To deadline, 2 clear count  ";
+	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT_TIMED_TO_DEADLINE = "To convert timed to deadline, make sure the last 2 parameters contain c";
 	public static final int TOKEN_NUM_PRIORITY_SCORE = 1;
 	public static final int TOKEN_NUM_PRORITY_ID = 0;
 	public static final int TOKEN_NUM_REMINDER_OFF = 1;
@@ -169,7 +172,8 @@ public class Constants {
 
 	
 	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
-	public static final String DEFAULT_VALUE="default";
+	public static final String DEFAULT_IGNORE_VALUE="d";
+	public static final String DEFAULT_CLEAR_VALUE="c";
 	
 	
 	//========== LOGGING ===========

@@ -22,7 +22,7 @@ public class TokenValidation {
 	}
 	
 	public static boolean isTitleValid(String title){
-		if(!title.isEmpty()){
+		if(!title.isEmpty() || Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title)){
 			return true;
 		}
 		
@@ -34,7 +34,7 @@ public class TokenValidation {
 		Date testDate;
 		
 		sdf.setLenient(false);
-		if(Constants.DEFAULT_VALUE.equalsIgnoreCase(myDate)){
+		if(Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(myDate)){
 			return true;
 		}
 		if(myDate.length()!=sdf.toPattern().length()){
@@ -56,7 +56,7 @@ public class TokenValidation {
 		String TIME24HOURS_PATTERN ="([01]?[0-9]|2[0-3]):[0-5][0-9]";
 		pattern = Pattern.compile(TIME24HOURS_PATTERN);
 		matcher=pattern.matcher(myTime);
-		if(matcher.matches() || Constants.DEFAULT_VALUE.equalsIgnoreCase(myTime)){
+		if(matcher.matches() || Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(myTime)){
 			return true;
 		}
 		return false;
