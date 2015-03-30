@@ -164,7 +164,7 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		sortOverView();
+		sortDescendingEndDate();
 		return mStorage.getTaskList();
 	}
 
@@ -194,11 +194,11 @@ public class Logic {
 	}
 	
 	public static void sortAscendingStartDate(){
-		Collections.sort(mStorage.getTaskList(), MiscComparator.ascendingStartDateComparator);
+		Collections.sort(mStorage.getTaskList(), MiscComparator.startDateComparator);
 	}
 	
 	public static void sortDescendingStartDate(){
-		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.descendingStartDateComparator));
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.startDateComparator));
 	}
 	
 	public static void sortAscendingEndDate(){
