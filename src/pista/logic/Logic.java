@@ -101,6 +101,7 @@ public class Logic {
 		}
 		return output;
 	}
+	
 	public static String priority(String[] tokens){
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
