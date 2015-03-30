@@ -122,44 +122,52 @@
 }
  */
 
-.task-list-cell-disable-alarm {
-	-fx-image: url("../../images/alarm_disable.png"); 
-
+.task-list-cell-button-image {
+	-fx-background-color: transparent;
+ 	-fx-background-size: contain;
+ 	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center center;
 }
 
-.task-list-cell-disable-alarm:hover {
-	-fx-image: url("../../images/alarm_disable_hover.png"); 
+.task-list-cell-button-image:hover {
 	-fx-cursor: hand;
 }
 
+.task-list-cell-disable-alarm {
+	-fx-background-image: url("../../images/alarm_disable.png"); 
+}
+
+.task-list-cell-disable-alarm:hover {
+	-fx-background-image: url("../../images/alarm_disable_hover.png"); 
+}
+
 .task-list-cell-enable-alarm {
-	-fx-image: url("../../images/alarm_enable.png"); 
+	-fx-background-image: url("../../images/alarm_enable.png"); 
 }
 
 .task-list-cell-enable-alarm:hover {
-	-fx-image: url("../../images/alarm_enable_hover.png");
-	-fx-cursor: hand; 
+	-fx-background-image: url("../../images/alarm_enable_hover.png");
 }
 
 .task-list-cell-is-done-alarm{
-	-fx-image: url("../../images/alarm_is_done.png");
+	-fx-background-image: url("../../images/alarm_is_done.png");
 }
 
 .task-list-cell-priority-critical {
-	-fx-image: url("../../images/priority_level_critical.png");
+	-fx-background-image: url("../../images/priority_level_critical.png");
 }
 
 .task-list-cell-priority-normal {
-	-fx-image: url("../../images/priority_level_normal.png");
+	-fx-background-image: url("../../images/priority_level_normal.png");
 }
 
 
 .task-list-cell-priority-low {
-	-fx-image: url("../../images/priority_level_low.png");
+	-fx-background-image: url("../../images/priority_level_low.png");
 }
 
 .task-list-cell-priority-default {
-	-fx-image: url("../../images/priority_level_default.png");
+	-fx-background-image: url("../../images/priority_level_default.png");
 }
 
 

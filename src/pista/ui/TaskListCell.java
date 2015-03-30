@@ -12,6 +12,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -50,6 +51,8 @@ public class TaskListCell extends ListCell<Task> {
     
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
+    
+    private final String TASK_LIST_CELL_BUTTON_IMAGE_CLASS = "task-list-cell-button-image";
     private final String TASK_LIST_CELL_DISABLE_ALARM_CLASS = "task-list-cell-disable-alarm";
     private final String TASK_LIST_CELL_ENABLE_ALARM_CLASS = "task-list-cell-enable-alarm";
     private final String TASK_LIST_CELL_IS_DONE_ALARM_CLASS = "task-list-cell-is-done-alarm";
@@ -87,8 +90,11 @@ public class TaskListCell extends ListCell<Task> {
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
     
-    private ImageView mImgViewAlarm = new ImageView();
-    private ImageView mImgViewPriority = new ImageView();
+    //private ImageView mImgViewAlarm = new ImageView();
+    private Button mBtnAlarm = new Button();
+    private Button mBtnPriority = new Button();
+    
+    //private ImageView mImgViewPriority = new ImageView();
     
     private String getID = "";
     private String getTitle = "";
@@ -105,7 +111,7 @@ public class TaskListCell extends ListCell<Task> {
     public TaskListCell() {   	
         configureGrid(); 
         configureCheckBoxIsDone();
-        configureImageView();
+        configureButtonImage();
         configureLabelID();
         configureLabelTitle();
         configureLabelDateTime();
@@ -172,32 +178,32 @@ public class TaskListCell extends ListCell<Task> {
     	}
     }
     
-    private void configureImageView(){
+    private void configureButtonImage(){
     	//mImgView.setImage(mImg);
     	//Alarm
-    	mImgViewAlarm.setFitWidth(25.0);
-    	mImgViewAlarm.setPreserveRatio(true);
-    	mImgViewAlarm.setSmooth(true);
-    	mImgViewAlarm.setCache(true);
-    	mImgViewAlarm.addEventHandler(MouseEvent.MOUSE_CLICKED, imageEventHandler);
-    	
+    	double size = 25.0;
+    	mBtnAlarm.setPrefSize(size, size);
+    	mBtnAlarm.setMaxSize(size, size);
+    	mBtnAlarm.setMinSize(size, size);
+    	mBtnAlarm.addEventFilter(ActionEvent.ACTION, btnAlarmEventHandler);
+
     	//Priority
-    	mImgViewPriority.setFitWidth(25.0);
-    	mImgViewPriority.setPreserveRatio(true);
-    	mImgViewPriority.setSmooth(true);
-    	mImgViewPriority.setCache(true);
+    	mBtnPriority.setPrefSize(size, size);
+    	mBtnPriority.setMaxSize(size, size);
+    	mBtnPriority.setMinSize(size, size);
+    	mBtnPriority.addEventFilter(ActionEvent.ACTION, btnPriorityEventHandler);
     	
     }
     
     private void setImageViewAlarm(Long remainder, boolean isDone){
     	if(!isDone){
     		if(remainder > 0L){
-        		mImgViewAlarm.getStyleClass().addAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
+    			mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_ENABLE_ALARM_CLASS);
         	}else{
-        		mImgViewAlarm.getStyleClass().addAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
+        		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_DISABLE_ALARM_CLASS);
         	}
     	}else{
-    		mImgViewAlarm.getStyleClass().addAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
+    		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
     	}
     	
     }
@@ -206,17 +212,17 @@ public class TaskListCell extends ListCell<Task> {
 
     	switch (lvlString){
 	    	case "1": //lowest
-	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_LOW_CLASS);
+	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_LOW_CLASS);
 	    		break;
 	    	case "2": //normal
-	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_NORMAL_CLASS);
+	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_NORMAL_CLASS);
 	    		break;
 	    	case "3": //highest
-	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS);
+	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS);
 	    		break;
 	    		
 	    	default: //either set nothing or error
-	    		mImgViewPriority.getStyleClass().addAll(TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS);
+	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS);
 	    		break;
     	}
     }
@@ -307,11 +313,11 @@ public class TaskListCell extends ListCell<Task> {
     	grid.add(lblID, 2, 0); 
 
         grid.add(lblTitle, 3, 0);
-        grid.add(mImgViewPriority, 4, 0);
-        GridPane.setMargin(mImgViewPriority, new Insets(5, 10, 5, 5));
+        grid.add(mBtnPriority, 4, 0);
+        GridPane.setMargin(mBtnPriority, new Insets(5, 10, 5, 5));
         
-        grid.add(mImgViewAlarm, 5, 0);
-        GridPane.setMargin(mImgViewAlarm, new Insets(5, 10, 5, 5));
+        grid.add(mBtnAlarm, 5, 0);
+        GridPane.setMargin(mBtnAlarm, new Insets(5, 10, 5, 5));
         grid.add(vBoxDateTime, 6, 0);
  
     }
@@ -442,13 +448,22 @@ public class TaskListCell extends ListCell<Task> {
 	};
 	
 	
-	EventHandler imageEventHandler = new EventHandler<MouseEvent>(){
+	EventHandler btnAlarmEventHandler = new EventHandler<ActionEvent>(){
 		@Override
-		public void handle(MouseEvent event) {
-			System.out.println("hello");
+		public void handle(ActionEvent event) {
+			System.out.println("Alarm say hello");
 		}
 		
 	};
+	
+	EventHandler btnPriorityEventHandler = new EventHandler<ActionEvent>(){
+		@Override
+		public void handle(ActionEvent event) {
+			System.out.println("Priority say hello");
+		}
+		
+	};
+	
 	
 	
 	public void setUIParent(UIController ui){
