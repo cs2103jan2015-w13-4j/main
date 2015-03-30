@@ -26,7 +26,6 @@ public class Task {
 	public Task(String[] inputArray){
 		initStorage();
 		this.title=inputArray[Constants.ARRAY_INDEX_TITLE];
-		//this.description=inputArray[ARRAY_INDEX_TITLE]);
 		this.id= mStorage.getNextAvailableID();
 		this.startDate=inputArray[Constants.ARRAY_INDEX_START_DATE];
 		this.startTime=inputArray[Constants.ARRAY_INDEX_START_TIME];
@@ -34,19 +33,20 @@ public class Task {
 		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
 		this.isDone=false;
 		this.priority ="0";
-		this.category="floating";
+		setCategoryInConstructor(inputArray);
 		
-	
-		if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null){
+	}
+
+	private void setCategoryInConstructor(String[] inputArray) {
+		if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]==null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
+			this.category="floating";
+		}else if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null){
 			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
 			this.category="deadline";
-		}
-		
-		if(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]!=null){
+		}else if(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]!=null){
 			this.startMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]);
 			this.category="timed";
 		}
-		
 	}
 	
 	public boolean initStorage(){
@@ -138,10 +138,6 @@ public class Task {
 		this.title=title;
 	}
 	
-	/*public void setDescription(String description){
-		this.description=description;
-	}*/
-	
 	public void setStartTime(String startTime){
 		this.startTime=startTime;
 	}
@@ -183,19 +179,4 @@ public class Task {
 	public long setReminder(long reminderTime){
 		return this.reminderTime = reminderTime;
 	}
-
-	/*@Override
-	public int compare (Object one, Object two){
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yy");
-		Date startDateOne=sdf.parse(one.getStartDate());
-		Date startDateTwo=sdf.parse(two.getStartDate());
-		
-		/*if(startDateOne.compareTo(startDateOne)>0){
-			return 1;
-		} 
-		else if(startDateOne.compareTo(startDateOne)<0){
-			return -1;
-		}
-		return 0;
-	}*/
 }
