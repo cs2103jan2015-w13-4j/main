@@ -233,13 +233,13 @@
 
 /*====================== PopOver CSS ====================== */
 .popover{
-	-fx-background-color: transparent;
+	-fx-background-color: #ffffff;
 	-fx-padding: 3 3 3 3;
 	-fx-opacity: 0.3;
 }
 
 .popover .pop-content-area{
-	-fx-background-color: transparent;
+	-fx-background-color: #ffffff;
 }
 
 .popover .pop-title {
@@ -267,4 +267,25 @@
 
 .pop-over-img-default {
 	-fx-image: url("../../images/priority_level_default.png");
+}
+
+.btn-change {
+	fx-background-color: #EAEAEA;
+    -fx-border-color: #B3B3B3;
+    -fx-padding: 7 10 7 10;
+    -fx-text-fill: #4D4D51;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.btn-change:hover {
+	-fx-background-color: #E3F0FC;
+	-fx-border-color: #89BAEC;
+	-fx-cursor: hand;
+}
+
+.btn-change:pressed {
+	-fx-background-color: #CAE3FC;
+	-fx-border-color: #62A4E7;
+	-fx-cursor: hand;
 }
