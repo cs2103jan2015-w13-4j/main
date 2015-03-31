@@ -19,12 +19,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import pista.Constants;
@@ -52,6 +54,9 @@ public class TaskListCell extends ListCell<Task> {
     private final String TASK_LIST_CELL_BOX_RED_CLASS = "task-list-cell-box-red";
     private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "task-list-cell-box-yellow";
     private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "task-list-cell-box-green";
+    private final String TASK_LIST_CELL_BOX_TRANSPARENT_CLASS = "task-list-cell-box-transparent";
+    
+    
     
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
@@ -71,6 +76,9 @@ public class TaskListCell extends ListCell<Task> {
     private final String TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS = "task-list-cell-background-is-done";
     
     private final String TASK_LIST_CELL_STRIKE_THROUGH_CLASS = "task-list-cell-label-strike-through";
+    
+    private final String POP_OVER_CONTENT_AREA_CLASS = "pop-content-area";
+    private final String POP_OVER_TITLE_CLASS = "pop-title";
     
     private final int MAX_CHARACTER_IN_TITLE = 50;
     
@@ -97,6 +105,7 @@ public class TaskListCell extends ListCell<Task> {
     private Button mBtnAlarm = new Button();
     private Button mBtnPriority = new Button();
     
+    private PopOver mPopOverAlarm = null;
     //private ImageView mImgViewPriority = new ImageView();
     
     private String getID = "";
@@ -245,7 +254,7 @@ public class TaskListCell extends ListCell<Task> {
     	}
     	
     	if (type == -2 || type == 4){
-    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_PURPLE_CLASS);
+    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_TRANSPARENT_CLASS);
     	}
     	
     	if (type == 3){ //is done
@@ -455,7 +464,7 @@ public class TaskListCell extends ListCell<Task> {
 		@Override
 		public void handle(ActionEvent event) {
 			System.out.println("Alarm Popover");
-			showAlarmPopOver();
+			showAlarmPopOver(getRemainder);
 		}
 		
 	};
@@ -512,20 +521,39 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	
-	private void showAlarmPopOver(){
+	private void showAlarmPopOver(Long alarmValue){
+		/*
+		 * ---------------------
+		 * |       Alarm       |
+		 * ---------------------
+		 * |[=================]|
+		 * |            <Enter>|
+		 * 
+		 * 
+		 * */
+		VBox vBox = new VBox();
 		
-		VBox box = new VBox();
-    	Button btn2 = new Button("test");
-    	box.getChildren().add(btn2);
-    	box.setPrefSize(100.0, 100.0);
-    	box.setStyle("-fx-background-color: red");
+		Label lblTitle = new Label("Alarm");
+		TextField txtField = new TextField();
+		Button btnChange = new Button("Change");
+		
+		lblTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
+		txtField.setText(String.valueOf(alarmValue));
+		
+		//VBox box = new VBox();
+		vBox.getChildren().add(lblTitle);
+		vBox.getChildren().add(txtField);
+		vBox.getChildren().add(btnChange);
+		vBox.setPrefSize(200.0, 200.0);
+		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
     	
-    	PopOver pop = new PopOver(box);
-    	pop.setHideOnEscape(true);
-    	pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
-    	pop.setId("popover");
-    	pop.setAutoFix(true);
-    	pop.show(mBtnAlarm); 
+    	mPopOverAlarm = new PopOver(vBox);
+    	mPopOverAlarm.setHideOnEscape(true);
+    	mPopOverAlarm.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+    	mPopOverAlarm.setAutoFix(true);
+    	mPopOverAlarm.setAutoHide(true);
+    	mPopOverAlarm.show(mBtnAlarm); 
+    	
 	}
 	
 	

@@ -14,8 +14,9 @@
 }
 
 .image-background {	
-	-fx-background-color: linear-gradient(rgb(224,228,233) 0%, derive(rgb(224,228,233),-20%) 100%);
-	-fx-background-image: url("../../images/noise-texture.png");
+	-fx-background-color: #ffffff;
+	/*-fx-background-color: linear-gradient(rgb(224,228,233) 0%, derive(rgb(224,228,233),-20%) 100%);*/
+	/*-fx-background-image: url("../../images/noise-texture.png");*/
 	-fx-background-repeat: repeat; 
 }
 

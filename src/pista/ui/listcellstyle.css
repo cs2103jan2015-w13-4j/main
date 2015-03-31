@@ -14,8 +14,9 @@
 }
 
 .task-list-cell-id {
-	-fx-font-size: 1.0em;
+	-fx-font-size: 1.0em; /* 1.0 */
 	-fx-font-weight: bold;
+	-fx-text-fill: rgba(0, 0, 0, 0.5);
 }
 
 /*
@@ -56,6 +57,12 @@
 	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
 }
 
+.task-list-cell-box-transparent {
+	-fx-background-color: transparent;
+	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
+}
+
+
 .task-list-cell-label-strike-through .text{
 	-fx-strikethrough: true;
 }
@@ -70,7 +77,7 @@
 
 .task-list-cell-title {
     -fx-font-weight: bold;
-    -fx-font-size: 1.0em;
+    -fx-font-size: 1.4em;
 }
 
 .task-list-cell-datetime {
@@ -91,21 +98,22 @@
  */
  
 .task-list-cell {
-	/*-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);*/
-	-fx-background-color: rgba(255, 255, 255, 0.3);
+	/*-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);
+	-fx-background-color: rgba(255, 255, 255, 0.3);*/
+	-fx-background-color: rgba(200, 200, 200, 0.25);
 	-fx-background-insets: 5;
 	-fx-effect: dropshadow(three-pass-box, #F1F1F199, 6, 0, 0, 0);
 
 }
 
 .task-list-cell:filled:hover{
-	-fx-background-color: rgba(200, 200, 200, 0.2); /*#56C5FF #8AD5F090*/
+	-fx-background-color: rgba(200, 200, 200, 0.5); /*#56C5FF #8AD5F090  255, 255, 255, 1.0*/
 	/* type, color, radius, spread, offset-x, offset, y */
 	/*-fx-effect: dropshadow(three-pass-box, #E2F4FB, 10, 0.7, 0, -1);*/
 }
 
 .task-list-cell:filled:selected {
-	-fx-background-color: #6DCAEC33; /* #4294DE 24ADDEFF*/
+	-fx-background-color: #6DCAEC99; /* #4294DE 24ADDEFF*/
 }
 
 
@@ -160,7 +168,6 @@
 .task-list-cell-priority-normal {
 	-fx-background-image: url("../../images/priority_level_normal.png");
 }
-
 
 .task-list-cell-priority-low {
 	-fx-background-image: url("../../images/priority_level_low.png");
@@ -221,4 +228,18 @@
 }
 
 
+/*====================== PopOver CSS ====================== */
+.popover{
+	-fx-background-color: transparent;
+	-fx-padding: 3 3 3 3;
+	-fx-opacity: 0.3;
+}
 
+.popover .pop-content-area{
+	-fx-background-color: transparent;
+}
+
+.popover .pop-title {
+	-fx-font-size: 15;
+	-fx-text-fill: #666666;
+}
