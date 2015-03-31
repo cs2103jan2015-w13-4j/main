@@ -166,7 +166,7 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		sortDescendingEndDate();
+		sortOverView();
 		return mStorage.getTaskList();
 	}
 
