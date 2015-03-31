@@ -73,7 +73,7 @@ public class Storage {
 	*/
 	
 	private ArrayList<Task> taskList = null;
-	
+	private ArrayList<String> historyList = new ArrayList<String>();
 	private static CustomLogging mLog = null;
 	
 	private Storage(){}
@@ -683,7 +683,11 @@ public class Storage {
 	 public void setTaskList(ArrayList<Task> tl){
 		 taskList = new ArrayList<Task>(tl);
 	 }
-
+	 
+	 public ArrayList<String> getHistoryList(){
+		 return historyList;
+	 }
+	 
 	 public void setDataFolderLocation(String location){
 		 data_folder_location = location;
 	 }

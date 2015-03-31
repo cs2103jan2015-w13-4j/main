@@ -176,6 +176,8 @@ public class UIController {
 		txtStatus.setText(logicOutput);
 
 		initTaskListInListView();
+		
+		Logic.storeToHistory(userInput);
 	}
 
 	@FXML

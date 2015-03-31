@@ -629,6 +629,13 @@ public class Logic {
 		}
 		return finalStr ;
 	}
+	
+	public static void storeToHistory(String s){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date currentDate = new Date();
+		String historyInput = dateFormat.format(currentDate)+":"+s;
+		mStorage.getHistoryList().add(historyInput);
+	}
 
 
 	//============= API FOR SETTING PAGE ======================
