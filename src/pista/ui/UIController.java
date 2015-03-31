@@ -143,7 +143,6 @@ public class UIController {
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
-		contentAssist();
 		String[] tokens = null;
 		String parserOutput = "";
 		String logicOutput = "";
