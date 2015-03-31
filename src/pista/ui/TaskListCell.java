@@ -72,6 +72,13 @@ public class TaskListCell extends ListCell<Task> {
     
     private final String POP_OVER_CONTENT_AREA_CLASS = "pop-content-area";
     private final String POP_OVER_TITLE_CLASS = "pop-title";
+    private final String POP_OVER_LABEL_PRIORITY_CLASS = "label-priority";
+    private final String POP_OVER_IMAGE_CRITICAL_CLASS = "pop-over-img-critical";
+    private final String POP_OVER_IMAGE_NORMAL_CLASS = "pop-over-img-normal";
+    private final String POP_OVER_IMAGE_LOW_CLASS = "pop-over-img-low";
+    private final String POP_OVER_IMAGE_DEFAULT_CLASS = "pop-over-img-default";
+    private final String POP_OVER_BUTTON_CHANGE_CLASS = "btn-change";
+    
     
     private final int MAX_CHARACTER_IN_TITLE = 50;
     
@@ -519,14 +526,6 @@ public class TaskListCell extends ListCell<Task> {
 		double popWidth = 300.0;
 		double popHeight = 150.0;
 		
-		final String POP_OVER_LABEL_PRIORITY_CLASS = "label-priority";
-		
-		final String POP_OVER_IMAGE_CRITICAL_CLASS = "pop-over-img-critical";
-		final String POP_OVER_IMAGE_NORMAL_CLASS = "pop-over-img-normal";
-		final String POP_OVER_IMAGE_LOW_CLASS = "pop-over-img-low";
-		final String POP_OVER_IMAGE_DEFAULT_CLASS = "pop-over-img-default";
-		
-		
 		if(mPopOverPriority != null){
 			if(mPopOverPriority.isShowing()){
 				mPopOverPriority.setAutoHide(true);
@@ -543,6 +542,7 @@ public class TaskListCell extends ListCell<Task> {
 		Button btnChange = new Button("Change");
 		
 		btnChange.setPrefWidth(popWidth);
+		btnChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
 		
 		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
 		lblPopOverTitle.setPrefWidth(popWidth);
@@ -605,6 +605,7 @@ public class TaskListCell extends ListCell<Task> {
 		mPopOverPriority.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
 		mPopOverPriority.setAutoFix(true);
 		mPopOverPriority.setAutoHide(true);
+		mPopOverPriority.setDetachable(false);
 		mPopOverPriority.show(mBtnPriority); 
     	
 	}
@@ -717,6 +718,7 @@ public class TaskListCell extends ListCell<Task> {
 		txtMinField.setPrefWidth(60.0);
 		
 		btnChange.setPrefWidth(popWidth);
+		btnChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
 		
 		hDateBox.getChildren().add(lblDateTitle); //Datee:
 		hDateBox.getChildren().add(datePicker); // datepicker
@@ -741,7 +743,9 @@ public class TaskListCell extends ListCell<Task> {
     	mPopOverAlarm.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
     	mPopOverAlarm.setAutoFix(true);
     	mPopOverAlarm.setAutoHide(true);
+    	mPopOverAlarm.setDetachable(false);
     	mPopOverAlarm.show(mBtnAlarm); 
+    	
     	
 	}
 	
