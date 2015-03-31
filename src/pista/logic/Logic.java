@@ -601,6 +601,20 @@ public class Logic {
 			return null;
 		}
 	}
+	
+	public static String processTaskInfo(int index){
+		Task t = Logic.getTaskByIndex(index);
+		String finalStr = "";
+		String title = t.getTitle();
+		String startDate = t.getStartDate();
+		String startTime = t.getStartTime();
+		String endDate = t.getEndDate();
+		String endTime = t.getEndTime();
+		
+		finalStr += " -"+title+" -"+startDate+" -"+startTime+" -"+endDate+" -"+endTime;
+		
+		return finalStr ;
+	}
 
 
 	//============= API FOR SETTING PAGE ======================

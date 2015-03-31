@@ -266,9 +266,9 @@ public class UIController {
 		try { 
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
-				Task requestedTask = Logic.getTaskByIndex(id); 
-				//send to parser to process, return a String
-				//Set string to the txtStatus
+				String processedString = Logic.processTaskInfo(id);
+				String finalStr = userInput + processedString;
+				txtStatus.setText(finalStr);
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
