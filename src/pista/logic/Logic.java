@@ -610,9 +610,16 @@ public class Logic {
 		String startTime = t.getStartTime();
 		String endDate = t.getEndDate();
 		String endTime = t.getEndTime();
+		String category = t.getCategory();
 		
-		finalStr += " -"+title+" -"+startDate+" -"+startTime+" -"+endDate+" -"+endTime;
-		
+		if(category.equalsIgnoreCase("timed")){
+			finalStr += " -"+title+" -"+startDate+" -"+startTime+" -"+endDate+" -"+endTime;
+		}
+		else if(category.equalsIgnoreCase("deadline")){
+			finalStr += " -"+title+" -"+endDate+" -"+endTime;
+		}else{
+			finalStr += " -"+title;
+		}
 		return finalStr ;
 	}
 
