@@ -593,6 +593,14 @@ public class Logic {
 
 
 	}
+	
+	public static Task getTaskByIndex(int index){
+		if(isTaskInList(index)){
+			return mStorage.getTaskList().get(index);
+		}else{
+			return null;
+		}
+	}
 
 
 	//============= API FOR SETTING PAGE ======================
