@@ -2,6 +2,8 @@ package pista.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import org.controlsfx.control.PopOver;
@@ -16,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -29,6 +32,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.util.StringConverter;
 import pista.Constants;
 import pista.logic.Logic;
 import pista.logic.Task;
@@ -37,26 +43,13 @@ import pista.parser.TokenValidation;
 
 public class TaskListCell extends ListCell<Task> {
 
-	/*
-	private final String TASK_LIST_FOUND_CLASS = "task-list-found";
-    private final String TASK_LIST_NOT_FOUND_CLASS = "task-list-not-found";
-    */
-	
     private final String TASK_LIST_CELL = "task-list-cell";
     private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
-    /*
-    private final String TASK_LIST_CELL_ID_BLACK_CLASS = "task-list-cell-id-black";
-    private final String TASK_LIST_CELL_ID_RED_CLASS = "task-list-cell-id-red";
-    private final String TASK_LIST_CELL_ID_GREEN_CLASS = "task-list-cell-id-green";
-    private final String TASK_LIST_CELL_ID_YELLOW_CLASS = "task-list-cell-id-yellow";
-    */
-    private final String TASK_LIST_CELL_BOX_PURPLE_CLASS = "task-list-cell-box-purple";
+
     private final String TASK_LIST_CELL_BOX_RED_CLASS = "task-list-cell-box-red";
     private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "task-list-cell-box-yellow";
     private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "task-list-cell-box-green";
     private final String TASK_LIST_CELL_BOX_TRANSPARENT_CLASS = "task-list-cell-box-transparent";
-    
-    
     
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
@@ -101,12 +94,11 @@ public class TaskListCell extends ListCell<Task> {
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
     
-    //private ImageView mImgViewAlarm = new ImageView();
     private Button mBtnAlarm = new Button();
     private Button mBtnPriority = new Button();
     
     private PopOver mPopOverAlarm = null;
-    //private ImageView mImgViewPriority = new ImageView();
+    private PopOver mPopOverPriority = null;
     
     private String getID = "";
     private String getTitle = "";
@@ -119,8 +111,8 @@ public class TaskListCell extends ListCell<Task> {
     private Long getRemainder = 0L;
     private String getPriority = "";
     
-    
-    public TaskListCell() {   	
+    public TaskListCell() {
+    	
         configureGrid(); 
         configureCheckBoxIsDone();
         configureButtonImage();
@@ -197,13 +189,14 @@ public class TaskListCell extends ListCell<Task> {
     	mBtnAlarm.setPrefSize(size, size);
     	mBtnAlarm.setMaxSize(size, size);
     	mBtnAlarm.setMinSize(size, size);
-    	mBtnAlarm.addEventFilter(ActionEvent.ACTION, btnAlarmEventHandler);
-
+    	mBtnAlarm.setMouseTransparent(false);
+    	mBtnAlarm.addEventFilter(MouseEvent.MOUSE_CLICKED, btnAlarmEnterEventHandler); //ActionEvent.ACTION
+    	
     	//Priority
     	mBtnPriority.setPrefSize(size, size);
     	mBtnPriority.setMaxSize(size, size);
     	mBtnPriority.setMinSize(size, size);
-    	mBtnPriority.addEventFilter(ActionEvent.ACTION, btnPriorityEventHandler);
+    	mBtnPriority.addEventFilter(MouseEvent.MOUSE_CLICKED, btnPriorityEnterEventHandler);
     	
     }
     
@@ -460,19 +453,20 @@ public class TaskListCell extends ListCell<Task> {
 	};
 	
 	
-	EventHandler btnAlarmEventHandler = new EventHandler<ActionEvent>(){
+	EventHandler btnAlarmEnterEventHandler = new EventHandler<MouseEvent>(){
 		@Override
-		public void handle(ActionEvent event) {
+		public void handle(MouseEvent event) {
 			System.out.println("Alarm Popover");
 			showAlarmPopOver(getRemainder);
 		}
-		
 	};
 	
-	EventHandler btnPriorityEventHandler = new EventHandler<ActionEvent>(){
+	
+	EventHandler btnPriorityEnterEventHandler = new EventHandler<MouseEvent>(){
 		@Override
-		public void handle(ActionEvent event) {
-			System.out.println("Priority say hello");
+		public void handle(MouseEvent event) {
+			System.out.println("Priority Popover");
+			showPriorityPopOver();
 		}
 		
 	};
@@ -521,8 +515,118 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	
+	private void showPriorityPopOver(){
+		double popWidth = 300.0;
+		double popHeight = 150.0;
+		
+		final String POP_OVER_LABEL_PRIORITY_CLASS = "label-priority";
+		
+		final String POP_OVER_IMAGE_CRITICAL_CLASS = "pop-over-img-critical";
+		final String POP_OVER_IMAGE_NORMAL_CLASS = "pop-over-img-normal";
+		final String POP_OVER_IMAGE_LOW_CLASS = "pop-over-img-low";
+		final String POP_OVER_IMAGE_DEFAULT_CLASS = "pop-over-img-default";
+		
+		
+		if(mPopOverPriority != null){
+			if(mPopOverPriority.isShowing()){
+				mPopOverPriority.setAutoHide(true);
+				return;
+			}
+		}
+		
+		VBox vBox = new VBox(8);
+		HBox hBox = new HBox(4);
+		
+		Label lblPopOverTitle = new Label("Priority Level");
+		Label lblPriorityLevel = null;
+		ImageView imgPriority = null;
+		Button btnChange = new Button("Change");
+		
+		btnChange.setPrefWidth(popWidth);
+		
+		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
+		lblPopOverTitle.setPrefWidth(popWidth);
+		lblPopOverTitle.setTextAlignment(TextAlignment.CENTER);
+		lblPopOverTitle.setAlignment(Pos.CENTER);
+		
+		//Set title
+		vBox.getChildren().add(lblPopOverTitle);
+		
+		//Critical row
+		imgPriority = new ImageView();
+		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_CRITICAL_CLASS);
+		lblPriorityLevel = new Label("Critical");
+		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		hBox = new HBox(4);
+		hBox.getChildren().add(imgPriority);
+		hBox.getChildren().add(lblPriorityLevel);
+		vBox.getChildren().add(hBox);
+		
+		//Normal row
+		imgPriority = new ImageView();
+		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_NORMAL_CLASS);
+		lblPriorityLevel = new Label("Normal");
+		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		hBox = new HBox(4);
+		hBox.getChildren().add(imgPriority);
+		hBox.getChildren().add(lblPriorityLevel);
+		vBox.getChildren().add(hBox);
+		
+		//Low
+		imgPriority = new ImageView();
+		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_LOW_CLASS);
+		lblPriorityLevel = new Label("Low");
+		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		hBox = new HBox(4);
+		hBox.getChildren().add(imgPriority);
+		hBox.getChildren().add(lblPriorityLevel);
+		vBox.getChildren().add(hBox);
+		
+		//Default
+		imgPriority = new ImageView();
+		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_DEFAULT_CLASS);
+		lblPriorityLevel = new Label("Default");
+		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		hBox = new HBox(4);
+		hBox.getChildren().add(imgPriority);
+		hBox.getChildren().add(lblPriorityLevel);
+		vBox.getChildren().add(hBox);
+		
+		
+		vBox.setPadding(new Insets(5,10,5,10)); //set padding
+		VBox.setMargin(btnChange, new Insets(10,0,0,0)); //set margin of btn change
+		vBox.getChildren().add(btnChange); //add btn change
+		vBox.setPrefSize(popWidth, popHeight);
+		
+		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
+		
+		mPopOverPriority = new PopOver(vBox);
+		mPopOverPriority.setHideOnEscape(true);
+		mPopOverPriority.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+		mPopOverPriority.setAutoFix(true);
+		mPopOverPriority.setAutoHide(true);
+		mPopOverPriority.show(mBtnPriority); 
+    	
+	}
+	
+	private void setPopOverPriorityIcon(ImageView iv, String cssClass){
+		iv.setFitWidth(25.0);
+		iv.setPreserveRatio(true);
+		iv.setSmooth(true);
+		iv.setCache(true);
+		iv.getStyleClass().addAll(cssClass);
+	}
+	
+	private void setPopOverPriorityLabel(Label lb, String cssClass){
+		lb.setAlignment(Pos.BASELINE_LEFT);
+		lb.getStyleClass().addAll(cssClass);
+	}
+	
+	
 	private void showAlarmPopOver(Long alarmValue){
-		/*
+		double popWidth = 300.0;
+		double popHeight = 150.0;
+	    /*
 		 * ---------------------
 		 * |       Alarm       |
 		 * ---------------------
@@ -531,22 +635,107 @@ public class TaskListCell extends ListCell<Task> {
 		 * 
 		 * 
 		 * */
-		VBox vBox = new VBox();
+		if(mPopOverAlarm != null){
+			if(mPopOverAlarm.isShowing()){
+				mPopOverAlarm.setAutoHide(true);
+				return;
+			}
+		}
 		
-		Label lblTitle = new Label("Alarm");
-		TextField txtField = new TextField();
+		String getAlarmDate = MainParser.convertMillisecondToDate(alarmValue); //dd/MM/yyyy
+		String getAlarmTime = MainParser.convertMillisecondToTime(alarmValue); //HH:mm
+		
+		VBox vBox = new VBox(8);
+		HBox hDateBox = new HBox(4);
+		HBox hTimeBox = new HBox(4);
+		
+		Label lblPopOverTitle = new Label("Alarm");
+		Label lblDateTitle = new Label("Date:");
+		Label lblTimeTitle = new Label("Time:");
+		Label lblColon = new Label(":");
+		TextField txtHourField = new TextField();
+		TextField txtMinField = new TextField();
 		Button btnChange = new Button("Change");
 		
-		lblTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
-		txtField.setText(String.valueOf(alarmValue));
+		final String pattern = "dd/MM/yyyy";
+		final DatePicker datePicker = new DatePicker(LocalDate.of(convertStringToInteger(getAlarmDate.split("/")[2]), 
+												convertStringToInteger(getAlarmDate.split("/")[1]), 
+												convertStringToInteger(getAlarmDate.split("/")[0]))); //set year, month, day to datepicker
+		datePicker.setPromptText(pattern.toLowerCase());
+
 		
-		//VBox box = new VBox();
-		vBox.getChildren().add(lblTitle);
-		vBox.getChildren().add(txtField);
+		
+		
+		datePicker.setConverter(new StringConverter<LocalDate>() {
+		     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+		     @Override 
+		     public String toString(LocalDate date) {
+		         if (date != null) {
+		             return dateFormatter.format(date);
+		         } else {
+		             return "";
+		         }
+		     }
+
+		     @Override 
+		     public LocalDate fromString(String string) {
+		         if (string != null && !string.isEmpty()) {
+		             return LocalDate.parse(string, dateFormatter);
+		         } else {
+		             return null;
+		         }
+		     }
+		});
+		
+		datePicker.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent arg0) {
+				LocalDate date = datePicker.getValue();
+				
+				System.out.println("Selected date: " + datePicker.getConverter().toString(date));
+			}
+		    
+		});
+
+		//txtTitle.setId("pop-title");
+		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
+		lblPopOverTitle.setPrefWidth(popWidth);
+		lblPopOverTitle.setTextAlignment(TextAlignment.CENTER);
+		lblPopOverTitle.setAlignment(Pos.CENTER);
+		
+		lblDateTitle.setPrefWidth(50.0);
+		lblDateTitle.setAlignment(Pos.CENTER_RIGHT);
+		lblTimeTitle.setPrefWidth(50.0);
+		lblTimeTitle.setAlignment(Pos.CENTER_RIGHT);
+		
+		
+		txtHourField.setText(getAlarmTime.split(":")[0]); // Hour
+		txtMinField.setText(getAlarmTime.split(":")[1]); // Minute
+		
+		txtHourField.setPrefWidth(60.0);
+		txtMinField.setPrefWidth(60.0);
+		
+		btnChange.setPrefWidth(popWidth);
+		
+		hDateBox.getChildren().add(lblDateTitle); //Datee:
+		hDateBox.getChildren().add(datePicker); // datepicker
+		hTimeBox.getChildren().add(lblTimeTitle); //Time:
+		hTimeBox.getChildren().add(txtHourField); //hour
+		hTimeBox.getChildren().add(lblColon); // :
+		hTimeBox.getChildren().add(txtMinField); //min
+		
+		
+		VBox.setMargin(btnChange, new Insets(10,0,0,0));
+		vBox.setPadding(new Insets(5,10,5,10));
+		vBox.getChildren().add(lblPopOverTitle);
+		vBox.getChildren().add(hDateBox);
+		vBox.getChildren().add(hTimeBox);
 		vBox.getChildren().add(btnChange);
-		vBox.setPrefSize(200.0, 200.0);
+		vBox.setPrefSize(popWidth, popHeight);
 		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
     	
+		
     	mPopOverAlarm = new PopOver(vBox);
     	mPopOverAlarm.setHideOnEscape(true);
     	mPopOverAlarm.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
@@ -556,7 +745,9 @@ public class TaskListCell extends ListCell<Task> {
     	
 	}
 	
-	
+	private int convertStringToInteger(String s){
+		return Integer.parseInt(s);
+	}
 	/*
 	private boolean updateTaskDoneStatus(int id, boolean newDone){
 		boolean isUpdated = Logic.updateTaskIsDone(id, newDone);

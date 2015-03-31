@@ -178,6 +178,9 @@
 }
 
 
+
+
+
 /*
 .task-list-cell-done {
 	-fx-background-color: #EEEEEE;
@@ -240,6 +243,28 @@
 }
 
 .popover .pop-title {
-	-fx-font-size: 15;
-	-fx-text-fill: #666666;
+	-fx-font-family: "Arial";
+	-fx-font-size: 1.3em;
+	-fx-text-fill: #888888;
+	-fx-text-alignment: center;
+}
+
+.popover .label-priority {
+	-fx-font-weight: bold;
+}
+
+.pop-over-img-critical {
+	-fx-image: url("../../images/priority_level_critical.png");
+}
+
+.pop-over-img-normal {
+	-fx-image: url("../../images/priority_level_normal.png");
+}
+
+.pop-over-img-low {
+	-fx-image: url("../../images/priority_level_low.png");
+}
+
+.pop-over-img-default {
+	-fx-image: url("../../images/priority_level_default.png");
 }
