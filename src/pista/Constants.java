@@ -86,6 +86,7 @@ public class Constants {
 	public static String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
 	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
 	public static String LOGIC_SUCCESS_HELP = "Open help";
+	public static String LOGIC_SUCCESS_SEARCH = "Searching tasks for the keyword: ";
 	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
 	public static String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
 	public static String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";

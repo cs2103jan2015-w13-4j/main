@@ -125,6 +125,7 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
 	}
+	
 	public static String reminder(String[] tokens){
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		long reminderMS = 0L;

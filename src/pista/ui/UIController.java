@@ -46,6 +46,7 @@ public class UIController {
 	private static String CSS_CLASS_TEXT_BOX = "text-box-style";
 	private static String CSS_CLASS_BUTTON = "button-style";
 	private static String CSS_CLASS_TEXT_STATUS = "text-status-style";
+	private static String searchKeyword = null;
 
 	//Objects
 	@FXML
@@ -171,6 +172,15 @@ public class UIController {
 		}
 
 		tokens = mp.getTokens();
+		
+		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
+			String keyword = getKeyword(tokens);
+			setFilter(keyword);
+			initTaskListInListView();
+			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + keyword);
+			return;
+		}
+		
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);
@@ -281,5 +291,13 @@ public class UIController {
 
 	private void clearContent(){
 		txtStatus.setText("");
+	}
+	
+	private void setFilter(String keyword) {
+		
+	}
+	
+	private String getKeyword(String[] tokens) {
+		return tokens[0];
 	}
 }
