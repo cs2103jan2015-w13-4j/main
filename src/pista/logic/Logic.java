@@ -27,6 +27,7 @@ public class Logic {
 	public static Logic getInstance(){
 		initStorage();
 		initPreference();
+		initLogging();
 		return mLogic;
 	}
 

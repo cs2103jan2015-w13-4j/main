@@ -9,10 +9,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import pista.Constants;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
-
-import pista.Constants;
 
 public class MainParser {
 
