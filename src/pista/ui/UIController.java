@@ -1,6 +1,7 @@
 package pista.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -240,7 +241,20 @@ public class UIController {
 		});
 
 		try{
-			ObservableList<Task> myObservableList = FXCollections.observableList(Logic.getStorageList());
+			ArrayList<Task> storageList = Logic.getStorageList();
+			if (searchKeyword != null) {
+				ArrayList<Task> displayList = new ArrayList<Task>();
+				
+				for (Task task: storageList) {
+					if (hasKeyword(task, searchKeyword)) {
+						displayList.add(task);
+					}
+				}
+				
+				storageList = displayList;
+			}
+			
+			ObservableList<Task> myObservableList = FXCollections.observableList(storageList);
 			listview_task_fx_id.setItems(null); 
 			listview_task_fx_id.setItems(myObservableList);
 
@@ -300,7 +314,12 @@ public class UIController {
 	private void resetSearchKeyword() {
 		searchKeyword = null;
 	}
+	
 	private String getKeyword(String[] tokens) {
 		return tokens[0];
+	}
+	
+	private boolean hasKeyword(Task task, String keyword) {
+		return task.getTitle().contains(keyword);
 	}
 }
