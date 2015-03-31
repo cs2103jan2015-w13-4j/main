@@ -38,6 +38,7 @@ public class UIController {
 	private Storage mStorage;
 
 	public String userInput = null;
+	private static String searchKeyword = null;
 
 	private static String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
 	private static String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
@@ -46,7 +47,6 @@ public class UIController {
 	private static String CSS_CLASS_TEXT_BOX = "text-box-style";
 	private static String CSS_CLASS_BUTTON = "button-style";
 	private static String CSS_CLASS_TEXT_STATUS = "text-status-style";
-	private static String searchKeyword = null;
 
 	//Objects
 	@FXML
@@ -174,10 +174,10 @@ public class UIController {
 		tokens = mp.getTokens();
 		
 		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
-			String keyword = getKeyword(tokens);
-			setFilter(keyword);
+			setSearchKeyword(tokens);
 			initTaskListInListView();
-			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + keyword);
+			resetSearchKeyword();
+			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
 			return;
 		}
 		
@@ -293,10 +293,13 @@ public class UIController {
 		txtStatus.setText("");
 	}
 	
-	private void setFilter(String keyword) {
-		
+	private void setSearchKeyword(String[] tokens) {
+		searchKeyword = getKeyword(tokens);
 	}
 	
+	private void resetSearchKeyword() {
+		searchKeyword = null;
+	}
 	private String getKeyword(String[] tokens) {
 		return tokens[0];
 	}
