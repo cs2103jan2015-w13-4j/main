@@ -270,7 +270,7 @@
 }
 
 .btn-change {
-	fx-background-color: #EAEAEA;
+	-fx-background-color: #EAEAEA;
     -fx-border-color: #B3B3B3;
     -fx-padding: 7 10 7 10;
     -fx-text-fill: #4D4D51;
@@ -289,3 +289,36 @@
 	-fx-border-color: #62A4E7;
 	-fx-cursor: hand;
 }
+
+
+
+.radio-button .radio {
+    -fx-border-width: 1px;
+    -fx-border-color: #000;
+    -fx-background-color: #ffffff;
+    -fx-background-image: null;
+    -fx-border-radius: 10px;
+    -fx-padding: 2px;
+}
+.radio-button .radio:selected {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:armed {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:determinate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button -radio:indeterminate {
+    -fx-background-color: white;
+    -fx-background-image: null;
+}
+.radio-button .dot {
+	-fx-mark-color: #888888;
+    -fx-background-radius: 10px;
+    -fx-padding: 8px;
+}
+

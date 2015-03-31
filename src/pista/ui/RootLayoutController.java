@@ -119,4 +119,5 @@ public class RootLayoutController {
 		boolean isUpdated = mUICtrl.initTaskListInListView();
 		return isUpdated;
 	}
+
 }

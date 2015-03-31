@@ -22,7 +22,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -106,6 +108,13 @@ public class TaskListCell extends ListCell<Task> {
     
     private PopOver mPopOverAlarm = null;
     private PopOver mPopOverPriority = null;
+    
+	TextField txtHourField = null;
+	TextField txtMinField = null;
+	DatePicker datePicker = null;
+    
+    
+    ToggleGroup priorityGroup = null;
     
     private String getID = "";
     private String getTitle = "";
@@ -473,7 +482,7 @@ public class TaskListCell extends ListCell<Task> {
 		@Override
 		public void handle(MouseEvent event) {
 			System.out.println("Priority Popover");
-			showPriorityPopOver();
+			showPriorityPopOver(convertStringToInteger(getPriority));
 		}
 		
 	};
@@ -522,13 +531,13 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	
-	private void showPriorityPopOver(){
+	private void showPriorityPopOver(int selectedPriorityLvl){
 		double popWidth = 300.0;
 		double popHeight = 150.0;
 		
-		if(mPopOverPriority != null){
-			if(mPopOverPriority.isShowing()){
-				mPopOverPriority.setAutoHide(true);
+		if(this.mPopOverPriority != null){
+			if(this.mPopOverPriority.isShowing()){
+				this.mPopOverPriority.setAutoHide(true);
 				return;
 			}
 		}
@@ -537,12 +546,20 @@ public class TaskListCell extends ListCell<Task> {
 		HBox hBox = new HBox(4);
 		
 		Label lblPopOverTitle = new Label("Priority Level");
+		/*
 		Label lblPriorityLevel = null;
 		ImageView imgPriority = null;
-		Button btnChange = new Button("Change");
+		RadioButton radioBtn = null;
+		*/
+		Button btnPriorityChange = new Button("Change");
 		
-		btnChange.setPrefWidth(popWidth);
-		btnChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
+		String[] priorityCssArray = {POP_OVER_IMAGE_CRITICAL_CLASS, POP_OVER_IMAGE_NORMAL_CLASS, POP_OVER_IMAGE_LOW_CLASS, POP_OVER_IMAGE_DEFAULT_CLASS};
+		String[] priorityArray = {"Critical", "Normal", "Low", "Default"};
+		int[] priorityLvlArray = {3, 2, 1, 0};
+		
+		btnPriorityChange.setPrefWidth(popWidth);
+		btnPriorityChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
+		btnPriorityChange.addEventFilter(ActionEvent.ACTION, onBtnPriorityClick);
 		
 		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
 		lblPopOverTitle.setPrefWidth(popWidth);
@@ -552,65 +569,115 @@ public class TaskListCell extends ListCell<Task> {
 		//Set title
 		vBox.getChildren().add(lblPopOverTitle);
 		
+		generatePriorityOptions(vBox, hBox, priorityArray, priorityLvlArray, priorityCssArray, selectedPriorityLvl);
+		
+		/*
 		//Critical row
 		imgPriority = new ImageView();
-		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_CRITICAL_CLASS);
+		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_CRITICAL_CLASS);
 		lblPriorityLevel = new Label("Critical");
-		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		radioBtn = new RadioButton();
+		radioBtn.setToggleGroup(priorityGroup);
+		radioBtn.setUserData(3);
 		hBox = new HBox(4);
+		hBox.getChildren().add(radioBtn);
 		hBox.getChildren().add(imgPriority);
 		hBox.getChildren().add(lblPriorityLevel);
 		vBox.getChildren().add(hBox);
 		
 		//Normal row
 		imgPriority = new ImageView();
-		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_NORMAL_CLASS);
+		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_NORMAL_CLASS);
 		lblPriorityLevel = new Label("Normal");
-		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		radioBtn = new RadioButton();
+		radioBtn.setToggleGroup(priorityGroup);
+		radioBtn.setUserData(2);
 		hBox = new HBox(4);
+		hBox.getChildren().add(radioBtn);
 		hBox.getChildren().add(imgPriority);
 		hBox.getChildren().add(lblPriorityLevel);
 		vBox.getChildren().add(hBox);
 		
 		//Low
 		imgPriority = new ImageView();
-		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_LOW_CLASS);
+		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_LOW_CLASS);
 		lblPriorityLevel = new Label("Low");
-		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		radioBtn = new RadioButton();
+		radioBtn.setToggleGroup(priorityGroup);
+		radioBtn.setUserData(1);
 		hBox = new HBox(4);
+		hBox.getChildren().add(radioBtn);
 		hBox.getChildren().add(imgPriority);
 		hBox.getChildren().add(lblPriorityLevel);
 		vBox.getChildren().add(hBox);
 		
 		//Default
 		imgPriority = new ImageView();
-		setPopOverPriorityIcon(imgPriority, POP_OVER_IMAGE_DEFAULT_CLASS);
+		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_DEFAULT_CLASS);
 		lblPriorityLevel = new Label("Default");
-		setPopOverPriorityLabel(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
+		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS);
+		radioBtn = new RadioButton();
+		radioBtn.setToggleGroup(priorityGroup);
+		radioBtn.setUserData(0);
 		hBox = new HBox(4);
+		hBox.getChildren().add(radioBtn);
 		hBox.getChildren().add(imgPriority);
 		hBox.getChildren().add(lblPriorityLevel);
 		vBox.getChildren().add(hBox);
+		*/
 		
 		
 		vBox.setPadding(new Insets(5,10,5,10)); //set padding
-		VBox.setMargin(btnChange, new Insets(10,0,0,0)); //set margin of btn change
-		vBox.getChildren().add(btnChange); //add btn change
+		VBox.setMargin(btnPriorityChange, new Insets(10,0,0,0)); //set margin of btn change
+		vBox.getChildren().add(btnPriorityChange); //add btn change
 		vBox.setPrefSize(popWidth, popHeight);
 		
 		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
 		
-		mPopOverPriority = new PopOver(vBox);
-		mPopOverPriority.setHideOnEscape(true);
-		mPopOverPriority.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
-		mPopOverPriority.setAutoFix(true);
-		mPopOverPriority.setAutoHide(true);
-		mPopOverPriority.setDetachable(false);
-		mPopOverPriority.show(mBtnPriority); 
+		this.mPopOverPriority = new PopOver(vBox);
+		this.mPopOverPriority.setHideOnEscape(true);
+		this.mPopOverPriority.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+		this.mPopOverPriority.setAutoFix(true);
+		this.mPopOverPriority.setAutoHide(true);
+		this.mPopOverPriority.setDetachable(false);
+		this.mPopOverPriority.show(mBtnPriority); 
     	
 	}
 	
-	private void setPopOverPriorityIcon(ImageView iv, String cssClass){
+	private void generatePriorityOptions(VBox grandParent, HBox parent, String[] priorityArray, int[] lvlArray, String[] cssArray, int selectedPriority){
+		
+		this.priorityGroup = new ToggleGroup();
+		
+		for(int i=0; i < priorityArray.length; i++){
+			
+			ImageView imgPriority = new ImageView();
+			Label lblPriorityLevel = new Label(priorityArray[i]);
+			RadioButton radioBtn = new RadioButton();
+			
+			setPopOverPriorityIconStyle(imgPriority, cssArray[i]);
+			setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS);
+			
+			radioBtn.setToggleGroup(this.priorityGroup);
+			radioBtn.setUserData(lvlArray[i]);
+			
+			if(lvlArray[i] == selectedPriority){
+				radioBtn.setSelected(true);
+			}
+			
+			parent = new HBox(4);
+			parent.getChildren().add(radioBtn);
+			parent.getChildren().add(imgPriority);
+			parent.getChildren().add(lblPriorityLevel);
+			grandParent.getChildren().add(parent);
+			
+		}
+	
+	}
+	
+	private void setPopOverPriorityIconStyle(ImageView iv, String cssClass){
 		iv.setFitWidth(25.0);
 		iv.setPreserveRatio(true);
 		iv.setSmooth(true);
@@ -618,7 +685,7 @@ public class TaskListCell extends ListCell<Task> {
 		iv.getStyleClass().addAll(cssClass);
 	}
 	
-	private void setPopOverPriorityLabel(Label lb, String cssClass){
+	private void setPopOverPriorityLabelStyle(Label lb, String cssClass){
 		lb.setAlignment(Pos.BASELINE_LEFT);
 		lb.getStyleClass().addAll(cssClass);
 	}
@@ -636,9 +703,9 @@ public class TaskListCell extends ListCell<Task> {
 		 * 
 		 * 
 		 * */
-		if(mPopOverAlarm != null){
-			if(mPopOverAlarm.isShowing()){
-				mPopOverAlarm.setAutoHide(true);
+		if(this.mPopOverAlarm != null){
+			if(this.mPopOverAlarm.isShowing()){
+				this.mPopOverAlarm.setAutoHide(true);
 				return;
 			}
 		}
@@ -654,20 +721,20 @@ public class TaskListCell extends ListCell<Task> {
 		Label lblDateTitle = new Label("Date:");
 		Label lblTimeTitle = new Label("Time:");
 		Label lblColon = new Label(":");
-		TextField txtHourField = new TextField();
-		TextField txtMinField = new TextField();
-		Button btnChange = new Button("Change");
+		this.txtHourField = new TextField();
+		this.txtMinField = new TextField();
+		Button btnAlarmChange = new Button("Change");
 		
 		final String pattern = "dd/MM/yyyy";
-		final DatePicker datePicker = new DatePicker(LocalDate.of(convertStringToInteger(getAlarmDate.split("/")[2]), 
+		this.datePicker = new DatePicker(LocalDate.of(convertStringToInteger(getAlarmDate.split("/")[2]), 
 												convertStringToInteger(getAlarmDate.split("/")[1]), 
 												convertStringToInteger(getAlarmDate.split("/")[0]))); //set year, month, day to datepicker
-		datePicker.setPromptText(pattern.toLowerCase());
+		this.datePicker.setPromptText(pattern.toLowerCase());
 
 		
 		
 		
-		datePicker.setConverter(new StringConverter<LocalDate>() {
+		this.datePicker.setConverter(new StringConverter<LocalDate>() {
 		     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 
 		     @Override 
@@ -689,7 +756,7 @@ public class TaskListCell extends ListCell<Task> {
 		     }
 		});
 		
-		datePicker.setOnAction(new EventHandler<ActionEvent>(){
+		this.datePicker.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent arg0) {
 				LocalDate date = datePicker.getValue();
@@ -711,43 +778,67 @@ public class TaskListCell extends ListCell<Task> {
 		lblTimeTitle.setAlignment(Pos.CENTER_RIGHT);
 		
 		
-		txtHourField.setText(getAlarmTime.split(":")[0]); // Hour
-		txtMinField.setText(getAlarmTime.split(":")[1]); // Minute
+		this.txtHourField.setText(getAlarmTime.split(":")[0]); // Hour
+		this.txtMinField.setText(getAlarmTime.split(":")[1]); // Minute
 		
-		txtHourField.setPrefWidth(60.0);
-		txtMinField.setPrefWidth(60.0);
+		this.txtHourField.setPrefWidth(60.0);
+		this.txtMinField.setPrefWidth(60.0);
 		
-		btnChange.setPrefWidth(popWidth);
-		btnChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
+		btnAlarmChange.setPrefWidth(popWidth);
+		btnAlarmChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
+		btnAlarmChange.addEventFilter(ActionEvent.ACTION, onBtnAlarmClick);
+		
+		
 		
 		hDateBox.getChildren().add(lblDateTitle); //Datee:
-		hDateBox.getChildren().add(datePicker); // datepicker
+		hDateBox.getChildren().add(this.datePicker); // datepicker
 		hTimeBox.getChildren().add(lblTimeTitle); //Time:
-		hTimeBox.getChildren().add(txtHourField); //hour
+		hTimeBox.getChildren().add(this.txtHourField); //hour
 		hTimeBox.getChildren().add(lblColon); // :
-		hTimeBox.getChildren().add(txtMinField); //min
+		hTimeBox.getChildren().add(this.txtMinField); //min
 		
 		
-		VBox.setMargin(btnChange, new Insets(10,0,0,0));
+		VBox.setMargin(btnAlarmChange, new Insets(10,0,0,0));
 		vBox.setPadding(new Insets(5,10,5,10));
 		vBox.getChildren().add(lblPopOverTitle);
 		vBox.getChildren().add(hDateBox);
 		vBox.getChildren().add(hTimeBox);
-		vBox.getChildren().add(btnChange);
+		vBox.getChildren().add(btnAlarmChange);
 		vBox.setPrefSize(popWidth, popHeight);
 		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
     	
 		
-    	mPopOverAlarm = new PopOver(vBox);
-    	mPopOverAlarm.setHideOnEscape(true);
-    	mPopOverAlarm.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
-    	mPopOverAlarm.setAutoFix(true);
-    	mPopOverAlarm.setAutoHide(true);
-    	mPopOverAlarm.setDetachable(false);
-    	mPopOverAlarm.show(mBtnAlarm); 
-    	
+		this.mPopOverAlarm = new PopOver(vBox);
+		this.mPopOverAlarm.setHideOnEscape(true);
+		this.mPopOverAlarm.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+		this.mPopOverAlarm.setAutoFix(true);
+		this.mPopOverAlarm.setAutoHide(true);
+		this.mPopOverAlarm.setDetachable(false);
+    	this.mPopOverAlarm.show(this.mBtnAlarm); 
     	
 	}
+	
+	
+	private EventHandler onBtnPriorityClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+        	if(priorityGroup != null){
+        		System.out.println(priorityGroup.getSelectedToggle().getUserData().toString());
+        	}
+        }
+    };
+    
+    private EventHandler onBtnAlarmClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+        	if(datePicker != null && txtHourField != null && txtMinField != null){
+        		LocalDate date = datePicker.getValue();
+				
+        		System.out.println(datePicker.getConverter().toString(date) + " - " + txtHourField.getText() + " - " + txtMinField.getText());
+        	}
+        	
+        }
+    };
 	
 	private int convertStringToInteger(String s){
 		return Integer.parseInt(s);
