@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.controlsfx.control.PopOver;
+
 import com.sun.javafx.geom.Rectangle;
 
 import javafx.event.ActionEvent;
@@ -33,9 +35,11 @@ import pista.parser.TokenValidation;
 
 public class TaskListCell extends ListCell<Task> {
 
+	/*
 	private final String TASK_LIST_FOUND_CLASS = "task-list-found";
     private final String TASK_LIST_NOT_FOUND_CLASS = "task-list-not-found";
-    
+    */
+	
     private final String TASK_LIST_CELL = "task-list-cell";
     private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
     /*
@@ -62,8 +66,7 @@ public class TaskListCell extends ListCell<Task> {
     private final String TASK_LIST_CELL_PRIORITY_LOW_CLASS = "task-list-cell-priority-low";
     private final String TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS = "task-list-cell-priority-default";
     
-    
-    
+   
     private final String TASK_LIST_CELL_TEXT_IS_DONE_CLASS = "task-list-cell-text-is-done";
     private final String TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS = "task-list-cell-background-is-done";
     
@@ -451,7 +454,8 @@ public class TaskListCell extends ListCell<Task> {
 	EventHandler btnAlarmEventHandler = new EventHandler<ActionEvent>(){
 		@Override
 		public void handle(ActionEvent event) {
-			System.out.println("Alarm say hello");
+			System.out.println("Alarm Popover");
+			showAlarmPopOver();
 		}
 		
 	};
@@ -506,6 +510,24 @@ public class TaskListCell extends ListCell<Task> {
 			mUIParent.initTaskListInListView();
 		}
 	}
+	
+	
+	private void showAlarmPopOver(){
+		
+		VBox box = new VBox();
+    	Button btn2 = new Button("test");
+    	box.getChildren().add(btn2);
+    	box.setPrefSize(100.0, 100.0);
+    	box.setStyle("-fx-background-color: red");
+    	
+    	PopOver pop = new PopOver(box);
+    	pop.setHideOnEscape(true);
+    	pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+    	pop.setId("popover");
+    	pop.setAutoFix(true);
+    	pop.show(mBtnAlarm); 
+	}
+	
 	
 	/*
 	private boolean updateTaskDoneStatus(int id, boolean newDone){

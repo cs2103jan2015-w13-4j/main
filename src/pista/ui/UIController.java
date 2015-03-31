@@ -209,8 +209,8 @@ public class UIController {
 	}//end initialize
 
 	public boolean initTaskListInListView(){
-		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW);
-		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){
+		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW); //add css class
+		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){ //populate every task into a custom cell
 			@Override
 			public ListCell<Task> call(ListView<Task> param) {
 				final TaskListCell mCell = new TaskListCell();
@@ -219,8 +219,8 @@ public class UIController {
 			}//end call
 		});
 
-
 		//Selected item
+		//currently not in use
 		listview_task_fx_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
 			@Override      
 			public void changed(ObservableValue<? extends Task> ov,
