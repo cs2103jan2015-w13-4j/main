@@ -145,6 +145,8 @@ public class MainParser {
 			return checkSetTokens(mp, tokens);
 		case Constants.VALUE_SEARCH:
 			return checkSearchTokens(mp, tokens);
+		case Constants.VALUE_LIST:
+			return checkListTokens(mp, tokens);
 		default:
 			return false;
 		}

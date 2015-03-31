@@ -35,6 +35,30 @@ public class MiscComparator {
 		public int compare (Task one, Task two){
 			long taskOneDate = one.getEndMilliseconds();
 			long taskTwoDate = two.getEndMilliseconds();
+			if (taskOneDate == 0L && taskTwoDate != 0L){
+				return -1;
+			}
+			if(taskOneDate != 0L && taskTwoDate != 0L){
+				if(taskOneDate < taskTwoDate){
+					return -1;
+				}else if(taskOneDate == taskTwoDate){
+					return 0;
+				}else if (taskOneDate > taskTwoDate){
+					return 1;
+				}
+			}
+			return 1;
+		}
+	};
+
+	public static Comparator<Task> startDateComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			long taskOneDate = one.getStartMilliseconds();
+			long taskTwoDate = two.getStartMilliseconds();
+			if (taskOneDate == 0L && taskTwoDate != 0L){
+				return 1;
+			}
 			if(taskOneDate != 0L && taskTwoDate != 0L){
 				if(taskOneDate < taskTwoDate){
 					return -1;
@@ -47,12 +71,15 @@ public class MiscComparator {
 			return -1;
 		}
 	};
-
-	public static Comparator<Task> startDateComparator = new Comparator<Task>(){
+	
+	public static Comparator<Task> descendingStartDateComparator = new Comparator<Task>(){
 		@Override
 		public int compare (Task one, Task two){
 			long taskOneDate = one.getStartMilliseconds();
 			long taskTwoDate = two.getStartMilliseconds();
+			if (taskOneDate == 0L && taskTwoDate != 0L){
+				return -1;
+			}
 			if(taskOneDate != 0L && taskTwoDate != 0L){
 				if(taskOneDate < taskTwoDate){
 					return -1;
@@ -62,7 +89,7 @@ public class MiscComparator {
 					return 1;
 				}
 			}
-			return -1;
+			return 1;
 		}
 	};
 

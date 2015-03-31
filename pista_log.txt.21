@@ -1,0 +1,94 @@
+Mar 31, 2015 8:37:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Mar 31, 2015 8:37:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:02 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list title
+Mar 31, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: The list function you have entered is invalid
+Mar 31, 2015 8:37:09 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list ascending title
+Mar 31, 2015 8:37:09 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:09 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:09 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:09 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:09 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:14 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list descending title
+Mar 31, 2015 8:37:14 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:14 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:14 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:14 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:14 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:17 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list overview
+Mar 31, 2015 8:37:17 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:17 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:17 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:17 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:17 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:21 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list descending end date
+Mar 31, 2015 8:37:21 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:21 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:21 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:21 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:21 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:34 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list ascending start date
+Mar 31, 2015 8:37:34 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:34 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:34 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:34 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:34 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:45 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list overview
+Mar 31, 2015 8:37:45 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:45 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:45 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:45 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:45 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:49 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: list descending start date
+Mar 31, 2015 8:37:49 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Mar 31, 2015 8:37:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Mar 31, 2015 8:37:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Mar 31, 2015 8:37:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file

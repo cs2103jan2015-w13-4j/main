@@ -21,7 +21,8 @@ public class Logic {
 	private static CustomPreferences mPrefs = null;
 	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
-
+	private static String[] currentSortType = new String[1];
+	
 	private Logic(){}
 
 	public static Logic getInstance(){
@@ -42,6 +43,7 @@ public class Logic {
 	}
 	
 	public static boolean initStorage(){
+		currentSortType[0] = Constants.LIST_OVERVIEW;
 		try{
 			mStorage = Storage.getInstance();
 			return true;
@@ -167,7 +169,7 @@ public class Logic {
 	}
 
 	public static ArrayList<Task> getStorageList(){
-		sortOverView();
+		list(currentSortType);
 		return mStorage.getTaskList();
 	}
 
@@ -201,7 +203,7 @@ public class Logic {
 	}
 	
 	public static void sortDescendingStartDate(){
-		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.startDateComparator));
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.descendingStartDateComparator));
 	}
 	
 	public static void sortAscendingEndDate(){
@@ -247,9 +249,10 @@ public class Logic {
 	public static String list(String[] tokens){ 
 		String sortType=tokens[0];
 		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
-		if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
+		/*if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
 			sortAscendingEndDate();
-		}else if(Constants.LIST_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
+		}phased out since overview is sorted in isDone, priority, ascending end date, title*/
+		if(Constants.LIST_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
 			sortDescendingEndDate();
 		}else if(Constants.LIST_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
 			sortAscendingStartDate();
@@ -268,6 +271,7 @@ public class Logic {
 		}else if(Constants.LIST_TYPE.equalsIgnoreCase(sortType)){
 			
 		}
+		currentSortType[0] = sortType;
 		mStorage.save();
 		return message;
 	}
