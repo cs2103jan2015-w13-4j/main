@@ -26,9 +26,15 @@ public class Logic {
 	private Logic(){}
 
 	public static Logic getInstance(){
-		initStorage();
-		initPreference();
-		initLogging();
+		if(mStorage == null){
+			initStorage();
+		}
+		if(mPrefs == null){
+			initPreference();
+		}
+		if(mLog == null){
+			initLogging();
+		}
 		return mLogic;
 	}
 
