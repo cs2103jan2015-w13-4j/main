@@ -143,6 +143,7 @@ public class UIController {
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
+		contentAssist();
 		String[] tokens = null;
 		String parserOutput = "";
 		String logicOutput = "";
@@ -260,15 +261,17 @@ public class UIController {
 	}
 
 	public void contentAssist(){
-		userInput = txtStatus.getText();
+		userInput = txtBoxCommand.getText();
 		String[] temp = userInput.split(" ",2);
 		String command = temp[0];
 		try { 
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
-				Task requestedTask = Logic.getTaskByIndex(id); 
-				//send to parser to process, return a String
-				//Set string to the txtStatus
+				String processedString = Logic.processTaskInfo(id);
+				String finalStr = userInput + processedString;
+				txtBoxCommand.setText(finalStr);
+//				System.out.println(processedString);
+//				System.out.println(finalStr);
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();

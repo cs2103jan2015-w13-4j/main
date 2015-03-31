@@ -40,7 +40,7 @@ public class Logic {
 			return false;
 		}	
 	}
-	
+
 	public static boolean initStorage(){
 		try{
 			mStorage = Storage.getInstance();
@@ -103,7 +103,7 @@ public class Logic {
 		}
 		return output;
 	}
-	
+
 	public static String priority(String[] tokens){
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
@@ -175,39 +175,39 @@ public class Logic {
 		ComparatorTask comparatorTask = new ComparatorTask();
 		Collections.sort(mStorage.getTaskList(), comparatorTask);
 	}
-	
+
 	public static void sortTitleAscending(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.titleComparator);
 	}
-	
+
 	public static void sortTypeOfTask(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.taskCategoryComparator);
 	}
-	
+
 	public static void sortTitleDescending(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.titleComparator));
 	}
-	
+
 	public static void sortIsDoneUndone(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.isDoneComparator);
 	}
-	
+
 	public static void sortIsDoneCompleted(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.isDoneComparator));
 	}
-	
+
 	public static void sortAscendingStartDate(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.startDateComparator);
 	}
-	
+
 	public static void sortDescendingStartDate(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.startDateComparator));
 	}
-	
+
 	public static void sortAscendingEndDate(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.endDateComparator);
 	}
-	
+
 	public static void sortDescendingEndDate(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.endDateComparator));
 	}
@@ -215,35 +215,35 @@ public class Logic {
 	public static String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
-	
+
 	private static String set(String[] tokens){
 		boolean isValidFile = false;
 		boolean isFileLoaded = false;
 		boolean isPrefSave = false;
-		
+
 		String getFileName = "";
-		
+
 		getFileName = tokens[Constants.SET_VALUE_INDEX];
 		isValidFile = checkFileBeforeSave(getFileName);
 		if(!isValidFile){
 			return Constants.LOGIC_INVALID_SET_INVALID_FILE_FORMAT;
 		}
-		
+
 		isFileLoaded = checkFileDuringSave(getFileName); //will save location, load XML file in storage
 		if(!isFileLoaded){
 			return Constants.LOGIC_FAIL_SET_LOAD_FILE;
 		}
-		
+
 		isPrefSave = mPrefs.setPreferenceFileLocation(getFileName); //save preferences
 		if(!isPrefSave){ //unable to save
 			return Constants.LOGIC_FAIL_SET_SAVE;
 		}
-		
+
 		return Constants.LOGIC_SUCCESS_SET_SAVE;
-		
+
 	}
-	
-	
+
+
 	public static String list(String[] tokens){ 
 		String sortType=tokens[0];
 		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
@@ -266,12 +266,12 @@ public class Logic {
 		}else if(Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
 			sortOverView();
 		}else if(Constants.LIST_TYPE.equalsIgnoreCase(sortType)){
-			
+
 		}
 		mStorage.save();
 		return message;
 	}
-	
+
 	public static String mark(String[] tokens){ 
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
@@ -353,9 +353,9 @@ public class Logic {
 					extractedTask.setStartMilliseconds(Long.parseLong("0"));
 					extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
 				}else if(clearValue == 0){
-				extractedTask.setCategory(Constants.TASK_TIMED);
-				extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-				extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
+					extractedTask.setCategory(Constants.TASK_TIMED);
+					extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
+					extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
 				}
 			}
 
@@ -593,13 +593,37 @@ public class Logic {
 
 
 	}
-	
-	public static Task getTaskByIndex(int index){
-		if(isTaskInList(index)){
+
+	public static Task getTaskByIndex(int id){
+		int index = findTaskIndex(id);
+		if(isTaskInList(id)){
 			return mStorage.getTaskList().get(index);
 		}else{
 			return null;
 		}
+	}
+
+	public static String processTaskInfo(int index){
+		Task t = Logic.getTaskByIndex(index);
+		String finalStr = "";
+		if ( t!= null ){
+			String title = t.getTitle();
+			String startDate = t.getStartDate();
+			String startTime = t.getStartTime();
+			String endDate = t.getEndDate();
+			String endTime = t.getEndTime();
+			String category = t.getCategory();
+
+			if(category.equalsIgnoreCase("timed")){
+				finalStr += " -"+title+" -"+startDate+" -"+startTime+" -"+endDate+" -"+endTime;
+			}
+			else if(category.equalsIgnoreCase("deadline")){
+				finalStr += " -"+title+" -"+endDate+" -"+endTime;
+			}else{
+				finalStr += " -"+title;
+			}
+		}
+		return finalStr ;
 	}
 
 
@@ -719,6 +743,6 @@ public class Logic {
 		}
 
 	}
-	
-	
+
+
 }
