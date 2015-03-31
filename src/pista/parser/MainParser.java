@@ -10,8 +10,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import pista.Constants;
-import pista.logic.Logic;
-
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
@@ -21,12 +19,10 @@ public class MainParser {
 	String[] tokens;
 	String message="";
 	boolean validTokens=false;
-	Logic mLogic = null;
 
 
 	public MainParser(){
 		tokens=null;
-		mLogic = Logic.getInstance();
 	}
 
 	public String getCommand(){return command;}
