@@ -8,12 +8,17 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -214,6 +219,16 @@ public class UIController {
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
 
+		final KeyCombination keyCombi = new KeyCodeCombination(KeyCode.SPACE,KeyCombination.CONTROL_DOWN);
+		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>(){
+			@Override
+				public void handle(KeyEvent event){
+				if (keyCombi.match(event)){
+					onCtrlSpacePressed();
+				}
+			}
+		});
+		
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			initTaskListInListView();
 		}
@@ -285,7 +300,8 @@ public class UIController {
 		return true;
 	}
 
-	public void contentAssist(){
+	
+	public void onCtrlSpacePressed(){
 		userInput = txtBoxCommand.getText();
 		String[] temp = userInput.split(" ",2);
 		String command = temp[0];
@@ -293,8 +309,8 @@ public class UIController {
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
 				String processedString = Logic.processTaskInfo(id);
-				String finalStr = userInput + processedString;
-				txtBoxCommand.setText(finalStr);
+				String finalStr = processedString;
+				txtBoxCommand.appendText(finalStr);
 //				System.out.println(processedString);
 //				System.out.println(finalStr);
 			}

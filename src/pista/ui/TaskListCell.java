@@ -106,8 +106,8 @@ public class TaskListCell extends ListCell<Task> {
     //private Label icon = new Label();
 	private Label lblID = new Label();
     private Label lblTitle = new Label();
-    private Label lblStartDateTime = new Label();
-    private Label lblEndDateTime = new Label();
+    private Label lblDateTime = new Label();
+    //private Label lblEndDateTime = new Label();
     private CheckBox checkBox = new CheckBox();
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
@@ -309,10 +309,8 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureLabelDateTime() {
-    	this.lblStartDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
-    	this.lblEndDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
-    	configureLabels(this.lblStartDateTime);
-    	configureLabels(this.lblEndDateTime);  	
+    	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
+    	configureLabels(this.lblDateTime);	
     }
     
     private void configureLabels(Label lbl){
@@ -324,13 +322,11 @@ public class TaskListCell extends ListCell<Task> {
     	if(isDone){
     		this.lblTitle.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
         	this.lblID.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblStartDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblEndDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+        	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
     	}else{
     		this.lblTitle.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
     		this.lblID.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblStartDateTime.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblEndDateTime.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+        	this.lblDateTime.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
     	}
     	
     }
@@ -342,21 +338,11 @@ public class TaskListCell extends ListCell<Task> {
     	if(isDone){
     		this.lblTitle.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
         	this.lblID.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
-    	}else{
-    		//this.lblTitle.setStyle(TASK_LIST_CELL_TEXT_NOT_DONE_CLASS);
-        	//this.lblID.getStyleClass().add(TASK_LIST_CELL_ID_CLASS);
     	}
-    	
-    	
-    	/*
-    	this.lblTitle.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
-    	this.lblID.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
-    	*/
     }
     
     private void addControlsToVBox(){
-    	this.vBoxDateTime.getChildren().add(this.lblEndDateTime);
-    	this.vBoxDateTime.getChildren().add(this.lblStartDateTime);
+    	this.vBoxDateTime.getChildren().add(this.lblDateTime);
     	this.vBoxDateTime.setAlignment(Pos.CENTER_RIGHT);
     	
     	this.vBoxCheckBox.getChildren().add(this.checkBox);
@@ -409,18 +395,19 @@ public class TaskListCell extends ListCell<Task> {
         this.checkBox.setId("checkBox_" + this.getID);
         this.checkBox.setSelected(this.getIsDone);
         
+        this.lblDateTime.setWrapText(false);
+        
         if(this.getCategory.equals("timed")){
-        	this.lblStartDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", getStartDate + " " + getStartTime));
-        	this.lblEndDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));	
+        	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", getStartDate + " " + getStartTime) + "\n" +
+        							DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));	
         	
         } else if(this.getCategory.equals("deadline")){
-        	this.lblEndDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));
+        	this.lblDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));
         	
         } else if(this.getCategory.equals("floating")){
-        	this.lblStartDateTime.setText("");
-        	this.lblEndDateTime.setText("");
+        	this.lblDateTime.setText("");
+        	
         }
-        //setStyleClassDependingOnFoundState(mTask);  
         
         System.out.println(this.getID + " : " + this.getIsDone);
         
@@ -430,7 +417,6 @@ public class TaskListCell extends ListCell<Task> {
         	if (this.getCategory.equals("floating")){
             	configureBoxColor(4);	
             }else{
-            	//System.out.println(this.getID + " : " + this.getCategory + " - " + TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
             	configureBoxColor(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
             }
         }
