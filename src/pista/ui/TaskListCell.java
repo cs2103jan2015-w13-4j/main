@@ -88,7 +88,8 @@ public class TaskListCell extends ListCell<Task> {
     private final String POP_OVER_TITLE_CLASS = "pop-title";
     private final String POP_OVER_TIME_TIP_CLASS = "pop-label-time-tip";
     private final String POP_OVER_LABEL_PRIORITY_CLASS = "pop-label-priority";
-    private final String POP_OVER_LABEL_MESSAGE_CLASS = "pop-label-message";
+    private final String POP_OVER_LABEL_ERROR_MESSAGE_CLASS = "pop-label-error-message";
+    private final String POP_OVER_LABEL_CORRECT_MESSAGE_CLASS = "pop-label-correct-message";
     private final String POP_OVER_IMAGE_CRITICAL_CLASS = "pop-over-img-critical";
     private final String POP_OVER_IMAGE_NORMAL_CLASS = "pop-over-img-normal";
     private final String POP_OVER_IMAGE_LOW_CLASS = "pop-over-img-low";
@@ -96,6 +97,8 @@ public class TaskListCell extends ListCell<Task> {
     private final String POP_OVER_BUTTON_CHANGE_CLASS = "btn-change";
     
     private final String POP_OVER_INVALID_ALARM_TIME_MESSAGE = "Invalid Time";
+    private final String POP_OVER_INVALID_ALARM_DATE_MESSAGE = "Invalid Date";
+    private final String POP_OVER_SUCCESS_ALARM_MESSAGE = "Updated";
     
     private final int MAX_CHARACTER_IN_TITLE = 50;
     
@@ -755,15 +758,24 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	private void setPopOverLabelMessageStyle(Label lbl, double width){
-		lbl.getStyleClass().addAll(POP_OVER_LABEL_MESSAGE_CLASS);
 		lbl.setTextAlignment(TextAlignment.CENTER);
 		lbl.setAlignment(Pos.CENTER);
 		lbl.setPrefWidth(width);
 		lbl.setPrefHeight(30.0);
-		setPopOverLabelMessageVisible(lbl, false);
+		setPopOverLabelMessageVisible(lbl, false, false);
 	}
 	
-	private void setPopOverLabelMessageVisible(Label lbl, boolean isVisible){
+	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
+		
+		//lbl.getStyleClass().removeAll(POP_OVER_LABEL_ERROR_MESSAGE_CLASS, POP_OVER_LABEL_CORRECT_MESSAGE_CLASS); //reset
+		if(isValid){ //valid, green background
+			lbl.getStyleClass().addAll(POP_OVER_LABEL_CORRECT_MESSAGE_CLASS);
+			
+		}else{//invalid, red background
+			lbl.getStyleClass().addAll(POP_OVER_LABEL_ERROR_MESSAGE_CLASS);
+			
+		}
+		
 		lbl.setVisible(isVisible);
 	}
 	
@@ -937,23 +949,45 @@ public class TaskListCell extends ListCell<Task> {
         		String newDate = convertDateToStorageFormat(date);
         		String newHour = txtPopOverAlarmHourField.getText();
         		String newMinute = txtPopOverAlarmMinField.getText();
-        		String command = "";
+        		String alarmCommand = "";
         		
-        		if(!(isValidHour(newHour) && isValidMinute(newMinute))){
-        			setPopOverLabelMessageVisible(lblPopOverAlarmMessage, true); //show error message
+        		if(!(isValidHour(newHour) && isValidMinute(newMinute))){ //check is valid for hour and minute
+        			setPopOverLabelMessageVisible(lblPopOverAlarmMessage, false, true); //show error message
         			setPopOverLabelMessageText(lblPopOverAlarmMessage, POP_OVER_INVALID_ALARM_TIME_MESSAGE);
         			return;
         		}
         		
-        		command = offAlarmCommand.replace("[id]", getID);
+        		alarmCommand = offAlarmCommand.replace("[id]", getID);
         		
         		if(!(newDate.isEmpty() || newDate.equals(""))){ //if date is not empty, assume off
-        			command = editAlarmCommand.replace("[id]", getID).replace("[start_date]", newDate)
+        			alarmCommand = editAlarmCommand.replace("[id]", getID).replace("[start_date]", newDate)
         											.replace("[start_time]", addLeadingZero(convertTimeEmptyToValue(newHour)) + ":" + 
         																		addLeadingZero(convertTimeEmptyToValue(newMinute)));
+        		}else{
+        			//date is empty, error
+        			setPopOverLabelMessageVisible(lblPopOverAlarmMessage, false, true); //show error message
+        			setPopOverLabelMessageText(lblPopOverAlarmMessage, POP_OVER_INVALID_ALARM_DATE_MESSAGE);
+        			return;
         		}
+        		
 
-        		System.out.println(command);
+        		System.out.println(alarmCommand);
+        		
+        		//Execute command
+        		MainParser mp = MainParser.validateInput(alarmCommand); // since format is confirm correct, do not need to check again
+        		String command = mp.getCommand(); //get command which is remind
+        		String[] tokens = mp.getTokens(); //get tokens which is either off or startdate + starttime
+        		
+        		System.out.println(tokens.length);
+        		String logicOutput = Logic.runCommand(command, tokens);
+        		
+        		setUIControllerParentTextStatus(logicOutput); // show the status in UIController
+        		refreshUIControllerParentListView(); //refresh listview in UIController
+        		
+        		
+        		setPopOverLabelMessageVisible(lblPopOverAlarmMessage, true, true); //show error message
+    			setPopOverLabelMessageText(lblPopOverAlarmMessage, POP_OVER_SUCCESS_ALARM_MESSAGE);
+    			
         	}
         	
         }
@@ -987,7 +1021,7 @@ public class TaskListCell extends ListCell<Task> {
     }
 	
     private String convertDateToStorageFormat(LocalDate rawDate){
-    	String datePatternForStorage = "dd/M/yyyy"; //e.g. 18/4/2015
+    	String datePatternForStorage = "d/M/yyyy"; //e.g. 18/4/2015
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePatternForStorage);
 		
 		if(rawDate == null){

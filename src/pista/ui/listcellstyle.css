@@ -261,12 +261,18 @@
 	-fx-font-style: italic;
 }
 
-.popover .pop-label-message {
+.popover .pop-label-error-message {
 	-fx-font-size: 1.0em;
 	-fx-text-fill: #ffffff;
 	-fx-background-color: #FF5F5F;
-	
 }
+
+.popover .pop-label-correct-message {
+	-fx-font-size: 1.0em;
+	-fx-text-fill: #ffffff;
+	-fx-background-color: #7CAF00;
+}
+
 
 .pop-over-img-critical {
 	-fx-image: url("../../images/priority_level_critical.png");
