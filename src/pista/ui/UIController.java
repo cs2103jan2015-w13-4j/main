@@ -1,18 +1,24 @@
 package pista.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,6 +44,7 @@ public class UIController {
 	private Storage mStorage;
 
 	public String userInput = null;
+	private static String searchKeyword = null;
 
 	private static String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
 	private static String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
@@ -171,11 +178,22 @@ public class UIController {
 		}
 
 		tokens = mp.getTokens();
+		
+		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
+			setSearchKeyword(tokens);
+			initTaskListInListView();
+			resetSearchKeyword();
+			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
+			return;
+		}
+		
 		logicOutput = Logic.runCommand(command, tokens);
 
 		txtStatus.setText(logicOutput);
 
 		initTaskListInListView();
+		
+		Logic.storeToHistory(userInput);
 	}
 
 	@FXML
@@ -201,6 +219,16 @@ public class UIController {
 		logicOutput = Logic.load();
 		txtStatus.setText(logicOutput);
 
+		final KeyCombination keyCombi = new KeyCodeCombination(KeyCode.SPACE,KeyCombination.CONTROL_DOWN);
+		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>(){
+			@Override
+				public void handle(KeyEvent event){
+				if (keyCombi.match(event)){
+					onCtrlSpacePressed();
+				}
+			}
+		});
+		
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			initTaskListInListView();
 		}
@@ -228,7 +256,20 @@ public class UIController {
 		});
 
 		try{
-			ObservableList<Task> myObservableList = FXCollections.observableList(Logic.getStorageList());
+			ArrayList<Task> storageList = Logic.getStorageList();
+			if (searchKeyword != null) {
+				ArrayList<Task> displayList = new ArrayList<Task>();
+				
+				for (Task task: storageList) {
+					if (hasKeyword(task, searchKeyword)) {
+						displayList.add(task);
+					}
+				}
+				
+				storageList = displayList;
+			}
+			
+			ObservableList<Task> myObservableList = FXCollections.observableList(storageList);
 			listview_task_fx_id.setItems(null); 
 			listview_task_fx_id.setItems(myObservableList);
 
@@ -259,7 +300,8 @@ public class UIController {
 		return true;
 	}
 
-	public void contentAssist(){
+	
+	public void onCtrlSpacePressed(){
 		userInput = txtBoxCommand.getText();
 		String[] temp = userInput.split(" ",2);
 		String command = temp[0];
@@ -267,8 +309,8 @@ public class UIController {
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
 				String processedString = Logic.processTaskInfo(id);
-				String finalStr = userInput + processedString;
-				txtBoxCommand.setText(finalStr);
+				String finalStr = processedString;
+				txtBoxCommand.appendText(finalStr);
 //				System.out.println(processedString);
 //				System.out.println(finalStr);
 			}
@@ -279,5 +321,21 @@ public class UIController {
 
 	private void clearContent(){
 		txtStatus.setText("");
+	}
+	
+	private void setSearchKeyword(String[] tokens) {
+		searchKeyword = getKeyword(tokens);
+	}
+	
+	private void resetSearchKeyword() {
+		searchKeyword = null;
+	}
+	
+	private String getKeyword(String[] tokens) {
+		return tokens[0];
+	}
+	
+	private boolean hasKeyword(Task task, String keyword) {
+		return task.getTitle().contains(keyword);
 	}
 }

@@ -46,12 +46,21 @@ import pista.parser.TokenValidation;
 public class TaskListCell extends ListCell<Task> {
 
     private final String TASK_LIST_CELL = "task-list-cell";
-    private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
 
+    private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
+    
+    
     private final String TASK_LIST_CELL_BOX_RED_CLASS = "task-list-cell-box-red";
     private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "task-list-cell-box-yellow";
     private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "task-list-cell-box-green";
     private final String TASK_LIST_CELL_BOX_TRANSPARENT_CLASS = "task-list-cell-box-transparent";
+    /*
+    private final String TASK_LIST_CELL_BOX_COLOR_CLASS = "-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);";
+    private final String TASK_LIST_CELL_BOX_RED_CLASS = "-fx-background-color: #FF4444;";
+    private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "-fx-background-color: #FFBB33;";
+    private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "-fx-background-color: #99CC00;";
+    private final String TASK_LIST_CELL_BOX_TRANSPARENT_CLASS = "-fx-background-color: transparent;";
+    */
     
     private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
     private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
@@ -66,11 +75,11 @@ public class TaskListCell extends ListCell<Task> {
     private final String TASK_LIST_CELL_PRIORITY_LOW_CLASS = "task-list-cell-priority-low";
     private final String TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS = "task-list-cell-priority-default";
     
-   
+    
     private final String TASK_LIST_CELL_TEXT_IS_DONE_CLASS = "task-list-cell-text-is-done";
     private final String TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS = "task-list-cell-background-is-done";
     
-    private final String TASK_LIST_CELL_STRIKE_THROUGH_CLASS = "task-list-cell-label-strike-through";
+    private final String TASK_LIST_CELL_STRIKE_THROUGH_CLASS = "task-list-cell-label-strike-through"; 
     
     private final String POP_OVER_CONTENT_AREA_CLASS = "pop-content-area";
     private final String POP_OVER_TITLE_CLASS = "pop-title";
@@ -97,8 +106,8 @@ public class TaskListCell extends ListCell<Task> {
     //private Label icon = new Label();
 	private Label lblID = new Label();
     private Label lblTitle = new Label();
-    private Label lblStartDateTime = new Label();
-    private Label lblEndDateTime = new Label();
+    private Label lblDateTime = new Label();
+    //private Label lblEndDateTime = new Label();
     private CheckBox checkBox = new CheckBox();
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
@@ -128,7 +137,7 @@ public class TaskListCell extends ListCell<Task> {
     private String getPriority = "";
     
     public TaskListCell() {
-    	
+    	super();
         configureGrid(); 
         configureCheckBoxIsDone();
         configureButtonImage();
@@ -141,13 +150,13 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureGrid() {
-        grid.setHgap(10);
-        grid.setVgap(4);
-        grid.setPadding(new Insets(0, 2, 0, 2));
-        grid.setMaxHeight(70.0);
-        grid.setMinHeight(70.0);
-        grid.setPrefHeight(70.0);
-        
+        this.grid.setHgap(10);
+        this.grid.setVgap(4);
+        this.grid.setPadding(new Insets(0, 2, 0, 2));
+        this.grid.setMaxHeight(70.0);
+        this.grid.setMinHeight(70.0);
+        this.grid.setPrefHeight(70.0);
+
         ColumnConstraints col1 = new ColumnConstraints(); //color box
         col1.setPercentWidth(2);
         col1.setHalignment(HPos.LEFT);
@@ -179,18 +188,15 @@ public class TaskListCell extends ListCell<Task> {
         RowConstraints row1 = new RowConstraints();
         row1.setValignment(VPos.CENTER);
         row1.setPrefHeight(70.0);
-        grid.getRowConstraints().addAll(row1);
+        this.grid.getRowConstraints().addAll(row1);
         
-        grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7);
+        this.grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5, col6, col7);
         
     }
     
-    //private void configureIcon() {
-        //icon.setFont(Font.font(FONT_AWESOME, FontWeight.BOLD, 24));
-        //icon.getStyleClass().add(CACHE_LIST_ICON_CLASS);
-    //}
-    
     private void setCellBackground(boolean isDone){
+    	getStyleClass().removeAll(TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS, TASK_LIST_CELL);
+   
     	if(isDone){
     		getStyleClass().add(TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS);
     	}else{
@@ -199,7 +205,6 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureButtonImage(){
-    	//mImgView.setImage(mImg);
     	//Alarm
     	double size = 25.0;
     	mBtnAlarm.setPrefSize(size, size);
@@ -217,6 +222,10 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void setImageViewAlarm(Long remainder, boolean isDone){
+    	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
+    	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
+    	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
+    	
     	if(!isDone){
     		if(remainder > 0L){
     			mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_ENABLE_ALARM_CLASS);
@@ -224,6 +233,7 @@ public class TaskListCell extends ListCell<Task> {
         		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_DISABLE_ALARM_CLASS);
         	}
     	}else{
+    		
     		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
     	}
     	
@@ -249,54 +259,58 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureBoxColor(int type){
-    	vBoxColor.setMaxWidth(12.0);
-    	vBoxColor.setMinWidth(12.0);
-    	vBoxColor.setPrefWidth(12.0);
-    	vBoxColor.setAlignment(Pos.CENTER_LEFT);  	
+
+    	this.vBoxColor.setMaxWidth(12.0);
+    	this.vBoxColor.setMinWidth(12.0);
+    	this.vBoxColor.setPrefWidth(12.0);
+    	this.vBoxColor.setAlignment(Pos.CENTER_LEFT);  	
+    	
+    	this.vBoxColor.getStyleClass().removeAll(TASK_LIST_CELL_BOX_RED_CLASS,
+    			TASK_LIST_CELL_BOX_YELLOW_CLASS, TASK_LIST_CELL_BOX_TRANSPARENT_CLASS, TASK_LIST_CELL_BOX_GREEN_CLASS);
+    	
     	
     	if(type == 1){
-    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_RED_CLASS);
+    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_RED_CLASS);
     	}
     	
     	if (type == -1 || type == 0){
-    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_YELLOW_CLASS);
+    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_YELLOW_CLASS);
     	}
     	
     	if (type == -2 || type == 4){
-    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_TRANSPARENT_CLASS);
+    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_TRANSPARENT_CLASS);
+
     	}
     	
     	if (type == 3){ //is done
-    		vBoxColor.getStyleClass().addAll(TASK_LIST_CELL_BOX_GREEN_CLASS);
+    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_GREEN_CLASS);
     	}
     	
     }
     
     
     private void configureCheckBoxIsDone(){
-    	checkBox.setOnAction(eh);
+    	this.checkBox.setOnAction(eh);
     }
     
     private void configureVBoxCheckBox(){
-    	vBoxCheckBox.setPadding(new Insets(0, 0, 0, 0));
+    	this.vBoxCheckBox.setPadding(new Insets(0, 0, 0, 0));
     }
     
     private void configureLabelID(){
     	//System.out.println("type - " + type);
-    	lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS);
-    	lblID.setAlignment(Pos.CENTER);
+    	this.lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS);
+    	this.lblID.setAlignment(Pos.CENTER);
     }
     
     private void configureLabelTitle() {
-    	lblTitle.getStyleClass().add(TASK_LIST_CELL_TITLE_CLASS);
-    	lblTitle.setAlignment(Pos.CENTER_LEFT);
+    	this.lblTitle.getStyleClass().add(TASK_LIST_CELL_TITLE_CLASS);
+    	this.lblTitle.setAlignment(Pos.CENTER_LEFT);
     }
     
     private void configureLabelDateTime() {
-    	lblStartDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
-    	lblEndDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
-    	configureLabels(lblStartDateTime);
-    	configureLabels(lblEndDateTime);  	
+    	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
+    	configureLabels(this.lblDateTime);	
     }
     
     private void configureLabels(Label lbl){
@@ -304,42 +318,52 @@ public class TaskListCell extends ListCell<Task> {
     	lbl.setMaxHeight(20.0);
     }
     
-    private void strikeThroughLabels(){
-    	lblTitle.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-    	lblID.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-    	lblStartDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-    	lblEndDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    private void strikeThroughLabels(boolean isDone){
+    	if(isDone){
+    		this.lblTitle.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+        	this.lblID.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+        	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    	}else{
+    		this.lblTitle.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    		this.lblID.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+        	this.lblDateTime.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    	}
+    	
     }
     
-    private void isDoneLabel(){
-    	lblTitle.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
-    	lblID.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+    private void isDoneLabel(boolean isDone){
+    	lblTitle.getStyleClass().removeAll(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+    	lblID.getStyleClass().removeAll(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+    	
+    	if(isDone){
+    		this.lblTitle.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+        	this.lblID.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+    	}
     }
     
     private void addControlsToVBox(){
-    	vBoxDateTime.getChildren().add(lblEndDateTime);
-    	vBoxDateTime.getChildren().add(lblStartDateTime);
-    	vBoxDateTime.setAlignment(Pos.CENTER_RIGHT);
+    	this.vBoxDateTime.getChildren().add(this.lblDateTime);
+    	this.vBoxDateTime.setAlignment(Pos.CENTER_RIGHT);
     	
-    	vBoxCheckBox.getChildren().add(checkBox);
-    	vBoxCheckBox.setAlignment(Pos.CENTER);
+    	this.vBoxCheckBox.getChildren().add(this.checkBox);
+    	this.vBoxCheckBox.setAlignment(Pos.CENTER);
     }
     
     private void addControlsToGrid() {
     	//add(node, column index, row index)
-    	grid.add(vBoxColor, 0, 0);
-    	vBoxColor.setPadding(new Insets(0, 0, 0, 5));
+    	this.grid.add(this.vBoxColor, 0, 0);
+    	this.vBoxColor.setPadding(new Insets(0, 0, 0, 5));
     	
-    	grid.add(vBoxCheckBox, 1, 0);
-    	grid.add(lblID, 2, 0); 
+    	this.grid.add(this.vBoxCheckBox, 1, 0);
+    	this.grid.add(lblID, 2, 0); 
 
-        grid.add(lblTitle, 3, 0);
-        grid.add(mBtnPriority, 4, 0);
-        GridPane.setMargin(mBtnPriority, new Insets(5, 10, 5, 5));
+    	this.grid.add(this.lblTitle, 3, 0);
+    	this.grid.add(this.mBtnPriority, 4, 0);
+        GridPane.setMargin(this.mBtnPriority, new Insets(5, 10, 5, 5));
         
-        grid.add(mBtnAlarm, 5, 0);
-        GridPane.setMargin(mBtnAlarm, new Insets(5, 10, 5, 5));
-        grid.add(vBoxDateTime, 6, 0);
+        this.grid.add(this.mBtnAlarm, 5, 0);
+        GridPane.setMargin(this.mBtnAlarm, new Insets(5, 10, 5, 5));
+        this.grid.add(this.vBoxDateTime, 6, 0);
  
     }
     
@@ -350,57 +374,59 @@ public class TaskListCell extends ListCell<Task> {
  
     private void addContent(Task mTask) {
         setText(null);
-        //icon.setText(GeocachingIcons.getIcon(cache).toString());
-        
-        getID = String.valueOf(mTask.getID());
-        getTitle = mTask.getTitle();
-        getCategory = mTask.getCategory();
-        getStartDate = mTask.getStartDate();
-        getEndDate = mTask.getEndDate();
-        getStartTime = mTask.getStartTime();
-        getEndTime = mTask.getEndTime();
-        getIsDone = mTask.getIsDone();
-        getRemainder = mTask.getReminder();
-        getPriority = mTask.getPriority();
+
+        this.getID = String.valueOf(mTask.getID());
+        this.getTitle = mTask.getTitle();
+        this.getCategory = mTask.getCategory();
+        this.getStartDate = mTask.getStartDate();
+        this.getEndDate = mTask.getEndDate();
+        this.getStartTime = mTask.getStartTime();
+        this.getEndTime = mTask.getEndTime();
+        this.getIsDone = mTask.getIsDone();
+        this.getRemainder = mTask.getReminder();
+        this.getPriority = mTask.getPriority();
         
         if(mTask.getTitle().length() > MAX_CHARACTER_IN_TITLE){
-        	getTitle = getTitle.substring(0, MAX_CHARACTER_IN_TITLE) + "...";
+        	this.getTitle = this.getTitle.substring(0, MAX_CHARACTER_IN_TITLE) + "...";
         }
         
-        lblTitle.setText(getTitle);
-        lblID.setText(getID);
-        checkBox.setId("checkBox_" + getID);
-        checkBox.setSelected(getIsDone);
+        this.lblTitle.setText(this.getTitle);
+        this.lblID.setText(this.getID);
+        this.checkBox.setId("checkBox_" + this.getID);
+        this.checkBox.setSelected(this.getIsDone);
         
-        if(getCategory.equals("timed")){
-        	lblStartDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", getStartDate + " " + getStartTime));
-        	lblEndDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));	
+        this.lblDateTime.setWrapText(false);
+        
+        if(this.getCategory.equals("timed")){
+        	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", getStartDate + " " + getStartTime) + "\n" +
+        							DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));	
         	
-        } else if(getCategory.equals("deadline")){
-        	lblEndDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));
+        } else if(this.getCategory.equals("deadline")){
+        	this.lblDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));
         	
-        } else if(getCategory.equals("floating")){
-        	lblStartDateTime.setText("");
-        	lblEndDateTime.setText("");
+        } else if(this.getCategory.equals("floating")){
+        	this.lblDateTime.setText("");
+        	
         }
-        //setStyleClassDependingOnFoundState(mTask);  
         
-        if(getIsDone){ //task is done or floating
-        	strikeThroughLabels();
-        	isDoneLabel();
+        System.out.println(this.getID + " : " + this.getIsDone);
+        
+        if(this.getIsDone){ //task is done or floating
         	configureBoxColor(3); //green
-        	
-        }else if (getCategory.equals("floating")){
-        	configureBoxColor(4);
-        	
         }else{
-        	configureBoxColor(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
+        	if (this.getCategory.equals("floating")){
+            	configureBoxColor(4);	
+            }else{
+            	configureBoxColor(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
+            }
         }
         
-        setImageViewPriority(getPriority);
-        setImageViewAlarm(getRemainder, getIsDone); //set alarm icon - enable or disable
-        setCellBackground(getIsDone);
-        setGraphic(grid);
+        strikeThroughLabels(this.getIsDone);
+        isDoneLabel(this.getIsDone);
+        setImageViewPriority(this.getPriority);
+        setImageViewAlarm(this.getRemainder, this.getIsDone); //set alarm icon - enable or disable
+        setCellBackground(this.getIsDone);
+        setGraphic(this.grid);
 		
     }
     
@@ -422,8 +448,9 @@ public class TaskListCell extends ListCell<Task> {
 	@Override
 	public void updateItem(Task mTask, boolean empty){
 		super.updateItem(mTask,  empty);
-		if(empty){
+		if(empty || mTask == null){
 			clearContent();
+			return;
 		}else {		
 			addContent(mTask);	
 		}//end if 

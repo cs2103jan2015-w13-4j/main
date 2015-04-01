@@ -73,11 +73,13 @@
 
 .task-list-cell-background-is-done {
 	-fx-background-color: rgba(150, 150, 150, 0.2);
+	-fx-background-insets: 5;
+	-fx-effect: dropshadow(three-pass-box, #F1F1F199, 6, 0, 0, 0);
 }
 
 .task-list-cell-title {
     -fx-font-weight: bold;
-    -fx-font-size: 1.4em;
+    -fx-font-size: 1.0em;
 }
 
 .task-list-cell-datetime {

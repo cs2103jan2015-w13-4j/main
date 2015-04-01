@@ -26,9 +26,15 @@ public class Logic {
 	private Logic(){}
 
 	public static Logic getInstance(){
-		initStorage();
-		initPreference();
-		initLogging();
+		if(mStorage == null){
+			initStorage();
+		}
+		if(mPrefs == null){
+			initPreference();
+		}
+		if(mLog == null){
+			initLogging();
+		}
 		return mLogic;
 	}
 
@@ -119,6 +125,7 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
 	}
+	
 	public static String reminder(String[] tokens){
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		long reminderMS = 0L;
@@ -636,6 +643,13 @@ public class Logic {
 			}
 		}
 		return finalStr ;
+	}
+	
+	public static void storeToHistory(String s){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date currentDate = new Date();
+		String historyInput = dateFormat.format(currentDate)+":"+s;
+		mStorage.getHistoryList().add(historyInput);
 	}
 
 
