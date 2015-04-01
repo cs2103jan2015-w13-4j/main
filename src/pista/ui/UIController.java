@@ -3,6 +3,8 @@ package pista.ui;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.controlsfx.control.PopOver;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,8 +12,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -24,6 +29,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -42,22 +48,36 @@ public class UIController {
 	private static CustomLogging mLog = null;
 	private CustomPreferences mPrefs = null;
 	private Storage mStorage;
-
+	private PopOver mPopOverSetting = null;
+	
 	public String userInput = null;
 	private static String searchKeyword = null;
 
-	private static String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
-	private static String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
-	private static String CSS_CLASS_TRANSPARENT_BACKGROUND = "transparent-background";
-	private static String CSS_CLASS_LIST_VIEW = "list-view-style";
-	private static String CSS_CLASS_TEXT_BOX = "text-box-style";
-	private static String CSS_CLASS_BUTTON = "button-style";
-	private static String CSS_CLASS_TEXT_STATUS = "text-status-style";
+	private static final String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
+	private static final String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
+	private static final String CSS_CLASS_TRANSPARENT_BACKGROUND = "transparent-background";
+	private static final String CSS_CLASS_LIST_VIEW = "list-view-style";
+	private static final String CSS_CLASS_TEXT_BOX = "text-box-style";
+	private static final String CSS_CLASS_BUTTON = "button-style";
+	private static final String CSS_CLASS_TEXT_STATUS = "text-status-style";
 
+	private static final String CSS_CLASS_BUTTON_IMAGE = "button-image-style";
+	private static final String CSS_CLASS_BUTTON_SETTING = "button-setting-style";
+	
+	private final String CSS_CLASS_POP_OVER_CONTENT_AREA = "pop-content-area";
+    private final String CSS_CLASS_POP_OVER_TITLE= "pop-label-title";
+    private final String CSS_CLASS_POP_OVER_BUTTON = "pop-btn";
+    private final String CSS_CLASS_POP_OVER_ERROR_MESSAGE = "pop-label-error-message";
+    private final String CSS_CLASS_POP_OVER_CORRECT_MESSAGE = "pop-label-correct-message";
+    private final String POP_OVER_INVALID_SETTING_MESSAGE = "Invalid Date";
+    private final String POP_OVER_SUCCESS_SETTING_MESSAGE = "Updated";
 	//Objects
 	@FXML
 	private AnchorPane anchorPaneMain;
 
+	@FXML
+    private AnchorPane anchorPaneButtonAreaTop;
+	 
 	@FXML
 	private HBox hBoxInputArea;
 
@@ -76,6 +96,9 @@ public class UIController {
 	@FXML
 	private ListView<Task> listview_task_fx_id;
 
+	private Button btnSetting;
+	//private Label lblPopOverMessage = new Label();
+	
 	@FXML
 	void onHelp(ActionEvent event) {
 		showHelp();
@@ -147,6 +170,23 @@ public class UIController {
 		txtBoxCommand.setText(Constants.DELETE_COMMAND);
 	}
 
+	private void initButtonSetting(){
+		if(this.btnSetting == null){
+			this.btnSetting = new Button();
+		}
+		
+		this.btnSetting.getStyleClass().addAll(CSS_CLASS_BUTTON_IMAGE, CSS_CLASS_BUTTON_SETTING);
+		this.btnSetting.setPrefSize(25.0, 25.0);
+		this.btnSetting.setMaxSize(25.0, 25.0);
+		this.btnSetting.setMinSize(25.0, 25.0);
+		this.btnSetting.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+	}
+	
+	private void addControlsToAnchorPaneAreaTop(){
+		this.anchorPaneButtonAreaTop.getChildren().add(this.btnSetting);
+		AnchorPane.setRightAnchor(this.btnSetting, 10.0);
+	}
+	
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
@@ -205,6 +245,9 @@ public class UIController {
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
 
+		this.initButtonSetting();
+		this.addControlsToAnchorPaneAreaTop();
+		
 		anchorPaneMain.getStyleClass().addAll(CSS_CLASS_TRANSPARENT_BACKGROUND);
 		txtStatus.getStyleClass().addAll(CSS_CLASS_TEXT_BACKGROUND, CSS_CLASS_TEXT_STATUS);
 		txtBoxCommand.getStyleClass().addAll(CSS_CLASS_TEXT_BOX);
@@ -300,7 +343,6 @@ public class UIController {
 		return true;
 	}
 
-	
 	public void onCtrlSpacePressed(){
 		userInput = txtBoxCommand.getText();
 		String[] temp = userInput.split(" ",2);
@@ -338,4 +380,133 @@ public class UIController {
 	private boolean hasKeyword(Task task, String keyword) {
 		return task.getTitle().contains(keyword);
 	}
+	
+	//============================== POPOVER Setting ======================================
+	private EventHandler onBtnSettingClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			showPopOverSetting();
+		}
+	};
+	
+	
+	private void showPopOverSetting(){
+		if(this.mPopOverSetting != null){
+			if(this.mPopOverSetting.isShowing()){
+				this.mPopOverSetting.setAutoHide(true);
+				return;
+			}
+		}
+		this.mPopOverSetting = new PopOver();
+		this.initPopOverSetting();
+		this.mPopOverSetting.show(this.btnSetting); 
+		
+	}
+	
+	private void initPopOverSetting(){
+		final double popWidth = 500.0;
+		final double popHeight = 400.0;
+		
+		VBox vBox = new VBox(8);
+		HBox hBox = new HBox(4);
+		Label lblSettingTitle = new Label("Setting");
+		Label lblCurrentDirectory = new Label("Current Directory");
+		final Label lblMessage = new Label();
+		TextField txtBoxCurrentDirectory = new TextField();
+		Button btnBrowse = new Button("Browse");
+		Button btnSave = new Button("Save All Settings");
+		
+		//Textbox directory
+		txtBoxCurrentDirectory.setPrefWidth(380.0);
+		
+		//Button browse
+		btnBrowse.getStyleClass().addAll(CSS_CLASS_POP_OVER_BUTTON);
+		btnBrowse.setPrefWidth(100.0);
+		btnBrowse.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+			@Override
+	        public void handle(ActionEvent event) {
+				//browse for file
+				/*
+				setPopOverLabelMessageStyle(lblMessage, popWidth);
+				setPopOverLabelMessageText(lblMessage, POP_OVER_SUCCESS_SETTING_MESSAGE);
+				setPopOverLabelMessageVisible(lblMessage,true,true);
+				*/
+			}
+		});
+		
+		
+		//Button save
+		btnSave.getStyleClass().addAll(CSS_CLASS_POP_OVER_BUTTON);
+		btnSave.setPrefWidth(popWidth);
+		btnSave.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+			@Override
+	        public void handle(ActionEvent event) {
+				//do save setting
+				
+				//Label message
+				setPopOverLabelMessageStyle(lblMessage, popWidth);
+				setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_SETTING_MESSAGE);
+				setPopOverLabelMessageVisible(lblMessage,false,true);
+			}
+		});
+		
+		
+		//label setting title
+		lblSettingTitle.getStyleClass().addAll(CSS_CLASS_POP_OVER_TITLE);
+		lblSettingTitle.setPrefWidth(popWidth);
+		lblSettingTitle.setTextAlignment(TextAlignment.CENTER);
+		lblSettingTitle.setAlignment(Pos.CENTER);
+		
+		
+		
+		vBox.setPadding(new Insets(5,10,5,10)); //set Padding
+		vBox.getChildren().add(lblSettingTitle);
+		vBox.getChildren().add(lblCurrentDirectory);
+		
+		hBox = new HBox(4);
+		HBox.setMargin(txtBoxCurrentDirectory, new Insets(2,0,0,0));
+		hBox.getChildren().add(txtBoxCurrentDirectory); //Text box current directory
+		hBox.getChildren().add(btnBrowse); //Button browse
+		
+		vBox.getChildren().add(hBox); //each horizontal boxes
+		vBox.getChildren().add(btnSave); //Button save
+		vBox.getChildren().add(lblMessage); //Label message (red or green)
+		
+		vBox.setPrefSize(popWidth, popHeight);
+		vBox.getStyleClass().addAll(CSS_CLASS_POP_OVER_CONTENT_AREA); //set style for the vbox
+		
+		
+		this.mPopOverSetting = new PopOver(vBox);
+		this.mPopOverSetting.setHideOnEscape(true);
+		this.mPopOverSetting.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+		this.mPopOverSetting.setAutoFix(true);
+		this.mPopOverSetting.setAutoHide(true);
+		this.mPopOverSetting.setDetachable(false);
+	
+		
+	}
+	
+	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
+		lbl.getStyleClass().removeAll(CSS_CLASS_POP_OVER_CORRECT_MESSAGE, CSS_CLASS_POP_OVER_ERROR_MESSAGE);
+		if(isValid){ //valid, green background
+			lbl.getStyleClass().addAll(CSS_CLASS_POP_OVER_CORRECT_MESSAGE);	
+		}else{//invalid, red background
+			lbl.getStyleClass().addAll(CSS_CLASS_POP_OVER_ERROR_MESSAGE);
+		}
+		
+		lbl.setVisible(isVisible);
+	}
+	
+	private void setPopOverLabelMessageText(Label lbl, String msg){
+		lbl.setText(msg);
+	}
+	
+	private void setPopOverLabelMessageStyle(Label lbl, double width){
+		lbl.setTextAlignment(TextAlignment.CENTER);
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setPrefWidth(width);
+		lbl.setPrefHeight(30.0);
+		setPopOverLabelMessageVisible(lbl, false, false);
+	}
+	
 }

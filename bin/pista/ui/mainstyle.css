@@ -114,3 +114,74 @@
 	-fx-font-size: 14px;
 	-fx-text-fill: #ffffff;
 }
+
+
+/* Button Image */
+.button-image-style {
+	-fx-background-color: transparent;
+ 	-fx-background-size: contain;
+ 	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center center;
+}
+
+.button-image-style:hover {
+	-fx-cursor: hand;
+}
+
+.button-setting-style {
+	-fx-background-image: url("../../images/setting.png"); 
+}
+
+.button-setting-style:hover {
+	-fx-background-image: url("../../images/setting_hover.png"); 
+}
+
+.button-setting-style:pressed {
+	-fx-background-image: url("../../images/setting_pressed.png"); 
+}
+
+
+.popover .pop-content-area{
+	-fx-background-color: #ffffff;
+}
+
+.popover .pop-label-title {
+	-fx-font-family: "Arial";
+	-fx-font-size: 1.3em;
+	-fx-text-fill: #888888;
+	-fx-text-alignment: center;
+}
+
+.popover .pop-btn {
+	-fx-background-color: #EAEAEA;
+    -fx-border-color: #B3B3B3;
+    -fx-padding: 7 10 7 10;
+    -fx-text-fill: #4D4D51;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.popover .pop-btn:hover {
+	-fx-background-color: #E3F0FC;
+	-fx-border-color: #89BAEC;
+	-fx-cursor: hand;
+}
+
+.popover .pop-btn:pressed {
+	-fx-background-color: #CAE3FC;
+	-fx-border-color: #62A4E7;
+	-fx-cursor: hand;
+}
+
+.popover .pop-label-error-message {
+	-fx-font-size: 1.0em;
+	-fx-text-fill: #ffffff;
+	-fx-background-color: #FF5F5F;
+}
+
+.popover .pop-label-correct-message {
+	-fx-font-size: 1.0em;
+	-fx-text-fill: #ffffff;
+	-fx-background-color: #7CAF00;
+}
+

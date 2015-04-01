@@ -226,7 +226,6 @@ public class TaskListCell extends ListCell<Task> {
     	mBtnAlarm.setPrefSize(size, size);
     	mBtnAlarm.setMaxSize(size, size);
     	mBtnAlarm.setMinSize(size, size);
-    	mBtnAlarm.setMouseTransparent(false);
     	mBtnAlarm.addEventFilter(MouseEvent.MOUSE_CLICKED, btnAlarmEnterEventHandler); //ActionEvent.ACTION
     	
     	//Priority
