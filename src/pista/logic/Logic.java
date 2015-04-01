@@ -170,7 +170,7 @@ public class Logic {
 
 	public static ArrayList<Task> getStorageList(){
 		list(currentSortType);
-		//reorderID();
+		reorderID();
 		return mStorage.getTaskList();
 	}
 
