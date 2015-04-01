@@ -177,7 +177,15 @@ public class Logic {
 
 	public static ArrayList<Task> getStorageList(){
 		list(currentSortType);
+		reorderID();
 		return mStorage.getTaskList();
+	}
+
+	private static void reorderID() {
+		for (int i = 0; i < mStorage.getTaskList().size(); i++) {
+			mStorage.getTaskList().get(i).setID(i+1);
+		}
+		mStorage.save();
 	}
 
 	public static void sortOverView(){

@@ -1,12 +1,15 @@
 package pista.ui;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.controlsfx.control.PopOver;
+import org.omg.CORBA.Environment;
 
 import com.sun.javafx.geom.Rectangle;
 
@@ -83,13 +86,16 @@ public class TaskListCell extends ListCell<Task> {
     
     private final String POP_OVER_CONTENT_AREA_CLASS = "pop-content-area";
     private final String POP_OVER_TITLE_CLASS = "pop-title";
-    private final String POP_OVER_LABEL_PRIORITY_CLASS = "label-priority";
+    private final String POP_OVER_TIME_TIP_CLASS = "pop-label-time-tip";
+    private final String POP_OVER_LABEL_PRIORITY_CLASS = "pop-label-priority";
+    private final String POP_OVER_LABEL_MESSAGE_CLASS = "pop-label-message";
     private final String POP_OVER_IMAGE_CRITICAL_CLASS = "pop-over-img-critical";
     private final String POP_OVER_IMAGE_NORMAL_CLASS = "pop-over-img-normal";
     private final String POP_OVER_IMAGE_LOW_CLASS = "pop-over-img-low";
     private final String POP_OVER_IMAGE_DEFAULT_CLASS = "pop-over-img-default";
     private final String POP_OVER_BUTTON_CHANGE_CLASS = "btn-change";
     
+    private final String POP_OVER_INVALID_ALARM_TIME_MESSAGE = "Invalid Time";
     
     private final int MAX_CHARACTER_IN_TITLE = 50;
     
@@ -118,10 +124,10 @@ public class TaskListCell extends ListCell<Task> {
     private PopOver mPopOverAlarm = null;
     private PopOver mPopOverPriority = null;
     
-	TextField txtHourField = null;
-	TextField txtMinField = null;
-	DatePicker datePicker = null;
-    
+	TextField txtPopOverAlarmHourField = null;
+	TextField txtPopOverAlarmMinField = null;
+	DatePicker datePickerPopOverAlarm = null;
+	Label lblPopOverAlarmMessage = null;
     
     ToggleGroup priorityGroup = null;
     
@@ -135,6 +141,10 @@ public class TaskListCell extends ListCell<Task> {
     private boolean getIsDone = false;
     private Long getRemainder = 0L;
     private String getPriority = "";
+    
+    private String editAlarmCommand = "remind [id] -[start_date] -[start_time]";
+    private String offAlarmCommand = "remind [id] -off";
+        	
     
     public TaskListCell() {
     	super();
@@ -310,12 +320,13 @@ public class TaskListCell extends ListCell<Task> {
     
     private void configureLabelDateTime() {
     	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
+        this.lblDateTime.setWrapText(true);
     	configureLabels(this.lblDateTime);	
     }
     
     private void configureLabels(Label lbl){
     	lbl.setMaxWidth(180.0);
-    	lbl.setMaxHeight(20.0);
+    	//lbl.setMaxHeight(20.0);
     }
     
     private void strikeThroughLabels(boolean isDone){
@@ -395,21 +406,20 @@ public class TaskListCell extends ListCell<Task> {
         this.checkBox.setId("checkBox_" + this.getID);
         this.checkBox.setSelected(this.getIsDone);
         
-        this.lblDateTime.setWrapText(false);
-        
+
         if(this.getCategory.equals("timed")){
-        	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", getStartDate + " " + getStartTime) + "\n" +
-        							DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));	
+
+
+        	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", this.convertToFullDateString(getStartDate) + " " + getStartTime) + "\n" +
+        							DISPLAY_END_DATE_TIME.replace("[datetime]", this.convertToFullDateString(getEndDate) + " " + getEndTime));
         	
         } else if(this.getCategory.equals("deadline")){
-        	this.lblDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", getEndDate + " " + getEndTime));
+        	this.lblDateTime.setText(DISPLAY_END_DATE_TIME.replace("[datetime]", convertToFullDateString(getEndDate) + " " + getEndTime));
         	
         } else if(this.getCategory.equals("floating")){
         	this.lblDateTime.setText("");
         	
         }
-        
-        System.out.println(this.getID + " : " + this.getIsDone);
         
         if(this.getIsDone){ //task is done or floating
         	configureBoxColor(3); //green
@@ -494,6 +504,33 @@ public class TaskListCell extends ListCell<Task> {
 	        }//end if
 	    }//end handle
 	};
+	
+	
+	private String convertToFullDateString(String rawDate){
+		//convert from dd/MM/yyyy to dd MMM yyyy
+	    SimpleDateFormat oldFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat newWithYearFormat = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat newWithoutYearFormat2 = new SimpleDateFormat("dd MMM");
+        
+        int rawYear = convertStringToInteger(rawDate.split("/")[2]);
+        int nowYear = Calendar.getInstance().get(Calendar.YEAR);
+        
+        String newDate = "";
+        try {
+        	if(rawYear == nowYear){
+        		newDate = newWithoutYearFormat2.format(oldFormat.parse(rawDate));
+        	}else{
+        		newDate = newWithYearFormat.format(oldFormat.parse(rawDate));
+        	}
+        	
+			return newDate;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "-";
+		}
+        
+	}
 	
 	
 	EventHandler btnAlarmEnterEventHandler = new EventHandler<MouseEvent>(){
@@ -586,7 +623,7 @@ public class TaskListCell extends ListCell<Task> {
 		
 		btnPriorityChange.setPrefWidth(popWidth);
 		btnPriorityChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
-		btnPriorityChange.addEventFilter(ActionEvent.ACTION, onBtnPriorityClick);
+		btnPriorityChange.addEventFilter(ActionEvent.ACTION, onBtnPriorityChangeClick);
 		
 		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
 		lblPopOverTitle.setPrefWidth(popWidth);
@@ -717,10 +754,27 @@ public class TaskListCell extends ListCell<Task> {
 		lb.getStyleClass().addAll(cssClass);
 	}
 	
+	private void setPopOverLabelMessageStyle(Label lbl, double width){
+		lbl.getStyleClass().addAll(POP_OVER_LABEL_MESSAGE_CLASS);
+		lbl.setTextAlignment(TextAlignment.CENTER);
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setPrefWidth(width);
+		lbl.setPrefHeight(30.0);
+		setPopOverLabelMessageVisible(lbl, false);
+	}
+	
+	private void setPopOverLabelMessageVisible(Label lbl, boolean isVisible){
+		lbl.setVisible(isVisible);
+	}
+	
+	private void setPopOverLabelMessageText(Label lbl, String msg){
+		lbl.setText(msg);
+	}
+
 	
 	private void showAlarmPopOver(Long alarmValue){
 		double popWidth = 300.0;
-		double popHeight = 150.0;
+		double popHeight = 200.0;
 	    /*
 		 * ---------------------
 		 * |       Alarm       |
@@ -740,6 +794,10 @@ public class TaskListCell extends ListCell<Task> {
 		String getAlarmDate = MainParser.convertMillisecondToDate(alarmValue); //dd/MM/yyyy
 		String getAlarmTime = MainParser.convertMillisecondToTime(alarmValue); //HH:mm
 		
+		String defaultDate = "01/01/1970";
+		String defaultHour = "07";
+		String defaultMin = "30";
+		
 		VBox vBox = new VBox(8);
 		HBox hDateBox = new HBox(4);
 		HBox hTimeBox = new HBox(4);
@@ -748,47 +806,52 @@ public class TaskListCell extends ListCell<Task> {
 		Label lblDateTitle = new Label("Date:");
 		Label lblTimeTitle = new Label("Time:");
 		Label lblColon = new Label(":");
-		this.txtHourField = new TextField();
-		this.txtMinField = new TextField();
+		Label lblTimeTip  = new Label("(24 hrs format)");
+		lblPopOverAlarmMessage = new Label("Invalid time format");
+		
+		this.txtPopOverAlarmHourField = new TextField();
+		this.txtPopOverAlarmMinField = new TextField();
 		Button btnAlarmChange = new Button("Change");
-		
-		final String pattern = "dd/MM/yyyy";
-		this.datePicker = new DatePicker(LocalDate.of(convertStringToInteger(getAlarmDate.split("/")[2]), 
-												convertStringToInteger(getAlarmDate.split("/")[1]), 
-												convertStringToInteger(getAlarmDate.split("/")[0]))); //set year, month, day to datepicker
-		this.datePicker.setPromptText(pattern.toLowerCase());
 
+		this.datePickerPopOverAlarm = new DatePicker(); 
+		this.datePickerPopOverAlarm.setPromptText("01 January 2015");
+		
+		if(!getAlarmDate.equals(defaultDate)){
+			this.datePickerPopOverAlarm.setValue(LocalDate.of(convertStringToInteger(getAlarmDate.split("/")[2]), 
+									convertStringToInteger(getAlarmDate.split("/")[1]), 
+									convertStringToInteger(getAlarmDate.split("/")[0]))); //set year, month, day to datepicker
+		}
 		
 		
-		
-		this.datePicker.setConverter(new StringConverter<LocalDate>() {
-		     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+		this.datePickerPopOverAlarm.setConverter(new StringConverter<LocalDate>() {
+			String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
-		     @Override 
-		     public String toString(LocalDate date) {
-		         if (date != null) {
-		             return dateFormatter.format(date);
-		         } else {
-		             return "";
-		         }
-		     }
+			@Override 
+			public String toString(LocalDate date) {
+				if (date != null) {
+					return dateFormatter.format(date);
+				} else {
+					return "";
+				}
+			}
 
-		     @Override 
-		     public LocalDate fromString(String string) {
-		         if (string != null && !string.isEmpty()) {
-		             return LocalDate.parse(string, dateFormatter);
-		         } else {
-		             return null;
-		         }
-		     }
+			@Override 
+			public LocalDate fromString(String string) {
+				if (string != null && !string.isEmpty()) {
+					return LocalDate.parse(string, dateFormatter);
+				} else {
+					return null;
+				}
+			}
+			
 		});
 		
-		this.datePicker.setOnAction(new EventHandler<ActionEvent>(){
+		this.datePickerPopOverAlarm.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent arg0) {
-				LocalDate date = datePicker.getValue();
-				
-				System.out.println("Selected date: " + datePicker.getConverter().toString(date));
+				LocalDate date = datePickerPopOverAlarm.getValue();		
+				System.out.println("Selected date: " + convertDateToStorageFormat(date) + " => " + datePickerPopOverAlarm.getConverter().toString(date));
 			}
 		    
 		});
@@ -804,25 +867,32 @@ public class TaskListCell extends ListCell<Task> {
 		lblTimeTitle.setPrefWidth(50.0);
 		lblTimeTitle.setAlignment(Pos.CENTER_RIGHT);
 		
-		
-		this.txtHourField.setText(getAlarmTime.split(":")[0]); // Hour
-		this.txtMinField.setText(getAlarmTime.split(":")[1]); // Minute
-		
-		this.txtHourField.setPrefWidth(60.0);
-		this.txtMinField.setPrefWidth(60.0);
+		if(!(getAlarmDate.equals(defaultDate) && getAlarmTime.split(":")[0].equals(defaultHour) && getAlarmTime.split(":")[1].equals(defaultMin))){
+			this.txtPopOverAlarmHourField.setText(getAlarmTime.split(":")[0]); // Hour
+			this.txtPopOverAlarmMinField.setText(getAlarmTime.split(":")[1]); // Minute
+		}
+
+		this.txtPopOverAlarmHourField.setPrefWidth(60.0);
+		this.txtPopOverAlarmHourField.setPromptText("HH");
+		this.txtPopOverAlarmMinField.setPrefWidth(60.0);
+		this.txtPopOverAlarmMinField.setPromptText("MM");
 		
 		btnAlarmChange.setPrefWidth(popWidth);
 		btnAlarmChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
-		btnAlarmChange.addEventFilter(ActionEvent.ACTION, onBtnAlarmClick);
+		btnAlarmChange.addEventFilter(ActionEvent.ACTION, onBtnAlarmChangeClick);
 		
+		lblTimeTip.getStyleClass().addAll(this.POP_OVER_TIME_TIP_CLASS); //set tip style (after the minute input)
 		
+		setPopOverLabelMessageStyle(lblPopOverAlarmMessage, popWidth); //set message style
 		
 		hDateBox.getChildren().add(lblDateTitle); //Datee:
-		hDateBox.getChildren().add(this.datePicker); // datepicker
+		hDateBox.getChildren().add(this.datePickerPopOverAlarm); // datepicker
 		hTimeBox.getChildren().add(lblTimeTitle); //Time:
-		hTimeBox.getChildren().add(this.txtHourField); //hour
+		hTimeBox.getChildren().add(this.txtPopOverAlarmHourField); //hour
 		hTimeBox.getChildren().add(lblColon); // :
-		hTimeBox.getChildren().add(this.txtMinField); //min
+		hTimeBox.getChildren().add(this.txtPopOverAlarmMinField); //min
+		hTimeBox.getChildren().add(lblTimeTip); //time tip
+		HBox.setMargin(lblTimeTip, new Insets(10,0,0,0));
 		
 		
 		VBox.setMargin(btnAlarmChange, new Insets(10,0,0,0));
@@ -831,6 +901,7 @@ public class TaskListCell extends ListCell<Task> {
 		vBox.getChildren().add(hDateBox);
 		vBox.getChildren().add(hTimeBox);
 		vBox.getChildren().add(btnAlarmChange);
+		vBox.getChildren().add(this.lblPopOverAlarmMessage);
 		vBox.setPrefSize(popWidth, popHeight);
 		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
     	
@@ -846,7 +917,7 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	
-	private EventHandler onBtnPriorityClick = new EventHandler<ActionEvent>() {
+	private EventHandler onBtnPriorityChangeClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
         	if(priorityGroup != null){
@@ -855,20 +926,96 @@ public class TaskListCell extends ListCell<Task> {
         }
     };
     
-    private EventHandler onBtnAlarmClick = new EventHandler<ActionEvent>() {
+    private EventHandler onBtnAlarmChangeClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-        	if(datePicker != null && txtHourField != null && txtMinField != null){
-        		LocalDate date = datePicker.getValue();
+        	if(datePickerPopOverAlarm != null && txtPopOverAlarmHourField != null && txtPopOverAlarmMinField != null){
+        		LocalDate date = datePickerPopOverAlarm.getValue();
 				
-        		System.out.println(datePicker.getConverter().toString(date) + " - " + txtHourField.getText() + " - " + txtMinField.getText());
+        		//edit alarm command = remind id -sd -st
+        		//off alarm command  = remind id -off
+        		String newDate = convertDateToStorageFormat(date);
+        		String newHour = txtPopOverAlarmHourField.getText();
+        		String newMinute = txtPopOverAlarmMinField.getText();
+        		String command = "";
+        		
+        		if(!(isValidHour(newHour) && isValidMinute(newMinute))){
+        			setPopOverLabelMessageVisible(lblPopOverAlarmMessage, true); //show error message
+        			setPopOverLabelMessageText(lblPopOverAlarmMessage, POP_OVER_INVALID_ALARM_TIME_MESSAGE);
+        			return;
+        		}
+        		
+        		command = offAlarmCommand.replace("[id]", getID);
+        		
+        		if(!(newDate.isEmpty() || newDate.equals(""))){ //if date is not empty, assume off
+        			command = editAlarmCommand.replace("[id]", getID).replace("[start_date]", newDate)
+        											.replace("[start_time]", addLeadingZero(convertTimeEmptyToValue(newHour)) + ":" + 
+        																		addLeadingZero(convertTimeEmptyToValue(newMinute)));
+        		}
+
+        		System.out.println(command);
         	}
         	
         }
     };
+    
+    
+    private boolean isValidHour(String hour){
+    	//accept empty, means 0
+    	try{
+    		if(convertStringToInteger(hour) < 0 || convertStringToInteger(hour) > 23){
+        		return false;
+        	}
+    	}catch(NumberFormatException e){ //maybe hour contain alphabet
+    		e.printStackTrace();
+    		return false;
+    	}
+    	return true;
+    }
+    
+    private boolean isValidMinute(String minute){
+    	//accept empty, means 0
+    	try{
+    		if(convertStringToInteger(minute) < 0 || convertStringToInteger(minute) > 60){
+        		return false;
+        	}
+    	}catch(NumberFormatException e){ //maybe hour contain alphabet
+    		e.printStackTrace();
+    		return false;
+    	}
+    	return true;
+    }
 	
+    private String convertDateToStorageFormat(LocalDate rawDate){
+    	String datePatternForStorage = "dd/M/yyyy"; //e.g. 18/4/2015
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePatternForStorage);
+		
+		if(rawDate == null){
+			return "";
+		}
+		
+		return dateFormatter.format(rawDate);
+    }
+    
+    private String convertTimeEmptyToValue(String t){
+    	if(t.isEmpty() || t.equals("")){
+    		return "00";
+    	}
+    	return t;
+    }
+    
 	private int convertStringToInteger(String s){
+		if(s.equals("") || s.isEmpty()){
+			return 0;
+		}
 		return Integer.parseInt(s);
+	}
+	
+	private String addLeadingZero(String str){
+		if(str.length() == 1){
+			return "0" + str;
+		}
+		return str;
 	}
 	/*
 	private boolean updateTaskDoneStatus(int id, boolean newDone){
