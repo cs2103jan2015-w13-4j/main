@@ -99,6 +99,7 @@ public class TaskListCell extends ListCell<Task> {
     private final String POP_OVER_INVALID_ALARM_TIME_MESSAGE = "Invalid Time";
     private final String POP_OVER_INVALID_ALARM_DATE_MESSAGE = "Invalid Date";
     private final String POP_OVER_SUCCESS_ALARM_MESSAGE = "Updated";
+    private final String POP_OVER_SUCCESS_PRIORITY_MESSAGE = "Updated";
     
     private final int MAX_CHARACTER_IN_TITLE = 50;
     
@@ -131,6 +132,7 @@ public class TaskListCell extends ListCell<Task> {
 	TextField txtPopOverAlarmMinField = null;
 	DatePicker datePickerPopOverAlarm = null;
 	Label lblPopOverAlarmMessage = null;
+	Label lblPopOverPriorityMessage = null;
     
     ToggleGroup priorityGroup = null;
     
@@ -145,6 +147,7 @@ public class TaskListCell extends ListCell<Task> {
     private Long getRemainder = 0L;
     private String getPriority = "";
     
+    private String editPriorityCommand = "priority [id] -[level]";
     private String editAlarmCommand = "remind [id] -[start_date] -[start_time]";
     private String offAlarmCommand = "remind [id] -off";
         	
@@ -238,7 +241,7 @@ public class TaskListCell extends ListCell<Task> {
     	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
     	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
     	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
-    	
+
     	if(!isDone){
     		if(remainder > 0L){
     			mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_ENABLE_ALARM_CLASS);
@@ -253,7 +256,8 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void setImageViewPriority(String lvlString){
-
+    	mBtnPriority.getStyleClass().removeAll(TASK_LIST_CELL_PRIORITY_LOW_CLASS, TASK_LIST_CELL_PRIORITY_NORMAL_CLASS, 
+    										TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS, TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS);
     	switch (lvlString){
 	    	case "1": //lowest
 	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_LOW_CLASS);
@@ -411,8 +415,6 @@ public class TaskListCell extends ListCell<Task> {
         
 
         if(this.getCategory.equals("timed")){
-
-
         	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", this.convertToFullDateString(getStartDate) + " " + getStartTime) + "\n" +
         							DISPLAY_END_DATE_TIME.replace("[datetime]", this.convertToFullDateString(getEndDate) + " " + getEndTime));
         	
@@ -434,12 +436,12 @@ public class TaskListCell extends ListCell<Task> {
             }
         }
         
-        strikeThroughLabels(this.getIsDone);
-        isDoneLabel(this.getIsDone);
-        setImageViewPriority(this.getPriority);
+        strikeThroughLabels(this.getIsDone); //if is done, label will be strike out
+        isDoneLabel(this.getIsDone); 
+        setImageViewPriority(this.getPriority); //set different color for different priority
         setImageViewAlarm(this.getRemainder, this.getIsDone); //set alarm icon - enable or disable
-        setCellBackground(this.getIsDone);
-        setGraphic(this.grid);
+        setCellBackground(this.getIsDone); //if is done, background will be darker
+        setGraphic(this.grid); //add grid to cell graphic
 		
     }
     
@@ -600,7 +602,7 @@ public class TaskListCell extends ListCell<Task> {
 	
 	private void showPriorityPopOver(int selectedPriorityLvl){
 		double popWidth = 300.0;
-		double popHeight = 150.0;
+		double popHeight = 250.0;
 		
 		if(this.mPopOverPriority != null){
 			if(this.mPopOverPriority.isShowing()){
@@ -613,6 +615,9 @@ public class TaskListCell extends ListCell<Task> {
 		HBox hBox = new HBox(4);
 		
 		Label lblPopOverTitle = new Label("Priority Level");
+		
+		this.lblPopOverPriorityMessage = new Label();
+		setPopOverLabelMessageStyle(lblPopOverPriorityMessage, popWidth); //set message style
 		/*
 		Label lblPriorityLevel = null;
 		ImageView imgPriority = null;
@@ -626,7 +631,7 @@ public class TaskListCell extends ListCell<Task> {
 		
 		btnPriorityChange.setPrefWidth(popWidth);
 		btnPriorityChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
-		btnPriorityChange.addEventFilter(ActionEvent.ACTION, onBtnPriorityChangeClick);
+		btnPriorityChange.addEventFilter(ActionEvent.ACTION, onBtnPriorityChangeClick); //set click method listener
 		
 		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
 		lblPopOverTitle.setPrefWidth(popWidth);
@@ -637,65 +642,6 @@ public class TaskListCell extends ListCell<Task> {
 		vBox.getChildren().add(lblPopOverTitle);
 		
 		generatePriorityOptions(vBox, hBox, priorityArray, priorityLvlArray, priorityCssArray, selectedPriorityLvl);
-		
-		/*
-		//Critical row
-		imgPriority = new ImageView();
-		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_CRITICAL_CLASS);
-		lblPriorityLevel = new Label("Critical");
-		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
-		radioBtn = new RadioButton();
-		radioBtn.setToggleGroup(priorityGroup);
-		radioBtn.setUserData(3);
-		hBox = new HBox(4);
-		hBox.getChildren().add(radioBtn);
-		hBox.getChildren().add(imgPriority);
-		hBox.getChildren().add(lblPriorityLevel);
-		vBox.getChildren().add(hBox);
-		
-		//Normal row
-		imgPriority = new ImageView();
-		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_NORMAL_CLASS);
-		lblPriorityLevel = new Label("Normal");
-		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
-		radioBtn = new RadioButton();
-		radioBtn.setToggleGroup(priorityGroup);
-		radioBtn.setUserData(2);
-		hBox = new HBox(4);
-		hBox.getChildren().add(radioBtn);
-		hBox.getChildren().add(imgPriority);
-		hBox.getChildren().add(lblPriorityLevel);
-		vBox.getChildren().add(hBox);
-		
-		//Low
-		imgPriority = new ImageView();
-		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_LOW_CLASS);
-		lblPriorityLevel = new Label("Low");
-		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS );
-		radioBtn = new RadioButton();
-		radioBtn.setToggleGroup(priorityGroup);
-		radioBtn.setUserData(1);
-		hBox = new HBox(4);
-		hBox.getChildren().add(radioBtn);
-		hBox.getChildren().add(imgPriority);
-		hBox.getChildren().add(lblPriorityLevel);
-		vBox.getChildren().add(hBox);
-		
-		//Default
-		imgPriority = new ImageView();
-		setPopOverPriorityIconStyle(imgPriority, POP_OVER_IMAGE_DEFAULT_CLASS);
-		lblPriorityLevel = new Label("Default");
-		setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS);
-		radioBtn = new RadioButton();
-		radioBtn.setToggleGroup(priorityGroup);
-		radioBtn.setUserData(0);
-		hBox = new HBox(4);
-		hBox.getChildren().add(radioBtn);
-		hBox.getChildren().add(imgPriority);
-		hBox.getChildren().add(lblPriorityLevel);
-		vBox.getChildren().add(hBox);
-		*/
-		
 		
 		vBox.setPadding(new Insets(5,10,5,10)); //set padding
 		VBox.setMargin(btnPriorityChange, new Insets(10,0,0,0)); //set margin of btn change
@@ -819,7 +765,7 @@ public class TaskListCell extends ListCell<Task> {
 		Label lblTimeTitle = new Label("Time:");
 		Label lblColon = new Label(":");
 		Label lblTimeTip  = new Label("(24 hrs format)");
-		lblPopOverAlarmMessage = new Label("Invalid time format");
+		this.lblPopOverAlarmMessage = new Label();
 		
 		this.txtPopOverAlarmHourField = new TextField();
 		this.txtPopOverAlarmMinField = new TextField();
@@ -933,7 +879,24 @@ public class TaskListCell extends ListCell<Task> {
         @Override
         public void handle(ActionEvent event) {
         	if(priorityGroup != null){
-        		System.out.println(priorityGroup.getSelectedToggle().getUserData().toString());
+        		//priority command e.g. = priority id- 0/1/2/3
+        		String newLevel = priorityGroup.getSelectedToggle().getUserData().toString();
+        		String priorityCommand = editPriorityCommand.replace("[id]", getID).replace("[level]", newLevel);
+        		
+        		//Execute command
+        		MainParser mp = MainParser.validateInput(priorityCommand); // since format is confirm correct, do not need to check again
+        		String command = mp.getCommand(); //get command which is remind
+        		String[] tokens = mp.getTokens(); //get tokens which is either off or startdate + starttime
+        		
+        		String logicOutput = Logic.runCommand(command, tokens);
+        		
+        		setUIControllerParentTextStatus(logicOutput); // show the status in UIController
+        		refreshUIControllerParentListView(); //refresh listview in UIController
+        		
+        		setPopOverLabelMessageVisible(lblPopOverPriorityMessage, true, true); //show error message
+    			setPopOverLabelMessageText(lblPopOverPriorityMessage, POP_OVER_SUCCESS_PRIORITY_MESSAGE);
+    			
+
         	}
         }
     };
@@ -983,7 +946,6 @@ public class TaskListCell extends ListCell<Task> {
         		
         		setUIControllerParentTextStatus(logicOutput); // show the status in UIController
         		refreshUIControllerParentListView(); //refresh listview in UIController
-        		
         		
         		setPopOverLabelMessageVisible(lblPopOverAlarmMessage, true, true); //show error message
     			setPopOverLabelMessageText(lblPopOverAlarmMessage, POP_OVER_SUCCESS_ALARM_MESSAGE);
@@ -1051,11 +1013,5 @@ public class TaskListCell extends ListCell<Task> {
 		}
 		return str;
 	}
-	/*
-	private boolean updateTaskDoneStatus(int id, boolean newDone){
-		boolean isUpdated = Logic.updateTaskIsDone(id, newDone);
-		return isUpdated;
-	}
-	*/
 	
 }

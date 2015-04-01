@@ -63,14 +63,14 @@
 
 .list-view-style .scroll-bar:horizontal .thumb,
 .list-view-style .scroll-bar:vertical .thumb {
-    -fx-background-color: #ffffff;	/* linear-gradient(to right, #e4fbff, #cee6fb, #a5d3fb, #88c6fb, #d5faff) */        
+    -fx-background-color: #999999;	/* linear-gradient(to right, #e4fbff, #cee6fb, #a5d3fb, #88c6fb, #d5faff) */        
     -fx-background-insets: 2, 2, 2, 2;
     -fx-background-radius: 0em; /*2em */
 }
 
 .list-view-style .scroll-bar:horizontal .thumb:pressed,
 .list-view-style .scroll-bar:vertical .thumb:pressed {
-    -fx-background-color: #EEEEEE;	        
+    -fx-background-color: #666666;	        
 }
 
 
