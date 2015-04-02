@@ -79,16 +79,13 @@ public class RootLayoutController {
 	
 	@FXML
     void onMenuItemSettingClick(ActionEvent event) {
+		/*
 		Stage stage = new Stage();
 
 		stage.setTitle(Constants.SETTING_LAYOUT_TITLE);
 		stage.initModality(Modality.NONE);
 		stage.initStyle(StageStyle.DECORATED);
 		stage.setResizable(false);
-		//stage.setMaxHeight(800);
-		//stage.setMaxWidth(600);
-		//stage.setMinHeight(600);
-		//stage.setMinWidth(400);
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			
@@ -109,6 +106,7 @@ public class RootLayoutController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
     }
 	
 	public void setUIController(UIController ctrl){

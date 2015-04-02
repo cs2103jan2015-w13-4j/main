@@ -140,6 +140,19 @@
 	-fx-background-image: url("../../images/setting_pressed.png"); 
 }
 
+.button-add-style {
+	-fx-background-image: url("../../images/add.png"); 
+}
+
+.button-add-style:hover {
+	-fx-background-image: url("../../images/add_hover.png"); 
+}
+
+.button-add-style:pressed {
+	-fx-background-image: url("../../images/add_pressed.png"); 
+}
+
+
 
 .popover .pop-content-area{
 	-fx-background-color: #ffffff;
