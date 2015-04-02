@@ -282,6 +282,8 @@ public class UIController {
 		initTaskListInListView();
 		
 		Logic.storeToHistory(userInput);
+		
+		txtBoxCommand.clear();
 	}
 
 	@FXML
