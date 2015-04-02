@@ -104,8 +104,9 @@
 	-fx-background-color: rgba(255, 255, 255, 0.3);*/
 	-fx-background-color: rgba(200, 200, 200, 0.25);
 	-fx-background-insets: 5;
+	/*
 	-fx-effect: dropshadow(three-pass-box, #F1F1F199, 6, 0, 0, 0);
-
+	*/
 }
 
 .task-list-cell:filled:hover{
@@ -126,11 +127,6 @@
 .task-list-cell:filled:selected .task-list-cell-id{
 	-fx-text-fill: #000000;
 }
-/*
-.task-list-cell:filled:selected .task-list-cell-datetime{
-	-fx-text-fill: #FFFFFF;
-}
- */
 
 .task-list-cell-button-image {
 	-fx-background-color: transparent;
@@ -206,6 +202,33 @@
 
 */
 
+
+.btn-is-done {
+	-fx-border-radius:0;
+ 	-fx-background-size: 25 25;
+ 	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center center;
+	/*-fx-effect: dropshadow(three-pass-box, #F1F1F199, 6, 0, 0, 0);*/
+}
+
+.btn-is-done:hover {
+	-fx-background-color: rgba(200, 200, 200, 0.3);
+	-fx-cursor: hand;
+}
+
+.btn-is-done-unset {
+	-fx-background-image: url("../../images/tick.png");
+	-fx-background-color: transparent;
+}
+
+.btn-is-done-set {
+	-fx-background-image: url("../../images/tick_is_done.png");
+	-fx-background-color: #3897D9;
+}
+
+.btn-is-done-set:hover {
+	-fx-background-color: #5EBDFF;
+}
 
 
 /*Check Box Styling */
