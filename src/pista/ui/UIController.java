@@ -270,8 +270,8 @@ public class UIController {
 		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
 			setSearchKeyword(tokens);
 			initTaskListInListView();
-			resetSearchKeyword();
 			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
+			resetSearchKeyword();
 			return;
 		}
 		
@@ -282,6 +282,8 @@ public class UIController {
 		initTaskListInListView();
 		
 		Logic.storeToHistory(userInput);
+		
+		txtBoxCommand.clear();
 	}
 
 	@FXML
