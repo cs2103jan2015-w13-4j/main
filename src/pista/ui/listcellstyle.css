@@ -139,6 +139,7 @@
 	-fx-cursor: hand;
 }
 
+/* 
 .task-list-cell-disable-alarm {
 	-fx-background-image: url("../../images/alarm_disable.png"); 
 }
@@ -159,20 +160,40 @@
 	-fx-background-image: url("../../images/alarm_is_done.png");
 }
 
+*/
+
+.btn-alarm {
+	-fx-border-radius:0;
+ 	-fx-background-size: 25 25;
+ 	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center center;
+}
+
+.task-list-cell-is-done-alarm{
+	-fx-background-image: url("../../images/alarm.png");
+	-fx-background-color:  #33B5E5;
+}
+
+.task-list-cell-is-done-alarm:hover {
+	-fx-background-image: url("../../images/alarm.png");
+	-fx-background-color:  #3897D9;
+}
+
+
 .task-list-cell-priority-critical {
-	-fx-background-image: url("../../images/priority_level_critical.png");
+	/*-fx-background-image: url("../../images/priority_critical_2.png");*/
 }
 
 .task-list-cell-priority-normal {
-	-fx-background-image: url("../../images/priority_level_normal.png");
+	/*-fx-background-image: url("../../images/priority_level_normal.png");*/
 }
 
 .task-list-cell-priority-low {
-	-fx-background-image: url("../../images/priority_level_low.png");
+	/*-fx-background-image: url("../../images/priority_level_low.png");*/
 }
 
 .task-list-cell-priority-default {
-	-fx-background-image: url("../../images/priority_level_default.png");
+	/*-fx-background-image: url("../../images/priority_level_default.png");*/
 }
 
 
@@ -217,17 +238,41 @@
 }
 
 .btn-is-done-unset {
-	-fx-background-image: url("../../images/tick.png");
+	/*-fx-background-image: url("../../images/tick.png");*/
 	-fx-background-color: transparent;
 }
 
 .btn-is-done-set {
 	-fx-background-image: url("../../images/tick_is_done.png");
-	-fx-background-color: #3897D9;
+/*-fx-background-color:  #33B5E5; */ /* #33B5E5 #3897D9*/
 }
 
 .btn-is-done-set:hover {
-	-fx-background-color: #5EBDFF;
+	/*-fx-background-color: #5EBDFF;*/
+}
+
+.btn-background-yellow {
+	-fx-background-color: #ffbb33;
+}
+
+.btn-background-yellow:hover {
+	-fx-background-color: #FFC641;
+}
+
+.btn-background-red {
+	-fx-background-color: #ff4444;
+}
+
+.btn-background-red:hover {
+	-fx-background-color: #FF5F5F;
+}
+
+.btn-background-green {
+	-fx-background-color: #99cc00;
+}
+
+.btn-background-green:hover {
+	-fx-background-color: #A8D324;
 }
 
 

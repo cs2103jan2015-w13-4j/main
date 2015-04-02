@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -60,6 +61,7 @@ public class MainApp extends Application {
             // Show the scene containing the root layout
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
+            primaryStage.getIcons().add(new Image("images/pista_icon.png"));
             primaryStage.show();
             
         } catch (IOException e) {

@@ -80,33 +80,27 @@ public class TokenValidation {
 	}
 	
 
-	public static int compareWithCurrentDate(String inputDate, String inputTime){
+	public static int compareWithCurrentDate(Long endMillisecond, Long alarmMillisecond){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Calendar cal = Calendar.getInstance();
 
 		String currentDateTime = dateFormat.format(cal.getTime()); //2014/08/06 16:00:22
-		String inputDateTime = inputDate + " " + inputTime;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		try {
 			Date currentFormatDate = sdf.parse(currentDateTime);
-			Date inputFormatDate = sdf.parse(inputDateTime);
+			Long currentMillisecond = currentFormatDate.getTime();
 			
-			Long currentDateMs = currentFormatDate.getTime();
-			Long inputDateMs = inputFormatDate.getTime();
-			
-			//System.out.println(currentDateMs + " " + inputDateMs);
-
-			if((currentDateMs < inputDateMs) || (inputDateMs - currentDateMs == 86400000L)){
-				return -1; //current smaller than input	
-			}
-			
-			if (currentDateMs > inputDateMs){ //exceed deadline
+			if (currentMillisecond > endMillisecond){ //exceed deadline (overdue)
 				return 1; //current larger than input 			
 			}
 			
-			if (currentDateMs == inputDateMs){
-				return 0; //current == input 	
+			if(alarmMillisecond == 0L){
+				return -2;
+			}
+			
+			if(currentMillisecond > alarmMillisecond && currentMillisecond < endMillisecond){
+				return -1;
 			}
 			
 			return -2; //task is still early

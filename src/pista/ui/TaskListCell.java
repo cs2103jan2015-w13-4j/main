@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.swing.ToolTipManager;
+
 import org.controlsfx.control.PopOver;
 import org.omg.CORBA.Environment;
 
@@ -28,6 +30,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -72,10 +75,12 @@ public class TaskListCell extends ListCell<Task> {
     private final String BUTTON_IS_DONE_UNSET_CLASS = "btn-is-done-unset";
     private final String BUTTON_IS_DONE_SET_CLASS = "btn-is-done-set";
     
+    private final String CSS_BUTTON_ALARM = "btn-alarm";
+   	
     private final String TASK_LIST_CELL_BUTTON_IMAGE_CLASS = "task-list-cell-button-image";
     private final String TASK_LIST_CELL_DISABLE_ALARM_CLASS = "task-list-cell-disable-alarm";
-    private final String TASK_LIST_CELL_ENABLE_ALARM_CLASS = "task-list-cell-enable-alarm";
-    private final String TASK_LIST_CELL_IS_DONE_ALARM_CLASS = "task-list-cell-is-done-alarm";
+    private final String CSS_BTN_ENABLE_ALARM = "task-list-cell-enable-alarm";
+    private final String CSS_BTN_IS_DONE_ALARM = "task-list-cell-is-done-alarm";
     
     private final String TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS = "task-list-cell-priority-critical";
     private final String TASK_LIST_CELL_PRIORITY_NORMAL_CLASS = "task-list-cell-priority-normal";
@@ -110,19 +115,16 @@ public class TaskListCell extends ListCell<Task> {
     private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "To [datetime]"; 
     
-    private final String DONE_COMMAND = "-" + Constants.MARK_DONE; //-done
-    private final String NOT_DONE_COMMAND = "-" + Constants.MARK_UNDONE; //-undone
+    //private final String DONE_COMMAND = "-" + Constants.MARK_DONE; //-done
+    //private final String NOT_DONE_COMMAND = "-" + Constants.MARK_UNDONE; //-undone
     
 	private GridPane grid = new GridPane();
 	private VBox vBoxDateTime = new VBox(0);
 	private VBox vBoxButtonIsDone = new VBox(0);
 	
-    //private Label icon = new Label();
 	private Label lblID = new Label();
     private Label lblTitle = new Label();
     private Label lblDateTime = new Label();
-    //private Label lblEndDateTime = new Label();
-    //private CheckBox checkBox = new CheckBox();
     private Button btnIsDone = new Button();
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
@@ -133,13 +135,13 @@ public class TaskListCell extends ListCell<Task> {
     private PopOver mPopOverAlarm = null;
     private PopOver mPopOverPriority = null;
     
-	TextField txtPopOverAlarmHourField = null;
-	TextField txtPopOverAlarmMinField = null;
-	DatePicker datePickerPopOverAlarm = null;
-	Label lblPopOverAlarmMessage = null;
-	Label lblPopOverPriorityMessage = null;
+    private TextField txtPopOverAlarmHourField = null;
+    private TextField txtPopOverAlarmMinField = null;
+    private DatePicker datePickerPopOverAlarm = null;
+    private Label lblPopOverAlarmMessage = null;
+    private Label lblPopOverPriorityMessage = null;
     
-    ToggleGroup priorityGroup = null;
+    private ToggleGroup priorityGroup = null;
     
     private String getID = "";
     private String getTitle = "";
@@ -147,6 +149,8 @@ public class TaskListCell extends ListCell<Task> {
     private String getStartDate = "";
     private String getEndDate = "";
     private String getStartTime = "";
+    private Long getStartMillisecond = 0L;
+    private Long getEndMillisecond = 0L;
     private String getEndTime = "";
     private boolean getIsDone = false;
     private Long getRemainder = 0L;
@@ -183,24 +187,24 @@ public class TaskListCell extends ListCell<Task> {
         //colBoxColor.setPercentWidth(2);
         //colBoxColor.setHalignment(HPos.LEFT);
         
-        ColumnConstraints colCheckBox = new ColumnConstraints(); //check box
-        colCheckBox.setPercentWidth(8); //3
-        colCheckBox.setHalignment(HPos.CENTER);
+        ColumnConstraints colMarkDone = new ColumnConstraints(); //check box
+        colMarkDone.setPercentWidth(8); //3
+        colMarkDone.setHalignment(HPos.CENTER);
         
         ColumnConstraints colID = new ColumnConstraints(); //ID
         colID.setPercentWidth(5);
         colID.setHalignment(HPos.CENTER);
         
         ColumnConstraints colTitle = new ColumnConstraints(); //title
-        colTitle.setPercentWidth(57);
+        colTitle.setPercentWidth(51);
         colTitle.setHalignment(HPos.LEFT);
         
         ColumnConstraints colPriority = new ColumnConstraints(); // priority
-        colPriority.setPercentWidth(5);
+        colPriority.setPercentWidth(8);
         colPriority.setHalignment(HPos.RIGHT);
         
         ColumnConstraints colAlarm = new ColumnConstraints(); // alarm
-        colAlarm.setPercentWidth(5);
+        colAlarm.setPercentWidth(8);
         colAlarm.setHalignment(HPos.RIGHT);
         
         ColumnConstraints colDateTime = new ColumnConstraints(); //date time
@@ -213,7 +217,7 @@ public class TaskListCell extends ListCell<Task> {
         this.grid.getRowConstraints().addAll(row1);
         
         //colBoxColor
-        this.grid.getColumnConstraints().addAll(colCheckBox, colID, colTitle, colPriority, colAlarm, colDateTime);
+        this.grid.getColumnConstraints().addAll(colMarkDone, colID, colTitle, colPriority, colAlarm, colDateTime);
         
     }
     
@@ -229,34 +233,38 @@ public class TaskListCell extends ListCell<Task> {
     
     private void configureButtonImage(){
     	//Alarm
-    	double size = 25.0;
-    	mBtnAlarm.setPrefSize(size, size);
-    	mBtnAlarm.setMaxSize(size, size);
-    	mBtnAlarm.setMinSize(size, size);
+    	//double size = 25.0;
+    	this.mBtnAlarm.setPrefSize(70.0, PREF_GRID_HEIGHT - 4.0);
+    	this.mBtnAlarm.setTooltip(new Tooltip("Alarm"));
     	mBtnAlarm.addEventFilter(MouseEvent.MOUSE_CLICKED, btnAlarmEnterEventHandler); //ActionEvent.ACTION
     	
+    	
     	//Priority
-    	mBtnPriority.setPrefSize(size, size);
-    	mBtnPriority.setMaxSize(size, size);
-    	mBtnPriority.setMinSize(size, size);
+    	double width = 55.0;
+    	double height = PREF_GRID_HEIGHT - 4.0;
+    	mBtnPriority.setPrefSize(width, height);
+    	mBtnPriority.setMaxSize(width, height);
+    	mBtnPriority.setMinSize(width, height);
     	mBtnPriority.addEventFilter(MouseEvent.MOUSE_CLICKED, btnPriorityEnterEventHandler);
     	
     }
     
-    private void setImageViewAlarm(Long remainder, boolean isDone){
-    	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_ENABLE_ALARM_CLASS);
+    private void setButtonAlarm(Long remainder, boolean isDone){
+    	mBtnAlarm.getStyleClass().removeAll(CSS_BTN_ENABLE_ALARM);
     	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
-    	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
+    	mBtnAlarm.getStyleClass().removeAll(CSS_BTN_IS_DONE_ALARM);
 
+    	mBtnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM);
+    	
     	if(!isDone){
     		if(remainder > 0L){
-    			mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_ENABLE_ALARM_CLASS);
+    			mBtnAlarm.getStyleClass().addAll(CSS_BTN_ENABLE_ALARM);
         	}else{
-        		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_DISABLE_ALARM_CLASS);
+        		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
         	}
     	}else{
     		
-    		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_IS_DONE_ALARM_CLASS);
+    		mBtnAlarm.getStyleClass().addAll(CSS_BTN_IS_DONE_ALARM);
     	}
     	
     }
@@ -318,6 +326,7 @@ public class TaskListCell extends ListCell<Task> {
     	//this.checkBox.setOnAction(eh);
     	this.btnIsDone.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandlerMarkIsDone);
     	this.btnIsDone.setPrefSize(70.0, PREF_GRID_HEIGHT - 4.0);
+    	this.btnIsDone.setTooltip(new Tooltip("Mark as done"));
     } 
     
     private void configureVBoxCheckBox(){
@@ -380,6 +389,27 @@ public class TaskListCell extends ListCell<Task> {
     	
     }
     
+    private void setButtonIsDoneBackground(int type){
+    	this.btnIsDone.getStyleClass().removeAll("btn-background-yellow",
+    			"btn-background-green", "btn-background-red");
+
+    	if(type == 1){
+    		this.btnIsDone.getStyleClass().addAll("btn-background-red");
+    	}
+    	
+    	if (type == -1 || type == 0){
+    		this.btnIsDone.getStyleClass().addAll("btn-background-yellow");
+    	}
+    	
+    	if (type == -2 || type == 4){
+    		//this.btnIsDone.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_TRANSPARENT_CLASS);
+    	}
+    	
+    	if (type == 3){ //is done
+    		this.btnIsDone.getStyleClass().addAll("btn-background-green");
+    	}
+    }
+    
     
     private void addControlsToVBox(){
     	this.vBoxDateTime.getChildren().add(this.lblDateTime);
@@ -403,7 +433,7 @@ public class TaskListCell extends ListCell<Task> {
         GridPane.setMargin(this.mBtnPriority, new Insets(5, 10, 5, 5));
         
         this.grid.add(this.mBtnAlarm, 4, 0);
-        GridPane.setMargin(this.mBtnAlarm, new Insets(5, 10, 5, 5));
+        //GridPane.setMargin(this.mBtnAlarm, new Insets(5, 10, 5, 5));
         this.grid.add(this.vBoxDateTime, 5, 0);
  
     }
@@ -424,6 +454,8 @@ public class TaskListCell extends ListCell<Task> {
         this.getStartTime = mTask.getStartTime();
         this.getEndTime = mTask.getEndTime();
         this.getIsDone = mTask.getIsDone();
+        this.getStartMillisecond = mTask.getStartMilliseconds();
+        this.getEndMillisecond = mTask.getEndMilliseconds();
         this.getRemainder = mTask.getReminder();
         this.getPriority = mTask.getPriority();
         
@@ -434,9 +466,7 @@ public class TaskListCell extends ListCell<Task> {
         this.lblTitle.setText(this.getTitle);
         this.lblID.setText(this.getID);
         this.btnIsDone.setUserData(this.getIsDone);
-        //this.checkBox.setId("checkBox_" + this.getID);
-        //this.checkBox.setSelected(this.getIsDone);
-        
+
         if(this.getCategory.equals("timed")){
         	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", this.convertToFullDateString(getStartDate) + " " + getStartTime) + "\n" +
         							DISPLAY_END_DATE_TIME.replace("[datetime]", this.convertToFullDateString(getEndDate) + " " + getEndTime));
@@ -450,20 +480,21 @@ public class TaskListCell extends ListCell<Task> {
         }
         
         if(this.getIsDone){ //task is done or floating
-        	configureBoxColor(3); //green
+        	setButtonIsDoneBackground(3); //green
         }else{
-        	if (this.getCategory.equals("floating")){
-            	configureBoxColor(4);	
+    		if (this.getCategory.equals("floating")){ //if category == float
+        		setButtonIsDoneBackground(4);	
             }else{
-            	configureBoxColor(TokenValidation.compareWithCurrentDate(getEndDate, getEndTime));
-            }
-        }
+            	setButtonIsDoneBackground(TokenValidation.compareWithCurrentDate(this.getEndMillisecond, this.getRemainder));
+            }//end if
+
+        }//end if
         
         setButtonIsDone(this.getIsDone);
         strikeThroughLabels(this.getIsDone); //if is done, label will be strike out
         isDoneLabel(this.getIsDone); 
         setImageViewPriority(this.getPriority); //set different color for different priority
-        setImageViewAlarm(this.getRemainder, this.getIsDone); //set alarm icon - enable or disable
+        setButtonAlarm(this.getRemainder, this.getIsDone); //set alarm icon - enable or disable
         setCellBackground(this.getIsDone); //if is done, background will be darker
         setGraphic(this.grid); //add grid to cell graphic
 		
@@ -486,31 +517,29 @@ public class TaskListCell extends ListCell<Task> {
 	    @Override
 	    public void handle(MouseEvent event) {
 	    	boolean isUpdated = false;
-	    	String markCommandFormatString = "mark [id] [type]";
+	    	boolean getCurrentStatus = false;
+	    	
+	    	String markCommandFormatString = "mark [id] -[type]";
 	    	String markCommandEditedString = "";
 	    	
 	    	if(btnIsDone.getUserData() instanceof Boolean){
-	    		boolean getCurrentStatus = (boolean) btnIsDone.getUserData();
-	    		System.out.println(getCurrentStatus);
+	    		getCurrentStatus = (boolean) btnIsDone.getUserData(); //get the current status of done 
 	    	}
             
-            /*
-            String getTaskID = chk.getId().replace("checkBox_", "").trim();
-            
-            if(chk.isSelected()){
-            	getIsDone = true; 
-            	markCommandEditedString = markCommandFormatString.replace("[id]", getTaskID).replace("[type]", DONE_COMMAND);
+            if(!getCurrentStatus){ //if false
+            	getIsDone = true; //change to true (done)
+            	markCommandEditedString = markCommandFormatString.replace("[id]", getID).replace("[type]", Constants.MARK_DONE);
             	
             }else{
-            	getIsDone = false;
-            	markCommandEditedString = markCommandFormatString.replace("[id]", getTaskID).replace("[type]", NOT_DONE_COMMAND);
+            	getIsDone = false; //change to false (undone)
+            	markCommandEditedString = markCommandFormatString.replace("[id]", getID).replace("[type]", Constants.MARK_UNDONE);
             }
             
             isUpdated = executeCommand(markCommandEditedString);
             if(isUpdated){
             	setCellBackground(getIsDone);
             }     
-       */
+       
             
 	    }//end handle
 	};
