@@ -59,23 +59,25 @@ public class UIController {
 	private static String searchKeyword = null;
 	private boolean isValidFilePath;
 	
-	private static final String CSS_CLASS_IMAGE_BACKGROUND = "image-background";
-	private static final String CSS_CLASS_TEXT_BACKGROUND  = "text-background";
-	private static final String CSS_CLASS_TRANSPARENT_BACKGROUND = "transparent-background";
-	private static final String CSS_CLASS_LIST_VIEW = "list-view-style";
-	private static final String CSS_CLASS_TEXT_BOX = "text-box-style";
-	private static final String CSS_CLASS_BUTTON = "button-style";
-	private static final String CSS_CLASS_TEXT_STATUS = "text-status-style";
+	private static final String CSS_IMAGE_BACKGROUND = "image-background";
+	private static final String CSS_TEXT_BACKGROUND  = "text-background";
+	private static final String CSS_TRANSPARENT_BACKGROUND = "transparent-background";
+	private static final String CSS_LIST_VIEW = "list-view-style";
+	private static final String CSS_TEXT_BOX = "text-box-style";
+	private static final String CSS_BUTTON = "button-style";
+	private static final String CSS_TEXT_STATUS = "text-status-style";
 
-	private static final String CSS_CLASS_BUTTON_IMAGE = "button-image-style";
-	private static final String CSS_CLASS_BUTTON_SETTING = "button-setting-style";
-	private static final String CSS_CLASS_BUTTON_ADD = "button-add-style";
-	
-	private final String CSS_CLASS_POP_OVER_CONTENT_AREA = "pop-content-area";
-    private final String CSS_CLASS_POP_OVER_TITLE= "pop-label-title";
-    private final String CSS_CLASS_POP_OVER_BUTTON = "pop-btn";
-    private final String CSS_CLASS_POP_OVER_ERROR_MESSAGE = "pop-label-error-message";
-    private final String CSS_CLASS_POP_OVER_CORRECT_MESSAGE = "pop-label-correct-message";
+	private static final String CSS_BUTTON_IMAGE = "button-image-style";
+	private static final String CSS_BUTTON_SETTING = "button-setting-style";
+	private static final String CSS_BUTTON_ADD = "button-add-style";
+	private static final String CSS_BUTTON_HELP = "button-help-style";
+	private static final String CSS_BUTTON_REFRESH = "button-refresh-style";
+			
+	private final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
+    private final String CSS_POP_OVER_TITLE= "pop-label-title";
+    private final String CSS_POP_OVER_BUTTON = "pop-btn";
+    private final String CSS_POP_OVER_ERROR_MESSAGE = "pop-label-error-message";
+    private final String CSS_POP_OVER_CORRECT_MESSAGE = "pop-label-correct-message";
     private final String POP_OVER_FAILED_SETTING_MESSAGE = "Setting Failed";
     private final String POP_OVER_INVALID_FILE_MESSAGE = "Invalid File";
     private final String POP_OVER_SUCCESS_SETTING_MESSAGE = "Updated";
@@ -115,6 +117,9 @@ public class UIController {
 
 	private Button btnSetting;
 	private Button btnAddNewTask;
+	private Button btnRefresh;
+	private Button btnHelp;
+	
 	//private Label lblPopOverMessage = new Label();
 	
 	@FXML
@@ -205,7 +210,7 @@ public class UIController {
 			this.btnSetting = new Button();
 		}
 		
-		this.btnSetting.getStyleClass().addAll(CSS_CLASS_BUTTON_IMAGE, CSS_CLASS_BUTTON_SETTING);
+		this.btnSetting.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_SETTING);
 		this.btnSetting.setPrefSize(size, size);
 		this.btnSetting.setMaxSize(size, size);
 		this.btnSetting.setMinSize(size, size);
@@ -219,13 +224,42 @@ public class UIController {
 			this.btnAddNewTask = new Button();
 		}
 		
-		this.btnAddNewTask.getStyleClass().addAll(CSS_CLASS_BUTTON_IMAGE, CSS_CLASS_BUTTON_ADD);
+		this.btnAddNewTask.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_ADD);
 		this.btnAddNewTask.setPrefSize(size, size);
 		this.btnAddNewTask.setMaxSize(size, size);
 		this.btnAddNewTask.setMinSize(size, size);
 		//this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
-		
 	}
+	
+	private void initButtonHelp(){
+		double size = 20.0;
+		
+		if(this.btnHelp == null){
+			this.btnHelp = new Button();
+		}
+		
+		this.btnHelp.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_HELP);
+		this.btnHelp.setPrefSize(size, size);
+		this.btnHelp.setMaxSize(size, size);
+		this.btnHelp.setMinSize(size, size);
+		//this.btnHelp.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+	}
+	
+	private void initButtonRefresh(){
+		double size = 20.0;
+		
+		if(this.btnRefresh == null){
+			this.btnRefresh = new Button();
+		}
+		
+		this.btnRefresh.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REFRESH);
+		this.btnRefresh.setPrefSize(size, size);
+		this.btnRefresh.setMaxSize(size, size);
+		this.btnRefresh.setMinSize(size, size);
+		//this.btnRefresh.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+	}
+	
+	
 	
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
@@ -297,13 +331,17 @@ public class UIController {
 
 		this.initButtonSetting();
 		this.initButtonAddNewTask();
+		this.initButtonHelp();
+		this.initButtonRefresh();
 		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 10.0, 0.0);
 		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 10.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 10.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 10.0, 0.0);
 		
-		anchorPaneMain.getStyleClass().addAll(CSS_CLASS_TRANSPARENT_BACKGROUND);
-		txtStatus.getStyleClass().addAll(CSS_CLASS_TEXT_BACKGROUND, CSS_CLASS_TEXT_STATUS);
-		txtBoxCommand.getStyleClass().addAll(CSS_CLASS_TEXT_BOX);
-		btnEnter.getStyleClass().addAll(CSS_CLASS_BUTTON);
+		anchorPaneMain.getStyleClass().addAll(CSS_TRANSPARENT_BACKGROUND);
+		txtStatus.getStyleClass().addAll(CSS_TEXT_BACKGROUND, CSS_TEXT_STATUS);
+		txtBoxCommand.getStyleClass().addAll(CSS_TEXT_BOX);
+		btnEnter.getStyleClass().addAll(CSS_BUTTON);
 
 		mStorage.setDataFolderLocation(getPreferenceFilePath());
 		mStorage.initLogging(); //initialize Storage logging
@@ -331,7 +369,7 @@ public class UIController {
 	}//end initialize
 
 	public boolean initTaskListInListView(){
-		listview_task_fx_id.getStyleClass().addAll(CSS_CLASS_LIST_VIEW); //add css class
+		listview_task_fx_id.getStyleClass().addAll(CSS_LIST_VIEW); //add css class
 		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){ //populate every task into a custom cell
 			@Override
 			public ListCell<Task> call(ListView<Task> param) {
@@ -480,7 +518,7 @@ public class UIController {
 		setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
 		
 		//Button browse
-		btnBrowse.getStyleClass().addAll(CSS_CLASS_POP_OVER_BUTTON);
+		btnBrowse.getStyleClass().addAll(CSS_POP_OVER_BUTTON);
 		btnBrowse.setPrefWidth(100.0);
 		btnBrowse.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() { //button browse click
 			@Override
@@ -517,7 +555,7 @@ public class UIController {
 		
 		
 		//Button save
-		btnSave.getStyleClass().addAll(CSS_CLASS_POP_OVER_BUTTON);
+		btnSave.getStyleClass().addAll(CSS_POP_OVER_BUTTON);
 		btnSave.setPrefWidth(popWidth);
 		btnSave.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 			@Override
@@ -578,7 +616,7 @@ public class UIController {
 		
 		
 		//label setting title
-		lblSettingTitle.getStyleClass().addAll(CSS_CLASS_POP_OVER_TITLE);
+		lblSettingTitle.getStyleClass().addAll(CSS_POP_OVER_TITLE);
 		lblSettingTitle.setPrefWidth(popWidth);
 		lblSettingTitle.setTextAlignment(TextAlignment.CENTER);
 		lblSettingTitle.setAlignment(Pos.CENTER);
@@ -599,7 +637,7 @@ public class UIController {
 		vBox.getChildren().add(lblMessage); //Label message (red or green)
 		
 		vBox.setPrefSize(popWidth, popHeight);
-		vBox.getStyleClass().addAll(CSS_CLASS_POP_OVER_CONTENT_AREA); //set style for the vbox
+		vBox.getStyleClass().addAll(CSS_POP_OVER_CONTENT_AREA); //set style for the vbox
 		
 		
 		this.mPopOverSetting = new PopOver(vBox);
@@ -613,11 +651,11 @@ public class UIController {
 	}
 	
 	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
-		lbl.getStyleClass().removeAll(CSS_CLASS_POP_OVER_CORRECT_MESSAGE, CSS_CLASS_POP_OVER_ERROR_MESSAGE);
+		lbl.getStyleClass().removeAll(CSS_POP_OVER_CORRECT_MESSAGE, CSS_POP_OVER_ERROR_MESSAGE);
 		if(isValid){ //valid, green background
-			lbl.getStyleClass().addAll(CSS_CLASS_POP_OVER_CORRECT_MESSAGE);	
+			lbl.getStyleClass().addAll(CSS_POP_OVER_CORRECT_MESSAGE);	
 		}else{//invalid, red background
-			lbl.getStyleClass().addAll(CSS_CLASS_POP_OVER_ERROR_MESSAGE);
+			lbl.getStyleClass().addAll(CSS_POP_OVER_ERROR_MESSAGE);
 		}
 		
 		lbl.setVisible(isVisible);

@@ -51,29 +51,19 @@ import pista.parser.TokenValidation;
 
 public class TaskListCell extends ListCell<Task> {
 
-    private final String TASK_LIST_CELL = "task-list-cell";
-
-    private final String TASK_LIST_CELL_ID_CLASS = "task-list-cell-id";
+    private final String CSS_CELL = "task-list-cell";
+    private final String CSS_CELL_ID = "task-list-cell-id";
+    private final String CSS_CELL_TITLE = "task-list-cell-title";
+    private final String CSS_CELL_DATETIME = "task-list-cell-datetime";
     
+    private final String CSS_BUTTON_IS_DONE = "btn-is-done";
+    private final String CSS_BUTTON_IS_DONE_UNSET = "btn-is-done-unset";
+    private final String CSS_BUTTON_IS_DONE_SET = "btn-is-done-set";
+    private final String CSS_BUTTON_IS_DONE_BACKGROUND_YELLOW = "btn-background-yellow";
+    private final String CSS_BUTTON_IS_DONE_BACKGROUND_RED = "btn-background-red";
+    private final String CSS_BUTTON_IS_DONE_BACKGROUND_GREEN = "btn-background-green";
     
-    private final String TASK_LIST_CELL_BOX_RED_CLASS = "task-list-cell-box-red";
-    private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "task-list-cell-box-yellow";
-    private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "task-list-cell-box-green";
-    private final String TASK_LIST_CELL_BOX_TRANSPARENT_CLASS = "task-list-cell-box-transparent";
-    /*
-    private final String TASK_LIST_CELL_BOX_COLOR_CLASS = "-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);";
-    private final String TASK_LIST_CELL_BOX_RED_CLASS = "-fx-background-color: #FF4444;";
-    private final String TASK_LIST_CELL_BOX_YELLOW_CLASS = "-fx-background-color: #FFBB33;";
-    private final String TASK_LIST_CELL_BOX_GREEN_CLASS = "-fx-background-color: #99CC00;";
-    private final String TASK_LIST_CELL_BOX_TRANSPARENT_CLASS = "-fx-background-color: transparent;";
-    */
-    
-    private final String TASK_LIST_CELL_TITLE_CLASS = "task-list-cell-title";
-    private final String TASK_LIST_CELL_DATETIME_CLASS = "task-list-cell-datetime";
-    
-    private final String TASK_LIST_CELL_BUTTON_IS_DONE_CLASS = "btn-is-done";
-    private final String BUTTON_IS_DONE_UNSET_CLASS = "btn-is-done-unset";
-    private final String BUTTON_IS_DONE_SET_CLASS = "btn-is-done-set";
+    private final String CSS_BUTTON_EDIT = "btn-edit";
     
     private final String CSS_BUTTON_ALARM = "btn-alarm";
     private final String CSS_BUTTON_ALARM_SET = "btn-alarm-set";
@@ -85,33 +75,21 @@ public class TaskListCell extends ListCell<Task> {
    	private final String CSS_PRIORITY_LOW = "btn-priority-low";
    	private final String CSS_PRIORITY_DEFAULT = "btn-priority-default";
     
-    //private final String TASK_LIST_CELL_BUTTON_IMAGE_CLASS = "task-list-cell-button-image";
-   // private final String TASK_LIST_CELL_DISABLE_ALARM_CLASS = "task-list-cell-disable-alarm";
-   // private final String CSS_BTN_ENABLE_ALARM = "task-list-cell-enable-alarm";
-    //private final String CSS_BTN_IS_DONE_ALARM = "task-list-cell-is-done-alarm";
+    private final String CSS_CELL_TEXT_IS_DONE = "task-list-cell-text-is-done";
+    private final String CSS_CELL_BACKGROUND_IS_DONE = "task-list-cell-background-is-done";
+    private final String CSS_CELL_TEXT_STRIKE_THROUGH = "task-list-cell-label-strike-through"; 
     
-    //private final String TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS = "task-list-cell-priority-critical";
-    //private final String TASK_LIST_CELL_PRIORITY_NORMAL_CLASS = "task-list-cell-priority-normal";
-   // private final String TASK_LIST_CELL_PRIORITY_LOW_CLASS = "task-list-cell-priority-low";
-   // private final String TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS = "task-list-cell-priority-default";
-    
-    
-    private final String TASK_LIST_CELL_TEXT_IS_DONE_CLASS = "task-list-cell-text-is-done";
-    private final String TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS = "task-list-cell-background-is-done";
-    
-    private final String TASK_LIST_CELL_STRIKE_THROUGH_CLASS = "task-list-cell-label-strike-through"; 
-    
-    private final String POP_OVER_CONTENT_AREA_CLASS = "pop-content-area";
-    private final String POP_OVER_TITLE_CLASS = "pop-title";
-    private final String POP_OVER_TIME_TIP_CLASS = "pop-label-time-tip";
-    private final String POP_OVER_LABEL_PRIORITY_CLASS = "pop-label-priority";
-    private final String POP_OVER_LABEL_ERROR_MESSAGE_CLASS = "pop-label-error-message";
-    private final String POP_OVER_LABEL_CORRECT_MESSAGE_CLASS = "pop-label-correct-message";
-    private final String POP_OVER_IMAGE_CRITICAL_CLASS = "pop-over-img-critical";
-    private final String POP_OVER_IMAGE_NORMAL_CLASS = "pop-over-img-normal";
-    private final String POP_OVER_IMAGE_LOW_CLASS = "pop-over-img-low";
-    private final String POP_OVER_IMAGE_DEFAULT_CLASS = "pop-over-img-default";
-    private final String POP_OVER_BUTTON_CHANGE_CLASS = "btn-change";
+    private final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
+    private final String CSS_POP_OVER_TITLE = "pop-title";
+    private final String CSS_POP_OVER_TIME_TIP = "pop-label-time-tip";
+    private final String CSS_POP_OVER_LABEL_PRIORITY = "pop-label-priority";
+    private final String CSS_POP_OVER_LABEL_ERROR_MESSAGE = "pop-label-error-message";
+    private final String CSS_POP_OVER_LABEL_CORRECT_MESSAGE = "pop-label-correct-message";
+    private final String CSS_POP_OVER_IMAGE_CRITICAL = "pop-over-img-critical";
+    private final String CSS_POP_OVER_IMAGE_NORMAL = "pop-over-img-normal";
+    private final String CSS_POP_OVER_IMAGE_LOW = "pop-over-img-low";
+    private final String CSS_POP_OVER_IMAGE_DEFAULT = "pop-over-img-default";
+    private final String CSS_POP_OVER_BUTTON_CHANGE = "btn-change";
     
     private final String POP_OVER_INVALID_ALARM_TIME_MESSAGE = "Invalid Time";
     private final String POP_OVER_INVALID_ALARM_DATE_MESSAGE = "Invalid Date";
@@ -122,9 +100,6 @@ public class TaskListCell extends ListCell<Task> {
     
     private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "To [datetime]"; 
-    
-    //private final String DONE_COMMAND = "-" + Constants.MARK_DONE; //-done
-    //private final String NOT_DONE_COMMAND = "-" + Constants.MARK_UNDONE; //-undone
     
 	private GridPane grid = new GridPane();
 	private VBox vBoxDateTime = new VBox(0);
@@ -139,6 +114,7 @@ public class TaskListCell extends ListCell<Task> {
     
     private Button btnAlarm = new Button();
     private Button btnPriority = new Button();
+    private Button btnEdit = new Button();
     
     private PopOver mPopOverAlarm = null;
     private PopOver mPopOverPriority = null;
@@ -175,6 +151,7 @@ public class TaskListCell extends ListCell<Task> {
         configureGrid(); 
         configureButtonIsDone();
         configureButtonImage();
+        configureButtonEdit();
         configureLabelID();
         configureLabelTitle();
         configureLabelDateTime();
@@ -191,10 +168,6 @@ public class TaskListCell extends ListCell<Task> {
         this.grid.setMinHeight(PREF_GRID_HEIGHT);
         this.grid.setPrefHeight(PREF_GRID_HEIGHT);
 
-        //ColumnConstraints colBoxColor = new ColumnConstraints(); //color box
-        //colBoxColor.setPercentWidth(2);
-        //colBoxColor.setHalignment(HPos.LEFT);
-        
         ColumnConstraints colMarkDone = new ColumnConstraints(); //check box
         colMarkDone.setPercentWidth(8); //3
         colMarkDone.setHalignment(HPos.CENTER);
@@ -204,12 +177,16 @@ public class TaskListCell extends ListCell<Task> {
         colID.setHalignment(HPos.CENTER);
         
         ColumnConstraints colTitle = new ColumnConstraints(); //title
-        colTitle.setPercentWidth(51);
+        colTitle.setPercentWidth(43);
         colTitle.setHalignment(HPos.LEFT);
+        
+        ColumnConstraints colEdit = new ColumnConstraints(); //Edit
+        colEdit.setPercentWidth(8);
+        colEdit.setHalignment(HPos.RIGHT);
         
         ColumnConstraints colPriority = new ColumnConstraints(); // priority
         colPriority.setPercentWidth(8);
-        colPriority.setHalignment(HPos.RIGHT);
+        colPriority.setHalignment(HPos.CENTER);
         
         ColumnConstraints colAlarm = new ColumnConstraints(); // alarm
         colAlarm.setPercentWidth(8);
@@ -225,17 +202,17 @@ public class TaskListCell extends ListCell<Task> {
         this.grid.getRowConstraints().addAll(row1);
         
         //colBoxColor
-        this.grid.getColumnConstraints().addAll(colMarkDone, colID, colTitle, colPriority, colAlarm, colDateTime);
+        this.grid.getColumnConstraints().addAll(colMarkDone, colID, colTitle, colEdit, colPriority, colAlarm, colDateTime);
         
     }
     
     private void setCellBackground(boolean isDone){
-    	getStyleClass().removeAll(TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS, TASK_LIST_CELL);
+    	getStyleClass().removeAll(CSS_CELL_BACKGROUND_IS_DONE, CSS_CELL);
    
     	if(isDone){
-    		getStyleClass().add(TASK_LIST_CELL_BACKGROUND_IS_DONE_CLASS);
+    		getStyleClass().add(CSS_CELL_BACKGROUND_IS_DONE);
     	}else{
-    		getStyleClass().add(TASK_LIST_CELL);
+    		getStyleClass().add(CSS_CELL);
     	}
     }
     
@@ -246,23 +223,23 @@ public class TaskListCell extends ListCell<Task> {
     	this.btnAlarm.setPrefSize(width, height);
     	btnAlarm.addEventFilter(MouseEvent.MOUSE_CLICKED, btnAlarmEnterEventHandler); //ActionEvent.ACTION
     	
-    	
     	//Priority
     	btnPriority.setPrefSize(width, height);
     	btnPriority.setMaxSize(width, height);
     	btnPriority.setMinSize(width, height);
     	btnPriority.addEventFilter(MouseEvent.MOUSE_CLICKED, btnPriorityEnterEventHandler);
     	
+    	//Edit
+    	btnEdit.setPrefSize(width, height);
+    	btnEdit.setMaxSize(width, height);
+    	btnEdit.setMinSize(width, height);
+    	btnEdit.addEventFilter(MouseEvent.MOUSE_CLICKED, btnPriorityEditEventHandler);
     }
     
     private void setButtonAlarm(Long remainder, boolean isDone){
-    	//mBtnAlarm.getStyleClass().removeAll(CSS_BTN_ENABLE_ALARM);
-    	//mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
-    	//mBtnAlarm.getStyleClass().removeAll(CSS_BTN_IS_DONE_ALARM);
     	btnAlarm.getStyleClass().removeAll(CSS_BUTTON_ALARM_SET, CSS_BUTTON_ALARM_NOT_SET);
     	btnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM);
-    	
-    
+
 		if(remainder > 0L){
 			btnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM_SET);
     	}else{
@@ -293,6 +270,9 @@ public class TaskListCell extends ListCell<Task> {
     	}
     }
     
+    private void configureButtonEdit(){
+    	btnEdit.getStyleClass().addAll(CSS_BUTTON_EDIT);
+    }
     
     private void configureButtonIsDone(){
     	//this.checkBox.setOnAction(eh);
@@ -307,17 +287,17 @@ public class TaskListCell extends ListCell<Task> {
     
     private void configureLabelID(){
     	//System.out.println("type - " + type);
-    	this.lblID.getStyleClass().addAll(TASK_LIST_CELL_ID_CLASS);
+    	this.lblID.getStyleClass().addAll(CSS_CELL_ID);
     	this.lblID.setAlignment(Pos.CENTER);
     }
     
     private void configureLabelTitle() {
-    	this.lblTitle.getStyleClass().add(TASK_LIST_CELL_TITLE_CLASS);
+    	this.lblTitle.getStyleClass().add(CSS_CELL_TITLE);
     	this.lblTitle.setAlignment(Pos.CENTER_LEFT);
     }
     
     private void configureLabelDateTime() {
-    	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_DATETIME_CLASS);
+    	this.lblDateTime.getStyleClass().add(CSS_CELL_DATETIME);
         this.lblDateTime.setWrapText(true);
     	configureLabels(this.lblDateTime);	
     }
@@ -328,49 +308,49 @@ public class TaskListCell extends ListCell<Task> {
     
     private void strikeThroughLabels(boolean isDone){
     	if(isDone){
-    		this.lblTitle.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblID.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblDateTime.getStyleClass().add(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    		this.lblTitle.getStyleClass().add(CSS_CELL_TEXT_STRIKE_THROUGH);
+        	this.lblID.getStyleClass().add(CSS_CELL_TEXT_STRIKE_THROUGH);
+        	this.lblDateTime.getStyleClass().add(CSS_CELL_TEXT_STRIKE_THROUGH);
     	}else{
-    		this.lblTitle.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-    		this.lblID.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
-        	this.lblDateTime.getStyleClass().remove(TASK_LIST_CELL_STRIKE_THROUGH_CLASS);
+    		this.lblTitle.getStyleClass().remove(CSS_CELL_TEXT_STRIKE_THROUGH);
+    		this.lblID.getStyleClass().remove(CSS_CELL_TEXT_STRIKE_THROUGH);
+        	this.lblDateTime.getStyleClass().remove(CSS_CELL_TEXT_STRIKE_THROUGH);
     	}
     	
     }
     
     private void isDoneLabel(boolean isDone){
-    	this.lblTitle.getStyleClass().removeAll(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
-    	this.lblID.getStyleClass().removeAll(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+    	this.lblTitle.getStyleClass().removeAll(CSS_CELL_TEXT_IS_DONE);
+    	this.lblID.getStyleClass().removeAll(CSS_CELL_TEXT_IS_DONE);
     	
     	if(isDone){
-    		this.lblTitle.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
-        	this.lblID.getStyleClass().add(TASK_LIST_CELL_TEXT_IS_DONE_CLASS);
+    		this.lblTitle.getStyleClass().add(CSS_CELL_TEXT_IS_DONE);
+        	this.lblID.getStyleClass().add(CSS_CELL_TEXT_IS_DONE);
     	}
     }
     
     private void setButtonIsDone(boolean isDone){
-    	this.btnIsDone.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IS_DONE_CLASS);
-    	this.btnIsDone.getStyleClass().removeAll(BUTTON_IS_DONE_SET_CLASS, BUTTON_IS_DONE_UNSET_CLASS);
+    	this.btnIsDone.getStyleClass().addAll(CSS_BUTTON_IS_DONE);
+    	this.btnIsDone.getStyleClass().removeAll(CSS_BUTTON_IS_DONE_SET, CSS_BUTTON_IS_DONE_UNSET);
   
     	if(isDone){ //is done
-    		this.btnIsDone.getStyleClass().addAll(BUTTON_IS_DONE_SET_CLASS);
+    		this.btnIsDone.getStyleClass().addAll(CSS_BUTTON_IS_DONE_SET);
     	}else{
-    		this.btnIsDone.getStyleClass().addAll(BUTTON_IS_DONE_UNSET_CLASS);
+    		this.btnIsDone.getStyleClass().addAll(CSS_BUTTON_IS_DONE_UNSET);
     	}
     	
     }
-    
+
     private void setButtonIsDoneBackground(int type){
-    	this.btnIsDone.getStyleClass().removeAll("btn-background-yellow",
-    			"btn-background-green", "btn-background-red");
+    	this.btnIsDone.getStyleClass().removeAll(CSS_BUTTON_IS_DONE_BACKGROUND_YELLOW,
+    			CSS_BUTTON_IS_DONE_BACKGROUND_GREEN, CSS_BUTTON_IS_DONE_BACKGROUND_RED);
 
     	if(type == 1){
-    		this.btnIsDone.getStyleClass().addAll("btn-background-red");
+    		this.btnIsDone.getStyleClass().addAll(CSS_BUTTON_IS_DONE_BACKGROUND_RED);
     	}
     	
     	if (type == -1 || type == 0){
-    		this.btnIsDone.getStyleClass().addAll("btn-background-yellow");
+    		this.btnIsDone.getStyleClass().addAll(CSS_BUTTON_IS_DONE_BACKGROUND_YELLOW);
     	}
     	
     	if (type == -2 || type == 4){
@@ -378,7 +358,7 @@ public class TaskListCell extends ListCell<Task> {
     	}
     	
     	if (type == 3){ //is done
-    		this.btnIsDone.getStyleClass().addAll("btn-background-green");
+    		this.btnIsDone.getStyleClass().addAll(CSS_BUTTON_IS_DONE_BACKGROUND_GREEN);
     	}
     }
     
@@ -393,20 +373,14 @@ public class TaskListCell extends ListCell<Task> {
     
     private void addControlsToGrid() {
     	//add(node, column index, row index)
-    	//this.grid.add(this.vBoxColor, 0, 0);
-    	//this.vBoxColor.setPadding(new Insets(0, 0, 0, 5));
-    	
     	this.grid.add(this.vBoxButtonIsDone, 0, 0);
     	GridPane.setMargin(this.vBoxButtonIsDone,new Insets(0,0,0,-5));
     	this.grid.add(lblID, 1, 0); 
-
     	this.grid.add(this.lblTitle, 2, 0);
-    	this.grid.add(this.btnPriority, 3, 0);
-        //GridPane.setMargin(this.mBtnPriority, new Insets(5, 10, 5, 5));
-        
-        this.grid.add(this.btnAlarm, 4, 0);
-        //GridPane.setMargin(this.mBtnAlarm, new Insets(5, 10, 5, 5));
-        this.grid.add(this.vBoxDateTime, 5, 0);
+    	this.grid.add(this.btnEdit, 3, 0);
+    	this.grid.add(this.btnPriority, 4, 0);
+        this.grid.add(this.btnAlarm, 5, 0);
+        this.grid.add(this.vBoxDateTime, 6, 0);
     }
     
     private void setButtonTooltip(Button btn, String tooltipMsg){
@@ -585,9 +559,18 @@ public class TaskListCell extends ListCell<Task> {
 		public void handle(MouseEvent event) {
 			System.out.println("Priority Popover");
 			showPriorityPopOver(convertStringToInteger(getPriority));
-		}
-		
+		}	
 	};
+	
+	EventHandler btnPriorityEditEventHandler = new EventHandler<MouseEvent>(){
+		@Override
+		public void handle(MouseEvent event) {
+			System.out.println("Edit Popover");
+			//showPriorityPopOver(convertStringToInteger(getPriority));
+		}	
+	};
+	
+	
 	
 	
 	
@@ -658,15 +641,15 @@ public class TaskListCell extends ListCell<Task> {
 		*/
 		Button btnPriorityChange = new Button("Change");
 		
-		String[] priorityCssArray = {POP_OVER_IMAGE_CRITICAL_CLASS, POP_OVER_IMAGE_NORMAL_CLASS, POP_OVER_IMAGE_LOW_CLASS, POP_OVER_IMAGE_DEFAULT_CLASS};
+		String[] priorityCssArray = {CSS_POP_OVER_IMAGE_CRITICAL, CSS_POP_OVER_IMAGE_NORMAL, CSS_POP_OVER_IMAGE_LOW, CSS_POP_OVER_IMAGE_DEFAULT};
 		String[] priorityArray = {"Critical", "Normal", "Low", "Default"};
 		int[] priorityLvlArray = {3, 2, 1, 0};
 		
 		btnPriorityChange.setPrefWidth(popWidth);
-		btnPriorityChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
+		btnPriorityChange.getStyleClass().addAll(CSS_POP_OVER_BUTTON_CHANGE);
 		btnPriorityChange.addEventFilter(ActionEvent.ACTION, onBtnPriorityChangeClick); //set click method listener
 		
-		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
+		lblPopOverTitle.getStyleClass().addAll(CSS_POP_OVER_TITLE);
 		lblPopOverTitle.setPrefWidth(popWidth);
 		lblPopOverTitle.setTextAlignment(TextAlignment.CENTER);
 		lblPopOverTitle.setAlignment(Pos.CENTER);
@@ -681,7 +664,7 @@ public class TaskListCell extends ListCell<Task> {
 		vBox.getChildren().add(btnPriorityChange); //add btn change
 		vBox.setPrefSize(popWidth, popHeight);
 		
-		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
+		vBox.getStyleClass().addAll(CSS_POP_OVER_CONTENT_AREA);
 		
 		this.mPopOverPriority = new PopOver(vBox);
 		this.mPopOverPriority.setHideOnEscape(true);
@@ -704,7 +687,7 @@ public class TaskListCell extends ListCell<Task> {
 			RadioButton radioBtn = new RadioButton();
 			
 			setPopOverPriorityIconStyle(imgPriority, cssArray[i]);
-			setPopOverPriorityLabelStyle(lblPriorityLevel, POP_OVER_LABEL_PRIORITY_CLASS);
+			setPopOverPriorityLabelStyle(lblPriorityLevel, CSS_POP_OVER_LABEL_PRIORITY);
 			
 			radioBtn.setToggleGroup(this.priorityGroup);
 			radioBtn.setUserData(lvlArray[i]);
@@ -748,10 +731,10 @@ public class TaskListCell extends ListCell<Task> {
 		
 		//lbl.getStyleClass().removeAll(POP_OVER_LABEL_ERROR_MESSAGE_CLASS, POP_OVER_LABEL_CORRECT_MESSAGE_CLASS); //reset
 		if(isValid){ //valid, green background
-			lbl.getStyleClass().addAll(POP_OVER_LABEL_CORRECT_MESSAGE_CLASS);
+			lbl.getStyleClass().addAll(CSS_POP_OVER_LABEL_CORRECT_MESSAGE);
 			
 		}else{//invalid, red background
-			lbl.getStyleClass().addAll(POP_OVER_LABEL_ERROR_MESSAGE_CLASS);
+			lbl.getStyleClass().addAll(CSS_POP_OVER_LABEL_ERROR_MESSAGE);
 			
 		}
 		
@@ -848,7 +831,7 @@ public class TaskListCell extends ListCell<Task> {
 		});
 
 		//txtTitle.setId("pop-title");
-		lblPopOverTitle.getStyleClass().addAll(POP_OVER_TITLE_CLASS);
+		lblPopOverTitle.getStyleClass().addAll(CSS_POP_OVER_TITLE);
 		lblPopOverTitle.setPrefWidth(popWidth);
 		lblPopOverTitle.setTextAlignment(TextAlignment.CENTER);
 		lblPopOverTitle.setAlignment(Pos.CENTER);
@@ -869,10 +852,10 @@ public class TaskListCell extends ListCell<Task> {
 		this.txtPopOverAlarmMinField.setPromptText("MM");
 		
 		btnAlarmChange.setPrefWidth(popWidth);
-		btnAlarmChange.getStyleClass().addAll(POP_OVER_BUTTON_CHANGE_CLASS);
+		btnAlarmChange.getStyleClass().addAll(CSS_POP_OVER_BUTTON_CHANGE);
 		btnAlarmChange.addEventFilter(ActionEvent.ACTION, onBtnAlarmChangeClick);
 		
-		lblTimeTip.getStyleClass().addAll(this.POP_OVER_TIME_TIP_CLASS); //set tip style (after the minute input)
+		lblTimeTip.getStyleClass().addAll(this.CSS_POP_OVER_TIME_TIP); //set tip style (after the minute input)
 		
 		setPopOverLabelMessageStyle(lblPopOverAlarmMessage, popWidth); //set message style
 		
@@ -894,7 +877,7 @@ public class TaskListCell extends ListCell<Task> {
 		vBox.getChildren().add(btnAlarmChange);
 		vBox.getChildren().add(this.lblPopOverAlarmMessage);
 		vBox.setPrefSize(popWidth, popHeight);
-		vBox.getStyleClass().addAll(POP_OVER_CONTENT_AREA_CLASS);
+		vBox.getStyleClass().addAll(CSS_POP_OVER_CONTENT_AREA);
     	
 		
 		this.mPopOverAlarm = new PopOver(vBox);

@@ -152,6 +152,29 @@
 	-fx-background-image: url("../../images/add_pressed.png"); 
 }
 
+.button-help-style {
+	-fx-background-image: url("../../images/help.png"); 
+}
+
+.button-help-style:hover {
+	-fx-background-image: url("../../images/help_hover.png"); 
+}
+
+.button-help-style:pressed {
+	-fx-background-image: url("../../images/help_pressed.png"); 
+}
+
+.button-refresh-style {
+	-fx-background-image: url("../../images/refresh.png"); 
+}
+
+.button-refresh-style:hover {
+	-fx-background-image: url("../../images/refresh_hover.png"); 
+}
+
+.button-refresh-style:pressed {
+	-fx-background-image: url("../../images/refresh_pressed.png"); 
+}
 
 
 .popover .pop-content-area{
