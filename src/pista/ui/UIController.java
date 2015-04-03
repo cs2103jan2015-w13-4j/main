@@ -463,16 +463,12 @@ public class UIController {
 		searchKeyword = getKeyword(tokens);
 	}
 	
-	private void resetSearchKeyword() {
-		searchKeyword = null;
-	}
-	
 	private String getKeyword(String[] tokens) {
 		return tokens[0];
 	}
 	
-	private boolean hasKeyword(Task task, String keyword) {
-		return task.getTitle().contains(keyword);
+	private void resetSearchKeyword() {
+		searchKeyword = null;
 	}
 	
 	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
@@ -485,6 +481,23 @@ public class UIController {
 		}
 		
 		return displayList;
+	}
+	
+	private boolean hasKeyword(Task task, String keyword) {
+		String taskDescription = task.getTitle();
+		String[] descriptionTokens = makeIntoTokens(taskDescription);
+		
+		for (String token: descriptionTokens) {
+			if (token.equals(keyword)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private String[] makeIntoTokens(String taskDescription) {
+		return taskDescription.split("\\s+");
 	}
 	//============================== POPOVER ADD NEW TASK ====================================
 	private EventHandler onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
