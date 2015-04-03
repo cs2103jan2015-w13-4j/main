@@ -488,7 +488,9 @@ public class UIController {
 		String[] descriptionTokens = makeIntoTokens(taskDescription);
 		
 		for (String token: descriptionTokens) {
-			if (token.equals(keyword)) {
+			if (keyword.equals("")) {
+				return false;
+			} else if (token.equals(keyword)) {
 				return true;
 			}
 		}

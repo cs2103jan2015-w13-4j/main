@@ -51,9 +51,12 @@ public class MainParser {
 			if (!isCommandValid(command)) {
 				mp.setMessage(Constants.MESSAGE_WRONG_COMMAND);
 				return mp;
-			} else {	
-
-				if(!command.equals(Constants.VALUE_HELP)){
+			} else {
+				if (command.equalsIgnoreCase(Constants.VALUE_HELP)) {
+					mp.setCommand(command);
+					mp.setMessage(Constants.MESSAGE_VALID_INPUT);
+					return mp;
+				} else {
 					String[] tokens = getTokens(input);
 
 					if (!mp.isTokensValid(mp, command, tokens)) {
@@ -64,11 +67,6 @@ public class MainParser {
 						mp.setMessage(Constants.MESSAGE_VALID_INPUT);
 						return mp;
 					}
-				}else{ //help without tokens
-
-					mp.setCommand(command);
-					mp.setMessage(Constants.MESSAGE_VALID_INPUT);
-					return mp;
 				}
 			}
 		}
@@ -155,6 +153,11 @@ public class MainParser {
 	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
 		if(tokens == null || tokens.length != 1){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		if (tokens[0].equals("")) {
+			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
 			return false;
 		}
 		

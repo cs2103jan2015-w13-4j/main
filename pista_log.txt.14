@@ -1,0 +1,46 @@
+Apr 04, 2015 12:19:24 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: search 
+Apr 04, 2015 12:19:24 AM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 12:19:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:19:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:19:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:19:24 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:25:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 12:25:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:25:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:25:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:25:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:25:30 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 12:25:30 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:25:30 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:25:30 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:25:30 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:32:25 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 12:32:25 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:32:25 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:32:25 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 12:32:25 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 12:32:31 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: Help
+Apr 04, 2015 12:32:31 AM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: 
