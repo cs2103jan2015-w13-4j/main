@@ -259,8 +259,6 @@ public class UIController {
 		this.btnRefresh.addEventFilter(ActionEvent.ACTION, onBtnRefreshClick); //set click method listener
 	}
 	
-	
-	
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
 		AnchorPane.setTopAnchor(mNode, anchorTop);
@@ -391,15 +389,7 @@ public class UIController {
 		try{
 			ArrayList<Task> storageList = Logic.getStorageList();
 			if (searchKeyword != null) {
-				ArrayList<Task> displayList = new ArrayList<Task>();
-				
-				for (Task task: storageList) {
-					if (hasKeyword(task, searchKeyword)) {
-						displayList.add(task);
-					}
-				}
-				
-				storageList = displayList;
+				storageList = searchTasks(storageList, searchKeyword);
 			}
 			
 			ObservableList<Task> myObservableList = FXCollections.observableList(storageList);
@@ -455,6 +445,20 @@ public class UIController {
 		txtStatus.setText("");
 	}
 	
+	private EventHandler onBtnHelpClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			showHelp();
+		}
+	};
+	
+	private EventHandler onBtnRefreshClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			initTaskListInListView();
+		}
+	};
+	//============================== SEARCH FUNCTIONS ====================================
 	private void setSearchKeyword(String[] tokens) {
 		searchKeyword = getKeyword(tokens);
 	}
@@ -471,21 +475,17 @@ public class UIController {
 		return task.getTitle().contains(keyword);
 	}
 	
-	private EventHandler onBtnHelpClick = new EventHandler<ActionEvent>() {
-		@Override
-        public void handle(ActionEvent event) {
-			showHelp();
+	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
+		ArrayList<Task> displayList = new ArrayList<Task>();
+		
+		for (Task task: storageList) {
+			if (hasKeyword(task, searchKeyword)) {
+				displayList.add(task);
+			}
 		}
-	};
-	
-	private EventHandler onBtnRefreshClick = new EventHandler<ActionEvent>() {
-		@Override
-        public void handle(ActionEvent event) {
-			initTaskListInListView();
-		}
-	};
-	
-	
+		
+		return displayList;
+	}
 	//============================== POPOVER ADD NEW TASK ====================================
 	private EventHandler onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
@@ -495,9 +495,6 @@ public class UIController {
 		}
 	};
 	
-	
-	
-	
 	//============================== POPOVER Setting ======================================
 	private EventHandler onBtnSettingClick = new EventHandler<ActionEvent>() {
 		@Override
@@ -505,8 +502,7 @@ public class UIController {
 			showPopOverSetting();
 		}
 	};
-	
-	
+
 	private void showPopOverSetting(){
 		if(this.mPopOverSetting != null){
 			if(this.mPopOverSetting.isShowing()){
