@@ -88,16 +88,6 @@
 	-fx-font-size: 0.9em;
 }
 
-/*
-.task-list-icon {
-    -fx-text-fill: #444444;
-    -fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 3, 0.0, 1, 1);
-}
- 
-.task-list-found .cache-list-icon {
-    -fx-text-fill: #669900;
-}
- */
  
 .task-list-cell {
 	/*-fx-background-color: linear-gradient(#FFFFFF 0%, #FCFCFC 25%, #F9F9F9 100%);
@@ -128,6 +118,7 @@
 	-fx-text-fill: #000000;
 }
 
+/*
 .task-list-cell-button-image {
 	-fx-background-color: transparent;
  	-fx-background-size: contain;
@@ -138,7 +129,8 @@
 .task-list-cell-button-image:hover {
 	-fx-cursor: hand;
 }
-
+ */
+ 
 /* 
 .task-list-cell-disable-alarm {
 	-fx-background-image: url("../../images/alarm_disable.png"); 
@@ -163,37 +155,81 @@
 */
 
 .btn-alarm {
+	-fx-border-style: none;
 	-fx-border-radius:0;
- 	-fx-background-size: 25 25;
+ 	-fx-background-size: 30 30;
  	-fx-background-repeat: no-repeat;
-  	-fx-background-position: center center;
+  	-fx-background-position: center;
+  	-fx-background-color: transparent;
 }
 
-.task-list-cell-is-done-alarm{
-	-fx-background-image: url("../../images/alarm.png");
-	-fx-background-color:  #33B5E5;
-}
-
-.task-list-cell-is-done-alarm:hover {
-	-fx-background-image: url("../../images/alarm.png");
+.btn-alarm:hover {
 	-fx-background-color:  #3897D9;
+	-fx-cursor: hand;
+} 
+
+.btn-alarm-set{
+	-fx-background-image: url("../../images/alarm_set.png");
+}
+
+.btn-alarm-set:hover {
+	-fx-background-image: url("../../images/alarm_set_hover.png");
+}
+
+.btn-alarm-not-set{
+	-fx-background-image: url("../../images/alarm_not_set.png");
+}
+
+.btn-alarm-not-set:hover {
+	-fx-background-image: url("../../images/alarm_not_set_hover.png");
 }
 
 
-.task-list-cell-priority-critical {
-	/*-fx-background-image: url("../../images/priority_critical_2.png");*/
+
+.btn-priority {
+	-fx-border-style: none;
+	-fx-border-radius: 0;
+ 	-fx-background-size: 30 30;
+ 	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-color: transparent;
 }
 
-.task-list-cell-priority-normal {
-	/*-fx-background-image: url("../../images/priority_level_normal.png");*/
+.btn-priority:hover {
+	-fx-background-color:  #3897D9;
+	-fx-cursor: hand;
+} 
+
+.btn-priority-critical {
+	-fx-background-image: url("../../images/priority_3.png");
 }
 
-.task-list-cell-priority-low {
-	/*-fx-background-image: url("../../images/priority_level_low.png");*/
+.btn-priority-critical:hover {
+	-fx-background-image: url("../../images/priority_3_hover.png");
 }
 
-.task-list-cell-priority-default {
-	/*-fx-background-image: url("../../images/priority_level_default.png");*/
+.btn-priority-normal {
+	-fx-background-image: url("../../images/priority_2.png");
+}
+
+.btn-priority-normal:hover {
+	-fx-background-image: url("../../images/priority_2_hover.png");
+}
+
+.btn-priority-low {
+	-fx-background-image: url("../../images/priority_1.png");
+}
+
+.btn-priority-low:hover {
+	-fx-background-image: url("../../images/priority_1_hover.png");
+}
+
+.btn-priority-default {
+	-fx-background-image: url("../../images/priority_0.png");
+}
+
+.btn-priority-default:hover {
+	-fx-background-image: url("../../images/priority_0_hover.png");
 }
 
 
@@ -224,11 +260,13 @@
 */
 
 
-.btn-is-done {
+.btn-is-done {	
+  	-fx-border-style: none;
 	-fx-border-radius:0;
- 	-fx-background-size: 25 25;
+ 	-fx-background-size: 30 30;
  	-fx-background-repeat: no-repeat;
   	-fx-background-position: center center;
+  	-fx-background-color: transparent;
 	/*-fx-effect: dropshadow(three-pass-box, #F1F1F199, 6, 0, 0, 0);*/
 }
 
@@ -238,8 +276,11 @@
 }
 
 .btn-is-done-unset {
-	/*-fx-background-image: url("../../images/tick.png");*/
-	-fx-background-color: transparent;
+	-fx-background-image: url("../../images/tick_not_done.png");
+}
+
+.btn-is-done-unset:hover {
+	-fx-background-image: url("../../images/tick_not_done_hover.png");
 }
 
 .btn-is-done-set {
@@ -343,19 +384,19 @@
 
 
 .pop-over-img-critical {
-	-fx-image: url("../../images/priority_level_critical.png");
+	-fx-image: url("../../images/priority_3.png");
 }
 
 .pop-over-img-normal {
-	-fx-image: url("../../images/priority_level_normal.png");
+	-fx-image: url("../../images/priority_2.png");
 }
 
 .pop-over-img-low {
-	-fx-image: url("../../images/priority_level_low.png");
+	-fx-image: url("../../images/priority_1.png");
 }
 
 .pop-over-img-default {
-	-fx-image: url("../../images/priority_level_default.png");
+	-fx-image: url("../../images/priority_0.png");
 }
 
 .btn-change {

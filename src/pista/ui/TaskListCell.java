@@ -76,16 +76,24 @@ public class TaskListCell extends ListCell<Task> {
     private final String BUTTON_IS_DONE_SET_CLASS = "btn-is-done-set";
     
     private final String CSS_BUTTON_ALARM = "btn-alarm";
-   	
-    private final String TASK_LIST_CELL_BUTTON_IMAGE_CLASS = "task-list-cell-button-image";
-    private final String TASK_LIST_CELL_DISABLE_ALARM_CLASS = "task-list-cell-disable-alarm";
-    private final String CSS_BTN_ENABLE_ALARM = "task-list-cell-enable-alarm";
-    private final String CSS_BTN_IS_DONE_ALARM = "task-list-cell-is-done-alarm";
+    private final String CSS_BUTTON_ALARM_SET = "btn-alarm-set";
+    private final String CSS_BUTTON_ALARM_NOT_SET = "btn-alarm-not-set";
     
-    private final String TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS = "task-list-cell-priority-critical";
-    private final String TASK_LIST_CELL_PRIORITY_NORMAL_CLASS = "task-list-cell-priority-normal";
-    private final String TASK_LIST_CELL_PRIORITY_LOW_CLASS = "task-list-cell-priority-low";
-    private final String TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS = "task-list-cell-priority-default";
+    private final String CSS_BUTTON_PRIORITY = "btn-priority";
+   	private final String CSS_PRIORITY_CRITICAL = "btn-priority-critical";
+   	private final String CSS_PRIORITY_NORMAL = "btn-priority-normal";
+   	private final String CSS_PRIORITY_LOW = "btn-priority-low";
+   	private final String CSS_PRIORITY_DEFAULT = "btn-priority-default";
+    
+    //private final String TASK_LIST_CELL_BUTTON_IMAGE_CLASS = "task-list-cell-button-image";
+   // private final String TASK_LIST_CELL_DISABLE_ALARM_CLASS = "task-list-cell-disable-alarm";
+   // private final String CSS_BTN_ENABLE_ALARM = "task-list-cell-enable-alarm";
+    //private final String CSS_BTN_IS_DONE_ALARM = "task-list-cell-is-done-alarm";
+    
+    //private final String TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS = "task-list-cell-priority-critical";
+    //private final String TASK_LIST_CELL_PRIORITY_NORMAL_CLASS = "task-list-cell-priority-normal";
+   // private final String TASK_LIST_CELL_PRIORITY_LOW_CLASS = "task-list-cell-priority-low";
+   // private final String TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS = "task-list-cell-priority-default";
     
     
     private final String TASK_LIST_CELL_TEXT_IS_DONE_CLASS = "task-list-cell-text-is-done";
@@ -129,8 +137,8 @@ public class TaskListCell extends ListCell<Task> {
     private UIController mUIParent = null;
     private VBox vBoxColor = new VBox(0);
     
-    private Button mBtnAlarm = new Button();
-    private Button mBtnPriority = new Button();
+    private Button btnAlarm = new Button();
+    private Button btnPriority = new Button();
     
     private PopOver mPopOverAlarm = null;
     private PopOver mPopOverPriority = null;
@@ -205,7 +213,7 @@ public class TaskListCell extends ListCell<Task> {
         
         ColumnConstraints colAlarm = new ColumnConstraints(); // alarm
         colAlarm.setPercentWidth(8);
-        colAlarm.setHalignment(HPos.RIGHT);
+        colAlarm.setHalignment(HPos.LEFT);
         
         ColumnConstraints colDateTime = new ColumnConstraints(); //date time
         colDateTime.setPercentWidth(20);
@@ -233,93 +241,57 @@ public class TaskListCell extends ListCell<Task> {
     
     private void configureButtonImage(){
     	//Alarm
-    	//double size = 25.0;
-    	this.mBtnAlarm.setPrefSize(70.0, PREF_GRID_HEIGHT - 4.0);
-    	this.mBtnAlarm.setTooltip(new Tooltip("Alarm"));
-    	mBtnAlarm.addEventFilter(MouseEvent.MOUSE_CLICKED, btnAlarmEnterEventHandler); //ActionEvent.ACTION
+    	double width = 55.0;
+    	double height = PREF_GRID_HEIGHT - 4.0;
+    	this.btnAlarm.setPrefSize(width, height);
+    	btnAlarm.addEventFilter(MouseEvent.MOUSE_CLICKED, btnAlarmEnterEventHandler); //ActionEvent.ACTION
     	
     	
     	//Priority
-    	double width = 55.0;
-    	double height = PREF_GRID_HEIGHT - 4.0;
-    	mBtnPriority.setPrefSize(width, height);
-    	mBtnPriority.setMaxSize(width, height);
-    	mBtnPriority.setMinSize(width, height);
-    	mBtnPriority.addEventFilter(MouseEvent.MOUSE_CLICKED, btnPriorityEnterEventHandler);
+    	btnPriority.setPrefSize(width, height);
+    	btnPriority.setMaxSize(width, height);
+    	btnPriority.setMinSize(width, height);
+    	btnPriority.addEventFilter(MouseEvent.MOUSE_CLICKED, btnPriorityEnterEventHandler);
     	
     }
     
     private void setButtonAlarm(Long remainder, boolean isDone){
-    	mBtnAlarm.getStyleClass().removeAll(CSS_BTN_ENABLE_ALARM);
-    	mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
-    	mBtnAlarm.getStyleClass().removeAll(CSS_BTN_IS_DONE_ALARM);
-
-    	mBtnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM);
+    	//mBtnAlarm.getStyleClass().removeAll(CSS_BTN_ENABLE_ALARM);
+    	//mBtnAlarm.getStyleClass().removeAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
+    	//mBtnAlarm.getStyleClass().removeAll(CSS_BTN_IS_DONE_ALARM);
+    	btnAlarm.getStyleClass().removeAll(CSS_BUTTON_ALARM_SET, CSS_BUTTON_ALARM_NOT_SET);
+    	btnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM);
     	
-    	if(!isDone){
-    		if(remainder > 0L){
-    			mBtnAlarm.getStyleClass().addAll(CSS_BTN_ENABLE_ALARM);
-        	}else{
-        		mBtnAlarm.getStyleClass().addAll(TASK_LIST_CELL_DISABLE_ALARM_CLASS);
-        	}
+    
+		if(remainder > 0L){
+			btnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM_SET);
     	}else{
-    		
-    		mBtnAlarm.getStyleClass().addAll(CSS_BTN_IS_DONE_ALARM);
+    		btnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM_NOT_SET);
     	}
     	
     }
     
-    private void setImageViewPriority(String lvlString){
-    	mBtnPriority.getStyleClass().removeAll(TASK_LIST_CELL_PRIORITY_LOW_CLASS, TASK_LIST_CELL_PRIORITY_NORMAL_CLASS, 
-    										TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS, TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS);
+    private void setButtonPriority(String lvlString){
+    	btnPriority.getStyleClass().removeAll(CSS_PRIORITY_LOW, CSS_PRIORITY_NORMAL, 
+    											CSS_PRIORITY_CRITICAL, CSS_PRIORITY_DEFAULT);
+    	
+    	btnPriority.getStyleClass().addAll(CSS_BUTTON_PRIORITY);
     	switch (lvlString){
 	    	case "1": //lowest
-	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_LOW_CLASS);
+	    		btnPriority.getStyleClass().addAll(CSS_PRIORITY_LOW);
 	    		break;
 	    	case "2": //normal
-	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_NORMAL_CLASS);
+	    		btnPriority.getStyleClass().addAll(CSS_PRIORITY_NORMAL);
 	    		break;
 	    	case "3": //highest
-	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_CRITICAL_CLASS);
+	    		btnPriority.getStyleClass().addAll(CSS_PRIORITY_CRITICAL);
 	    		break;
 	    		
 	    	default: //either set nothing or error
-	    		mBtnPriority.getStyleClass().addAll(TASK_LIST_CELL_BUTTON_IMAGE_CLASS, TASK_LIST_CELL_PRIORITY_DEFAULT_CLASS);
+	    		btnPriority.getStyleClass().addAll(CSS_PRIORITY_DEFAULT);
 	    		break;
     	}
     }
-    
-    private void configureBoxColor(int type){
-/*
-    	this.vBoxColor.setMaxWidth(12.0);
-    	this.vBoxColor.setMinWidth(12.0);
-    	this.vBoxColor.setPrefWidth(12.0);
-    	this.vBoxColor.setAlignment(Pos.CENTER_LEFT);  	
-    	
-    	this.vBoxColor.getStyleClass().removeAll(TASK_LIST_CELL_BOX_RED_CLASS,
-    			TASK_LIST_CELL_BOX_YELLOW_CLASS, TASK_LIST_CELL_BOX_TRANSPARENT_CLASS, TASK_LIST_CELL_BOX_GREEN_CLASS);
-    	
-    	
-    	if(type == 1){
-    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_RED_CLASS);
-    	}
-    	
-    	if (type == -1 || type == 0){
-    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_YELLOW_CLASS);
-    	}
-    	
-    	if (type == -2 || type == 4){
-    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_TRANSPARENT_CLASS);
-
-    	}
-    	
-    	if (type == 3){ //is done
-    		this.vBoxColor.getStyleClass().addAll(this.TASK_LIST_CELL_BOX_GREEN_CLASS);
-    	}
-*/    	
-    }
-    
-    //private void 
     
     
     private void configureButtonIsDone(){
@@ -429,13 +401,16 @@ public class TaskListCell extends ListCell<Task> {
     	this.grid.add(lblID, 1, 0); 
 
     	this.grid.add(this.lblTitle, 2, 0);
-    	this.grid.add(this.mBtnPriority, 3, 0);
-        GridPane.setMargin(this.mBtnPriority, new Insets(5, 10, 5, 5));
+    	this.grid.add(this.btnPriority, 3, 0);
+        //GridPane.setMargin(this.mBtnPriority, new Insets(5, 10, 5, 5));
         
-        this.grid.add(this.mBtnAlarm, 4, 0);
+        this.grid.add(this.btnAlarm, 4, 0);
         //GridPane.setMargin(this.mBtnAlarm, new Insets(5, 10, 5, 5));
         this.grid.add(this.vBoxDateTime, 5, 0);
- 
+    }
+    
+    private void setButtonTooltip(Button btn, String tooltipMsg){
+    	btn.setTooltip(new Tooltip(tooltipMsg));
     }
     
     private void clearContent() {
@@ -493,11 +468,35 @@ public class TaskListCell extends ListCell<Task> {
         setButtonIsDone(this.getIsDone);
         strikeThroughLabels(this.getIsDone); //if is done, label will be strike out
         isDoneLabel(this.getIsDone); 
-        setImageViewPriority(this.getPriority); //set different color for different priority
+        setButtonPriority(this.getPriority); //set different color for different priority
         setButtonAlarm(this.getRemainder, this.getIsDone); //set alarm icon - enable or disable
         setCellBackground(this.getIsDone); //if is done, background will be darker
         setGraphic(this.grid); //add grid to cell graphic
 		
+        
+        //set btnAlarm tooltip - show remainder date and time
+        String getAlarmDate = MainParser.convertMillisecondToDate(this.getRemainder);
+        String getAlarmTime = MainParser.convertMillisecondToTime(this.getRemainder);
+        if(getAlarmDate.equals("01/01/1970")){
+        	getAlarmDate = "Alarm not set";
+        	setButtonTooltip(btnAlarm, getAlarmDate);
+        }else{
+        	setButtonTooltip(btnAlarm, convertToFullDateString(getAlarmDate) + " " + getAlarmTime);
+        }
+        
+        //set btnPriority tooltip - show priority (Critical, normal, low, or nothing)
+        String getPriorityString = "";
+        if(this.getPriority.equals("1")){
+        	getPriorityString = "Low";
+        }else if(this.getPriority.equals("2")){
+        	getPriorityString = "Normal";
+        }else if(this.getPriority.equals("3")){
+        	getPriorityString = "Critical";
+        }else{
+        	getPriorityString = "Priority not set";
+        }
+        setButtonTooltip(btnPriority, getPriorityString);
+        
     }
     
     
@@ -690,7 +689,7 @@ public class TaskListCell extends ListCell<Task> {
 		this.mPopOverPriority.setAutoFix(true);
 		this.mPopOverPriority.setAutoHide(true);
 		this.mPopOverPriority.setDetachable(false);
-		this.mPopOverPriority.show(mBtnPriority); 
+		this.mPopOverPriority.show(btnPriority); 
     	
 	}
 	
@@ -904,7 +903,7 @@ public class TaskListCell extends ListCell<Task> {
 		this.mPopOverAlarm.setAutoFix(true);
 		this.mPopOverAlarm.setAutoHide(true);
 		this.mPopOverAlarm.setDetachable(false);
-    	this.mPopOverAlarm.show(this.mBtnAlarm); 
+    	this.mPopOverAlarm.show(this.btnAlarm); 
     	
 	}
 	
