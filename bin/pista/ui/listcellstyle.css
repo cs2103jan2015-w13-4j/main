@@ -110,7 +110,7 @@
 }
 
 
-.task-list-cell:filled:selected .task-list-cell-title{
+.task-list-cell:filled:selected .btn-change{
 	-fx-text-fill: #000000;
 }
 
@@ -354,7 +354,7 @@
 	-fx-image: url("../../images/priority_0.png");
 }
 
-.btn-change {
+.pop-over-btn-change, .pop-over-btn-edit {
 	-fx-background-color: #EAEAEA;
     -fx-border-color: #B3B3B3;
     -fx-padding: 7 10 7 10;
@@ -363,13 +363,13 @@
     -fx-font-weight: bold;
 }
 
-.btn-change:hover {
+.pop-over-btn-change:hover, .pop-over-btn-edit:hover {
 	-fx-background-color: #E3F0FC;
 	-fx-border-color: #89BAEC;
 	-fx-cursor: hand;
 }
 
-.btn-change:pressed {
+.pop-over-btn-change:pressed, .pop-over-btn-edit:pressed {
 	-fx-background-color: #CAE3FC;
 	-fx-border-color: #62A4E7;
 	-fx-cursor: hand;

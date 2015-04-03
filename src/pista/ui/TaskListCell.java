@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -89,7 +90,8 @@ public class TaskListCell extends ListCell<Task> {
     private final String CSS_POP_OVER_IMAGE_NORMAL = "pop-over-img-normal";
     private final String CSS_POP_OVER_IMAGE_LOW = "pop-over-img-low";
     private final String CSS_POP_OVER_IMAGE_DEFAULT = "pop-over-img-default";
-    private final String CSS_POP_OVER_BUTTON_CHANGE = "btn-change";
+    private final String CSS_POP_OVER_BUTTON_CHANGE = "pop-over-btn-change";
+    private final String CSS_POP_OVER_BUTTON_EDIT = "pop-over-btn-edit";
     
     private final String POP_OVER_INVALID_ALARM_TIME_MESSAGE = "Invalid Time";
     private final String POP_OVER_INVALID_ALARM_DATE_MESSAGE = "Invalid Date";
@@ -118,12 +120,20 @@ public class TaskListCell extends ListCell<Task> {
     
     private PopOver mPopOverAlarm = null;
     private PopOver mPopOverPriority = null;
+    private PopOver mPopOverEdit = null;
     
     private TextField txtPopOverAlarmHourField = null;
     private TextField txtPopOverAlarmMinField = null;
+    private TextField txtPopOverEditStartHourField = null;
+    private TextField txtPopOverEditStartMinField = null;
+    private TextField txtPopOverEditEndHourField = null;
+    private TextField txtPopOverEditEndMinField = null;
+    private DatePicker datePickerPopOverEditStartDate = null;
+    private DatePicker datePickerPopOverEditEndDate = null;
     private DatePicker datePickerPopOverAlarm = null;
     private Label lblPopOverAlarmMessage = null;
     private Label lblPopOverPriorityMessage = null;
+    private Label lblPopOverTimeTip  = new Label("(24 hrs format)");
     
     private ToggleGroup priorityGroup = null;
     
@@ -566,6 +576,7 @@ public class TaskListCell extends ListCell<Task> {
 		@Override
 		public void handle(MouseEvent event) {
 			System.out.println("Edit Popover");
+			showEditPopOver();
 			//showPriorityPopOver(convertStringToInteger(getPriority));
 		}	
 	};
@@ -755,7 +766,7 @@ public class TaskListCell extends ListCell<Task> {
 		 * ---------------------
 		 * |[=================]|
 		 * |            <Enter>|
-		 * 
+		 * |[   Message area  ]|
 		 * 
 		 * */
 		if(this.mPopOverAlarm != null){
@@ -780,7 +791,6 @@ public class TaskListCell extends ListCell<Task> {
 		Label lblDateTitle = new Label("Date:");
 		Label lblTimeTitle = new Label("Time:");
 		Label lblColon = new Label(":");
-		Label lblTimeTip  = new Label("(24 hrs format)");
 		this.lblPopOverAlarmMessage = new Label();
 		
 		this.txtPopOverAlarmHourField = new TextField();
@@ -855,7 +865,7 @@ public class TaskListCell extends ListCell<Task> {
 		btnAlarmChange.getStyleClass().addAll(CSS_POP_OVER_BUTTON_CHANGE);
 		btnAlarmChange.addEventFilter(ActionEvent.ACTION, onBtnAlarmChangeClick);
 		
-		lblTimeTip.getStyleClass().addAll(this.CSS_POP_OVER_TIME_TIP); //set tip style (after the minute input)
+		lblPopOverTimeTip.getStyleClass().addAll(this.CSS_POP_OVER_TIME_TIP); //set tip style (after the minute input)
 		
 		setPopOverLabelMessageStyle(lblPopOverAlarmMessage, popWidth); //set message style
 		
@@ -865,9 +875,8 @@ public class TaskListCell extends ListCell<Task> {
 		hTimeBox.getChildren().add(this.txtPopOverAlarmHourField); //hour
 		hTimeBox.getChildren().add(lblColon); // :
 		hTimeBox.getChildren().add(this.txtPopOverAlarmMinField); //min
-		hTimeBox.getChildren().add(lblTimeTip); //time tip
-		HBox.setMargin(lblTimeTip, new Insets(10,0,0,0));
-		
+		hTimeBox.getChildren().add(lblPopOverTimeTip); //time tip
+		HBox.setMargin(lblPopOverTimeTip, new Insets(10,0,0,0));
 		
 		VBox.setMargin(btnAlarmChange, new Insets(10,0,0,0));
 		vBox.setPadding(new Insets(5,10,5,10));
@@ -879,7 +888,6 @@ public class TaskListCell extends ListCell<Task> {
 		vBox.setPrefSize(popWidth, popHeight);
 		vBox.getStyleClass().addAll(CSS_POP_OVER_CONTENT_AREA);
     	
-		
 		this.mPopOverAlarm = new PopOver(vBox);
 		this.mPopOverAlarm.setHideOnEscape(true);
 		this.mPopOverAlarm.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
@@ -887,9 +895,113 @@ public class TaskListCell extends ListCell<Task> {
 		this.mPopOverAlarm.setAutoHide(true);
 		this.mPopOverAlarm.setDetachable(false);
     	this.mPopOverAlarm.show(this.btnAlarm); 
-    	
 	}
 	
+	//================== POP OVER ADD NEW TASK ========================
+	private void showEditPopOver(){
+		double popWidth = 500.0;
+		double popHeight = 700.0;
+	
+		if(this.mPopOverEdit != null){
+			if(this.mPopOverEdit.isShowing()){
+				this.mPopOverEdit.setAutoHide(true);
+				return;
+			}
+		}
+		
+		Label lblPopOverTitle = new Label("Edit Task");
+		Label lblDateTitle = new Label("Date:");
+		Label lblTimeTitle = new Label("Time:");
+		Label lblColon = new Label(":");
+		TextArea txtAreaTaskTitle = new TextArea();
+		
+		Button btnEdit = new Button("Edit");
+		
+		VBox vBox = new VBox(8);
+		HBox hBox = new HBox(4);
+		
+		lblPopOverTitle.getStyleClass().addAll(CSS_POP_OVER_TITLE);
+		lblPopOverTitle.setPrefWidth(popWidth);
+		lblPopOverTitle.setTextAlignment(TextAlignment.CENTER);
+		lblPopOverTitle.setAlignment(Pos.CENTER);
+		
+		txtAreaTaskTitle.setPrefRowCount(3);
+		txtAreaTaskTitle.setPrefWidth(popWidth);
+		txtAreaTaskTitle.setWrapText(true);
+		
+		vBox.getChildren().add(lblPopOverTitle); //add title
+		vBox.getChildren().add(txtAreaTaskTitle); //add task title
+		
+		
+		hBox = new HBox(4); //start date
+		this.datePickerPopOverEditStartDate = new DatePicker();
+		hBox.getChildren().add(lblDateTitle); 
+		hBox.getChildren().add(this.datePickerPopOverEditStartDate);
+		vBox.getChildren().add(hBox);
+		
+		hBox = new HBox(4); //start hour and minute
+		this.txtPopOverEditStartHourField = new TextField();
+		this.txtPopOverEditStartMinField = new TextField();	
+		hBox.getChildren().add(lblTimeTitle);  
+		hBox.getChildren().add(this.txtPopOverEditStartHourField);
+		hBox.getChildren().add(lblColon);
+		hBox.getChildren().add(this.txtPopOverEditStartMinField);
+		hBox.getChildren().add(this.lblPopOverTimeTip);
+		vBox.getChildren().add(hBox);
+		
+		lblDateTitle = new Label("Date:");
+		lblTimeTitle = new Label("Time:");
+		lblColon = new Label(":");
+		this.lblPopOverTimeTip = new Label("(24 hrs format)");
+		
+		hBox = new HBox(4); //end date 
+		this.datePickerPopOverEditEndDate = new DatePicker();
+		hBox.getChildren().add(lblDateTitle); //start date
+		hBox.getChildren().add(this.datePickerPopOverEditEndDate);
+		vBox.getChildren().add(hBox);
+		
+		hBox = new HBox(4); //end hour and minute
+		this.txtPopOverEditEndHourField = new TextField();
+		this.txtPopOverEditEndMinField = new TextField();
+		hBox.getChildren().add(lblTimeTitle);  
+		hBox.getChildren().add(this.txtPopOverEditEndHourField);
+		hBox.getChildren().add(lblColon);
+		hBox.getChildren().add(this.txtPopOverEditEndMinField);
+		hBox.getChildren().add(this.lblPopOverTimeTip);
+		vBox.getChildren().add(hBox);
+		
+		
+		
+		btnEdit.setPrefWidth(popWidth);
+		btnEdit.getStyleClass().addAll(this.CSS_POP_OVER_BUTTON_EDIT);
+		btnEdit.addEventFilter(ActionEvent.ACTION, this.onBtnEditChangeClick);
+		
+	
+		VBox.setMargin(btnEdit, new Insets(10,0,0,0));
+		vBox.setPadding(new Insets(5,10,5,10));
+		
+		//vBox.getChildren().add(hTimeBox);
+		vBox.getChildren().add(btnEdit);
+		//vBox.getChildren().add(this.lblPopOverAlarmMessage);
+		vBox.setPrefSize(popWidth, popHeight);
+		vBox.getStyleClass().addAll(CSS_POP_OVER_CONTENT_AREA);
+		
+		this.mPopOverEdit = new PopOver(vBox);
+		this.mPopOverEdit.setHideOnEscape(true);
+		this.mPopOverEdit.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+		this.mPopOverEdit.setAutoFix(true);
+		this.mPopOverEdit.setAutoHide(true);
+		this.mPopOverEdit.setDetachable(false);
+    	this.mPopOverEdit.show(this.btnEdit);
+		
+	}
+	
+	private EventHandler onBtnEditChangeClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			
+		}
+	};
 	
 	private EventHandler onBtnPriorityChangeClick = new EventHandler<ActionEvent>() {
         @Override
@@ -949,15 +1061,11 @@ public class TaskListCell extends ListCell<Task> {
         			return;
         		}
         		
-
-        		System.out.println(alarmCommand);
-        		
         		//Execute command
         		MainParser mp = MainParser.validateInput(alarmCommand); // since format is confirm correct, do not need to check again
         		String command = mp.getCommand(); //get command which is remind
         		String[] tokens = mp.getTokens(); //get tokens which is either off or startdate + starttime
         		
-        		System.out.println(tokens.length);
         		String logicOutput = Logic.runCommand(command, tokens);
         		
         		setUIControllerParentTextStatus(logicOutput); // show the status in UIController

@@ -228,7 +228,7 @@ public class UIController {
 		this.btnAddNewTask.setPrefSize(size, size);
 		this.btnAddNewTask.setMaxSize(size, size);
 		this.btnAddNewTask.setMinSize(size, size);
-		//this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+		this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, onBtnAddNewTaskClick); //set click method listener
 	}
 	
 	private void initButtonHelp(){
@@ -242,7 +242,7 @@ public class UIController {
 		this.btnHelp.setPrefSize(size, size);
 		this.btnHelp.setMaxSize(size, size);
 		this.btnHelp.setMinSize(size, size);
-		//this.btnHelp.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+		this.btnHelp.addEventFilter(ActionEvent.ACTION, onBtnHelpClick); //set click method listener
 	}
 	
 	private void initButtonRefresh(){
@@ -256,7 +256,7 @@ public class UIController {
 		this.btnRefresh.setPrefSize(size, size);
 		this.btnRefresh.setMaxSize(size, size);
 		this.btnRefresh.setMinSize(size, size);
-		//this.btnRefresh.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+		this.btnRefresh.addEventFilter(ActionEvent.ACTION, onBtnRefreshClick); //set click method listener
 	}
 	
 	
@@ -470,6 +470,33 @@ public class UIController {
 	private boolean hasKeyword(Task task, String keyword) {
 		return task.getTitle().contains(keyword);
 	}
+	
+	private EventHandler onBtnHelpClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			showHelp();
+		}
+	};
+	
+	private EventHandler onBtnRefreshClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			initTaskListInListView();
+		}
+	};
+	
+	
+	//============================== POPOVER ADD NEW TASK ====================================
+	private EventHandler onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			//initTaskListInListView();
+			System.out.println("helo");
+		}
+	};
+	
+	
+	
 	
 	//============================== POPOVER Setting ======================================
 	private EventHandler onBtnSettingClick = new EventHandler<ActionEvent>() {
