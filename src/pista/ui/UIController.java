@@ -97,6 +97,11 @@ public class UIController {
     private final String POP_OVER_FAILED_SETTING_MESSAGE = "Setting Failed";
     private final String POP_OVER_INVALID_FILE_MESSAGE = "Invalid File";
     private final String POP_OVER_SUCCESS_SETTING_MESSAGE = "Updated";
+    private final String POP_OVER_INVALID_TITLE_MESSAGE = "Task cannot be empty";
+    private final String POP_OVER_INVALID_START_TIME_MESSAGE = "Invalid Start Time";
+    private final String POP_OVER_INVALID_END_TIME_MESSAGE = "Invalid End Time";
+    private final String POP_OVER_SUCCESS_ADD_MESSAGE = "Added Successfully";
+    private final String POP_OVER_FAIL_ADD_MESSAGE = "Fail to add";
     
 	private final String STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
 	private final String STATUS_INVALID_XML_FILE_PATH_MESSAGE  = "Either your file is not empty or invalid format.";
@@ -457,41 +462,47 @@ public class UIController {
 	}//end initialize
 
 	public boolean initTaskListInListView(){
-		listview_task_fx_id.getStyleClass().addAll(CSS_LIST_VIEW); //add css class
-		listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){ //populate every task into a custom cell
-			@Override
-			public ListCell<Task> call(ListView<Task> param) {
-				final TaskListCell mCell = new TaskListCell();
-				mCell.setUIParent(UIController.this);
-				return mCell;
-			}//end call
-		});
-
-		//Selected item
-		//currently not in use
-		listview_task_fx_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
-			@Override      
-			public void changed(ObservableValue<? extends Task> ov,
-					Task oldTask, Task newTask) {
-			}
-		});
-
+		
 		try{
 			ArrayList<Task> storageList = Logic.getStorageList();
 			if (searchKeyword != null) {
 				storageList = searchTasks(storageList, searchKeyword);
 			}
 			
+			//for(Task t : storageList){
+			//	System.out.println(t.getID() + " => End Date = " + t.getEndDate() + " end ms => " + t.getEndMilliseconds() + " => Category = " + t.getCategory());
+			//}
+			
+			
 			ObservableList<Task> myObservableList = FXCollections.observableList(storageList);
 			listview_task_fx_id.setItems(null); 
 			listview_task_fx_id.setItems(myObservableList);
 
+			listview_task_fx_id.getStyleClass().addAll(CSS_LIST_VIEW); //add css class
+			listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){ //populate every task into a custom cell
+				@Override
+				public ListCell<Task> call(ListView<Task> param) {
+					final TaskListCell mCell = new TaskListCell();
+					mCell.setUIParent(UIController.this);
+					return mCell;
+				}//end call
+			});
+
+			//Selected item
+			//currently not in use
+			listview_task_fx_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+				@Override      
+				public void changed(ObservableValue<? extends Task> ov,
+						Task oldTask, Task newTask) {
+				}
+			});
+			
 			return true;
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage());
 			return false;
 		}//end try
-
+		
 	}//end initTaskListInListView
 
 	public boolean showHelp(){
@@ -902,6 +913,8 @@ public class UIController {
     	btnAdd.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 			@Override
 	        public void handle(ActionEvent event) {
+				boolean isCreated = false;
+				
 				LocalDate rawStartDate = datePickerStartDate.getValue();
 				LocalDate rawEndDate = datePickerEndDate.getValue();
 				
@@ -915,25 +928,84 @@ public class UIController {
 				
 				String newStartTime = "";
 				String newEndTime = "";
-				String addComamnd = addTaskCommand;
+				String addCommand = addTaskCommand;
 				
 				//addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
 				
-				/*
+				if(!isTitleValid(newTitle)){ //check title
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_TITLE_MESSAGE);
+	    			return;
+				}
+				
 				if(!(isValidHour(newStartHour) && isValidMinute(newStartMinute))){ //check is valid for start hour and minute (accept empty)
-					setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
-	    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_START_TIME_MESSAGE);
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_START_TIME_MESSAGE);
 	    			return;
 				}
 				
 				if(!(isValidHour(newEndHour) && isValidMinute(newEndMinute))){ //check is valid for end hour and minute (accept empty)
-					setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
-	    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_END_TIME_MESSAGE);
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_END_TIME_MESSAGE);
 	    			return;
 				}
-				*/
+					
+				//Check both start date and time
+				if((newStartDate.equals("") || newStartDate.isEmpty()) && 
+						(newStartHour.equals("") || newStartHour.isEmpty()) && 
+						(newStartMinute.equals("") || newStartMinute.isEmpty())){
+					//start date, time is empty
+					//remove start date and time
+					addCommand = addCommand.replace("-[start_date]", "").replace("-[start_time]", "");
+				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
+						((newStartHour.equals("") || newStartHour.isEmpty()) ||
+						(newStartMinute.equals("") || newStartMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
+					
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_START_TIME_MESSAGE);
+	    			return;
+	    			
+				}else{
+					newStartTime = newStartHour + ":" + newStartMinute;
+					addCommand = addCommand.replace("[start_date]", newStartDate).replace("[start_time]", newStartTime);
+				}
 				
-			}
+				//Check both end date and time
+				if((newEndDate.equals("") || newEndDate.isEmpty()) && 
+						(newEndHour.equals("") || newEndHour.isEmpty()) && 
+						(newEndMinute.equals("") || newEndMinute.isEmpty())){
+					//start date, time is empty
+					//remove start date and time
+					addCommand = addCommand.replace("-[end_date]", "").replace("-[end_time]", "");
+				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
+						((newEndHour.equals("") || newEndHour.isEmpty()) ||
+						(newEndMinute.equals("") || newEndMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
+					
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_END_TIME_MESSAGE);
+	    			return;
+	    			
+				}else{
+					newEndTime = newEndHour + ":" + newEndMinute;
+					addCommand = addCommand.replace("[end_date]", newEndDate).replace("[end_time]", newEndTime);
+				}
+				
+				addCommand = addCommand.replace("[task_title]", newTitle);	
+				System.out.println(addCommand);
+				
+				isCreated = executeCommand(addCommand);	
+				if(isCreated){
+					setPopOverLabelMessageVisible(lblMessage, true, true); //show success message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_SUCCESS_ADD_MESSAGE);
+	    			return;
+				}else{
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+	    			setPopOverLabelMessageText(lblMessage, POP_OVER_FAIL_ADD_MESSAGE);
+	    			return;
+				}
+				
+				
+			}//end handle
     	});
     	
 	}
@@ -1052,6 +1124,13 @@ public class UIController {
 		
 		return dateFormatter.format(rawDate);
     }
+	 
+	private boolean isTitleValid(String title){
+		if(title.isEmpty() || title.equals("")){ //don't accept empty
+			return false;
+		}
+		return true;
+	}
 	 
 	 private boolean isValidHour(String hour){
     	//accept empty, means 0
