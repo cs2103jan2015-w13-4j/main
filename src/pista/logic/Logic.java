@@ -355,14 +355,13 @@ public class Logic {
 				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
 
 			}
-<<<<<<< HEAD
+
 			System.out.println("start d "+extractedTask.getStartDate());
 			System.out.println("start t "+extractedTask.getStartTime());
 			System.out.println("end d "+extractedTask.getEndDate());
 			System.out.println("end t "+extractedTask.getEndTime());
-=======
 			System.out.println("test = " + extractedTask.getEndDate());
->>>>>>> 39af33e59c77ff1b92409db77ef050e8d2a77524
+
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 

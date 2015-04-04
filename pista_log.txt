@@ -9392,3 +9392,135 @@ Apr 04, 2015 3:59:51 PM pista.log.CustomLogging logInfo
 INFO: Successfully write into XML file
 Apr 04, 2015 3:59:51 PM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
+Apr 04, 2015 4:05:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 4:05:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:05:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:05:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:05:10 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:05:17 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: edit 4 -d -12/4/2015 -00:00 -22/4/2015 -00:00
+Apr 04, 2015 4:05:17 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 4:05:24 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: edit 4 -d -12/4/2015 -00:00 -22/4/2015 -00:00
+Apr 04, 2015 4:05:24 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 4:07:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 4:07:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:07:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:07:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:07:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: edit 4 -d -12/4/2015 -00:00 -22/4/2015 -00:00
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully edited new task of category timed task
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:07:32 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 4:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:18:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 4:18:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:18:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:18:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:18:03 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:20:43 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 4:20:43 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:20:43 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:20:43 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:20:43 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: edit 4 -finish up icons -22/4/2015 -00:00 -c -c
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully edited finish up icons of category deadline task
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:20:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: edit 4 -finish up icons -22/4/2015 -12:12 -c -c
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully edited finish up icons of category deadline task
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:21:01 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: edit 4 -finish up icons
+Clean up some UIs -22/4/2015 -12:12 -c -c
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully edited finish up icons
+Clean up some UIs of category deadline task
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 4:21:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
