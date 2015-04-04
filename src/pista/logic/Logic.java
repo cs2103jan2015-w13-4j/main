@@ -22,7 +22,7 @@ public class Logic {
 	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
 	private static String[] currentSortType = new String[1];
-	
+
 	private Logic(){}
 
 	public static Logic getInstance(){
@@ -125,7 +125,7 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
 	}
-	
+
 	public static String reminder(String[] tokens){
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		long reminderMS = 0L;
@@ -339,45 +339,23 @@ public class Logic {
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
 			Task extractedTask = mStorage.getTaskList().get(taskIndex);
-
+			clearValue = getClearValue(tokens, clearValue);
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
 
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-				extractedTask=editDeadlineTask(extractedTask, tokens);
+				if(extractedTask.getCategory().equalsIgnoreCase(Constants.TASK_DEADLINE) 
+						|| extractedTask.getCategory().equalsIgnoreCase(Constants.TASK_FLOATED)){
+					extractedTask=editDeadlineTask(extractedTask, tokens, clearValue);
+				}else{
+					return Constants.LOGIC_FAIL_EDIT_TIMED_TO_DEADLINE_TASK;
+				}
 
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-				extractedTask=editTimedTask(extractedTask, tokens);
+				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
 
 			}
-			clearValue = getClearValue(tokens, clearValue);
-
-			//for deadline and timed tasks, additionally convert date and time to millisecond
-			if(tokens.length==4){//deadline task
-				if(clearValue == 2){
-					extractedTask.setCategory(Constants.TASK_FLOATED);
-					extractedTask.setEndMilliseconds(Long.parseLong("0"));
-				}else{
-					extractedTask.setCategory(Constants.TASK_DEADLINE);
-					extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-				}
-			}
-			else if(tokens.length==6){//timed task
-				if(clearValue == 4){
-					extractedTask.setCategory(Constants.TASK_FLOATED);
-					extractedTask.setStartMilliseconds(Long.parseLong("0"));
-					extractedTask.setEndMilliseconds(Long.parseLong("0"));
-				}else if(clearValue == 2){
-					extractedTask.setCategory(Constants.TASK_DEADLINE);
-					extractedTask.setStartMilliseconds(Long.parseLong("0"));
-					extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-				}else if(clearValue == 0){
-					extractedTask.setCategory(Constants.TASK_TIMED);
-					extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-					extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
-				}
-			}
-
+			System.out.println(extractedTask.getEndDate());
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 
@@ -514,12 +492,11 @@ public class Logic {
 		return false;
 	}
 
-	private static Task editTimedTask(Task extractedTask, String[] tokens) {
+	private static Task editTimedTask(Task extractedTask, String[] tokens, int clearValue) {
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
-		}else{
-
-		}if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])){	//check startdate
+		}
+		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])){	//check startdate
 			extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
 		}else {
 			extractedTask.setStartDate("");
@@ -537,24 +514,45 @@ public class Logic {
 			extractedTask.setEndTime("");
 		}
 
+		extractedTask.setStartMilliseconds(Long.parseLong("0"));
+		extractedTask.setEndMilliseconds(Long.parseLong("0"));
+
+		if(clearValue == 4){
+			extractedTask.setCategory(Constants.TASK_FLOATED);
+
+		}else if(clearValue == 2){
+			extractedTask.setCategory(Constants.TASK_DEADLINE);
+			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
+		}else{
+			extractedTask.setCategory(Constants.TASK_TIMED);
+			extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
+			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
+		}
+
 		return extractedTask;
 	}
 
-	private static Task editDeadlineTask(Task extractedTask, String[] tokens) {
+	private static Task editDeadlineTask(Task extractedTask, String[] tokens, int clearValue) {
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
-		}else{
-
 		}
 		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE])){	//check enddate
 			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);//3
 		}else{
-			extractedTask.setEndDate("");
+			extractedTask.setEndDate("");	
 		}
 		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME])){//check endtime
 			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);//4
 		}else{
 			extractedTask.setEndTime("");
+		}
+		if(clearValue == 2){
+			extractedTask.setCategory(Constants.TASK_FLOATED);
+			extractedTask.setStartMilliseconds(Long.parseLong("0"));
+			extractedTask.setEndMilliseconds(Long.parseLong("0"));
+		}else{
+			extractedTask.setCategory(Constants.TASK_DEADLINE);
+			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
 		}
 		return extractedTask;
 	}
@@ -644,7 +642,7 @@ public class Logic {
 		}
 		return finalStr ;
 	}
-	
+
 	public static void storeToHistory(String s){
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date currentDate = new Date();
