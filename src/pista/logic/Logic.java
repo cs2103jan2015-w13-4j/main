@@ -113,13 +113,16 @@ public class Logic {
 	}
 
 	public static String priority(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
 			Task extractedTask = mStorage.getTaskList().get(taskIndex);
 			int prorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
 			if(prorityScore >=0 && prorityScore <=3) {
 				extractedTask.setPriority(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+				updateRedoAndUndo(currentState);
 				reInsertTaskInToList(taskIndex, extractedTask);
+				
 				return Constants.LOGIC_SUCCESS_PRIORITY_TASK;
 			}
 		}
@@ -127,6 +130,7 @@ public class Logic {
 	}
 
 	public static String reminder(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		long reminderMS = 0L;
 		long endMS = 0L;
@@ -140,6 +144,7 @@ public class Logic {
 				}else{
 					extractedTask.setReminder(0L);
 					reInsertTaskInToList(taskIndex, extractedTask);
+					updateRedoAndUndo(currentState);
 					return Constants.LOGIC_SUCCESS_REMIND_OFF_TASK;
 				}
 			}else if (tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
@@ -151,6 +156,7 @@ public class Logic {
 					if(reminderMS <= endMS){
 						extractedTask.setReminder(reminderMS);
 						reInsertTaskInToList(taskIndex, extractedTask);
+						updateRedoAndUndo(currentState);
 						return Constants.LOGIC_SUCCESS_REMIND_TASK;
 					}else{
 						return Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK;
