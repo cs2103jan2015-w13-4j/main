@@ -77,7 +77,7 @@ public class UIController {
 	private static final String CSS_BUTTON_HELP = "button-help-style";
 	private static final String CSS_BUTTON_REFRESH = "button-refresh-style";
 	private static final String CSS_BUTTON_REDO = "button-redo-style";		
-	
+	private static final String CSS_BUTTON_UNDO = "button-undo-style";
 	
 	private final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
     private final String CSS_POP_OVER_TITLE= "pop-label-title";
@@ -226,17 +226,36 @@ public class UIController {
 		img.setFitWidth(20);
 		
 		if(this.btnRedo == null){
-			this.btnRedo = new Button("Redo", img);
+			this.btnRedo = new Button("Redo"); //, img
 		}
 		
-		this.btnRedo.setContentDisplay(ContentDisplay.LEFT);
-		this.btnRedo.setTextAlignment(TextAlignment.CENTER);
-		this.btnRedo.setAlignment(Pos.CENTER);
-		setButtonToolTip(this.btnRedo, this.TOOLTIP_REDO);
+		//this.btnRedo.setContentDisplay(ContentDisplay.LEFT);
+		this.btnRedo.setTextAlignment(TextAlignment.RIGHT);
+		//this.btnRedo.setAlignment(Pos.CENTER);
+		setButtonToolTip(this.btnRedo, this.TOOLTIP_UNDO);
 		this.btnRedo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REDO);
+		this.btnRedo.setPrefWidth(75.0);
 		this.btnRedo.setPrefHeight(size);
 		//this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
 	}
+	
+	private void initButtonUndo(){
+		
+		double size = 40.0;
+		
+		if(this.btnUndo == null){
+			this.btnUndo = new Button("Undo");
+		}
+
+		this.btnUndo.setTextAlignment(TextAlignment.RIGHT);
+		setButtonToolTip(this.btnUndo, this.TOOLTIP_REDO);
+		this.btnUndo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_UNDO);
+		this.btnUndo.setPrefWidth(75.0);
+		this.btnUndo.setPrefHeight(size);
+		//this.btnUndo.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+
+	}
+	
 	
 	private void initButtonSetting(){
 		double size = 40.0;

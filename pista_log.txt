@@ -6740,3 +6740,167 @@ Apr 04, 2015 10:01:58 AM pista.log.CustomLogging logInfo
 INFO: Successfully write into XML file
 Apr 04, 2015 10:01:58 AM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
+Apr 04, 2015 10:10:21 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:10:22 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:10:22 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:10:22 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:10:22 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:10:31 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:10:31 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:10:31 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:10:31 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:10:31 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:10:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:10:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:10:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:10:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:10:50 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:11:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:11:21 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:11:21 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:11:21 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:11:21 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:11:36 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:11:36 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:11:36 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:11:36 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:11:36 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:12:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:12:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:12:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:12:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:12:20 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:12:27 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:12:27 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:12:27 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:12:27 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:12:27 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:14:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:14:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:14:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:14:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:14:19 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:14:40 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:14:40 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:14:40 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:14:40 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:14:40 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:15:17 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:15:17 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:15:17 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:15:17 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:15:17 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:15:57 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:15:57 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:15:57 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:15:57 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:15:57 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:16:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:11 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:23 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:16:23 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:23 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:23 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:23 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:35 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:16:35 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:35 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:35 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:35 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:16:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:16:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:16:51 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:19:13 AM pista.log.CustomLogging logInfo
+INFO: Executed user command: refresh
+Apr 04, 2015 10:19:13 AM pista.log.CustomLogging logInfo
+INFO: Failed validateInput: No/Wrong command detected!
+Apr 04, 2015 10:20:47 AM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 04, 2015 10:20:47 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:20:47 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 04, 2015 10:20:47 AM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 04, 2015 10:20:47 AM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file

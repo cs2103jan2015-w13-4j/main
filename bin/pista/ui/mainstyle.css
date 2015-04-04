@@ -119,7 +119,6 @@
 /* Button Image */
 .button-image-style {
 	-fx-background-color: transparent;
- 	-fx-background-size: contain;
   	-fx-background-size: 20 20;
   	-fx-background-repeat: no-repeat;
   	-fx-background-position: center center;
@@ -180,13 +179,31 @@
 }
 
 .button-redo-style {
+	-fx-background-image: url("../../images/redo.png"); 
+	-fx-background-position: left;
+	-fx-text-alignment: right ;
 }
 
 .button-redo-style:hover {
-	/*-fx-graphic: url("../../images/redo_hover.png");*/
+	-fx-background-image: url("../../images/redo_hover.png");
 }
 
 .button-redo-style:pressed {
+	-fx-background-image: url("../../images/redo_pressed.png");
+}
+
+.button-undo-style {
+	-fx-background-image: url("../../images/redo.png"); 
+	-fx-background-position: left;
+	-fx-text-alignment: right ;
+}
+
+.button-undo-style:hover {
+	-fx-background-image: url("../../images/redo_hover.png");
+}
+
+.button-undo-style:pressed {
+	-fx-background-image: url("../../images/redo_pressed.png");
 }
 
 
