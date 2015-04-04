@@ -292,6 +292,7 @@ public class Logic {
 	}
 
 	public static String mark(String[] tokens){ 
+		ArrayList<Task> currentState = getCurrentState();
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
 			Task extractedTask = mStorage.getTaskList().get(taskIndex);
@@ -304,6 +305,7 @@ public class Logic {
 				extractedTask.setIsDone(false);
 			}
 			reInsertTaskInToList(taskIndex, extractedTask);
+			updateRedoAndUndo(currentState);
 			return Constants.LOGIC_SUCCESS_MARK_TASK;
 		}
 		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
