@@ -20,10 +20,14 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -72,7 +76,9 @@ public class UIController {
 	private static final String CSS_BUTTON_ADD = "button-add-style";
 	private static final String CSS_BUTTON_HELP = "button-help-style";
 	private static final String CSS_BUTTON_REFRESH = "button-refresh-style";
-			
+	private static final String CSS_BUTTON_REDO = "button-redo-style";		
+	
+	
 	private final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
     private final String CSS_POP_OVER_TITLE= "pop-label-title";
     private final String CSS_POP_OVER_BUTTON = "pop-btn";
@@ -90,6 +96,12 @@ public class UIController {
 	private final String STATUS_APPLICATION_ERROR_MESSAGE = "Application error. Please contact the administrator";
 	private final String STATUS_SUCCESS_FILE_CREATED_MESSAGE = "[new_file_path] is loaded.";
 	
+	private final String TOOLTIP_HELP = "Help";
+	private final String TOOLTIP_SETTING = "Setting";
+	private final String TOOLTIP_REFRESH = "Refresh the list";
+	private final String TOOLTIP_ADD = "Add New Task";
+	private final String TOOLTIP_REDO = "Redo to last action";
+	private final String TOOLTIP_UNDO = "Undo to previous action";
 	//Objects
 	@FXML
 	private AnchorPane anchorPaneMain;
@@ -119,6 +131,8 @@ public class UIController {
 	private Button btnAddNewTask;
 	private Button btnRefresh;
 	private Button btnHelp;
+	private Button btnRedo;
+	private Button btnUndo;
 	
 	//private Label lblPopOverMessage = new Label();
 	
@@ -203,13 +217,35 @@ public class UIController {
 		txtBoxCommand.setText(Constants.DELETE_COMMAND);
 	}
 
+	private void initButtonRedo(){
+		double size = 40.0;
+		
+		ImageView img = new ImageView(new Image("images/redo.png"));
+		img.setPreserveRatio(true);
+		img.setFitHeight(20);
+		img.setFitWidth(20);
+		
+		if(this.btnRedo == null){
+			this.btnRedo = new Button("Redo", img);
+		}
+		
+		this.btnRedo.setContentDisplay(ContentDisplay.LEFT);
+		this.btnRedo.setTextAlignment(TextAlignment.CENTER);
+		this.btnRedo.setAlignment(Pos.CENTER);
+		setButtonToolTip(this.btnRedo, this.TOOLTIP_REDO);
+		this.btnRedo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REDO);
+		this.btnRedo.setPrefHeight(size);
+		//this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+	}
+	
 	private void initButtonSetting(){
-		double size = 20.0;
+		double size = 40.0;
 		
 		if(this.btnSetting == null){
 			this.btnSetting = new Button();
 		}
 		
+		setButtonToolTip(this.btnSetting, this.TOOLTIP_SETTING);
 		this.btnSetting.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_SETTING);
 		this.btnSetting.setPrefSize(size, size);
 		this.btnSetting.setMaxSize(size, size);
@@ -218,12 +254,13 @@ public class UIController {
 	}
 	
 	private void initButtonAddNewTask(){
-		double size = 20.0;
+		double size = 40.0;
 		
 		if(this.btnAddNewTask == null){
 			this.btnAddNewTask = new Button();
 		}
 		
+		setButtonToolTip(this.btnAddNewTask, this.TOOLTIP_ADD);
 		this.btnAddNewTask.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_ADD);
 		this.btnAddNewTask.setPrefSize(size, size);
 		this.btnAddNewTask.setMaxSize(size, size);
@@ -232,12 +269,13 @@ public class UIController {
 	}
 	
 	private void initButtonHelp(){
-		double size = 20.0;
+		double size = 40.0;
 		
 		if(this.btnHelp == null){
 			this.btnHelp = new Button();
 		}
 		
+		setButtonToolTip(this.btnHelp, this.TOOLTIP_HELP);
 		this.btnHelp.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_HELP);
 		this.btnHelp.setPrefSize(size, size);
 		this.btnHelp.setMaxSize(size, size);
@@ -246,12 +284,13 @@ public class UIController {
 	}
 	
 	private void initButtonRefresh(){
-		double size = 20.0;
+		double size = 40.0;
 		
 		if(this.btnRefresh == null){
 			this.btnRefresh = new Button();
 		}
 		
+		setButtonToolTip(this.btnRefresh, this.TOOLTIP_REFRESH);
 		this.btnRefresh.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REFRESH);
 		this.btnRefresh.setPrefSize(size, size);
 		this.btnRefresh.setMaxSize(size, size);
@@ -262,9 +301,20 @@ public class UIController {
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
 		AnchorPane.setTopAnchor(mNode, anchorTop);
-		AnchorPane.setRightAnchor(mNode, anchorRight);
 		AnchorPane.setBottomAnchor(mNode, anchorBottom);
-		//AnchorPane.setLeftAnchor(mNode, anchorLeft);
+		
+		if(!(anchorRight == 0.0)){
+			AnchorPane.setRightAnchor(mNode, anchorRight);
+		}
+		
+		if(!(anchorLeft == 0.0)){
+			AnchorPane.setLeftAnchor(mNode, anchorLeft);
+		}
+		
+	}
+	
+	private void setButtonToolTip(Button btn, String msg){
+		btn.setTooltip(new Tooltip(msg));
 	}
 	
 	@FXML
@@ -331,10 +381,12 @@ public class UIController {
 		this.initButtonAddNewTask();
 		this.initButtonHelp();
 		this.initButtonRefresh();
-		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 10.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 10.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 10.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 10.0, 0.0);
+		this.initButtonRedo();
+		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 5.0);
 		
 		anchorPaneMain.getStyleClass().addAll(CSS_TRANSPARENT_BACKGROUND);
 		txtStatus.getStyleClass().addAll(CSS_TEXT_BACKGROUND, CSS_TEXT_STATUS);

@@ -120,9 +120,12 @@
 .button-image-style {
 	-fx-background-color: transparent;
  	-fx-background-size: contain;
- 	-fx-background-repeat: no-repeat;
+  	-fx-background-size: 20 20;
+  	-fx-background-repeat: no-repeat;
   	-fx-background-position: center center;
+  	-fx-font-size: 0.9em;
 }
+
 
 .button-image-style:hover {
 	-fx-cursor: hand;
@@ -175,6 +178,17 @@
 .button-refresh-style:pressed {
 	-fx-background-image: url("../../images/refresh_pressed.png"); 
 }
+
+.button-redo-style {
+}
+
+.button-redo-style:hover {
+	/*-fx-graphic: url("../../images/redo_hover.png");*/
+}
+
+.button-redo-style:pressed {
+}
+
 
 
 .popover .pop-content-area{
