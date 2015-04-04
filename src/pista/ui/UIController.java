@@ -229,14 +229,12 @@ public class UIController {
 			this.btnRedo = new Button("Redo"); //, img
 		}
 		
-		//this.btnRedo.setContentDisplay(ContentDisplay.LEFT);
-		this.btnRedo.setTextAlignment(TextAlignment.RIGHT);
-		//this.btnRedo.setAlignment(Pos.CENTER);
 		setButtonToolTip(this.btnRedo, this.TOOLTIP_UNDO);
+		this.btnRedo.setTextAlignment(TextAlignment.RIGHT);
 		this.btnRedo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REDO);
 		this.btnRedo.setPrefWidth(75.0);
 		this.btnRedo.setPrefHeight(size);
-		//this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+		this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnRedoClick); //set click method listener
 	}
 	
 	private void initButtonUndo(){
@@ -247,15 +245,13 @@ public class UIController {
 			this.btnUndo = new Button("Undo");
 		}
 
-		this.btnUndo.setTextAlignment(TextAlignment.RIGHT);
 		setButtonToolTip(this.btnUndo, this.TOOLTIP_REDO);
+		this.btnUndo.setTextAlignment(TextAlignment.RIGHT);
 		this.btnUndo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_UNDO);
 		this.btnUndo.setPrefWidth(75.0);
 		this.btnUndo.setPrefHeight(size);
-		//this.btnUndo.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
-
+		this.btnUndo.addEventFilter(ActionEvent.ACTION, onBtnUndoClick); //set click method listener
 	}
-	
 	
 	private void initButtonSetting(){
 		double size = 40.0;
@@ -339,13 +335,16 @@ public class UIController {
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
+		String userInput = txtBoxCommand.getText();
+		executeCommand(userInput);
+	}
+
+	public boolean executeCommand(String userInput){
 		String[] tokens = null;
 		String parserOutput = "";
 		String logicOutput = "";
 		String command = "";
-
-		userInput = txtBoxCommand.getText();
-
+		
 		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
 		MainParser mp = MainParser.validateInput(userInput);
 		parserOutput = mp.getMessage();
@@ -353,7 +352,7 @@ public class UIController {
 			//display error
 			txtStatus.setText(parserOutput);
 			mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
-			return; //exit method
+			return false; //fail
 		}
 
 		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
@@ -363,7 +362,7 @@ public class UIController {
 		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
 			showHelp();
 			txtStatus.setText(Constants.LOGIC_SUCCESS_HELP);
-			return;
+			return true;
 		}
 
 		tokens = mp.getTokens();
@@ -373,7 +372,7 @@ public class UIController {
 			initTaskListInListView();
 			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
 			resetSearchKeyword();
-			return;
+			return true;
 		}
 		
 		logicOutput = Logic.runCommand(command, tokens);
@@ -385,8 +384,11 @@ public class UIController {
 		Logic.storeToHistory(userInput);
 		
 		txtBoxCommand.clear();
+		
+		return true;
 	}
-
+	
+	
 	@FXML
 	public void initialize() {
 		String logicOutput = "";
@@ -520,14 +522,28 @@ public class UIController {
 		txtStatus.setText("");
 	}
 	
-	private EventHandler onBtnHelpClick = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> onBtnUndoClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			executeCommand("undo");
+		}
+	};
+	
+	private EventHandler<ActionEvent> onBtnRedoClick = new EventHandler<ActionEvent>() {
+		@Override
+        public void handle(ActionEvent event) {
+			executeCommand("redo");
+		}
+	};
+	
+	private EventHandler<ActionEvent> onBtnHelpClick = new EventHandler<ActionEvent>() {
 		@Override
         public void handle(ActionEvent event) {
 			showHelp();
 		}
 	};
 	
-	private EventHandler onBtnRefreshClick = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> onBtnRefreshClick = new EventHandler<ActionEvent>() {
 		@Override
         public void handle(ActionEvent event) {
 			initTaskListInListView();
@@ -577,7 +593,7 @@ public class UIController {
 		return taskDescription.split("\\s+");
 	}
 	//============================== POPOVER ADD NEW TASK ====================================
-	private EventHandler onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
         public void handle(ActionEvent event) {
 			//initTaskListInListView();
@@ -586,7 +602,7 @@ public class UIController {
 	};
 	
 	//============================== POPOVER Setting ======================================
-	private EventHandler onBtnSettingClick = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> onBtnSettingClick = new EventHandler<ActionEvent>() {
 		@Override
         public void handle(ActionEvent event) {
 			showPopOverSetting();

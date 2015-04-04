@@ -7,11 +7,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPaneMain" maxHeight="555.0" maxWidth="910.0" minHeight="555.0" minWidth="910.0" prefHeight="555.0" prefWidth="910.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
+<AnchorPane fx:id="anchorPaneMain" maxHeight="575.0" maxWidth="910.0" minHeight="575.0" minWidth="910.0" prefHeight="575.0" prefWidth="910.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
    <children>
       <VBox fx:id="vBoxMainArea" maxHeight="535.0" maxWidth="900.0" minHeight="535.0" minWidth="900.0" prefHeight="535.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane fx:id="anchorPaneButtonAreaTop" maxHeight="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="200.0" />
+            <AnchorPane fx:id="anchorPaneButtonAreaTop" maxHeight="30.0" minHeight="30.0" minWidth="30.0" prefHeight="30.0" prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></AnchorPane>
             <ListView id="listview_task" fx:id="listview_task_fx_id" maxHeight="400.0" maxWidth="900.0" minHeight="450.0" minWidth="900.0" prefHeight="450.0" prefWidth="900.0" stylesheets="@listcellstyle.css" />
             <HBox fx:id="hBoxInputArea" prefHeight="55.0" prefWidth="598.0" spacing="5.0">
                <children>
