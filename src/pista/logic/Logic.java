@@ -120,9 +120,8 @@ public class Logic {
 			int prorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
 			if(prorityScore >=0 && prorityScore <=3) {
 				extractedTask.setPriority(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
-				updateRedoAndUndo(currentState);
 				reInsertTaskInToList(taskIndex, extractedTask);
-				
+				updateRedoAndUndo(currentState);
 				return Constants.LOGIC_SUCCESS_PRIORITY_TASK;
 			}
 		}
