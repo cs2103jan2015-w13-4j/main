@@ -919,6 +919,7 @@ public class UIController {
 				
 				//addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
 				
+				/*
 				if(!(isValidHour(newStartHour) && isValidMinute(newStartMinute))){ //check is valid for start hour and minute (accept empty)
 					setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
 	    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_START_TIME_MESSAGE);
@@ -930,7 +931,7 @@ public class UIController {
 	    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_END_TIME_MESSAGE);
 	    			return;
 				}
-				
+				*/
 				
 			}
     	});

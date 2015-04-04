@@ -10,10 +10,12 @@ import java.util.Date;
 
 import javax.swing.ToolTipManager;
 
+import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
 import org.omg.CORBA.Environment;
 
 import com.sun.javafx.geom.Rectangle;
+import com.sun.nio.sctp.Notification;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +23,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -295,8 +298,30 @@ public class TaskListCell extends ListCell<Task> {
     	}else{
     		btnAlarm.getStyleClass().addAll(CSS_BUTTON_ALARM_NOT_SET);
     	}
-    	
+    
+		if(isCurrentTimeGreaterThanReminder(reminder)){
+			//Node alarmv = new ImageView(new Image(getClass().getResourceAsStream("remote-controlled-alarm.gif")));
+			//Notifications.create().title("test").text("show thest").showWarning();
+		}
     }
+    
+    private Long getCurrentTimeInUnixEpoch(){
+    	return System.currentTimeMillis();
+    }
+    
+    private Boolean isCurrentTimeGreaterThanReminder(Long reminder){
+    	Long currentTime = getCurrentTimeInUnixEpoch();
+    	if(currentTime >= reminder) {
+    		return true;
+    	}
+    	return false;
+    }
+ 
+    public void showWarning(){
+    	setGraphic(new ImageView(new Image(Notifications.class.getResource("/bin/images/remote-controlled-alarm.gif").toExternalForm())));
+    }
+    
+
     
     private void setButtonPriority(String lvlString){
     	this.btnPriority.getStyleClass().removeAll(this.CSS_PRIORITY_LOW, this.CSS_PRIORITY_NORMAL, 

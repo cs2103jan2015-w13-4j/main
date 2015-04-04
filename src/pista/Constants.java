@@ -92,6 +92,7 @@ public class Constants {
 	public static String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";
 	public static String LOGIC_SUCCESS_REDO = "Successfully redo";
 	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
+	public static String LOGIC_FAIL_EDIT_TIMED_TO_DEADLINE_TASK = "To edit timed to deadline, use edit id -d-ed-et-c-c";
 	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
 	public static String LOGIC_SUCCESS_PRIORITY_TASK = "Successfully set priority for task";
 	public static String LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK = "Failed to set priority for task as it is not found.";
