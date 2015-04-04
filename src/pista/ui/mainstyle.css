@@ -193,21 +193,22 @@
 }
 
 .button-undo-style {
-	-fx-background-image: url("../../images/redo.png"); 
+	-fx-background-image: url("../../images/undo.png"); 
 	-fx-background-position: left;
-	-fx-text-alignment: right ;
+	-fx-text-alignment: right;
 }
 
 .button-undo-style:hover {
-	-fx-background-image: url("../../images/redo_hover.png");
+	-fx-background-image: url("../../images/undo_hover.png");
 }
 
 .button-undo-style:pressed {
-	-fx-background-image: url("../../images/redo_pressed.png");
+	-fx-background-image: url("../../images/undo_pressed.png");
 }
 
 .popover .pop-content-area{
 	-fx-background-color: #ffffff;
+	-fx-font-size: 1.0em;
 }
 
 .popover .pop-label-title {

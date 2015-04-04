@@ -214,6 +214,29 @@
 	-fx-background-image: url("../../images/priority_0_hover.png");
 }
 
+/* ===================== Button Delete ===================== */
+.btn-delete {
+	-fx-border-style: none;
+	-fx-border-radius: 0;
+ 	-fx-background-size: 15 15;
+ 	-fx-background-repeat: no-repeat;
+  	-fx-background-position: center;
+  	-fx-background-color: transparent;
+  	-fx-background-image: url("../../images/delete.png");
+}
+
+.btn-delete:hover {
+	-fx-background-image: url("../../images/delete_hover.png");
+	-fx-background-color: rgba(200, 200, 200, 0.3);
+	-fx-cursor: hand;
+}
+
+.btn-delete:pressed {
+	-fx-background-image: url("../../images/delete_pressed.png");
+	-fx-cursor: hand;
+}
+
+
 /* =============== Button Is Done ================ */
 .btn-is-done {	
   	-fx-border-style: none;
