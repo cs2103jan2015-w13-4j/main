@@ -932,10 +932,10 @@ public class TaskListCell extends ListCell<Task> {
     	this.mPopOverAlarm.show(this.btnAlarm); 
 	}
 	
-	//================== POP OVER ADD NEW TASK ========================
+	//================== POP OVER EDIT TASK ========================
 	private void showEditPopOver(){
 		double popWidth = 400.0;
-		double popHeight = 700.0;
+		double popHeight = 380.0;
 		
 		String startStr = "Start ";
 		String endStr = "End ";

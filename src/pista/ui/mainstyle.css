@@ -239,6 +239,36 @@
 	-fx-cursor: hand;
 }
 
+.popover .pop-label-time-tip {
+	-fx-font-size: 0.8em;
+	-fx-text-fill: #888888;
+	-fx-font-style: italic;
+}
+
+.popover .pop-over-text-area {
+	-fx-font-weight: bold;
+	-fx-border-color: #FFFFFF;
+	-fx-background-color: -fx-control-inner-background;
+    -fx-background-insets: 0;
+    -fx-padding: 1 3 1 3;
+}
+
+.popover .pop-over-text-area .content {
+    -fx-background-color: #fff;
+    -fx-font-size: 1.1em;
+}
+
+.popover .pop-over-text-area:focused {
+	-fx-text-box-border: #FFFFFF;
+	-fx-background-color: #FFFFFF;
+	-fx-focus-color: #FFFFFF;
+}
+
+.popover .pop-over-text-area:focused .content {
+    -fx-background-color: #fff;
+}
+
+
 .popover .pop-label-error-message {
 	-fx-font-size: 1.0em;
 	-fx-text-fill: #ffffff;
