@@ -355,7 +355,7 @@ public class Logic {
 				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
 
 			}
-			System.out.println(extractedTask.getEndDate());
+			System.out.println("test = " + extractedTask.getEndDate());
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 
@@ -523,10 +523,12 @@ public class Logic {
 		}else if(clearValue == 2){
 			extractedTask.setCategory(Constants.TASK_DEADLINE);
 			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
+
 		}else{
 			extractedTask.setCategory(Constants.TASK_TIMED);
 			extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
 			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
+			
 		}
 
 		return extractedTask;

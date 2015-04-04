@@ -105,6 +105,7 @@ public class TaskListCell extends ListCell<Task> {
     private final String POP_OVER_FAIL_PRIORITY_MESSAGE = "Fail to Update";
     private final String POP_OVER_INVALID_EDIT_START_TIME_MESSAGE = "Invalid Time";
     private final String POP_OVER_INVALID_EDIT_END_TIME_MESSAGE = "Invalid Date";
+    private final String POP_OVER_INVALID_EDIT_TITLE_MESSAGE = "Title cannot be empty";
     
     private final int MAX_CHARACTER_IN_TITLE = 50;
     
@@ -364,7 +365,6 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureLabelID(){
-    	//System.out.println("type - " + type);
     	this.lblID.getStyleClass().addAll(CSS_CELL_ID);
     	this.lblID.setAlignment(Pos.CENTER);
     }
@@ -500,8 +500,6 @@ public class TaskListCell extends ListCell<Task> {
         this.lblID.setText(this.getID);
         this.btnIsDone.setUserData(this.getIsDone);
 
-        //System.out.println("ID = " + this.getID + "..... Date = " + this.getStartDate);
-        
         if(this.getCategory.equals("timed")){
         	this.lblDateTime.setText(DISPLAY_START_DATE_TIME.replace("[datetime]", this.convertToFullDateString(this.getStartDate) + " " + this.getStartTime) + "\n" +
         							DISPLAY_END_DATE_TIME.replace("[datetime]", this.convertToFullDateString(this.getEndDate) + " " + this.getEndTime));
@@ -1131,6 +1129,12 @@ public class TaskListCell extends ListCell<Task> {
 			String newEndTime = "";
 			String command = editTaskcommand;
 			
+			if(!isTitleValid(newTitle)){ //check title
+				setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
+    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_TITLE_MESSAGE);
+    			return;
+			}
+			
 			if(!(isValidHour(newStartHour) && isValidMinute(newStartMinute))){ //check is valid for start hour and minute (accept empty)
 				setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
     			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_START_TIME_MESSAGE);
@@ -1145,12 +1149,24 @@ public class TaskListCell extends ListCell<Task> {
 			
 			if((newStartDate.equals("") || newStartDate.isEmpty()) && 
 					(newStartHour.equals("") || newStartHour.isEmpty()) && 
-					(newStartMinute.equals("") || newStartHour.isEmpty())){
+					(newStartMinute.equals("") || newStartMinute.isEmpty())){
 				//start date, time is empty
 				//remove start date and time
-				command = command.replace("-[new_start_date]", "").replace("-[new_start_time]", "");
+				command = command.replace("[new_start_date]", "c").replace("[new_start_time]", "c");
+				
+			}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
+					((newStartHour.equals("") || newStartHour.isEmpty()) ||
+					(newStartMinute.equals("") || newStartMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
+				
+				setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
+    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_START_TIME_MESSAGE);
+    			return;
+    			
 			}else{
-				//newStartTime = 
+				
+				newStartTime = newStartHour + ":" + newStartMinute;
+				command = command.replace("[start_date]", newStartDate).replace("[start_time]", newStartTime);
+				
 			}
 			
 			if((newEndDate.equals("") || newEndDate.isEmpty()) && 
@@ -1158,7 +1174,19 @@ public class TaskListCell extends ListCell<Task> {
 					(newEndMinute.equals("") || newEndMinute.isEmpty())){
 				//start date, time is empty
 				//remove start date and time
-				command = command.replace("-[new_end_date]", "").replace("-[new_end_time]", "");
+				command = command.replace("[new_end_date]", "c").replace("[new_end_time]", "c");
+				
+			}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
+					((newEndHour.equals("") || newEndHour.isEmpty()) ||
+					(newEndMinute.equals("") || newEndMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
+
+				setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
+    			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_INVALID_EDIT_END_TIME_MESSAGE);
+    			return;
+    			
+			}else{
+				newEndTime = newEndHour + ":" + newEndMinute;
+				command = command.replace("[new_end_date]", newEndDate).replace("[new_end_time]", newEndTime);
 			}
 			
 			command = command.trim();
@@ -1245,6 +1273,12 @@ public class TaskListCell extends ListCell<Task> {
         }
     };
     
+    private boolean isTitleValid(String title){
+		if(title.isEmpty() || title.equals("")){ //don't accept empty
+			return false;
+		}
+		return true;
+	}
     
     private boolean isValidHour(String hour){
     	//accept empty, means 0
