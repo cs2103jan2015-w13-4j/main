@@ -355,7 +355,10 @@ public class Logic {
 				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
 
 			}
-			System.out.println(extractedTask.getEndDate());
+			System.out.println("start d "+extractedTask.getStartDate());
+			System.out.println("start t "+extractedTask.getStartTime());
+			System.out.println("end d "+extractedTask.getEndDate());
+			System.out.println("end t "+extractedTask.getEndTime());
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 
@@ -498,20 +501,20 @@ public class Logic {
 		}
 		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])){	//check startdate
 			extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
-		}else {
-			extractedTask.setStartDate("");
-		}if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])){//check starttime
+		}
+		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])){//check starttime
 			extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
-		}else{
-			extractedTask.setStartTime("");
-		}if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])){	//check enddate
+		}
+		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])){	//check enddate
 			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3
 		}else{
-			extractedTask.setEndDate("");
+			extractedTask.setStartDate("");
+			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);
 		}if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])){//check endtime
 			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
 		}else{
-			extractedTask.setEndTime("");
+			extractedTask.setStartTime("");
+			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);
 		}
 
 		extractedTask.setStartMilliseconds(Long.parseLong("0"));
@@ -546,6 +549,7 @@ public class Logic {
 		}else{
 			extractedTask.setEndTime("");
 		}
+
 		if(clearValue == 2){
 			extractedTask.setCategory(Constants.TASK_FLOATED);
 			extractedTask.setStartMilliseconds(Long.parseLong("0"));
