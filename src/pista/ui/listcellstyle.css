@@ -375,12 +375,34 @@
 	-fx-cursor: hand;
 }
 
+.pop-over-text-area-edit {
+	-fx-font-weight: bold;
+	-fx-border-color: #FFFFFF;
+	-fx-background-color: -fx-control-inner-background;
+    -fx-background-insets: 0;
+    -fx-padding: 1 3 1 3;
+}
+
+.pop-over-text-area-edit .content {
+    -fx-background-color: #fff;
+    -fx-font-size: 1.1em;
+}
+
+.pop-over-text-area-edit:focused {
+	-fx-text-box-border: #FFFFFF;
+	-fx-background-color: #FFFFFF;
+	-fx-focus-color: #FFFFFF;
+}
+
+.pop-over-text-area-edit:focused .content {
+    -fx-background-color: #fff;
+}
 
 
 .radio-button .radio {
     -fx-border-width: 1px;
     -fx-border-color: #000;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #FFFFFF;
     -fx-background-image: null;
     -fx-border-radius: 10px;
     -fx-padding: 2px;

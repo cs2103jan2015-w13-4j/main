@@ -119,10 +119,12 @@
 /* Button Image */
 .button-image-style {
 	-fx-background-color: transparent;
- 	-fx-background-size: contain;
- 	-fx-background-repeat: no-repeat;
+  	-fx-background-size: 20 20;
+  	-fx-background-repeat: no-repeat;
   	-fx-background-position: center center;
+  	-fx-font-size: 0.9em;
 }
+
 
 .button-image-style:hover {
 	-fx-cursor: hand;
@@ -176,6 +178,33 @@
 	-fx-background-image: url("../../images/refresh_pressed.png"); 
 }
 
+.button-redo-style {
+	-fx-background-image: url("../../images/redo.png"); 
+	-fx-background-position: left;
+	-fx-text-alignment: right ;
+}
+
+.button-redo-style:hover {
+	-fx-background-image: url("../../images/redo_hover.png");
+}
+
+.button-redo-style:pressed {
+	-fx-background-image: url("../../images/redo_pressed.png");
+}
+
+.button-undo-style {
+	-fx-background-image: url("../../images/redo.png"); 
+	-fx-background-position: left;
+	-fx-text-alignment: right ;
+}
+
+.button-undo-style:hover {
+	-fx-background-image: url("../../images/redo_hover.png");
+}
+
+.button-undo-style:pressed {
+	-fx-background-image: url("../../images/redo_pressed.png");
+}
 
 .popover .pop-content-area{
 	-fx-background-color: #ffffff;
