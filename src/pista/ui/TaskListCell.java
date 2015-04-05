@@ -17,6 +17,7 @@ import org.omg.CORBA.Environment;
 import com.sun.javafx.geom.Rectangle;
 import com.sun.nio.sctp.Notification;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -667,8 +668,7 @@ public class TaskListCell extends ListCell<Task> {
 		@Override
 		public void handle(MouseEvent event) {
 			System.out.println("Edit Popover");
-			showEditPopOver();
-			//showPriorityPopOver(convertStringToInteger(getPriority));
+        	showEditPopOver();
 		}	
 	};
 	
@@ -826,13 +826,17 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
-		if(isValid){ //valid, green background
-			lbl.getStyleClass().addAll(CSS_POP_OVER_LABEL_CORRECT_MESSAGE);
-			
-		}else{//invalid, red background
-			lbl.getStyleClass().addAll(CSS_POP_OVER_LABEL_ERROR_MESSAGE);	
+		lbl.getStyleClass().removeAll(CSS_POP_OVER_LABEL_CORRECT_MESSAGE, CSS_POP_OVER_LABEL_ERROR_MESSAGE);
+		
+		if(isVisible){
+			if(isValid){ //valid, green background
+				lbl.getStyleClass().addAll(CSS_POP_OVER_LABEL_CORRECT_MESSAGE);
+				
+			}else{//invalid, red background
+				lbl.getStyleClass().addAll(CSS_POP_OVER_LABEL_ERROR_MESSAGE);	
+			}
 		}
-
+		
 		lbl.setVisible(isVisible);
 	}
 	
@@ -1165,7 +1169,6 @@ public class TaskListCell extends ListCell<Task> {
 					(newStartMinute.equals("") || newStartMinute.isEmpty())){
 				//start date, time is empty
 				//remove start date and time
-				//command = command.replace("[new_start_date]", "").replace("[new_start_time]", "");
 				isStartDateTimeEmpty = true;
 					
 			}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
@@ -1178,17 +1181,14 @@ public class TaskListCell extends ListCell<Task> {
     			
 			}else{	
 				newStartTime = newStartHour + ":" + newStartMinute;
-				isStartDateTimeEmpty = false;
-				//command = command.replace("[new_start_date]", newStartDate).replace("[new_start_time]", newStartTime);		
+				isStartDateTimeEmpty = false;	
 			}
 			
 			//Check both end date and time
 			if((newEndDate.equals("") || newEndDate.isEmpty()) && 
 					(newEndHour.equals("") || newEndHour.isEmpty()) && 
 					(newEndMinute.equals("") || newEndMinute.isEmpty())){
-				//start date, time is empty
-				//remove start date and time
-				//command = command.replace("[new_end_date]", "c").replace("[new_end_time]", "c");
+				
 				isEndDateTimeEmpty = true;
 				
 			}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
@@ -1202,7 +1202,6 @@ public class TaskListCell extends ListCell<Task> {
 			}else{
 				newEndTime = newEndHour + ":" + newEndMinute;
 				isEndDateTimeEmpty = false;
-				//command = command.replace("[new_end_date]", newEndDate).replace("[new_end_time]", newEndTime);
 			}
 			
 			if(isStartDateTimeEmpty && isEndDateTimeEmpty){ //anything to float
@@ -1236,8 +1235,7 @@ public class TaskListCell extends ListCell<Task> {
     			return;
 			}
 		
-			
-			//editTaskcommand = "edit [id] -[new_title] -[new_start_date] -[new_start_time] -[new_end_date] -[new_end_time]";
+			//edit [id] -[new_title] -[new_start_date] -[new_start_time] -[new_end_date] -[new_end_time]";
 			
 		}
 	};

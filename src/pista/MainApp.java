@@ -61,7 +61,7 @@ public class MainApp extends Application {
             // Show the scene containing the root layout
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
-            primaryStage.getIcons().add(new Image("images/pista_icon.png"));
+            primaryStage.getIcons().addAll(new Image("images/pista_icon.png"));
             primaryStage.show();
             
         } catch (IOException e) {

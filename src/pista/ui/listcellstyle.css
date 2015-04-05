@@ -350,14 +350,16 @@
 
 .popover .pop-label-error-message {
 	-fx-font-size: 1.0em;
-	-fx-text-fill: #ffffff;
-	-fx-background-color: #FF5F5F;
+	-fx-text-fill: #FF5F5F; 
+	-fx-background-color: transparent;
+	/*-fx-background-color: #FF5F5F;*/
 }
 
 .popover .pop-label-correct-message {
 	-fx-font-size: 1.0em;
-	-fx-text-fill: #ffffff;
-	-fx-background-color: #7CAF00;
+	-fx-text-fill: #7CAF00;
+	-fx-background-color: transparent;
+	/*-fx-background-color: #7CAF00;*/
 }
 
 
