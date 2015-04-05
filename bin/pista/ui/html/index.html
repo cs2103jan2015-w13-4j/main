@@ -1,311 +1,103 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="index.css">
-    </head>
-    
-    <body>
-        <div class="header">
-            <div class="header-content">
-                <h3 class="header-title dark-grey white float-left">
-                    Pista
-                </h3> 
+    <title>Fixed Top Navbar Example for Bootstrap</title>
 
-                <h4 class="header-subtitle light-grey float-left">
-                    User Guide
-                </h4> 
-            </div>
-               
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="bootstrap/css/navbar-fixed-top.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Pista</a>
         </div>
-        
-        <div class="middle">
-            <div class="middle-content">
-                <div id="overview-content" class="section">
-                    <h5 class="section-title bold ">Overview</h5>
-                    <p class="section-paragraph">
-                        <i>Pista</i> is a simple way to keep track and manage your tasks. It is created with one goal in mind - simplicity. All of our functions can be performed using command line interface and your tasks are 
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Interface<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Control Buttons</li>
+                <li><a href="#">Undo & Redo</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Refresh</a></li>
+                <li><a href="#">Add New Task</a></li>
+                <li><a href="#">Setting</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Task Listing</li>
+                <li><a href="#">Alarm</a></li>
+                <li><a href="#">Priority</a></li>
+                <li><a href="#about">Edit</a></li>
+            	<li><a href="#contact">Mark Done & Undone</a></li>
+              </ul>
+            </li>
+            
+            <li lass="dropdown">
+            	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Command Line Interface<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="dropdown-header">Types of Command</li>
+                    <li><a href="#">Add</a></li>
+                    <li><a href="#">Edit</a></li>
+                    <li><a href="#">Delete</a></li>
+                    <li><a href="#">Undo</a></li>
+                    <li><a href="#">Redo</a></li>
+                    <li><a href="#">Priority</a></li>
+                    <li><a href="#about">Alarm</a></li>
+                    <li><a href="#">Setting</a></li>
+               	</ul>
+              
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/index.html">Default</a></li>
+            <li><a href="../navbar-static-top/index.html">Static top</a></li>
+            <li class="active"><a href="index.html">Fixed top</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
 
-available to view in Calendar that paired with To-do list view. It provides a way to schedule and manage 
+    <div class="container">
 
-your time fast and efficient.
-                    </p>
-                    <p class="section-paragraph">
-                        <i>Pista</i> is built using Java and will be a standalone program for Windows.
-                    </p>
-                </div>
-                
-                <div id="list-command-content" class="section">
-                    <h5 class="section-title bold ">List of Commands</h5>
-                    <p class="section-paragraph">The following are commands that the user can use to perform necessary functions in our program.</p>
-                    <ol class="section-order-list">
-                        <li><a href="#section-add">Add Task</a></li>
-                        <li><a href="#section-edit">Edit Task</a></li>
-                        <li><a href="#section-delete">Delete Task</a></li>
-                        <li><a href="#section-list">List Tasks</a></li>
-                        <li><a href="#section-search">Find Tasks</a></li>
-                    </ol>
-                    
-                </div>
-                
-    <!-- ====================== ADD ========================-->  
-                <a name="section-add"></a>
-                <div class="section-title-div">
-                    <h5 class="section-title bold ">Add Task</h5>
-                </div>
-                <div id="add-content" class="section">
-                    <h4 class="section-subtitle semi-bold">Synopsis</h4>
-                        <p class="section-paragraph indent">
-                            To add an:
-                            <ol class="section-synopsis-order-list">
-                                <li>
-                                    Event: <b>add</b> <i>&lt;title&gt; -[startDate] -[startTime] -[endDate] -[endTime]</i>
-                                </li>
-                                <li>
-                                    Deadline: <b>add</b> <i>&lt;title&gt; -[date] -[time]</i>
-                                </li>
-                                <li>
-                                    Task: <b>add</b> <i>&lt;title&gt;</i>
-                                </li>
-                            </ol>
-                            
-                        </p>
-                        <p class="section-paragraph indent">
-                            <i>&lt;field&gt;</i> - field in arrow brackets are a compulsory field<br/></i>[parameters]</i> - fields in square brackets are optional parameters
-                            
-                        </p>                
-                    
-                    <h4 class="section-subtitle semi-bold">Description</h4>
-                    <p class="section-paragraph indent">This command will add a new event, deadline, or task based on the input parameters.</p>
-                    
-                    <h4 class="section-subtitle semi-bold">Field</h4>
-                    <p  class="section-paragraph indent">  
-                        <i>&lt;title&gt;</i>
-                    </p>
-                    <p class="section-paragraph indent">
-e.g. Project Meeting<br/>Title field do not need "-".
-                    </p>
-                   
-                    <h4 class="section-subtitle semi-bold">Parameter</h4>
-                    <p class="section-paragraph indent">
-                        <i>[startDate] / [endDate]</i>
-                    </p>            
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">Default value: system date</li>
-                        <li class="list-item indent">To enter a day of the week, enter the first three letters of the day (i.e. "mon", 
-                            "thu", or "sun"). By default, the system will recognise the entry is meant for current week.</li>
-                        <li class="list-item indent">
-                            To specify a date, enter the date in the given format: <i>DD/MM/YY</i></li>
-                    </p>
-        
-                    <p class="section-paragraph indent">
-                        <i>[startTime] / [endTime]</i>
-                    </p>
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">Default start time: current system time</li>
-                        <li class="list-item indent">Default end time: 23:59 for the current system date</li>
-                        <li class="list-item indent">General format: <i>HH:MM</i></li>
-                    </p>
-  
-                 </div>
-       
-    <!-- ====================== EDIT ========================-->
-                <a name="section-edit"></a>
-                <div class="section-title-div">
-                    <h5 class="section-title bold ">Edit Task</h5>
-                </div>
-                <div id="edit-content" class="section">
-                    <h4 class="section-subtitle semi-bold">Synopsis</h4>
-                    <p class="section-paragraph indent">
-                        To edit:
-                        <ol class="section-synopsis-order-list">
-                            <li>
-                                Event: <b>edit</b> <i>&lt;taskId&gt;</i> -[newTitle] -[newStartDate] -[newStartTime] -[newEndDate] -[newEndTime]
-                            </li>
-                                
-                            <li>
-                                Deadline: <b>edit</b> <i>&lt;taskId&gt;</i> -[newTitle] -[newEndDate] -[newEndTime]
-                            </li>
-                                
-                            <li>
-                                Task: <b>edit</b> <i>&lt;taskId&gt;</i> -[newTitle]
-                            </li>
-                        </ol>
-                        
-                        
-                        
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-<i>&lt;field&gt;</i> - field in arrow brackets is a compulsory field<br/>
-                    <i>[parameters]</i> - fields in square brackets are optional parameters
-                    </p>
-                    
-                    <h4 class="section-subtitle semi-bold">Description</h4>
-                    
-                    <p class="section-paragraph indent">
-                    This command will edit current saved task.<br/> Return error if the system is unable to find the task.
-                    </p>
-                    
-                    
-                    <h4 class="section-subtitle semi-bold">Field</h4>
-                   
-                    <p class="section-paragraph indent">
-                        <i>&lt;taskId&gt;</i>
-                    </p>
-                    <p class="section-paragraph indent">
-Task id will be the number that is assigned to the task.   
-                    </p>
-                    
-                    
-                    <h4 class="section-subtitle semi-bold">Parameter</h4> <!-- Parameter-->
-                    <p class="section-paragraph indent">
-                        <i>[newTitle]</i>
-                    </p>            
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">If a new title is not specified in the command, system will assume the title
-remains the same</li>
-                        <li class="list-item indent">
-                            Specify a new title will replace the old title of the task</li>
-                    </p>
-        
-                    <p class="section-paragraph indent">
-                        <i>[newStartDate] / [newEndDate]</i>
-                    </p>
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">Default value: sysem date</li>
-                        <li class="list-item indent">If this is not specified in command, system will assume the date remains the same
-                        </li>
-                        <li class="list-item indent">To enter a day of the week, enter the first three letters of the day (i.e. "mon",
-"thu", or "sun"). By default, the system will recognise the entry is meant for current week.
-                        </li>
-                        <li class="list-item indent">To specify a date, enter the date in the given format: <i>DD/MM/YY</i></li>
-                    </p>
-  
-                    <p class="section-paragraph indent">
-                        <i>[newStartTime] / [newEndTime]</i>
-                    </p>
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">If time is not specified in command, system will assumes the time remains the same</li>
-                        <li class="list-item indent">Default start time: current system time</li>
-                        <li class="list-item indent">Default end time: 23:59 for the current system date</li>
-                        <li class="list-item indent">General format: <i>HH:MM</i></li>
-                    </p>
-                    
-                    <h4 class="section-subtitle semi-bold">Command Example</h4>
-                    <p class="section-paragraph indent">
-                        <b>edit</b> <i>123 to Department Meeting with Sales fri every 2 week</i></b>
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-                        In the above sample, this task with an ID - 123 will be changed to a new title called "Department Meeting with Sales", on this Friday, with the time unchanged for every 2 weeks.
-                    </p>
-                    
-                    
-                </div>
-    
-    
-    <!-- ====================== DELETE ========================-->
-                <a name="section-delete"></a>
-                <div class="section-title-div">
-                    <h5 class="section-title bold ">Delete Task</h5>
-                </div>
-                <div id="delete-content" class="section">
-                    <h4 class="section-subtitle semi-bold">Synopsis</h4>
-                    <p class="section-paragraph indent">
-                        <b>delete</b> <i>&lt;taskID&gt;</i>
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-                        To delete all task:
-                        <br/>
-                        <i><b>delete</b> a</i>
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-                        <i>&lt;field&gt;</i> - field in arrow brackets is a compulsory field
-                    </p>
-                    
-                    <h4 class="section-subtitle semi-bold">Description</h4>
-                    
-                    <p class="section-paragraph indent">
-                    This command will delete selected saved task.<br/>Return error if the system is unable to find the task.
-                    </p>
-                    
-                    <h4 class="section-subtitle semi-bold">Field</h4>
-                    <p class="section-paragraph indent">
-                        <i>&lt;taskID&gt;</i>
-                    </p>
-                    
-                    <p  class="section-paragraph indent">
-Task id will be the number that is beside the task title in the list view
-                    </p>
-                    
-                </div>
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Navbar example</h1>
+        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>To see the difference between static and fixed top navbars, just scroll.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="" role="button">View navbar docs &raquo;</a>
+        </p>
+      </div>
 
-       <!-- ====================== LIST ========================-->        
-                <a name="section-list"></a>
-                <div class="section-title-div">
-                    <h5 class="section-title bold ">List Tasks</h5>
-                </div>
-                <div id="search-content" class="section">
-                    <h4 class="section-subtitle semi-bold">Synopsis</h4>
-                    <p class="section-paragraph indent">
-                        <b>list</b> <i>[date] [time]</i>
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-                    [parameters] - fields in square brackets are optional parameters
-                    </p>
+    </div> <!-- /container -->
 
-                    <h4 class="section-subtitle semi-bold">Description</h4>
-                    <p class="section-paragraph indent">
-                        This command will list all tasks within the specific date and time.<br/>Return empty if the system is unable to find any tasks.
-                    </p>
-                </div>
 
-    <!-- ====================== Find ========================-->
-                <a name="section-search"></a>
-                <div class="section-title-div">
-                    <h5 class="section-title bold ">Find Tasks</h5>
-                </div>
-                <div id="search-content" class="section">
-                    <h4 class="section-subtitle semi-bold">Synopsis</h4>
-                    <p class="section-paragraph indent">
-                       <b>find</b> <i>[keyword]</i> 
-                    </p>
-                    
-                    <p class="section-paragraph indent">
-                       [parameters] - fields in square brackets are parameters.
-                    </p>
-
-                    <h4 class="section-subtitle semi-bold">Description</h4>
-                    
-                    <p class="section-paragraph indent">
-                        This command will search for tasks that contains the keyword.<br/>Return empty if the system is unable to find any tasks.
-                    </p>
-                    
-                    <h4 class="section-subtitle semi-bold">Parameter</h4>
-                    <p class="section-paragraph indent"><i>[keyword]</i></p>
-                    <p class="section-paragraph indent">
-                        <li class="list-item indent">If user did not specify the keyword, system will assume the keyword is universal (every alphanumeric) 
-                        </li>
-                        <li class="list-item indent">
-                            Specify short phrases
-                        </li>
-                    </p>     
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="footer"> 
-            <div class="footer-content">
-                <h6 class="footer-content-paragraph">Copyright&copy; 2015. CS2101 w13-4j</h6>
-            </div>
-        </div>
-        
-    </body>
-</htm>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
