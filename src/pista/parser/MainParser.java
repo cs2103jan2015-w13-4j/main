@@ -72,30 +72,18 @@ public class MainParser {
 		}
 	}
 
-	public static String getCommand(String input){
-		String command=input.split(" ",2)[0];
-		return command;
-	}
-
-	public static String[] getTokens(String input){
-		String[] temp = input.split(" ",2);
-
-		if(temp.length > 1){
-			String[] arr = temp[1].split("-");
-			trimWhiteSpace(arr);
-			return arr;
-		}else{
-			return null;
-		}
-	}
-
 	public static boolean isEmptyString(String input){
 		if(input.isEmpty()){
 			return true;
 		}
 		return false;
 	}
-
+	
+	public static String getCommand(String input){
+		String command=input.split(" ",2)[0];
+		return command;
+	}
+	
 	/*
 	 * Grabs user command and verify if matches the supported commands
 	 * Add, edit, delete*/
@@ -115,6 +103,18 @@ public class MainParser {
 		}//end if
 
 	}//end checkCommand
+
+	public static String[] getTokens(String input){
+		String[] temp = input.split(" ",2);
+
+		if(temp.length > 1){
+			String[] arr = temp[1].split("-");
+			trimWhiteSpace(arr);
+			return arr;
+		}else{
+			return null;
+		}
+	}
 
 	/*
 	 * check parameters
@@ -150,131 +150,6 @@ public class MainParser {
 		}
 	}
 	
-	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
-		if(tokens == null || tokens.length != 1){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
-		
-		if (tokens[0].equals("")) {
-			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
-			return false;
-		}
-		
-		mp.setTokens(tokens);
-		return true;
-	}
-	
-	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
-		mp.setTokens(tokens);
-		if(tokens.length == 2){
-			int priorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
-			if(priorityScore >=0 || priorityScore<=3){
-				return true;
-			}
-		}
-		mp.setMessage(Constants.INVALID_PRIORITY_SCORE);
-		return false;
-	}
-	private boolean checkReminderTokens(MainParser mp, String[] tokens) {
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
-		mp.setTokens(tokens);
-		if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
-			if(tokens[Constants.TOKEN_NUM_REMINDER_OFF].equalsIgnoreCase(Constants.REMINDER_OFF)){
-				return true;
-			}
-			mp.setMessage(Constants.REMINDER_INVALID_STATUS);
-			return false;
-		}else if(tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
-			//String taskId = tokens[TOKEN_REMINDER_ID];
-			if(!isDateAndTimeValid(mp, tokens, Constants.REMINDER_DATE, 
-					Constants.REMINDER_TIME)){
-				return false;
-			}
-			return true;
-		}
-
-		mp.setMessage(Constants.INVALID_REMINDER);
-		return false;
-	}
-	private boolean checkSetTokens(MainParser mp, String[] tokens){
-		String getType = "";
-		String getFileLocation = "";
-
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
-
-		if(tokens.length <= 1){ //must have at least 2
-			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_LENGTH);
-			return false;
-		}
-
-		getType = tokens[Constants.SET_TYPE_INDEX]; //index of type is 0
-		if(!getType.equalsIgnoreCase(Constants.SET_TYPE_FILE_LOCATION)){
-			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_TYPE);	
-			return false;
-		}
-
-		getFileLocation = tokens[Constants.SET_VALUE_INDEX];
-		if(!TokenValidation.isFileNameValid(getFileLocation)){
-			mp.setMessage(Constants.LOGIC_INVALID_SET_FILE_NAME);
-			return false;
-		}
-
-		mp.setTokens(tokens);
-		return true;
-
-	}
-
-
-	private boolean checkSortTokens(MainParser mp, String[] tokens) {
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
-		mp.setTokens(tokens);
-		String sortType = tokens[0];
-		if(Constants.SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
-				Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
-				Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
-				Constants.SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
-				Constants.SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
-				Constants.SORT_DESCENDING_TITLE.equals(sortType) || 
-				Constants.SORT_ISDONE_DONE.equals(sortType) || 
-				Constants.SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
-				Constants.SORT_OVERVIEW.equalsIgnoreCase(sortType) || 
-				Constants.SORT_TYPE.equalsIgnoreCase(sortType) 
-				|| Constants.SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
-				Constants.SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
-			return true;
-		}
-		mp.setMessage(Constants.MESSAGE_INVALID_SORT_FUNCTION);
-		return false;
-	}
-
-	private boolean checkMarkTokens(MainParser mp, String[] tokens) {
-		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
-			return false;
-		}
-		mp.setTokens(tokens);
-		String status = tokens[1];
-		if(Constants.MARK_DONE.equalsIgnoreCase(status) || Constants.MARK_UNDONE.equalsIgnoreCase(status)){
-			return true;
-		}
-		mp.setMessage(Constants.INVALID_MARK);
-		return false;
-	}
-
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -329,78 +204,7 @@ public class MainParser {
 		//mp.setValidToken(false);
 		return false;
 	}
-
-	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
-		Parser parser = new Parser();
-		List<DateGroup> groups;
-		String requiredNattyInputFormat = ""; 
-		String interpretOutputDateFromNatty="";
-		String interpretOutputTimeFromNatty="";
-		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
-		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
-		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
-		if(!TokenValidation.isDateValid(tokens[dateIndex])){
-			requiredNattyInputFormat = nattyInputFormat(tokens, dateIndex);
-			if(!requiredNattyInputFormat.isEmpty()){
-				groups = parser.parse(requiredNattyInputFormat);
-			}else{
-				groups = parser.parse(tokens[dateIndex]);
-			}
-
-			try {
-				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(intrepretInputNatty(groups)));
-			} catch (ParseException e1) {
-				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
-				return false;
-			}
-			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
-				mp.setMessage(Constants.MESSAGE_INVALID_DATE_INPUT);
-				return false;
-			}else{
-				mp.setIndexInToken(dateIndex, interpretOutputDateFromNatty);
-			}
-		}
-		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
-			groups = parser.parse(tokens[timeIndex]);
-			try {
-				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(intrepretInputNatty(groups)));
-			} catch (ParseException e1) {
-				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
-				return false;
-			}
-			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
-				mp.setMessage(Constants.MESSAGE_INVALID_TIME_INPUT);
-				return false;
-			}else{
-				mp.setIndexInToken(timeIndex, interpretOutputTimeFromNatty);
-			}
-		}
-		return true;
-	}
-
-	private static String nattyInputFormat(String[] tokens, int dateIndex) {
-		String requiredNattyInputDateFormat = "";
-		String[] temp = tokens[dateIndex].split("/");
-		if(StringUtils.countMatches(tokens[dateIndex], "/")==2){
-			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0] +"/"+ temp [2];
-		}else if (StringUtils.countMatches(tokens[dateIndex], "/")==1){
-			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0];
-		}
-		return requiredNattyInputDateFormat;
-	}
-
-	private static String intrepretInputNatty(List<DateGroup> groups) {
-		List dates = null;
-		for(DateGroup group: groups){
-			dates = group.getDates();
-			return dates.toString();
-		}
-
-		return "";
-
-	}
-
+	
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {
 		int clearValue = 0;
 		if(tokens == null){
@@ -471,8 +275,7 @@ public class MainParser {
 		mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
 		return false;
 	}
-
-
+	
 	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
 		mp.setTokens(tokens);
 		if(tokens == null){
@@ -497,6 +300,203 @@ public class MainParser {
 			}
 			return true;
 		}
+	}
+	
+	private boolean checkMarkTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		String status = tokens[1];
+		if(Constants.MARK_DONE.equalsIgnoreCase(status) || Constants.MARK_UNDONE.equalsIgnoreCase(status)){
+			return true;
+		}
+		mp.setMessage(Constants.INVALID_MARK);
+		return false;
+	}
+	
+	private boolean checkReminderTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
+			if(tokens[Constants.TOKEN_NUM_REMINDER_OFF].equalsIgnoreCase(Constants.REMINDER_OFF)){
+				return true;
+			}
+			mp.setMessage(Constants.REMINDER_INVALID_STATUS);
+			return false;
+		}else if(tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
+			//String taskId = tokens[TOKEN_REMINDER_ID];
+			if(!isDateAndTimeValid(mp, tokens, Constants.REMINDER_DATE, 
+					Constants.REMINDER_TIME)){
+				return false;
+			}
+			return true;
+		}
+
+		mp.setMessage(Constants.INVALID_REMINDER);
+		return false;
+	}
+	
+	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		if(tokens.length == 2){
+			int priorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+			if(priorityScore >=0 || priorityScore<=3){
+				return true;
+			}
+		}
+		mp.setMessage(Constants.INVALID_PRIORITY_SCORE);
+		return false;
+	}
+	
+	private boolean checkSetTokens(MainParser mp, String[] tokens){
+		String getType = "";
+		String getFileLocation = "";
+
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+
+		if(tokens.length <= 1){ //must have at least 2
+			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_LENGTH);
+			return false;
+		}
+
+		getType = tokens[Constants.SET_TYPE_INDEX]; //index of type is 0
+		if(!getType.equalsIgnoreCase(Constants.SET_TYPE_FILE_LOCATION)){
+			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_TYPE);	
+			return false;
+		}
+
+		getFileLocation = tokens[Constants.SET_VALUE_INDEX];
+		if(!TokenValidation.isFileNameValid(getFileLocation)){
+			mp.setMessage(Constants.LOGIC_INVALID_SET_FILE_NAME);
+			return false;
+		}
+
+		mp.setTokens(tokens);
+		return true;
+
+	}
+	
+	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		if(tokens == null || tokens.length != 1){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		if (tokens[0].equals("")) {
+			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
+			return false;
+		}
+		
+		mp.setTokens(tokens);
+		return true;
+	}
+	
+	private boolean checkSortTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		String sortType = tokens[0];
+		if(Constants.SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
+				Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
+				Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
+				Constants.SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
+				Constants.SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
+				Constants.SORT_DESCENDING_TITLE.equals(sortType) || 
+				Constants.SORT_ISDONE_DONE.equals(sortType) || 
+				Constants.SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
+				Constants.SORT_OVERVIEW.equalsIgnoreCase(sortType) || 
+				Constants.SORT_TYPE.equalsIgnoreCase(sortType) 
+				|| Constants.SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
+				Constants.SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+			return true;
+		}
+		mp.setMessage(Constants.MESSAGE_INVALID_SORT_FUNCTION);
+		return false;
+	}
+	
+	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
+		Parser parser = new Parser();
+		List<DateGroup> groups;
+		String requiredNattyInputFormat = ""; 
+		String interpretOutputDateFromNatty="";
+		String interpretOutputTimeFromNatty="";
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
+		if(!TokenValidation.isDateValid(tokens[dateIndex])){
+			requiredNattyInputFormat = nattyInputFormat(tokens, dateIndex);
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[dateIndex]);
+			}
+
+			try {
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(intrepretInputNatty(groups)));
+			} catch (ParseException e1) {
+				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
+				return false;
+			}
+			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
+				mp.setMessage(Constants.MESSAGE_INVALID_DATE_INPUT);
+				return false;
+			}else{
+				mp.setIndexInToken(dateIndex, interpretOutputDateFromNatty);
+			}
+		}
+		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
+			groups = parser.parse(tokens[timeIndex]);
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(intrepretInputNatty(groups)));
+			} catch (ParseException e1) {
+				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
+				return false;
+			}
+			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
+				mp.setMessage(Constants.MESSAGE_INVALID_TIME_INPUT);
+				return false;
+			}else{
+				mp.setIndexInToken(timeIndex, interpretOutputTimeFromNatty);
+			}
+		}
+		return true;
+	}
+
+	private static String nattyInputFormat(String[] tokens, int dateIndex) {
+		String requiredNattyInputDateFormat = "";
+		String[] temp = tokens[dateIndex].split("/");
+		if(StringUtils.countMatches(tokens[dateIndex], "/")==2){
+			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0] +"/"+ temp [2];
+		}else if (StringUtils.countMatches(tokens[dateIndex], "/")==1){
+			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0];
+		}
+		return requiredNattyInputDateFormat;
+	}
+
+	private static String intrepretInputNatty(List<DateGroup> groups) {
+		List dates = null;
+		for(DateGroup group: groups){
+			dates = group.getDates();
+			return dates.toString();
+		}
+
+		return "";
+
 	}
 
 	public static String convertMillisecondToDate(long ms){
