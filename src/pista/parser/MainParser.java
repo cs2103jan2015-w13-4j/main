@@ -103,7 +103,7 @@ public class MainParser {
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
 				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK) ||
-				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_LIST) || 
+				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_SORT) || 
 				command.equalsIgnoreCase(Constants.VALUE_SET) ||
 				command.equalsIgnoreCase(Constants.VALUE_REMINDER) ||
 				command.equalsIgnoreCase(Constants.VALUE_PRIORITY) ||
@@ -143,8 +143,8 @@ public class MainParser {
 			return checkSetTokens(mp, tokens);
 		case Constants.VALUE_SEARCH:
 			return checkSearchTokens(mp, tokens);
-		case Constants.VALUE_LIST:
-			return checkListTokens(mp, tokens);
+		case Constants.VALUE_SORT:
+			return checkSortTokens(mp, tokens);
 		default:
 			return false;
 		}
@@ -236,28 +236,28 @@ public class MainParser {
 	}
 
 
-	private boolean checkListTokens(MainParser mp, String[] tokens) {
+	private boolean checkSortTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
 		String sortType = tokens[0];
-		if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
-				Constants.LIST_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
-				Constants.LIST_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
-				Constants.LIST_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
-				Constants.LIST_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
-				Constants.LIST_DESCENDING_TITLE.equals(sortType) || 
-				Constants.LIST_ISDONE_COMPLETED.equals(sortType) || 
-				Constants.LIST_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
-				Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType) || 
-				Constants.LIST_TYPE.equalsIgnoreCase(sortType) 
-				|| Constants.LIST_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
-				Constants.LIST_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+		if(Constants.SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
+				Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
+				Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
+				Constants.SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
+				Constants.SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
+				Constants.SORT_DESCENDING_TITLE.equals(sortType) || 
+				Constants.SORT_ISDONE_DONE.equals(sortType) || 
+				Constants.SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
+				Constants.SORT_OVERVIEW.equalsIgnoreCase(sortType) || 
+				Constants.SORT_TYPE.equalsIgnoreCase(sortType) 
+				|| Constants.SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
+				Constants.SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
 			return true;
 		}
-		mp.setMessage(Constants.MESSAGE_INVALID_LIST_FUNCTION);
+		mp.setMessage(Constants.MESSAGE_INVALID_SORT_FUNCTION);
 		return false;
 	}
 

@@ -49,7 +49,7 @@ public class Logic {
 	}
 
 	public static boolean initStorage(){
-		currentSortType[0] = Constants.LIST_OVERVIEW;
+		currentSortType[0] = Constants.SORT_OVERVIEW;
 		try{
 			mStorage = Storage.getInstance();
 			return true;
@@ -93,7 +93,7 @@ public class Logic {
 		case Constants.VALUE_HELP:
 			output = help();
 			break;
-		case Constants.VALUE_LIST:
+		case Constants.VALUE_SORT:
 			output = list(tokens);
 			break;
 		case Constants.VALUE_REMINDER:
@@ -280,27 +280,27 @@ public class Logic {
 		/*if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
 			sortAscendingEndDate();
 		}phased out since overview is sorted in isDone, priority, ascending end date, title*/
-		if(Constants.LIST_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
+		if(Constants.SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
 			sortDescendingEndDate();
-		}else if(Constants.LIST_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
+		}else if(Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
 			sortAscendingStartDate();
-		}else if(Constants.LIST_DESCENDING_START_DATE.equalsIgnoreCase(sortType) ){
+		}else if(Constants.SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) ){
 			sortDescendingStartDate();
-		}else if(Constants.LIST_ASCENDING_TITLE.equalsIgnoreCase(sortType)){
+		}else if(Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType)){
 			sortTitleAscending();
-		}else if(Constants.LIST_DESCENDING_TITLE.equals(sortType)){
+		}else if(Constants.SORT_DESCENDING_TITLE.equals(sortType)){
 			sortTitleDescending();
-		}else if(Constants.LIST_ISDONE_COMPLETED.equalsIgnoreCase(sortType) ){
+		}else if(Constants.SORT_ISDONE_DONE.equalsIgnoreCase(sortType) ){
 			sortIsDoneCompleted();
-		}else if(Constants.LIST_ISDONE_UNDONE.equalsIgnoreCase(sortType) ){
+		}else if(Constants.SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) ){
 			sortIsDoneUndone();
-		}else if(Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
+		}else if(Constants.SORT_OVERVIEW.equalsIgnoreCase(sortType)){
 			sortOverView();
-		}else if(Constants.LIST_TYPE.equalsIgnoreCase(sortType)){
+		}else if(Constants.SORT_TYPE.equalsIgnoreCase(sortType)){
 			sortTypeOfTask();
-		}else if (Constants.LIST_ASCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+		}else if (Constants.SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType)){
 			sortAscendingPriority();
-		}else if (Constants.LIST_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+		}else if (Constants.SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
 			sortDescendingPriority();
 		}
 		currentSortType[0] = sortType;
