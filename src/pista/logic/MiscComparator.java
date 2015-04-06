@@ -71,7 +71,7 @@ public class MiscComparator {
 			return -1;
 		}
 	};
-	
+
 	public static Comparator<Task> descendingStartDateComparator = new Comparator<Task>(){
 		@Override
 		public int compare (Task one, Task two){
@@ -115,7 +115,20 @@ public class MiscComparator {
 			return 1;	
 		}
 	};
-
+	public static Comparator<Task> priorityComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			int taskOnePriority = Integer.parseInt(one.getPriority());
+			int taskTwoPriority = Integer.parseInt(two.getPriority());
+			if(taskOnePriority < taskTwoPriority ){
+				return 1;
+			}else if (taskOnePriority > taskTwoPriority) {
+				return -1;
+			}else{
+				return 0;
+			}
+		}
+	};
 
 
 }

@@ -233,7 +233,15 @@ public class Logic {
 	public static void sortDescendingEndDate(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.endDateComparator));
 	}
-
+	
+	public static void sortAscendingPriority(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
+	}
+	
+	public static void sortDescendingPriority(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.priorityComparator));
+	}
+	
 	public static String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
@@ -289,7 +297,11 @@ public class Logic {
 		}else if(Constants.LIST_OVERVIEW.equalsIgnoreCase(sortType)){
 			sortOverView();
 		}else if(Constants.LIST_TYPE.equalsIgnoreCase(sortType)){
-
+			sortTypeOfTask();
+		}else if (Constants.LIST_ASCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+			sortAscendingPriority();
+		}else if (Constants.LIST_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+			sortDescendingPriority();
 		}
 		currentSortType[0] = sortType;
 		mStorage.save();

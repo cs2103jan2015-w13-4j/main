@@ -43,8 +43,11 @@ public class Constants {
 	public static final String LIST_DESCENDING_END_DATE = "descending end date";
 	public static final String LIST_ASCENDING_TITLE = "ascending title";
 	public static final String LIST_DESCENDING_TITLE = "descending title";
+	public static final String LIST_ASCENDING_PRIORITY = "ascending priority";
+	public static final String LIST_DESCENDING_PRIORITY = "descending priority";
 	public static final String LIST_ISDONE_UNDONE = "undone";
 	public static final String LIST_ISDONE_COMPLETED = "completed";
+	public static final String LIST_PRIORITY = "priority";
 	public static final String SET_TYPE_FILE_LOCATION = "file location";
 	public static final String SET_FILE_TYPE = ".xml";
 	public static final String MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
