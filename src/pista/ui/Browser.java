@@ -17,7 +17,7 @@ public class Browser extends Region{
  
     	String url = getClass().getResource("html/index.html").toExternalForm();  
         //apply the styles
-        getStyleClass().add("browser");
+        getStyleClass().addAll("html/bootstrap/css/bootstrap-theme.css", "html/bootstrap/css/navbar-fixed-top.css", "html/bootstrap/css/index.css");
         // load the web page
         webEngine.load(url);
         //add the web view to the scene
