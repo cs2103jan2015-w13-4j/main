@@ -120,17 +120,30 @@ public class MiscComparator {
 		public int compare (Task one, Task two){
 			int taskOnePriority = Integer.parseInt(one.getPriority());
 			int taskTwoPriority = Integer.parseInt(two.getPriority());
-			if(taskOnePriority < taskTwoPriority ){
-				return 1;
-			}else if (taskOnePriority > taskTwoPriority) {
-				return -1;
-			}else{
-				return 0;
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if(taskOnePriority < taskTwoPriority ){
+					return 1;
+				}else if (taskOnePriority > taskTwoPriority) {
+					return -1;
+				}else{
+					return 0;
+				}
 			}
+			return 1;
 		}
 	};
 
-
+	private static int compareIsDone(boolean taskOneIsDone, boolean taskTwoIsDone){
+		if(taskOneIsDone == true && taskTwoIsDone == false){
+			return 1;
+		}else if (taskOneIsDone == false && taskTwoIsDone == true) {
+			return -1;
+		}else{	// this is when taskOneStatus == statusTwoStatus  T==T or F==F
+			return 0;
+		}
+	}
 }
 
 
