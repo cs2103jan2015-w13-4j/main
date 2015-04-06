@@ -1,0 +1,21 @@
+.subtitle {
+	color:#999999;
+}
+
+.heading {
+	color:#999999;
+}
+
+.content-text{
+	line-height:2.0em;
+}
+
+.button-long {
+	width : 80%;
+	margin-bottom: 0.5em;
+}
+
+.link-text { 
+	font-size:0.8em;
+	color:#33B5E5;
+}
