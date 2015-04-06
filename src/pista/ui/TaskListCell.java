@@ -388,6 +388,12 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void strikeThroughLabels(boolean isDone){
+    	//remove all style classes first
+    	//to prevent over write the style class on other cells when scrolling
+    	this.lblTitle.getStyleClass().removeAll(CSS_CELL_TEXT_STRIKE_THROUGH);
+    	this.lblID.getStyleClass().removeAll(CSS_CELL_TEXT_STRIKE_THROUGH);
+    	this.lblDateTime.getStyleClass().removeAll(CSS_CELL_TEXT_STRIKE_THROUGH);
+    	
     	if(isDone){
     		this.lblTitle.getStyleClass().add(CSS_CELL_TEXT_STRIKE_THROUGH);
         	this.lblID.getStyleClass().add(CSS_CELL_TEXT_STRIKE_THROUGH);
