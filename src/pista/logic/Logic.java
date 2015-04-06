@@ -235,11 +235,11 @@ public class Logic {
 	}
 	
 	public static void sortAscendingPriority(){
-		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.priorityComparator));
 	}
 	
 	public static void sortDescendingPriority(){
-		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.priorityComparator));
+		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
 	}
 	
 	public static String help(){
