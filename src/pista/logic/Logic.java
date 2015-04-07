@@ -365,7 +365,6 @@ public class Logic {
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
 				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
 			}
-
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
 
