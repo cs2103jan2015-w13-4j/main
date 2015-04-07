@@ -534,8 +534,6 @@ public class UIController {
 				String processedString = Logic.processTaskInfo(id);
 				String finalStr = processedString;
 				txtBoxCommand.appendText(finalStr);
-//				System.out.println(processedString);
-//				System.out.println(finalStr);
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
