@@ -479,6 +479,23 @@ public class UIController {
 				}
 			}
 		});
+		
+		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>() {
+			final KeyCombination combo1 = new KeyCodeCombination(KeyCode.UP);
+			public void handle(KeyEvent e) {
+				if (combo1.match(e)) {
+					onUpPressed();
+				}
+			}
+		});
+		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>() {
+			final KeyCombination combo2 = new KeyCodeCombination(KeyCode.DOWN);
+			public void handle(KeyEvent t) {
+				if (combo2.match(t)) {
+					onDownPressed();
+				}
+			}
+		});
 
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			initTaskListInListView();
@@ -562,6 +579,25 @@ public class UIController {
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void onUpPressed(){
+		if(Constants.HISTORY_INDEX > 0){
+			Constants.HISTORY_INDEX -= 1;
+			txtBoxCommand.setText(mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
+		}else{
+			txtBoxCommand.setText(mStorage.getHistoryList().get(0));
+		}
+	}
+
+	public void onDownPressed(){
+		if(Constants.HISTORY_INDEX < mStorage.getHistoryList().size()-1){
+			Constants.HISTORY_INDEX += 1;
+			txtBoxCommand.setText(mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
+		}else{
+			Constants.HISTORY_INDEX = mStorage.getHistoryList().size();
+			txtBoxCommand.setText("");
 		}
 	}
 
