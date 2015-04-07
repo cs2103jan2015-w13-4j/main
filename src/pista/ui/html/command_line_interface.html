@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Fixed Top Navbar Example for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="bootstrap/css/index.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="bootstrap/css/navbar-fixed-top.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Pista</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Interface<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Control Buttons</li>
+                <li><a href="#">Add New Task</a></li>
+                <li><a href="#">Undo & Redo</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Refresh</a></li> 
+                <li><a href="#">Setting</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Task Listing</li>
+                <li><a href="#about">Edit</a></li>
+            	<li><a href="#contact">Mark Done & Undone</a></li>
+                <li><a href="#">Alarm</a></li>
+                <li><a href="#">Priority</a></li>
+              </ul>
+            </li>
+            
+            <li lass="dropdown">
+            	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Command Line Interface<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="dropdown-header">Types of Command</li>
+                    <li><a href="#">Add</a></li>
+                    <li><a href="#">Edit</a></li>
+                    <li><a href="#">Delete</a></li>
+                    <li><a href="#">Done & Undone</a></</li>
+                    <li><a href="#">Undo & Redo</a></li>
+                    <li><a href="#">Alarm</a></li>
+                    <li><a href="#">Priority</a></li>
+                    <li><a href="#">Setting</a></li>
+                    <li><a href="#">Help</a></li>
+               	</ul> 
+            </li>
+          </ul>
+          <!--
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/index.html">Default</a></li>
+            <li><a href="../navbar-static-top/index.html">Static top</a></li>
+            <li class="active"><a href="index.html">Fixed top</a></li>
+          </ul>
+          -->
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+    <div class="container" style="padding:0.5em;">
+    	<div class="jumbotron" style="background:transparent !important; padding:0.2em;" >
+            <div class="text-center">
+            	<h2>Command Line Interface</h2>
+                <h4 class="content-text">Pista has provided a simplistic Command Line Interface (CLI) for you to organize your task efficiently. Follow the comamnds below to learn more about each feature in Pista.</h4>
+            </div>
+            <!--<img src="images/command-line-interface.png" class="img-responsive"/>-->
+		</div>
+
+      	<div class="jumbotron" style="background: #F5F5F5; padding:1.0em;" >
+        	<h2>Tour with Pista Interface</h2>
+			<h4 class="content-text">These lessons will introduce you to the different pieces that make up the Pista interface. Learn how to use the Undo & Redo, the Alarm, the Priority, the Edit and more.</h4>
+            <p>  
+                <a href="#add" class="link-text">Add a new task &rsaquo;</a><br/>      
+                <a href="#edit" class="link-text">Edit your task &rsaquo;</a><br/>
+                <a href="#delete" class="link-text">Delete your task &rsaquo;</a><br/>
+                <a href="#mark" class="link-text">Mark done & undone &rsaquo;</a><br/>
+                <a href="#remind" class="link-text">Remind yourself &rsaquo;</a><br/>
+                <a href="" class="link-text">Prioritize your task &rsaquo;</a><br/>
+                <a href="" class="link-text">Undo & Redo your task &rsaquo;</a><br/>
+                <a href="" class="link-text">Help to the rescue &rsaquo;</a><br/>
+                <a href="" class="link-text">Refresh your list &rsaquo;</a><br/>
+                <a href="" class="link-text">Set your own preferences &rsaquo;</a><br/>
+            </p>
+            
+      	</div>
+         
+        <a name="add"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >   
+     		<h2>Add a new task</h2>
+     		<h4 class="content-text">The following command will add a new event, deadline or task based on the input parameters.</h4>
+     		<h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        For event task
+                        <br/>
+                        <b>add</b> <i>&lt;title&gt; -[startDate] -[startTime] -[endDate] -[endTime]</i>
+                    </li>
+                    <li>
+                        For deadline task
+                        <br/>
+                        <b>add</b> <i>&lt;title&gt; -[date] -[time]</i>
+                    </li>
+                    <li>
+                        For floating task
+                        <br/>
+                        <b>add</b> <i>&lt;title&gt;</i>
+                    </li>
+                    
+                </ol>
+            </h4>
+            
+            <h3>Parameter</h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>[startDate] / [endDate]</i><br/>
+                        You can specify the date based on the format <i>DD/MM/YYYY</i> or a natural day such as monday, tuesday, next week, next monday.<br/>
+                    </li>
+                    <li>
+                        <i>[startTime] / [endTime]</i><br/>
+                        Time will be in the following format <i>HH:MM</i>.
+                    </li>
+                </ol>
+            </h4>
+       	</div>
+        
+        <a name="edit"></a>
+        <div class="jumbotron" style="background: #F5F5F5; padding:2.5em;" >
+        	<h2>Edit your task</h2>
+            <h4 class="content-text">The following command will edit your task based on the input parameters.</h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                	<li>For event task<br/>
+                        <b>edit</b> <i>&lt;Task ID&gt; -[newTitle] -[newStartDate] -[newStartTime] -[newEndDate] -[newEndTime]</i></li>
+                    <li>For deadline task<br/>
+                        <b>edit</b> <i>&lt;Task ID&gt; -[newTitle] -[newEndDate] -[newEndTime]</i></li>
+                    <li>For floating task<br/>
+                        <b>edit</b> <i>&lt;Task ID&gt; -[newTitle]</i></li>
+                </ol>
+           	</h4>
+            <h3>Parameter<Event/h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>&lt;Task ID&gt;</i><br/>
+                        ID is the number that is assigned to the tasl. It can be found at the left of the task title in the list.
+                    </li>
+                    <li>
+                        <i>[newTitle]</i><br/>
+                        If a new title is not specified in the command, system will assume the title remains the same.<br/>
+Specify a new title will replace the old title of the task.
+                    </li>
+                    <li>
+                        <i>[newStartDate] / [newEndDate]</i><br/>
+                        You can specify the date based on the format <i>DD/MM/YYYY</i> or a natural day such as monday, tuesday, next week, next monday.<br/>
+                    </li>
+                    <li>
+                        <i>[newStartTime] / [newEndTime]</i><br/>
+                        Time will be in the following format <i>HH:MM</i>.
+                    </li>
+                </ol>
+            </h4>
+        </div>
+        
+        
+        <a name="delete"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+        	<h2>Delete your task</h2>
+            <h4 class="content-text">This command will delete the task that you specify. More detail is below.</h4>
+        	<h4 class="content-text">
+                <ol class="order-list">
+                	<li>To delete a specific task<br/>
+                        <b>delete</b> <i>&lt;Task ID&gt;</i>
+                    </li>
+                    <li>
+                        To delete all tasks<br/>
+                        <b>delete</b> <i>a</i>
+                    </li>
+                </ol><i>
+                </i>           	
+            </h4>
+            
+            <h3>Parameter<Event/h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>&lt;Task ID&gt;</i><br/>
+                        ID is the number that is assigned to the task. It can be found at the left of the task title in the list.
+                    </li>
+                    <li>
+                        <i>a</i><br/>
+                        Delete all tasks that are stored in Pista.
+                    </li>
+                </ol>
+            </h4>
+        </div>
+
+		<a name="mark"></a>
+        <div class="jumbotron" style="background: #F5F5F5; padding:2.5em;">
+            <h2>Mark done & undone</h2>
+            <h4 class="content-text">This command will mark your task as done or undone.</h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To mark a task as complete<br/>
+                        <b>mark</b> <i>&lt;Task ID&gt; -done</i>
+                    </li>
+                    <li>
+                        To mark a task as not complete<br/>
+                        <b>mark</b> <i>&lt;Task ID&gt; -undone</i>
+                    </li>
+                </ol>
+            </h4>
+            <h3>Parameter<Event/h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>&lt;Task ID&gt;</i><br/>
+                        ID is the number that is assigned to the task. It can be found at the left of the task title in the list.
+                    </li>
+                </ol>
+            </h4>
+            
+        </div>
+
+        <a href="remind"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+            <h2>Remind yourself</h2>
+            <h4 class="content-text">The following command will set or unset an alarm for a specific task.
+            </h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To set an alarm<br/>
+                        <b>remind</b> <i>&lt;Task ID&gt; -[date] -[time]</i>
+                    </li>
+                    <li>
+                        To unset an alarm<br/>
+                        <b>mark</b> <i>&lt;Task ID&gt; -off</i>
+                    </li>
+                </ol>
+            </h4>
+            <h3>Parameter<Event/h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>&lt;Task ID&gt;</i><br/>
+                        ID is the number that is assigned to the task. It can be found at the left of the task title in the list.
+                    </li>
+                    <li>
+                        <i>[date]</i><br/>
+                        You can specify the date based on the format DD/MM/YYYY or a natural day such as monday, tuesday, next week, next monday.
+                    </li>
+                    <li>
+                        <i>[Time]</i><br/>
+                        Time will be in the following format HH:MM.
+                    </li>
+                    <li>
+                        <i>off</i><br/>
+                        It will specify that the alarm will be off.
+                    </li>
+                </ol>
+            </h4>
+        </div>
+            
+
+        <!-- Control Button -->
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+        	<!-- Undo & Redo -->
+        	<h2>Undo & Redo</h2>
+            <h4 class="content-text"></h4>
+        	<img src="images/undo_redo.png" class="img-responsive" style="margin-top:1.2em;" />
+        </div>
+        
+        
+      <!--
+        <h1>Navbar example</h1>
+        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>To see the difference between static and fixed top navbars, just scroll.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="" role="button">View navbar docs &raquo;</a>
+        </p>
+        -->   
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="bootstrap/js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
