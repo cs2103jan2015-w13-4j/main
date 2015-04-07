@@ -360,18 +360,10 @@ public class Logic {
 			Task extractedTask = mStorage.getTaskList().get(taskIndex);
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
-
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-				if(extractedTask.getCategory().equalsIgnoreCase(Constants.TASK_DEADLINE) 
-						|| extractedTask.getCategory().equalsIgnoreCase(Constants.TASK_FLOATED)){
 					extractedTask=editDeadlineTask(extractedTask, tokens, clearValue);
-				}else{
-					return Constants.LOGIC_FAIL_EDIT_TIMED_TO_DEADLINE_TASK;
-				}
-
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
 				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
-
 			}
 
 			reInsertTaskInToList(taskIndex, extractedTask);
@@ -514,40 +506,18 @@ public class Logic {
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}
-		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE])){	//check startdate
 			extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
-		}
-		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME])){//check starttime
 			extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
-		}
-		if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE])){	//check enddate
-			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3
-		}else{
-			extractedTask.setStartDate("");
-			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);
-		}if(!Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME])){//check endtime
+			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3	
 			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
-		}else{
-			extractedTask.setStartTime("");
-			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);
-		}
-
-		extractedTask.setStartMilliseconds(Long.parseLong("0"));
-		extractedTask.setEndMilliseconds(Long.parseLong("0"));
-
-		if(clearValue == 4){
-			extractedTask.setCategory(Constants.TASK_FLOATED);
-
-		}else if(clearValue == 2){
-			extractedTask.setCategory(Constants.TASK_DEADLINE);
-			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-
-		}else{
+			extractedTask.setStartMilliseconds(Long.parseLong("0"));
+			extractedTask.setEndMilliseconds(Long.parseLong("0"));
+			extractedTask.setStartMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
+					, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]));
+			extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
+					, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]));
 			extractedTask.setCategory(Constants.TASK_TIMED);
-			extractedTask.setStartMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[4], tokens[5]));
-
-		}
+		
 
 		return extractedTask;
 	}
@@ -568,23 +538,17 @@ public class Logic {
 			extractedTask.setStartTime("");
 			extractedTask.setStartMilliseconds(Long.parseLong("0"));
 		}
-
-		/*if(clearValue == 2){
-			extractedTask.setCategory(Constants.TASK_FLOATED);
-			extractedTask.setStartMilliseconds(Long.parseLong("0"));
-			extractedTask.setEndMilliseconds(Long.parseLong("0"));
-		}else{
-			extractedTask.setCategory(Constants.TASK_DEADLINE);
-			extractedTask.setEndMilliseconds(convertDateToMillisecond(tokens[2], tokens[3]));
-		}*/
+		extractedTask.setCategory(Constants.TASK_DEADLINE);
 		return extractedTask;
 	}
 
 	private static Task editFloatingTask(Task extractedTask, String title) {
 		String taskCategory = extractedTask.getCategory();
+		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
+			extractedTask.setTitle(title);
+		}
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE) 
 				|| taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
-
 			extractedTask.setStartDate("");
 			extractedTask.setStartTime("");
 			extractedTask.setEndDate("");
@@ -592,10 +556,8 @@ public class Logic {
 			extractedTask.setStartMilliseconds(Long.parseLong("0"));
 			extractedTask.setEndMilliseconds(Long.parseLong("0"));
 
-		}
-		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
-			extractedTask.setTitle(title);
-		}
+		}		
+		extractedTask.setCategory(Constants.TASK_FLOATED);
 		return extractedTask;
 	}
 
