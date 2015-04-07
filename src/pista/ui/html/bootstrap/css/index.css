@@ -7,7 +7,8 @@
 }
 
 .content-text{
-	line-height:2.0em;
+	line-height:1.5em;
+	color:#555555;
 }
 
 .button-long {
@@ -18,4 +19,33 @@
 .link-text { 
 	font-size:0.8em;
 	color:#33B5E5;
+}
+
+.function-text {
+	font-weight:bold;
+	font-style:normal;
+	color:#000000;	
+}
+
+.order-list {
+	list-style: decimal;
+	margin-left:-0.8em;	
+}
+
+.order-list-small-icon {
+	width: 1.2em;
+}
+
+.order-list-img {
+	margin-top:1em;
+	margin-bottom:1em;
+}
+
+.unorder-list {
+	margin-left:-1.2em;	
+}
+
+.unorder-list-small-icon {
+	width: 2.0em;	
+	margin-right:0.7em;
 }
