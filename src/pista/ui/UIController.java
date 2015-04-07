@@ -2,12 +2,18 @@ package pista.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.controlsfx.control.PopOver;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -47,6 +53,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import pista.Constants;
 import pista.CustomPreferences;
@@ -74,9 +81,10 @@ public class UIController {
 	private static final String CSS_TRANSPARENT_BACKGROUND = "transparent-background";
 	private static final String CSS_LIST_VIEW = "list-view-style";
 	private static final String CSS_TEXT_BOX = "text-box-style";
-	private static final String CSS_BUTTON = "button-style";
 	private static final String CSS_TEXT_STATUS = "text-status-style";
-
+	private static final String CSS_TEXT_CLOCK = "text-clock-style";
+	
+	private static final String CSS_BUTTON = "button-style";
 	private static final String CSS_BUTTON_IMAGE = "button-image-style";
 	private static final String CSS_BUTTON_SETTING = "button-setting-style";
 	private static final String CSS_BUTTON_ADD = "button-add-style";
@@ -87,8 +95,7 @@ public class UIController {
 	
 	private final String CSS_POP_OVER_TEXTAREA = "pop-over-text-area";
 	private final String CSS_POP_OVER_TOOLTIP = "pop-label-time-tip";
-	
-	
+
 	private final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
     private final String CSS_POP_OVER_TITLE= "pop-label-title";
     private final String CSS_POP_OVER_BUTTON = "pop-btn";
@@ -133,6 +140,9 @@ public class UIController {
 	@FXML
 	private Text txtStatus;
 
+	@FXML
+    private Text txtClock;
+	 
 	@FXML
 	private Button btnEnter;
 
@@ -412,6 +422,7 @@ public class UIController {
 		String logicOutput = "";
 
 		this.clearContent();
+		this.initTimeClock();
 		this.initStorage();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
@@ -1177,5 +1188,30 @@ public class UIController {
 		return str;
 	}
 	
+	
+	private void initTimeClock(){
+		
+		txtClock.getStyleClass().addAll(CSS_TEXT_CLOCK);
+		txtClock.setTextAlignment(TextAlignment.RIGHT);
+		
+		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+			new EventHandler<ActionEvent>(){
+			DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss a");
+				@Override
+				public void handle(ActionEvent event) {
+					// TODO Auto-generated method stub
+					
+					Calendar nowDate = Calendar.getInstance();
+					txtClock.setText(dateFormat.format(nowDate.getTime()));
+					
+				}
+			
+			}),
+		new KeyFrame(Duration.seconds(1))
+		);
+	
+		mTimeLine.setCycleCount(Animation.INDEFINITE);
+		mTimeLine.play();
+	}
 	
 }

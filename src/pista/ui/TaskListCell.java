@@ -1031,7 +1031,7 @@ public class TaskListCell extends ListCell<Task> {
 		HBox.setMargin(this.lblPopOverTimeTip, new Insets(10,0,0,0));
 		vBox.getChildren().add(hBox);
 		
-		this.lblPopOverDateTitle = new Label(startStr + this.lblContentDateTitle);
+		this.lblPopOverDateTitle = new Label(endStr + this.lblContentDateTitle);
 		this.lblPopOverTimeTitle = new Label(endStr + this.lblContentTimeTitle);
 		this.lblPopOverColon = new Label(this.lblContentColon);
 		this.lblPopOverTimeTip = new Label(this.lblContentTimeTip);

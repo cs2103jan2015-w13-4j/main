@@ -84,7 +84,7 @@
 
 .task-list-cell-datetime {
 	-fx-font-weight: bold;
-	-fx-text-fill: #569CE3;
+	-fx-text-fill: #1976D2; /* #569CE3*/
 	-fx-font-size: 0.9em;
 }
 
@@ -106,7 +106,7 @@
 }
 
 .task-list-cell:filled:selected {
-	-fx-background-color: #6DCAEC99; /* #4294DE 24ADDEFF*/
+	-fx-background-color: #BBDEFB; /* #4294DE 24ADDEFF #6DCAEC99*/ 
 }
 
 
@@ -117,6 +117,11 @@
 .task-list-cell:filled:selected .task-list-cell-id{
 	-fx-text-fill: #000000;
 }
+
+.task-list-cell:filled:selected .task-list-cell-title{
+	-fx-text-fill: #000000;
+}
+
 
 /* ===================== Button Edit  =====================  */
 .btn-edit {

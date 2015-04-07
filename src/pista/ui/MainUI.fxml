@@ -30,11 +30,12 @@
                   </Button>
                </children>
             </HBox>
-            <Text id="txtStatus" fx:id="txtStatus" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="640.0">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </VBox.margin>
-            </Text>
+            <HBox alignment="CENTER_LEFT" maxHeight="50.0" maxWidth="900.0" minHeight="50.0" minWidth="598.0" prefHeight="50.0" prefWidth="900.0">
+               <children>
+                  <Text id="txtStatus" fx:id="txtStatus" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="650.0" />
+                  <Text fx:id="txtClock" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" textOrigin="CENTER" wrappingWidth="250.0" />
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

@@ -109,12 +109,16 @@
 	-fx-cursor: hand;
 }
 
-
 .text-status-style {
 	-fx-font-size: 14px;
 	-fx-text-fill: #ffffff;
 }
 
+.text-clock-style {
+	-fx-alignment: center-right;
+	-fx-font-size: 14px;
+	-fx-text-fill: #ffffff;
+}
 
 /* Button Image */
 .button-image-style {
@@ -205,6 +209,10 @@
 .button-undo-style:pressed {
 	-fx-background-image: url("../../images/undo_pressed.png");
 }
+
+
+
+/*===================== POPOVER =========================== */
 
 .popover .pop-content-area{
 	-fx-background-color: #ffffff;
