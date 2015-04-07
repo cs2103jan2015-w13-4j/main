@@ -1211,16 +1211,19 @@ public class TaskListCell extends ListCell<Task> {
 			}
 			
 			if(isStartDateTimeEmpty && isEndDateTimeEmpty){ //anything to float
+				command = command.replace("-[new_start_date]", "").replace("-[new_start_time]", "");
+				command = command.replace("-[new_end_date]", "").replace("-[new_end_time]", "");
+				/*
 				command = command.replace("[new_start_date]", "c").replace("[new_start_time]", "c");
 				command = command.replace("[new_end_date]", "c").replace("[new_end_time]", "c");
-				
+				*/
 			}else if (isStartDateTimeEmpty && !isEndDateTimeEmpty){ //timed to deadline
 				command = command.replace("[new_start_date]", newEndDate).replace("[new_start_time]", newEndTime);
-				command = command.replace("[new_end_date]", "c").replace("[new_end_time]", "c");
+				command = command.replace("-[new_end_date]", "").replace("-[new_end_time]", "");
 				
 			}else if (!isStartDateTimeEmpty && isEndDateTimeEmpty){ //timed to deadline
 				command = command.replace("[new_start_date]", newStartDate).replace("[new_start_time]", newStartTime);
-				command = command.replace("[new_end_date]", "c").replace("[new_end_time]", "c");
+				command = command.replace("-[new_end_date]", "").replace("-[new_end_time]", "");
 				
 			}else{
 				command = command.replace("[new_start_date]", newStartDate).replace("[new_start_time]", newStartTime);
@@ -1229,6 +1232,8 @@ public class TaskListCell extends ListCell<Task> {
 			
 			command = command.replace("[id]", getID);
 			command = command.replace("[new_title]", newTitle);
+			
+			
 			
 			isEdited = mUIParent.executeCommand(command);
 			if(isEdited){
@@ -1240,7 +1245,8 @@ public class TaskListCell extends ListCell<Task> {
     			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_FAIL_EDIT_MESSAGE);
     			return;
 			}
-		
+			
+			
 			//edit [id] -[new_title] -[new_start_date] -[new_start_time] -[new_end_date] -[new_end_time]";
 			
 		}
