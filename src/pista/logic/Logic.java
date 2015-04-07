@@ -358,7 +358,6 @@ public class Logic {
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
 			Task extractedTask = mStorage.getTaskList().get(taskIndex);
-			clearValue = getClearValue(tokens, clearValue);
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
 
@@ -580,7 +579,19 @@ public class Logic {
 	}
 
 	private static Task editFloatingTask(Task extractedTask, String title) {
-		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title)){
+		String taskCategory = extractedTask.getCategory();
+		if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE) 
+				|| taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
+			
+			extractedTask.setStartDate("");
+			extractedTask.setStartTime("");
+			extractedTask.setEndDate("");
+			extractedTask.setEndTime("");
+			extractedTask.setStartMilliseconds(Long.parseLong("0"));
+			extractedTask.setEndMilliseconds(Long.parseLong("0"));
+			
+		}
+		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
 			extractedTask.setTitle(title);
 		}
 		return extractedTask;
