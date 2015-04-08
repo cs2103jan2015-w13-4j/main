@@ -109,6 +109,7 @@ public class Logic {
 			assert false:"invalid comand in runCommand: "+command;
 		break;
 		}
+		Constants.HISTORY_INDEX += 1;
 		return output;
 	}
 
@@ -640,10 +641,10 @@ public class Logic {
 	}
 
 	public static void storeToHistory(String s){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date currentDate = new Date();
-		String historyInput = dateFormat.format(currentDate)+":"+s;
-		mStorage.getHistoryList().add(historyInput);
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//		Date currentDate = new Date();
+//		String historyInput = dateFormat.format(currentDate)+":"+s;
+		mStorage.getHistoryList().add(s);
 	}
 
 

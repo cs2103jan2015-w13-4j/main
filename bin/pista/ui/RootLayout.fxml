@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.BorderPane?>
-
-<BorderPane fx:id="borderPaneRoot" maxHeight="605.0" maxWidth="910.0" minHeight="605.0" minWidth="910.0" prefHeight="605.0" prefWidth="910.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.RootLayoutController" />

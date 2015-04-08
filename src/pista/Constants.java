@@ -163,6 +163,8 @@ public class Constants {
 	public static final int SET_TYPE_INDEX = 0;
 	public static final int SET_VALUE_INDEX = 1;
 	
+	public static int HISTORY_INDEX = 0;
+	
 	public static final String VALUE_ADD = "add";
 	public static final String VALUE_EDIT = "edit";
 	public static final String VALUE_DELETE = "delete";
