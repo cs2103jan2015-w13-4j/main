@@ -63,6 +63,7 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import pista.Constants;
 import pista.CustomPreferences;
+import pista.MainApp;
 import pista.log.CustomLogging;
 import pista.logic.Logic;
 import pista.logic.Task;
@@ -73,8 +74,9 @@ import pista.storage.Storage;
 
 //Contains all objects found in MainUI
 public class UIController {
-
-	private static CustomLogging mLog = null;
+	private MainApp mApp = null;
+	private Stage stageHelp = null;
+	private CustomLogging mLog = null;
 	private CustomPreferences mPrefs = null;
 	private Storage mStorage;
 	private PopOver mPopOverSetting = null;
@@ -433,8 +435,6 @@ public class UIController {
 	@FXML
 	public void initialize() {
 		String logicOutput = "";
-
-		System.out.println(location);
 		
 		this.clearContent();
 		this.initTimeClock();
@@ -456,7 +456,6 @@ public class UIController {
 		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
 		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
 		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
-
 
 		anchorPaneMain.getStyleClass().addAll(CSS_TRANSPARENT_BACKGROUND);
 		txtStatus.getStyleClass().addAll(CSS_TEXT_BACKGROUND, CSS_TEXT_STATUS);
@@ -550,22 +549,30 @@ public class UIController {
 	}//end initTaskListInListView
 
 	public boolean showHelp(){
-		Stage stage = new Stage();
+		stageHelp = new Stage();
 
-		stage.setTitle("Help");
-		stage.initModality(Modality.NONE);
-		stage.initStyle(StageStyle.DECORATED);
-		stage.setResizable(false);
-		//stage.setMaxHeight(800);
-		//stage.setMaxWidth(600);
-		//stage.setMinHeight(600);
-		//stage.setMinWidth(400);
+		//System.out.println(this.mApp.getPrimaryStage().getX());
+		//System.out.println(this.mApp.getPrimaryStageWidth());
+		
+		double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
+		double startY = this.mApp.getPrimaryStage().getY();
+		
+		stageHelp.setTitle("Help");
+		stageHelp.initStyle(StageStyle.UTILITY);
+		stageHelp.initModality(Modality.NONE);
+		stageHelp.setResizable(false);
+		stageHelp.setX(startX);
+		stageHelp.setY(startY);
 
 		Scene scene = new Scene(new Browser(), 500,700, Color.web("#666970"));
-		stage.setScene(scene);    
-		stage.show();
+		stageHelp.setScene(scene);    
+		stageHelp.show();
 
 		return true;
+	}
+	
+	public Stage getHelpStage(){
+		return this.stageHelp;
 	}
 
 	public void onCtrlSpacePressed(){
@@ -1305,6 +1312,10 @@ public class UIController {
 			MediaPlayer mp = new MediaPlayer(m);
 			mp.play();
 		}
+	}
+	
+	public void setMainAppController(MainApp app){
+		this.mApp = app;
 	}
 	
 

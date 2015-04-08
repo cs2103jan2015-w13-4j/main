@@ -9,7 +9,9 @@ import pista.storage.Storage;
 import pista.ui.RootLayoutController;
 import pista.ui.UIController;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.WeakEventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -20,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 public class MainApp extends Application {
 	
@@ -39,6 +42,7 @@ public class MainApp extends Application {
         //this.primaryStage.initModality(Modality.NONE);
         this.primaryStage.initStyle(StageStyle.DECORATED);
         this.primaryStage.setResizable(false);
+        this.primaryStage.setOnCloseRequest(this.stageHandler);
         
         initRootLayout();
         initMainUI();
@@ -54,15 +58,16 @@ public class MainApp extends Application {
             // Load root layout from fxml file
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource(Constants.ROOT_LAYOUT_PATH));
-            rootLayout = (BorderPane) loader.load();
+            this.rootLayout = (BorderPane) loader.load();
 
-            mRootCtrl = loader.getController();
+            this.mRootCtrl = loader.getController();
             
             // Show the scene containing the root layout
             Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.getIcons().addAll(new Image("images/pista_icon.png"));
-            primaryStage.show();
+            this.primaryStage.setScene(scene);
+            this.primaryStage.getIcons().addAll(new Image("images/pista_icon.png"));
+            //this.primaryStage.centerOnScreen();
+            this.primaryStage.show();
             
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,10 +82,12 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PATH));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
-            mUICtrl = loader.getController();
+            this.mUICtrl = loader.getController();
+            this.mUICtrl.setMainAppController(this);
+            
             
             // Set MainUI into the center of RootLayout
-            rootLayout.setCenter(personOverview);      
+            this.rootLayout.setCenter(personOverview);      
             
             
         } catch (IOException e) {
@@ -90,10 +97,35 @@ public class MainApp extends Application {
 
     //returns primary stage
     public Stage getPrimaryStage() {
-        return primaryStage;
+        return this.primaryStage;
+    }
+    
+    public double getPrimaryStageWidth(){
+    	return this.primaryStage.getWidth();
     }
     
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	
+	EventHandler<WindowEvent> stageHandler = new EventHandler<WindowEvent>() {
+        public void handle(WindowEvent we) {
+        	Stage helpStage = mUICtrl.getHelpStage();
+        	if(helpStage != null){
+        		helpStage.close();
+        	}
+        	
+        }
+    };
+	
+    /*
+	@Override
+	public void stop(){
+	    System.out.println("Stage is closing");
+	    // Save file
+	    //close help if is open
+	    
+	}*/
+    
 }
