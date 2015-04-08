@@ -135,8 +135,8 @@ public class UIController {
 
 	private String addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
 
-	Path currentRelativePath = Paths.get("");
-	String location = currentRelativePath.toAbsolutePath().toString();
+	private Path currentRelativePath = Paths.get("");
+	private String location = currentRelativePath.toAbsolutePath().toString();
 
 
 
@@ -434,6 +434,8 @@ public class UIController {
 	public void initialize() {
 		String logicOutput = "";
 
+		System.out.println(location);
+		
 		this.clearContent();
 		this.initTimeClock();
 		this.initReminder();
@@ -1244,7 +1246,6 @@ public class UIController {
 		txtClock.getStyleClass().addAll(CSS_TEXT_CLOCK);
 		txtClock.setTextAlignment(TextAlignment.RIGHT);
 
-
 		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
 				new EventHandler<ActionEvent>(){
 			DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss a");
@@ -1267,25 +1268,20 @@ public class UIController {
 	private void initReminder(){
 		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(1),
 				new EventHandler<ActionEvent>(){
-			DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss a");
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
 				for (int i = 0; i < Logic.getStorageList().size(); i++) {
 					Task extractedTask =Logic.getStorageList().get(i);
 					final String taskTitle = extractedTask.getTitle();
 					String taskCategory = extractedTask.getCategory();
 					Long reminder = extractedTask.getReminder();
 					Long timeNow = System.currentTimeMillis();
+					
 					if(reminder != 0){
 						if(timeNow > reminder){
 							Notifications.create().title("Upcoming "+taskCategory+" "+taskTitle).text("This is a reminder for "+taskTitle +" "+taskCategory).showWarning();
-							File file = new File (location+"/bin/sound/alarm.mp3");
-							Media alarm = new Media (file.toURI().toString());
-							MediaPlayer mp = new MediaPlayer (alarm);
-							mp.play();
-
-
+							File file = new File (location + "/bin/sounds/alarm.mp3");
+							playAlarm(file.toURI().toString());
 						}
 					}
 				}
@@ -1298,5 +1294,18 @@ public class UIController {
 		aTimeLine.play();
 	}
 
+	
+	private void playAlarm(String url){
+		Media alarm = new Media (url);
+		startMediaPlayer(alarm);
+	}
+	
+	private void startMediaPlayer(Media m){
+		if(m != null){
+			MediaPlayer mp = new MediaPlayer(m);
+			mp.play();
+		}
+	}
+	
 
 }
