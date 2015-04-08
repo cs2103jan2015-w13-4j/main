@@ -177,8 +177,8 @@ public class UIController {
 	private Button btnRedo;
 	private Button btnUndo;
 
-	//private Label lblPopOverMessage = new Label();
-
+	private final KeyCombination KEY_COMBINATION_HELP = new KeyCodeCombination(KeyCode.F1);
+	
 	@FXML
 	void onHelp(ActionEvent event) {
 		showHelp();
@@ -188,6 +188,14 @@ public class UIController {
 	void onRefresh(ActionEvent event) {
 		this.initialize();
 	}
+	
+	
+	@FXML
+    void onUIKeyPressed(KeyEvent event) {
+		if (KEY_COMBINATION_HELP.match(event)){ //when free F1, show help
+			showHelp();
+		}
+    }
 
 	public boolean initStorage(){
 		try{
@@ -1275,28 +1283,28 @@ public class UIController {
 	private void initReminder(){
 		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(1),
 				new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				for (int i = 0; i < Logic.getStorageList().size(); i++) {
-					Task extractedTask =Logic.getStorageList().get(i);
-					final String taskTitle = extractedTask.getTitle();
-					String taskCategory = extractedTask.getCategory();
-					Long reminder = extractedTask.getReminder();
-					Long timeNow = System.currentTimeMillis();
-					
-					if(reminder != 0){
-						if(timeNow > reminder){
-							Notifications.create().title("Upcoming "+taskCategory+" "+taskTitle).text("This is a reminder for "+taskTitle +" "+taskCategory).showWarning();
-							File file = new File (location + "/bin/sounds/alarm.mp3");
-							playAlarm(file.toURI().toString());
+				@Override
+				public void handle(ActionEvent event) {
+					for (int i = 0; i < Logic.getStorageList().size(); i++) {
+						Task extractedTask =Logic.getStorageList().get(i);
+						final String taskTitle = extractedTask.getTitle();
+						String taskCategory = extractedTask.getCategory();
+						Long reminder = extractedTask.getReminder();
+						Long timeNow = System.currentTimeMillis();
+						
+						if(reminder != 0){
+							if(timeNow > reminder){
+								Notifications.create().title("Upcoming "+taskCategory+" "+taskTitle).text("This is a reminder for "+taskTitle +" "+taskCategory).showWarning();
+								File file = new File (location + "/bin/sounds/alarm.mp3");
+								playAlarm(file.toURI().toString());
+							}
 						}
 					}
 				}
-			}
-
-		}),
-		new KeyFrame(Duration.seconds(60))
-				);
+	
+			}),
+			new KeyFrame(Duration.minutes(10))
+		);
 		aTimeLine.setCycleCount(Animation.INDEFINITE);
 		aTimeLine.play();
 	}
