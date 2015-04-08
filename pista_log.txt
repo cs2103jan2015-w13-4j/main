@@ -10016,3 +10016,277 @@ Apr 08, 2015 3:04:40 PM pista.log.CustomLogging logInfo
 INFO: Successfully write into XML file
 Apr 08, 2015 3:04:40 PM pista.log.CustomLogging logInfo
 INFO: Successfully save XML file
+Apr 08, 2015 8:17:04 PM pista.log.CustomLogging logInfo
+INFO: Successfully Load XML file to task list
+Apr 08, 2015 8:17:04 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:04 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:04 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:04 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:06 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:20 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 1
+Apr 08, 2015 8:17:20 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 08, 2015 8:17:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:20 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:24 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: delete 3
+Apr 08, 2015 8:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 08, 2015 8:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:24 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: remind 1 -9/4/2015 -10:00
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:37 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: remind 1 -9/4/2015 -10:11
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:49 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Executed user command: remind 1 -9/4/2015 -10:00
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successful Validate InputValid
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:17:53 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:27:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:37:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully write into XML file
+Apr 08, 2015 8:47:05 PM pista.log.CustomLogging logInfo
+INFO: Successfully save XML file

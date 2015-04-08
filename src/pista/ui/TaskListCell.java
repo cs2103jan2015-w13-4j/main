@@ -110,7 +110,7 @@ public class TaskListCell extends ListCell<Task> {
     private final String POP_OVER_SUCCESS_EDIT_MESSAGE = "Edit Successfully";
     private final String POP_OVER_FAIL_EDIT_MESSAGE = "Fail to Edit";
     
-    private final int MAX_CHARACTER_IN_TITLE = 50;
+    private final int MAX_CHARACTER_IN_TITLE = 45;
     
     private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "To [datetime]"; 
