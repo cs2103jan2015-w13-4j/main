@@ -681,7 +681,7 @@ public class UIController {
 		for (String token: descriptionTokens) {
 			if (keyword.equals("")) {
 				return false;
-			} else if (token.equals(keyword)) {
+			} else if (token.equalsIgnoreCase(keyword)) {
 				return true;
 			}
 		}
