@@ -8,21 +8,22 @@ public class Task {
 	private String title="";
 	//private String description;
 	private int id;
-	private String startDate="";
-	private String endDate="";
-	private String startTime="";
-	private String endTime="";
-	private boolean isDone=false;
+	private String startDate = "";
+	private String endDate = "";
+	private String startTime = "";
+	private String endTime = "";
+	private boolean isDone = false;
+	private boolean isReminded = false;
 	private long startMilliseconds;
 	private long endMilliseconds;
-	private String category="";
-	private String priority="";  
-	private long reminderTime=0L;
+	private String category = "";
+	private String priority = "";  
+	private long reminderTime = 0L;
 	
 	/*3 catergory
-	 * timed-has start date/time and end date/time
-	 * deadline	has end date/time only
-	 * floating does not have start and end date/time*/
+	 * event task has start date/time and end date/time
+	 * deadline	task has end date/time only
+	 * free time task does not have start and end date/time*/
 	public Task(String[] inputArray){
 		initStorage();
 		this.title=inputArray[Constants.ARRAY_INDEX_TITLE];
@@ -32,7 +33,9 @@ public class Task {
 		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
 		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
 		this.isDone=false;
+		this.isReminded = false;
 		this.priority ="0";
+		
 		setCategoryInConstructor(inputArray);
 		
 	}
@@ -40,9 +43,11 @@ public class Task {
 	private void setCategoryInConstructor(String[] inputArray) {
 		if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]==null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
 			this.category="floating";
+			
 		}else if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
 			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
 			this.category="deadline";
+			
 		}else{
 			this.startMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]);
 			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
@@ -75,17 +80,12 @@ public class Task {
 		this.category = category;
 		this.priority = priority;
 		this.reminderTime = reminderTime;
+		this.isReminded = false;
 	}
 	
 	public String getTitle(){
 		return title;
 	}
-	
-	/*
-	public String getDescription(){
-		return title;
-	}
-	*/
 	
 	public int getID(){
 		return this.id;

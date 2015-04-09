@@ -178,7 +178,7 @@ public class UIController {
 	private Button btnUndo;
 
 	private final KeyCombination KEY_COMBINATION_HELP = new KeyCodeCombination(KeyCode.F1);
-	
+	private final KeyCombination KEY_COMBINATION_ALARM = new KeyCodeCombination(KeyCode.F3);
 	@FXML
 	void onHelp(ActionEvent event) {
 		showHelp();
@@ -195,6 +195,13 @@ public class UIController {
 		if (KEY_COMBINATION_HELP.match(event)){ //when free F1, show help
 			showHelp();
 		}
+		
+		
+		if (KEY_COMBINATION_ALARM.match(event)){
+			System.out.println("here");
+			demoReminder();
+		}
+		
     }
 
 	public boolean initStorage(){
@@ -446,7 +453,7 @@ public class UIController {
 		
 		this.clearContent();
 		this.initTimeClock();
-		this.initReminder();
+		//this.initReminder();
 		this.initStorage();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
@@ -725,7 +732,7 @@ public class UIController {
 
 	private void initPopOverSetting(){
 		final double popWidth = 500.0;
-		final double popHeight = 400.0;
+		final double popHeight = 200.0;
 
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
@@ -926,6 +933,7 @@ public class UIController {
 		txtAreaTaskTitle.setPrefRowCount(3); //text area
 		txtAreaTaskTitle.setPrefWidth(popWidth);
 		txtAreaTaskTitle.setWrapText(true);
+		txtAreaTaskTitle.setPromptText("Task Name");
 
 		vBox.getChildren().add(lblTitle); //add title
 		vBox.getChildren().add(txtAreaTaskTitle); //add task title
@@ -1266,8 +1274,6 @@ public class UIController {
 			DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss a");
 			@Override
 			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-
 				Calendar nowDate = Calendar.getInstance();
 				txtClock.setText(dateFormat.format(nowDate.getTime()));
 			}
@@ -1292,9 +1298,11 @@ public class UIController {
 						Long reminder = extractedTask.getReminder();
 						Long timeNow = System.currentTimeMillis();
 						
-						if(reminder != 0){
+						if(reminder != 0L){
 							if(timeNow > reminder){
-								Notifications.create().title("Upcoming "+taskCategory+" "+taskTitle).text("This is a reminder for "+taskTitle +" "+taskCategory).showWarning();
+								showReminder("Upcoming " + taskCategory + " " + taskTitle, 
+											"This is a reminder for " + taskTitle + " " + taskCategory);
+								
 								File file = new File (location + "/bin/sounds/alarm.mp3");
 								playAlarm(file.toURI().toString());
 							}
@@ -1309,6 +1317,29 @@ public class UIController {
 		aTimeLine.play();
 	}
 
+	private void demoReminder(){
+		for (int i = 0; i < Logic.getStorageList().size(); i++) {
+			Task extractedTask =Logic.getStorageList().get(i);
+			String taskTitle = extractedTask.getTitle();
+			String taskCategory = extractedTask.getCategory();
+			Long reminder = extractedTask.getReminder();
+			Long timeNow = System.currentTimeMillis();
+			
+			if(reminder != 0L){
+				if(timeNow >= reminder){
+					showReminder("Upcoming " + taskCategory + ": " + taskTitle, 
+								"This is a reminder for " + taskTitle + " " + taskCategory);
+					
+					File file = new File (location + "/bin/sounds/alarm.mp3");
+					playAlarm(file.toURI().toString());
+				}
+			}
+		}
+	}
+	
+	private void showReminder(String title, String msg){
+		Notifications.create().title(title).text(msg).showWarning();	
+	}
 	
 	private void playAlarm(String url){
 		Media alarm = new Media (url);
