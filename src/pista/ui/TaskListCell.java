@@ -110,7 +110,7 @@ public class TaskListCell extends ListCell<Task> {
     private final String POP_OVER_SUCCESS_EDIT_MESSAGE = "Edit Successfully";
     private final String POP_OVER_FAIL_EDIT_MESSAGE = "Fail to Edit";
     
-    private final int MAX_CHARACTER_IN_TITLE = 50;
+    private final int MAX_CHARACTER_IN_TITLE = 45;
     
     private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "To [datetime]"; 
@@ -985,7 +985,7 @@ public class TaskListCell extends ListCell<Task> {
 		this.datePickerPopOverEditEndDate.setConverter(datePickerStringConverter);
 		
 		
-		if(!(this.getStartDate.equals("") && this.getStartDate.isEmpty() || 
+		if(!(this.getStartDate == null || this.getStartDate.equals("") && this.getStartDate.isEmpty() || 
 				this.getStartDate.equals(defaultDate) && this.getStartTime.equals(defaultTime))){ //not default date time
 			
 			System.out.println(this.getStartDate);
@@ -994,7 +994,7 @@ public class TaskListCell extends ListCell<Task> {
 			this.txtPopOverEditStartMinField.setText(this.getStartTime.split(":")[1]);
 		}
 		
-		if(!(this.getEndDate.equals("") && this.getEndDate.isEmpty() ||
+		if(!(this.getEndDate == null || this.getEndDate.equals("") && this.getEndDate.isEmpty() ||
 				this.getEndDate.equals(defaultDate) && this.getEndTime.equals(defaultTime))){ //not default date time
 			
 			this.datePickerPopOverEditEndDate.setValue(convertStringToLocalDate(this.getEndDate)); //set year, month, day to datepicker
@@ -1233,20 +1233,16 @@ public class TaskListCell extends ListCell<Task> {
 			command = command.replace("[id]", getID);
 			command = command.replace("[new_title]", newTitle);
 			
-			
-			
 			isEdited = mUIParent.executeCommand(command);
 			if(isEdited){
 				setPopOverLabelMessageVisible(lblPopOverEditMessage, true, true); //show success message
     			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_SUCCESS_EDIT_MESSAGE);
-    			return;
 			}else{
 				setPopOverLabelMessageVisible(lblPopOverEditMessage, false, true); //show error message
     			setPopOverLabelMessageText(lblPopOverEditMessage, POP_OVER_FAIL_EDIT_MESSAGE);
-    			return;
 			}
 			
-			
+			closePopOverEdit();
 			//edit [id] -[new_title] -[new_start_date] -[new_start_time] -[new_end_date] -[new_end_time]";
 			
 		}
@@ -1273,6 +1269,8 @@ public class TaskListCell extends ListCell<Task> {
         			setPopOverLabelMessageVisible(lblPopOverPriorityMessage, false, true); //show error message
         			setPopOverLabelMessageText(lblPopOverPriorityMessage, POP_OVER_FAIL_PRIORITY_MESSAGE);
         		}
+        		
+        		closePopOverPriority();
         	}
         }
     };
@@ -1321,11 +1319,45 @@ public class TaskListCell extends ListCell<Task> {
 	    			setPopOverLabelMessageVisible(lblPopOverAlarmMessage, false, true); //show error message
 	    			setPopOverLabelMessageText(lblPopOverAlarmMessage, POP_OVER_FAIL_ALARM_MESSAGE);
         		}
+        		
+        		closePopOverAlarm();
     			        		
         	}
         	
         }
     };
+    
+    
+    public boolean closePopOverPriority(){
+    	if(this.mPopOverPriority != null){
+    		if(this.mPopOverPriority.isShowing()){
+    			this.mPopOverPriority.hide();
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public boolean closePopOverAlarm(){
+    	if(this.mPopOverAlarm != null){
+    		if(this.mPopOverAlarm.isShowing()){
+    			this.mPopOverAlarm.hide();
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public boolean closePopOverEdit(){
+    	if(this.mPopOverEdit != null){
+    		if(this.mPopOverEdit.isShowing()){
+    			this.mPopOverEdit.hide();
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     
     private boolean isTitleValid(String title){
 		if(title.isEmpty() || title.equals("")){ //don't accept empty

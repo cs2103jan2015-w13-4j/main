@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPaneMain" maxHeight="575.0" maxWidth="910.0" minHeight="575.0" minWidth="910.0" prefHeight="575.0" prefWidth="910.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
+<AnchorPane fx:id="anchorPaneMain" maxHeight="575.0" maxWidth="910.0" minHeight="575.0" minWidth="910.0" onKeyPressed="#onUIKeyPressed" prefHeight="575.0" prefWidth="910.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pista.ui.UIController">
    <children>
       <VBox fx:id="vBoxMainArea" maxHeight="535.0" maxWidth="900.0" minHeight="535.0" minWidth="900.0" prefHeight="535.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
