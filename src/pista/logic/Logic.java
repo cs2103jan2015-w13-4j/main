@@ -555,6 +555,7 @@ public class Logic {
 			extractedTask.setEndTime("");
 			extractedTask.setStartMilliseconds(Long.parseLong("0"));
 			extractedTask.setEndMilliseconds(Long.parseLong("0"));
+			extractedTask.setReminder(Long.parseLong("0"));
 
 		}		
 		extractedTask.setCategory(Constants.TASK_FLOATED);
