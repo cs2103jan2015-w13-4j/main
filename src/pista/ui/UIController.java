@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.controlsfx.control.Notifications;
@@ -139,7 +140,8 @@ public class UIController {
 
 	private Path currentRelativePath = Paths.get("");
 	private String location = currentRelativePath.toAbsolutePath().toString();
-
+	private final String ALARM_COMPILE_FILE_PATH = location + "/bin/sounds/alarm.mp3";
+	
 
 
 	//Objects
@@ -179,6 +181,7 @@ public class UIController {
 
 	private final KeyCombination KEY_COMBINATION_HELP = new KeyCodeCombination(KeyCode.F1);
 	private final KeyCombination KEY_COMBINATION_ALARM = new KeyCodeCombination(KeyCode.F3);
+	
 	@FXML
 	void onHelp(ActionEvent event) {
 		showHelp();
@@ -196,9 +199,7 @@ public class UIController {
 			showHelp();
 		}
 		
-		
 		if (KEY_COMBINATION_ALARM.match(event)){
-			System.out.println("here");
 			demoReminder();
 		}
 		
@@ -1321,16 +1322,22 @@ public class UIController {
 		for (int i = 0; i < Logic.getStorageList().size(); i++) {
 			Task extractedTask =Logic.getStorageList().get(i);
 			String taskTitle = extractedTask.getTitle();
-			String taskCategory = extractedTask.getCategory();
+			//String taskCategory = extractedTask.getCategory();
 			Long reminder = extractedTask.getReminder();
 			Long timeNow = System.currentTimeMillis();
+			Long endMillisecond = extractedTask.getEndMilliseconds();
+			
 			
 			if(reminder != 0L){
 				if(timeNow >= reminder){
-					showReminder("Upcoming " + taskCategory + ": " + taskTitle, 
-								"This is a reminder for " + taskTitle + " " + taskCategory);
+					String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
+					SimpleDateFormat mDateFormat = new SimpleDateFormat(datePattern);
+					String endDate = mDateFormat.format(new Date(endMillisecond));
 					
-					File file = new File (location + "/bin/sounds/alarm.mp3");
+					showReminder("Upcoming task: " + taskTitle, 
+									"Due on " + endDate);
+					
+					File file = new File (ALARM_COMPILE_FILE_PATH);
 					playAlarm(file.toURI().toString());
 				}
 			}
