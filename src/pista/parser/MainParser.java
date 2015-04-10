@@ -80,7 +80,7 @@ public class MainParser {
 	}
 	
 	public static String getCommand(String input){
-		String command=input.split(" ",2)[0];
+		String command=input.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ZERO];
 		return command;
 	}
 	
@@ -105,10 +105,10 @@ public class MainParser {
 	}//end checkCommand
 
 	public static String[] getTokens(String input){
-		String[] temp = input.split(" ",2);
+		String[] temp = input.split(" ",Constants.SPLIT_INTO_TWO);
 
 		if(temp.length > 1){
-			String[] arr = temp[1].split("-");
+			String[] arr = temp[Constants.INDEX_ONE].split("-");
 			trimWhiteSpace(arr);
 			return arr;
 		}else{
@@ -169,13 +169,10 @@ public class MainParser {
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])){
 				if(!isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_DEADLINE_ENDDATE, 
 						Constants.ADD_TOKEN_DEADLINE_ENDTIME)){
-					//mp.setValidToken(false);
 					return false;
 				}
-				//mp.setValidToken(true);
 				return true;
 			}
-			//mp.setValidToken(false);
 			return false;
 		}
 
@@ -188,7 +185,6 @@ public class MainParser {
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE), 
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME), 
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME))){
-						//mp.setValidToken(true);
 						return true;
 					}else{
 						mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
@@ -201,7 +197,6 @@ public class MainParser {
 		}
 
 		assert false:"Tokens number in add function are "+tokens.length +" allowed length are 1,3,5";
-		//mp.setValidToken(false);
 		return false;
 	}
 	
@@ -262,7 +257,7 @@ public class MainParser {
 			return false;
 		}
 
-		String input = tokens[0];
+		String input = tokens[Constants.INDEX_ZERO];
 		try { 
 			int id = Integer.parseInt(input); 
 			// if it is a number
@@ -287,7 +282,7 @@ public class MainParser {
 			return false;
 		}
 		mp.setTokens(tokens);
-		String status = tokens[1];
+		String status = tokens[Constants.INDEX_ONE];
 		if(Constants.MARK_DONE.equalsIgnoreCase(status) || Constants.MARK_UNDONE.equalsIgnoreCase(status)){
 			return true;
 		}
@@ -326,9 +321,9 @@ public class MainParser {
 			return false;
 		}
 		mp.setTokens(tokens);
-		if(tokens.length == 2){
+		if(tokens.length == Constants.LENGTH_TWO){
 			int priorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
-			if(priorityScore >=0 || priorityScore<=3){
+			if(priorityScore >= Constants.DEFAULT_PRIORITY || priorityScore <= Constants.HIGH_PRIORITY){
 				return true;
 			}
 		}
@@ -345,7 +340,7 @@ public class MainParser {
 			return false;
 		}
 
-		if(tokens.length <= 1){ //must have at least 2
+		if(tokens.length <= Constants.LENGTH_ONE){ //must have at least 2
 			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_LENGTH);
 			return false;
 		}
@@ -368,12 +363,12 @@ public class MainParser {
 	}
 	
 	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
-		if(tokens == null || tokens.length != 1){
+		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		
-		if (tokens[0].equals("")) {
+		if (tokens[Constants.INDEX_ZERO].equals("")) {
 			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
 			return false;
 		}
@@ -388,7 +383,7 @@ public class MainParser {
 			return false;
 		}
 		mp.setTokens(tokens);
-		String sortType = tokens[0];
+		String sortType = tokens[Constants.INDEX_ZERO];
 		if(Constants.SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
 				Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
 				Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
@@ -459,10 +454,11 @@ public class MainParser {
 	private static String nattyInputFormat(String[] tokens, int dateIndex) {
 		String requiredNattyInputDateFormat = "";
 		String[] temp = tokens[dateIndex].split("/");
-		if(StringUtils.countMatches(tokens[dateIndex], "/")==2){
-			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0] +"/"+ temp [2];
-		}else if (StringUtils.countMatches(tokens[dateIndex], "/")==1){
-			requiredNattyInputDateFormat = temp[1] +"/"+ temp [0];
+		if(StringUtils.countMatches(tokens[dateIndex], "/") == Constants.LENGTH_TWO){
+			requiredNattyInputDateFormat = temp[Constants.INDEX_ONE] +"/"+ temp [Constants.INDEX_ZERO] 
+					+"/"+ temp [Constants.INDEX_TWO];
+		}else if (StringUtils.countMatches(tokens[dateIndex], "/") == Constants.LENGTH_ONE){
+			requiredNattyInputDateFormat = temp[Constants.INDEX_ONE] +"/"+ temp [Constants.INDEX_ZERO];
 		}
 		return requiredNattyInputDateFormat;
 	}
@@ -480,14 +476,14 @@ public class MainParser {
 
 	public static String convertMillisecondToDate(long ms){
 		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
-		return date.split(" ",2)[0];
+		return date.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ZERO];
 
 	}//end /convertMillisecondToDate
 
 	public static String convertMillisecondToTime(long ms){
 		//get time in HH:mm
 		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
-		return date.split(" ",2)[1];
+		return date.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ONE];
 
 	}
 
@@ -527,7 +523,7 @@ public class MainParser {
 		aL.add("/");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		for(String pattern : aL){
-			if(StringUtils.countMatches(myDate, pattern)==2){
+			if(StringUtils.countMatches(myDate, pattern) == Constants.LENGTH_TWO ){
 				String[] temp = null;
 				if(pattern.equals(".")){
 					temp = myDate.split("\\.");

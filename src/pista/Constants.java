@@ -81,7 +81,14 @@ public class Constants {
 	public static final int ADD_TOKEN_TIMED_STARTTIME = 2;
 	public static final int ADD_TOKEN_TIMED_ENDDATE = 3;
 	public static final int ADD_TOKEN_TIMED_ENDTIME = 4;
-	
+	public static final int SPLIT_INTO_TWO = 2;
+	public static final int INDEX_ZERO = 0;
+	public static final int INDEX_ONE = 1;
+	public static final int INDEX_TWO = 2;
+	public static final int LENGTH_ONE = 1;
+	public static final int LENGTH_TWO = 2;
+	public static final int DEFAULT_PRIORITY = 0;
+	public static final int HIGH_PRIORITY = 3;
 	//Logic Message
 	public static String LOGIC_INVALID_PARAMETER_MESSAGE = "Invalid parameters detected!";
 	public static String LOGIC_VALID_PARAMETER_MESSAGE = "valid";
