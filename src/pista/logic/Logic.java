@@ -524,21 +524,56 @@ public class Logic {
 
 	private static Task editDeadlineTask(Task extractedTask, String[] tokens, int clearValue) {
 		String taskCategory = extractedTask.getCategory();
-
+		Long remindMS = extractedTask.getReminder();
+		Long endMS = extractedTask.getEndMilliseconds();
+		Long differenceReminer = endMS - remindMS;
+		Long updatedRemindMS = 0L;
+		Long updatedEndMS = 0L;
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}
+		extractedTask = setFieldsInDeadline(extractedTask, tokens);
+		extractedTask = resetFieldsFromTimedToDeadline(extractedTask, taskCategory);
+		updatedEndMS = extractedTask.getEndMilliseconds();
+		extractedTask =changeReminderBasedOnDifference(extractedTask, remindMS, endMS,
+				differenceReminer, updatedEndMS);
+		
+		extractedTask.setCategory(Constants.TASK_DEADLINE);
+		return extractedTask;
+	}
+
+	/*
+	 * if the edited enddate and end time is greater than the previous reminder, a new reminder will be set.
+	 * new reminder is obtained by subracting the difference from the current endMS.
+	 * difference is obtained from initial endMS - initial remindMS 
+	 * */
+	private static Task changeReminderBasedOnDifference(Task extractedTask,
+			Long remindMS, Long endMS, Long differenceReminer, Long updatedEndMS) {
+		Long updatedRemindMS;
+		if(updatedEndMS != endMS){
+			updatedRemindMS = updatedEndMS - differenceReminer;
+			if(remindMS >= updatedEndMS) {
+				extractedTask.setReminder(updatedRemindMS);
+			}
+		}
+		return extractedTask;
+	}
+
+	private static Task setFieldsInDeadline(Task extractedTask, String[] tokens) {
 		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);
 		extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);
 		extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]
 				, tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]));
+		return extractedTask;
+	}
 
+	private static Task resetFieldsFromTimedToDeadline(Task extractedTask,
+			String taskCategory) {
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
 			extractedTask.setStartDate("");
 			extractedTask.setStartTime("");
 			extractedTask.setStartMilliseconds(Long.parseLong("0"));
 		}
-		extractedTask.setCategory(Constants.TASK_DEADLINE);
 		return extractedTask;
 	}
 
@@ -547,6 +582,13 @@ public class Logic {
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
 			extractedTask.setTitle(title);
 		}
+		extractedTask = resetFieldsFloating(extractedTask, taskCategory);		
+		extractedTask.setCategory(Constants.TASK_FLOATED);
+		return extractedTask;
+	}
+
+	private static Task resetFieldsFloating(Task extractedTask,
+			String taskCategory) {
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE) 
 				|| taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
 			extractedTask.setStartDate("");
@@ -557,8 +599,7 @@ public class Logic {
 			extractedTask.setEndMilliseconds(Long.parseLong("0"));
 			extractedTask.setReminder(Long.parseLong("0"));
 
-		}		
-		extractedTask.setCategory(Constants.TASK_FLOATED);
+		}
 		return extractedTask;
 	}
 
