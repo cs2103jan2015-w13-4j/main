@@ -362,7 +362,7 @@ public class Logic {
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-					extractedTask=editDeadlineTask(extractedTask, tokens, clearValue);
+				extractedTask=editDeadlineTask(extractedTask, tokens, clearValue);
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
 				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
 			}
@@ -503,22 +503,34 @@ public class Logic {
 	}
 
 	private static Task editTimedTask(Task extractedTask, String[] tokens, int clearValue) {
+		Long remindMS = extractedTask.getReminder();
+		Long endMS = extractedTask.getEndMilliseconds();
+		Long differenceReminer = endMS - remindMS;
+		Long updatedRemindMS = 0L;
+		Long updatedEndMS = 0L;
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
 			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
 		}
-			extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
-			extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
-			extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3	
-			extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
-			extractedTask.setStartMilliseconds(Long.parseLong("0"));
-			extractedTask.setEndMilliseconds(Long.parseLong("0"));
-			extractedTask.setStartMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
-					, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]));
-			extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
-					, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]));
-			extractedTask.setCategory(Constants.TASK_TIMED);
-		
+		extractedTask = setFieldsInTimed(extractedTask, tokens);
+		updatedEndMS = extractedTask.getEndMilliseconds();
+		extractedTask =changeReminderBasedOnDifference(extractedTask, remindMS, endMS,
+				differenceReminer, updatedEndMS);
 
+		return extractedTask;
+	}
+
+	private static Task setFieldsInTimed(Task extractedTask, String[] tokens) {
+		extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
+		extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
+		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3	
+		extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
+		extractedTask.setStartMilliseconds(Long.parseLong("0"));
+		extractedTask.setEndMilliseconds(Long.parseLong("0"));
+		extractedTask.setStartMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
+				, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]));
+		extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
+				, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]));
+		extractedTask.setCategory(Constants.TASK_TIMED);
 		return extractedTask;
 	}
 
@@ -537,7 +549,7 @@ public class Logic {
 		updatedEndMS = extractedTask.getEndMilliseconds();
 		extractedTask =changeReminderBasedOnDifference(extractedTask, remindMS, endMS,
 				differenceReminer, updatedEndMS);
-		
+
 		extractedTask.setCategory(Constants.TASK_DEADLINE);
 		return extractedTask;
 	}
@@ -683,9 +695,9 @@ public class Logic {
 	}
 
 	public static void storeToHistory(String s){
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//		Date currentDate = new Date();
-//		String historyInput = dateFormat.format(currentDate)+":"+s;
+		//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		//		Date currentDate = new Date();
+		//		String historyInput = dateFormat.format(currentDate)+":"+s;
 		mStorage.getHistoryList().add(s);
 	}
 
