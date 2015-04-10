@@ -104,6 +104,9 @@ public class MainParser {
 
 	}//end checkCommand
 
+	/*
+	 * Splits all parameters except command into a string array
+	 * */
 	public static String[] getTokens(String input){
 		String[] temp = input.split(" ",Constants.SPLIT_INTO_TWO);
 
@@ -451,6 +454,9 @@ public class MainParser {
 		return true;
 	}
 
+	/*
+	 * reorder of data format for natty as it recognizes mm/dd/yyyy instead of dd/mm/yyyy
+	 * */
 	private static String nattyInputFormat(String[] tokens, int dateIndex) {
 		String requiredNattyInputDateFormat = "";
 		String[] temp = tokens[dateIndex].split("/");
@@ -516,6 +522,11 @@ public class MainParser {
 		}
 		return temp;
 	}
+	
+	/*
+	 * recognize dots and convert data to slash format
+	 * removes leading zeros from date etc 000005/00011/2015
+	 * */
 	private static String flexibleDateFormat(String myDate){
 		StringBuffer sb=new StringBuffer();
 		ArrayList<String> aL=new ArrayList<String>();
