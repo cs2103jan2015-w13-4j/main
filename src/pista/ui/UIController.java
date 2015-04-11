@@ -510,7 +510,7 @@ public class UIController {
 		
 		this.clearContent();
 		this.initTimeClock();
-		//this.initReminder();
+		this.initReminder();
 		this.initStorage();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
@@ -529,10 +529,9 @@ public class UIController {
 		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
 		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
 
-		System.out.println(this.getPreferencePistaFlag());
 		if(this.getPreferencePistaFlag() == this.FIRST_LAUNCH_VALUE){ //equals 0
-			this.initStartGuide();
-			this.setPreferencePistaFlag(1);
+			this.initStartGuide(); //start the start guide
+			this.setPreferencePistaFlag(1); //update the preference of the flag = 1
 		}
 		
 		
