@@ -13,7 +13,6 @@ public class CustomPreferences {
 	
 	public boolean initPreference(String className){
 		try{
-			//mPrefs = Preferences.userNodeForPackage(getClass());
 			mPrefs = Preferences.userRoot().node(className); 
 			return true;
 		}catch(Exception e){
@@ -89,4 +88,15 @@ public class CustomPreferences {
 		String value = this.getPreferenceStringValue(Constants.PREFERENCE_XML_FILE_LOCATION_NODE);
 		return value;
 	}
+	
+	public boolean setPreferencePistaFlag(int value){ //should be more than 0
+		boolean isSet = this.savePreference(Constants.PREFERENCE_PISTA_FLAG_NODE, value);
+		return isSet;
+	}
+	
+	public int getPreferencePistaFlag(){ //first launch, is 0. subsequent launch will be 1
+		int value = this.getPreferenceIntValue(Constants.PREFERENCE_PISTA_FLAG_NODE);
+		return value;
+	}
+	
 }

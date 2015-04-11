@@ -30,6 +30,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -49,6 +50,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.Media;
@@ -82,7 +84,10 @@ public class UIController {
 	private Storage mStorage;
 	private PopOver mPopOverSetting = null;
 	private PopOver mPopOverAdd = null;
-
+	private Button btnOkStartGuide = null;
+	
+	private final int FIRST_LAUNCH_VALUE = 0;
+	
 	public String userInput = null;
 	private static String searchKeyword = null;
 	private boolean isValidFilePath;
@@ -104,6 +109,9 @@ public class UIController {
 	private static final String CSS_BUTTON_REDO = "button-redo-style";		
 	private static final String CSS_BUTTON_UNDO = "button-undo-style";
 
+	private final String CSS_START_GUIDE_PANE = "start-guide-pane";
+	private final String CSS_START_GUIDE_BUTTON = "start-guide-button";
+	
 	private final String CSS_POP_OVER_TEXTAREA = "pop-over-text-area";
 	private final String CSS_POP_OVER_TOOLTIP = "pop-label-time-tip";
 
@@ -139,12 +147,16 @@ public class UIController {
 	private String addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
 
 	private Path currentRelativePath = Paths.get("");
+	private int checkPistaFlag = 0;
 	private String location = currentRelativePath.toAbsolutePath().toString();
 	private final String ALARM_COMPILE_FILE_PATH = location + "/bin/sounds/alarm.mp3";
 	
 
 
 	//Objects
+    @FXML
+    private StackPane mStackPane;
+    
 	@FXML
 	private AnchorPane anchorPaneMain;
 
@@ -172,6 +184,8 @@ public class UIController {
 	@FXML
 	private ListView<Task> listview_task_fx_id;
 
+	private AnchorPane anchorPaneStartGuide;
+	
 	private Button btnSetting;
 	private Button btnAddNewTask;
 	private Button btnRefresh;
@@ -180,7 +194,7 @@ public class UIController {
 	private Button btnUndo;
 
 	private final KeyCombination KEY_COMBINATION_HELP = new KeyCodeCombination(KeyCode.F1);
-	private final KeyCombination KEY_COMBINATION_ALARM = new KeyCodeCombination(KeyCode.F3);
+	private final KeyCombination KEY_COMBINATION_START_GUIDE = new KeyCodeCombination(KeyCode.F2);
 	
 	@FXML
 	void onHelp(ActionEvent event) {
@@ -197,6 +211,10 @@ public class UIController {
     void onUIKeyPressed(KeyEvent event) {
 		if (KEY_COMBINATION_HELP.match(event)){ //when free F1, show help
 			showHelp();
+		}
+		
+		if (KEY_COMBINATION_START_GUIDE.match(event)){ //when free F1, show help
+			initStartGuide();
 		}
 		
 		//if (KEY_COMBINATION_ALARM.match(event)){
@@ -229,7 +247,6 @@ public class UIController {
 		try{
 			mPrefs = CustomPreferences.getInstance();
 			mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
-
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -237,6 +254,17 @@ public class UIController {
 		}
 	}
 
+	private int getPreferencePistaFlag(){
+		try{
+			int flag = 0; //either 1 or 0
+			flag = mPrefs.getPreferencePistaFlag();
+			return flag;
+		}catch(Exception e){
+			e.printStackTrace();
+			return -2;
+		}
+	}
+	
 	private String getPreferenceFilePath(){ //get file path from preference
 		try{
 			String filePath = "";
@@ -245,6 +273,16 @@ public class UIController {
 		}catch(Exception e){
 			e.printStackTrace();
 			return "";
+		}
+	}
+	
+	private boolean setPreferencePistaFlag(int flag){
+		try{
+			mPrefs.setPreferencePistaFlag(flag);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -264,18 +302,34 @@ public class UIController {
 		}
 	}
 
-	public void add_outline() {
-		txtBoxCommand.setText(Constants.ADD_COMMAND);
-	}
+	private void initStartGuide(){
+		if(this.anchorPaneStartGuide == null){
+			this.anchorPaneStartGuide = new AnchorPane();
+		}
+		
+		this.anchorPaneStartGuide.getStyleClass().addAll(CSS_START_GUIDE_PANE);
+		this.anchorPaneStartGuide.setPrefWidth(910.0);
+		this.anchorPaneStartGuide.setPrefHeight(605.0);
+		
+		btnOkStartGuide = new Button("I Understand");
+		btnOkStartGuide.getStyleClass().addAll(CSS_START_GUIDE_BUTTON);
+		btnOkStartGuide.setPrefSize(150.0, 35.0);
+		btnOkStartGuide.addEventFilter(ActionEvent.ACTION, onBtnStartGuideClick);
+		
+		this.anchorPaneStartGuide.getChildren().add(btnOkStartGuide);
+		AnchorPane.setRightAnchor(btnOkStartGuide, 5.0);
+		AnchorPane.setTopAnchor(btnOkStartGuide, 350.0);
+		
+		this.mStackPane.setPadding(new Insets(0,0,0,0));
+		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
 
-	public void edit_outline() {
-		txtBoxCommand.setText(Constants.EDIT_COMMAND);
 	}
-
-	public void delete_outline() {
-		txtBoxCommand.setText(Constants.DELETE_COMMAND);
+	
+	private void hideStartGuide(){
+		this.mStackPane.getChildren().removeAll(this.anchorPaneStartGuide);
 	}
-
+	
+	
 	private void initButtonRedo(){
 		double size = 40.0;
 
@@ -372,6 +426,7 @@ public class UIController {
 		this.btnRefresh.addEventFilter(ActionEvent.ACTION, onBtnRefreshClick); //set click method listener
 	}
 
+	Group mGrp = new Group();
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
 		AnchorPane.setTopAnchor(mNode, anchorTop);
@@ -385,6 +440,7 @@ public class UIController {
 			AnchorPane.setLeftAnchor(mNode, anchorLeft);
 		}
 
+		//mGrp.getChildren().addAll(mNode);
 	}
 
 	private void setButtonToolTip(Button btn, String msg){
@@ -454,11 +510,11 @@ public class UIController {
 		
 		this.clearContent();
 		this.initTimeClock();
-		this.initReminder();
+		//this.initReminder();
 		this.initStorage();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
-
+		
 		this.initButtonSetting();
 		this.initButtonAddNewTask();
 		this.initButtonHelp();
@@ -473,6 +529,13 @@ public class UIController {
 		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
 		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
 
+		System.out.println(this.getPreferencePistaFlag());
+		if(this.getPreferencePistaFlag() == this.FIRST_LAUNCH_VALUE){ //equals 0
+			this.initStartGuide();
+			this.setPreferencePistaFlag(1);
+		}
+		
+		
 		anchorPaneMain.getStyleClass().addAll(CSS_TRANSPARENT_BACKGROUND);
 		txtStatus.getStyleClass().addAll(CSS_TEXT_BACKGROUND, CSS_TEXT_STATUS);
 		txtBoxCommand.getStyleClass().addAll(CSS_TEXT_BOX);
@@ -528,11 +591,6 @@ public class UIController {
 				storageList = searchTasks(storageList, searchKeyword);
 			}
 
-			//for(Task t : storageList){
-			//	System.out.println(t.getID() + " => End Date = " + t.getEndDate() + " end ms => " + t.getEndMilliseconds() + " => Category = " + t.getCategory());
-			//}
-
-
 			ObservableList<Task> myObservableList = FXCollections.observableList(storageList);
 			listview_task_fx_id.setItems(null); 
 			listview_task_fx_id.setItems(myObservableList);
@@ -567,9 +625,6 @@ public class UIController {
 	public boolean showHelp(){
 		stageHelp = new Stage();
 
-		//System.out.println(this.mApp.getPrimaryStage().getX());
-		//System.out.println(this.mApp.getPrimaryStageWidth());
-		
 		double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
 		double startY = this.mApp.getPrimaryStage().getY();
 		
@@ -629,7 +684,14 @@ public class UIController {
 	private void clearContent(){
 		txtStatus.setText("");
 	}
-
+	
+	private EventHandler<ActionEvent> onBtnStartGuideClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			hideStartGuide();
+		}
+	};
+	
 	private EventHandler<ActionEvent> onBtnUndoClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {

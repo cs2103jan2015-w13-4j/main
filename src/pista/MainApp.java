@@ -39,7 +39,6 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(Constants.PRODUCT_NAME);
-        //this.primaryStage.initModality(Modality.NONE);
         this.primaryStage.initStyle(StageStyle.DECORATED);
         this.primaryStage.setResizable(false);
         this.primaryStage.setOnCloseRequest(this.stageHandler);
@@ -47,7 +46,7 @@ public class MainApp extends Application {
         initRootLayout();
         initMainUI();
         
-        mRootCtrl.setUIController(mUICtrl);
+        this.mRootCtrl.setUIController(mUICtrl);
 
     }
     
@@ -57,16 +56,15 @@ public class MainApp extends Application {
         try {
             // Load root layout from fxml file
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(Constants.ROOT_LAYOUT_PATH));
+            loader.setLocation(MainApp.class.getResource(Constants.ROOT_LAYOUT_PATH)); //RootLayout.fxml
             this.rootLayout = (BorderPane) loader.load();
 
             this.mRootCtrl = loader.getController();
             
             // Show the scene containing the root layout
-            Scene scene = new Scene(rootLayout);
+            Scene scene = new Scene(this.rootLayout);
             this.primaryStage.setScene(scene);
             this.primaryStage.getIcons().addAll(new Image("images/pista_icon.png"));
-            //this.primaryStage.centerOnScreen();
             this.primaryStage.show();
             
         } catch (IOException e) {
@@ -79,15 +77,14 @@ public class MainApp extends Application {
         try {
             // Load MainUI
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PATH));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PATH)); //MainUI.fxml
+            AnchorPane uiLayout = (AnchorPane) loader.load();
 
             this.mUICtrl = loader.getController();
             this.mUICtrl.setMainAppController(this);
             
-            
             // Set MainUI into the center of RootLayout
-            this.rootLayout.setCenter(personOverview);      
+            this.rootLayout.setCenter(uiLayout);      
             
             
         } catch (IOException e) {
@@ -104,6 +101,10 @@ public class MainApp extends Application {
     	return this.primaryStage.getWidth();
     }
     
+    public double getPrimaryStageHeight(){
+    	return this.primaryStage.getHeight();
+    }
+    
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -118,13 +119,4 @@ public class MainApp extends Application {
         }
     };
 	
-    /*
-	@Override
-	public void stop(){
-	    System.out.println("Stage is closing");
-	    // Save file
-	    //close help if is open
-	    
-	}*/
-    
 }

@@ -215,6 +215,6 @@ public class Constants {
 	public static final String PREFERENCE_XML_SETTING_NODE = "setting";
 	public static final String PREFERENCE_XML_FILE_LOCATION_NODE = "file_location";
 	public static final String PREFERENCE_XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><preferences><setting><file_location></file_location></setting></preferences>";
-	
+	public static final String PREFERENCE_PISTA_FLAG_NODE = "flag";
 	
 }
