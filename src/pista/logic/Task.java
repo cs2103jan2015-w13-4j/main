@@ -33,7 +33,7 @@ public class Task {
 		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
 		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
 		this.isDone=false;
-		this.isReminded = false;
+		this.isReminded = false; //default task is not reminded
 		this.priority ="0";
 		
 		setCategoryInConstructor(inputArray);
@@ -119,6 +119,10 @@ public class Task {
 		return this.isDone;
 	}
 	
+	public boolean getIsReminded(){
+		return this.isReminded;
+	}
+	
 	public String getCategory() {
 		return this.category;
 	}
@@ -164,9 +168,12 @@ public class Task {
 		this.endMilliseconds = start; 
 	}
 	
-	
 	public void setIsDone(boolean status){
 		this.isDone=status;
+	}
+	
+	public void setIsReminded(boolean reminded){
+		this.isReminded = reminded;
 	}
 
 	public void setCategory(String cat){

@@ -115,7 +115,6 @@ public class MainApp extends Application {
         	if(helpStage != null){
         		helpStage.close();
         	}
-        	
         }
     };
 	

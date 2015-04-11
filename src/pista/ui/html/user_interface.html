@@ -15,6 +15,7 @@
 	<link href="bootstrap/css/index.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="bootstrap/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="bootstrap/css/back-to-top.css" rel="stylesheet">
   </head>
 
   <body>
@@ -42,11 +43,11 @@
                 <li><a href="user_interface.html#delete">Delete</a></li>
                 <li><a href="user_interface.html#mark">Mark Done & Undone</a></li>
                 <li><a href="user_interface.html#remind">Alarm</a></li>
-                <li><a href="#">Priority</a></li>
-                <li><a href="#">Undo & Redo</a></li>
-                <li><a href="#">Help</a></li>
-                <li><a href="#">Refresh</a></li> 
-                <li><a href="#">Setting</a></li>
+                <li><a href="user_interface.html#priority">Priority</a></li>
+                <li><a href="user_interface.html#undoredo">Undo & Redo</a></li>
+                <li><a href="user_interface.html#help">Help</a></li>
+                <li><a href="user_interface.html#refresh">Refresh</a></li> 
+                <li><a href="user_interface.html#setting">Setting</a></li>
                   <!--<li class="divider"></li>
                 <li class="dropdown-header">Task Listing</li>-->
               </ul>
@@ -60,12 +61,11 @@
                     <li><a href="command_line_interface.html#delete">Delete</a></li>
                     <li><a href="command_line_interface.html#mark">Mark Done & Undone</a></</li>
                     <li><a href="command_line_interface.html#alarm">Alarm</a></li>
-                    <li><a href="#">Priority</a></li>
-                    <li><a href="#">Undo & Redo</a></li>
-                    <li><a href="#">Help</a></li>
-                    <li><a href="#">Refresh</a></li>
-                    <li><a href="#">Setting</a></li>
-               	</ul>  
+                    <li><a href="command_line_interface.html#priority">Priority</a></li>
+                    <li><a href="command_line_interface.html#undoredo">Undo & Redo</a></li>
+                    <li><a href="command_line_interface.html#help">Help</a></li>
+                    <li><a href="command_line_interface.html#setting">Setting</a></li>
+               	</ul> 
             </li>
           </ul>
           <!--
@@ -98,11 +98,11 @@
                 <a href="#delete" class="link-text">Delete your task &rsaquo;</a><br/>
                 <a href="#mark" class="link-text">Mark done & undone &rsaquo;</a><br/>
                 <a href="#remind" class="link-text">Remind yourself &rsaquo;</a><br/>
-                <a href="" class="link-text">Prioritize your task &rsaquo;</a><br/>
-                <a href="" class="link-text">Undo & Redo your task &rsaquo;</a><br/>
-                <a href="" class="link-text">Help to the rescue &rsaquo;</a><br/>
-                <a href="" class="link-text">Refresh your list &rsaquo;</a><br/>
-                <a href="" class="link-text">Set your own preferences &rsaquo;</a><br/>
+                <a href="#priority" class="link-text">Prioritize your task &rsaquo;</a><br/>
+                <a href="#undoredo" class="link-text">Undo & Redo your task &rsaquo;</a><br/>
+                <a href="#help" class="link-text">Help to the rescue &rsaquo;</a><br/>
+                <a href="#refresh" class="link-text">Refresh your list &rsaquo;</a><br/>
+                <a href="#setting" class="link-text">Set your own preferences &rsaquo;</a><br/>
             </p>
             
       	</div>
@@ -113,9 +113,15 @@
      		<h4 class="content-text">You can add a new task into the list. Follow the guide below to learn more about adding a task.</h4>
      		<h4 class="content-text">
                 <ol class="order-list">
-                    <li>Click the <span class="function-text">Add</span> icon <span><img src="images/add.png" class="order-list-small-icon"></span> in the upper-right corner of Pista.</li>
-                    <li>From the <span class="function-text">Add</span> pop-pop, fill in the title of the task, the start date and time and the end date and time.<br/>Click on the calendar icon <span><img src="images/calendar_1.png" class="order-list-small-icon"></span> to select the date.<br/>Type in the hour field in 24 hours format (00 to 23).<br/>Type in the minute field in this format - (00 - 59).<img src="images/add-new-task.png" class="img-responsive order-list-img"></li>
-                    <li>After you have selected the title, dates and times of the task, click <span class="function-text">Add New Task</span> to add your new task.</li>
+                    <li>Click on the <span class="function-text">Add</span> icon <span><img src="images/add.png" class="order-list-small-icon"></span> in the upper-right corner of Pista.
+                    </li>
+                    <li>From the <span class="function-text">Add</span> pop-pop, fill in the title of the task, the start date and time and the end date and time.<br/>Click on the calendar icon <span><img src="images/calendar_1.png" class="order-list-small-icon"></span> to select the date.<br/>Type in the hour field in 24 hours format (00 to 23).<br/>Type in the minute field in this format - (00 - 59).<img src="images/add-new-task.png" class="img-responsive order-list-img">
+                    </li>
+                    <li>After you have selected the title, dates and times of the task, click <span class="function-text">Add New Task</span> to add your new task.
+                    </li>
+                    <li>
+                        Alternatively, you can add a new task by command line. <a href="command_line_interface.html#add">Read more about add command line</a>
+                    </li>
                 </ol>
             </h4>
        	</div>
@@ -126,9 +132,15 @@
             <h4 class="content-text">You can edit your task as well. Follow the guide below to learn more about adding a task.</h4>
             <h4 class="content-text">
                 <ol class="order-list">
-                	<li>Click the <span class="function-text">Edit</span> icon <span><img src="images/edit.png" class="order-list-small-icon"></span> at the task row which you like to edit.</li>
-                    <li>From the <span class="function-text">Edit</span> pop-up, you are allowed to change the title, dates and time of the selected task.<br/>Click on the calendar icon <span><img src="images/calendar_1.png" class="order-list-small-icon"></span> to select the date.<br/>Type in the hour field in 24 hours format (00 to 23).<br/>Type in the minute field in this format - (00 - 59).<img src="images/edit-task.png" class="img-responsive order-list-img"></li>
-                    <li>After your have confirmed the changes that you have made, click <span class="function-text">Edit</span> to make the change.</li>
+                	<li>Click on the <span class="function-text">Edit</span> icon <span><img src="images/edit.png" class="order-list-small-icon"></span> at the task row which you like to edit.
+                    </li>
+                    <li>From the <span class="function-text">Edit</span> pop-up, you are allowed to change the title, dates and time of the selected task.<br/>Click on the calendar icon <span><img src="images/calendar_1.png" class="order-list-small-icon"></span> to select the date.<br/>Type in the hour field in 24 hours format (00 to 23).<br/>Type in the minute field in this format - (00 - 59).<img src="images/edit-task.png" class="img-responsive order-list-img">
+                    </li>
+                    <li>After your have confirmed the changes that you have made, click <span class="function-text">Edit</span> to make the change.
+                    </li>
+                    <li>
+                        Alternatively, you can edit your task by command line. <a href="command_line_interface.html#edit">Read more about edit command line</a>
+                    </li>
                 </ol>
            	</h4>
         </div>
@@ -140,7 +152,11 @@
             <h4 class="content-text">Deleting a task is simple by just a click. Follow the guide below to learn more about deleting a task.</h4>
         	<h4 class="content-text">
                 <ol class="order-list">
-                	<li>Click the <span class="function-text">delete</span> icon <span><img src="images/delete.png" class="order-list-small-icon"></span> at the task row which you like to delete.<br/>You will not be asked to confirm the deletion. If you have accidentally deleted a wrong task, you can refer to <a herf="">Undo & Redo</a> section.</li>
+                	<li>Click on the <span class="function-text">delete</span> icon <span><img src="images/delete.png" class="order-list-small-icon"></span> at the task row which you like to delete.<br/>You will not be asked to confirm the deletion. If you have accidentally deleted a wrong task, you can refer to <a herf="">Undo & Redo</a> section.
+                    </li>
+                    <li>
+                        Alternatively, you can delete your task by command line. <a href="command_line_interface.html#delete">Read more about delete command line</a>
+                    </li>
                 </ol>
            	</h4>
         </div>
@@ -152,7 +168,7 @@
             <h4 class="content-text">
                 <ol class="order-list">
                     <li>
-                        To mark as done, click the opaque tick <span><img src="images/tick.png" class="order-list-small-icon"></span> at the left of the task row.
+                        To mark as done, click on the opaque tick <span><img src="images/tick.png" class="order-list-small-icon"></span> at the left of the task row.
                         <br/>You may have different colors based on the following desriptions.
                         <br/>
                         <ul class="unorder-list">
@@ -162,27 +178,172 @@
                         </ul>
                     
                     </li>
+                    <li>
+                        Alternatively, you can mark your task by command line. <a href="command_line_interface.html#mark">Read more about marking command line</a>
+                    </li>
+                    
                 </ol>
             </h4>
         </div>
 
-        <a href="remind"></a>
+        <a name="remind"></a>
         <div class="jumbotron" style="background: transparent; padding:2.5em;" >
             <h2>Remind yourself</h2>
-            <h4 class="content-text">. Follow the guide below to learn more about marking your task.</h4>
+            <h4 class="content-text">Follow the guide below to learn more about setting a remainder for your task.</h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>Click on the <span class="function-text">reminder</span> icon <span><img src="images/alarm.png" class="order-list-small-icon"></span> at the task row which you like to edit.
+                    </li>
+                    <li>From the <span class="function-text">reminder</span> pop-up, you are allowed to change the date and time of the reminder for the selected task.<br/>
+                        To on a reminder, click on the calendar icon <span><img src="images/calendar_1.png" class="order-list-small-icon"></span> to select the date<br/>
+                        Type in the hour field in 24 hours format (00 to 23).<br/>
+                        Type in the minute field in this format - (00 - 59).<br/>  
+                        To off a reminder, remove the values in both date and time fields.<br/>
+                        <img src="images/alarm_popover.png" class="img-responsive order-list-img" />
+                    </li>
+                    <li>
+                        After your have confirmed the changes that you have made, click <span class="function-text">Change</span> to make the change.
+                    </li>
+                    <li>
+                        Alternatively, you can change the reminder by command line. <a href="command_line_interface.html#remind">Read more about reminder command line</a>
+                    </li>
+                </ol>
+            </h4>
         </div>
             
 
+        <a name="priority"></a>
+        <div class="jumbotron" style="background: #F5F5F5; padding:2.5em;" >
+            <h2>Prioritize your task</h2>
+            <h4 class="content-text">Follow the guide below to learn more about marking the importance levels of your tasks.</h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>Click on the <span class="function-text">priority</span> icon <span><img src="images/priority_0.png" class="order-list-small-icon"></span> or <span><img src="images/priority_1.png" class="order-list-small-icon"></span> or <span><img src="images/priority_2.png" class="order-list-small-icon"></span> or <span><img src="images/priority_3.png" class="order-list-small-icon"></span> at the task row which you like to set the priority level.</li>
+                    <li>From the <span class="function-text">priority</span> pop-up, there are four different priority levels.<br/>
+                        Click on the check box beside the icon to select.<br/>
+                        <img src="images/priority_popover.png" class="img-responsive order-list-img" />
+                    </li>
+                    <li>
+                        After your have confirmed the changes that you have made, click <span class="function-text">Change</span> to make the change.
+                    </li>
+                    <li>
+                        Alternatively, you can change the priority by command line. <a href="command_line_interface.html#priority">Read more about priority command line</a>
+                    </li>
+                    
+                </ol>
+            </h4>
+        </div>
 
         
+        <a name="undoredo"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+            <h2>Undo & Redo your task</h2>
+            <h4 class="content-text">Follow the guide below to learn more about undo and redo your previous and current action.</h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To undo an action, click on the <span class="function-text">undo</span> icon <span><img src="images/undo.png" class="order-list-small-icon"> in the upper-left corner of Pista.
+                    </li>
+                    
+                    <li>To redo an action, click on the <span class="function-text">redo</span> icon <span><img src="images/redo.png" class="order-list-small-icon"> beside the undo icon.</span>
+                    </li>
+                    <li>
+                        Alternatively, you can access undo and redo by command line. <a href="command_line_interface.html#undoredo">Read more about undo and redo command line</a>
+                    </li>
+                </ol>
+            </h4>
+        </div>
+        
+        <a name="help"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+            <h2>Help to the rescue</h2>
+            <h4 class="content-text">There are several ways to access the help gudide. Follow the guide below to learn more about it.</h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To access help guide via keypad, press <i>F1</i> on your keyboard.
+                    </li>
+                    <li>
+                        Alternatively, click on <span class="function-text">help</span> icon <span><img src="images/help.png" class="order-list-small-icon"> in the upper-right corner of Pista.
+                    </li>
+                    <li>
+                        Again, you can access the help guide by command line. <a href="command_line_interface.html#help">Read more about help command line</a>
+                    </li>
+                </ol>
+            </h4>
+        
+        </div>
+            
+        
+        <a name="refresh"></a>
+        <div class="jumbotron" style="background: #F5F5F5; padding:2.5em;" >
+            <h2>Refresh you list</h2>
+            <h4 class="content-text">You can also refresh your list if Pista failed to update your list.</h4>
+             <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        Click on the <span class="function-text">refresh</span> icon <span><img src="images/refresh.png" class="order-list-small-icon"> in the upper-right corner of Pista.
+                    </li>
+                 </ol>
+            </h4>
+        </div>
+        
+        <a name="setting"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+            <h2>Set your own preferences</h2>
+            <h4 class="content-text">You can set your preferred file location to save your tasks.</h4>
+             <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        Click on the <span class="function-text">setting</span> icon <span><img src="images/setting.png" class="order-list-small-icon"> in the upper-right corner of Pista.
+                    </li>
+                    <li>
+                        From the <span class="function-text">setting</span> pop-up, <br/>
+                        Click on <i>Browse</i> to find the valid file.<br/>
+                        e.g. C:\Users\John\Desktop\abc.xml<br/>
+                        <img src="images/setting_popover.png" class="img-responsive order-list-img" />
+                    </li>
+                    <li>
+                        After your have confirmed the new file path, click <span class="function-text">Save All Settings</span> to make the change. Pista will then update the new list based on the file that you have selected.
+                    </li>
+                    <li>
+                        Alternatively, you can access the setting by command line. <a href="command_line_interface.html#setting">Read more about setting command line</a>
+                    </li>
+                    
+                 </ol>
+            </h4>
+        </div>
+            
+            
  
     </div> <!-- /container -->
 
+    <a href="#" class="back-to-top"><img src="images/back_to_top.png" width="60px"/></a>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="bootstrap/js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var offset = 100;
+            var duration = 500;
+            jQuery(window).scroll(function() {
+                if (jQuery(this).scrollTop() > offset) {
+                    jQuery('.back-to-top').fadeIn(duration);
+                } else {
+                    jQuery('.back-to-top').fadeOut(duration);
+                }
+            });
+
+            jQuery('.back-to-top').click(function(event) {
+                event.preventDefault();
+                jQuery('html, body').animate({scrollTop: 0}, duration);
+                return false;
+            })
+        });
+      </script>
+      
   </body>
 </html>

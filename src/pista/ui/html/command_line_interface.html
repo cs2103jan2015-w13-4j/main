@@ -15,6 +15,7 @@
 	<link href="bootstrap/css/index.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="bootstrap/css/navbar-fixed-top.css" rel="stylesheet">
+    <link href="bootstrap/css/back-to-top.css" rel="stylesheet">
   </head>
 
   <body>
@@ -42,11 +43,11 @@
                 <li><a href="user_interface.html#delete">Delete</a></li>
                 <li><a href="user_interface.html#mark">Mark Done & Undone</a></li>
                 <li><a href="user_interface.html#remind">Alarm</a></li>
-                <li><a href="#">Priority</a></li>
-                <li><a href="#">Undo & Redo</a></li>
-                <li><a href="#">Help</a></li>
-                <li><a href="#">Refresh</a></li> 
-                <li><a href="#">Setting</a></li>
+                <li><a href="user_interface.html#priority">Priority</a></li>
+                <li><a href="user_interface.html#undoredo">Undo & Redo</a></li>
+                <li><a href="user_interface.html#help">Help</a></li>
+                <li><a href="user_interface.html#refresh">Refresh</a></li> 
+                <li><a href="user_interface.html#setting">Setting</a></li>
                   <!--<li class="divider"></li>
                 <li class="dropdown-header">Task Listing</li>-->
               </ul>
@@ -60,11 +61,10 @@
                     <li><a href="command_line_interface.html#delete">Delete</a></li>
                     <li><a href="command_line_interface.html#mark">Mark Done & Undone</a></</li>
                     <li><a href="command_line_interface.html#alarm">Alarm</a></li>
-                    <li><a href="#">Priority</a></li>
-                    <li><a href="#">Undo & Redo</a></li>
-                    <li><a href="#">Help</a></li>
-                    <li><a href="#">Refresh</a></li>
-                    <li><a href="#">Setting</a></li>
+                    <li><a href="command_line_interface.html#priority">Priority</a></li>
+                    <li><a href="command_line_interface.html#undoredo">Undo & Redo</a></li>
+                    <li><a href="command_line_interface.html#help">Help</a></li>
+                    <li><a href="command_line_interface.html#setting">Setting</a></li>
                	</ul> 
             </li>
           </ul>
@@ -98,11 +98,10 @@
                 <a href="#delete" class="link-text">Delete your task &rsaquo;</a><br/>
                 <a href="#mark" class="link-text">Mark done & undone &rsaquo;</a><br/>
                 <a href="#remind" class="link-text">Remind yourself &rsaquo;</a><br/>
-                <a href="" class="link-text">Prioritize your task &rsaquo;</a><br/>
-                <a href="" class="link-text">Undo & Redo your task &rsaquo;</a><br/>
-                <a href="" class="link-text">Help to the rescue &rsaquo;</a><br/>
-                <a href="" class="link-text">Refresh your list &rsaquo;</a><br/>
-                <a href="" class="link-text">Set your own preferences &rsaquo;</a><br/>
+                <a href="#priority" class="link-text">Prioritize your task &rsaquo;</a><br/>
+                <a href="#undoredo" class="link-text">Undo & Redo your task &rsaquo;</a><br/>
+                <a href="#help" class="link-text">Help to the rescue &rsaquo;</a><br/>
+                <a href="#setting" class="link-text">Set your own preferences &rsaquo;</a><br/>
             </p>
             
       	</div>
@@ -246,7 +245,7 @@ Specify a new title will replace the old title of the task.
             
         </div>
 
-        <a href="remind"></a>
+        <a name="remind"></a>
         <div class="jumbotron" style="background: transparent; padding:2.5em;" >
             <h2>Remind yourself</h2>
             <h4 class="content-text">The following command will set or unset an alarm for a specific task.
@@ -285,14 +284,128 @@ Specify a new title will replace the old title of the task.
                 </ol>
             </h4>
         </div>
+        
+        <a name="priority"></a>
+        <div class="jumbotron" style="background: #F5F5F5; padding:2.5em;" >
+            <h2>Prioritize your task</h2>
+            <h4 class="content-text">The following command will set the importance of your task.
+            </h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To set a priority<br/>
+                        <b>mark</b> <i>&lt;Task ID&gt; -[priority]</i>
+                    </li>
+                </ol>
+            </h4>
+            <h3>Parameter</h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>&lt;Task ID&gt;</i><br/>
+                        ID is the number that is assigned to the task. It can be found at the left of the task title in the list.
+                    </li>
+                    <li>
+                        <i>[priority]</i><br/>
+                        There are four levels of priority:<br/>
+                        0 represent default or no priority.<br/>
+                        1 represent low priority level.<br/>
+                        2 represent normal priority level.<br/>
+                        3 represent critical priority level.
+                    </li>
+                </ol>
+            </h4>
+        </div>
+        
+        <a name="undoredo"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+            <h2>Undo & Redo your task</h2>
+            <h4 class="content-text">The following command will undo and redo your previous and current action.
+            </h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To undo to previous action<br/>
+                        <b>undo</b>
+                    </li>
+                    <li>
+                        To redo to current action<br/>
+                        <b>redo</b>
+                    </li>
+                </ol>
+            </h4>
+        </div>
+        
+        <a name="help"></a>
+        <div class="jumbotron" style="background: #F5F5F5; padding:2.5em;" >
+            <h2>Help to the rescue</h2>
+            <h4 class="content-text">The following command will open this help guide so that you can refer to all the commands in Pista.
+            </h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To ask for help<br/>
+                        <b>help</b>
+                    </li>
+                </ol>
+            </h4>
+        </div>
+        
+        <a name="setting"></a>
+        <div class="jumbotron" style="background: transparent; padding:2.5em;" >
+            <h2></h2>
+            <h4 class="content-text">The following command will set your own file location to save your recorded tasks.
+            </h4>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        To set your preferred file location<br/>
+                        <b>set file location</b><i>-[File Path]</i>
+                    </li>
+                </ol>
+            </h4>
+            <h3>Parameter</h3>
+            <h4 class="content-text">
+                <ol class="order-list">
+                    <li>
+                        <i>[File Path]</i><br/>
+                        Provide a valid full file path.<br/>
+                        Ensure that the file is in Extension Markup Language (XML) format <br/>
+                        e.g. C:\Users\John\Desktop\abc.xml.                     
+                    </li>
+                </ol>
+            </h4>
+        </div>
+        
                
     </div> <!-- /container -->
 
+    <a href="#" class="back-to-top"><img src="images/back_to_top.png" width="60px"/></a>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="bootstrap/js/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var offset = 100;
+            var duration = 500;
+            jQuery(window).scroll(function() {
+                if (jQuery(this).scrollTop() > offset) {
+                    jQuery('.back-to-top').fadeIn(duration);
+                } else {
+                    jQuery('.back-to-top').fadeOut(duration);
+                }
+            });
+
+            jQuery('.back-to-top').click(function(event) {
+                event.preventDefault();
+                jQuery('html, body').animate({scrollTop: 0}, duration);
+                return false;
+            })
+        });
+    </script>
+    
   </body>
 </html>

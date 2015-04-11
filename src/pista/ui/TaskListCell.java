@@ -980,8 +980,11 @@ public class TaskListCell extends ListCell<Task> {
 		HBox hBox = new HBox(4);
 		
 		//Set Contents
+		this.txtAreaPopOverEditTaskTitle.setPromptText("Type in a new task title");
 		this.txtAreaPopOverEditTaskTitle.setText(this.getTitle);
+		this.datePickerPopOverEditStartDate.setPromptText("01 January 2015");
 		this.datePickerPopOverEditStartDate.setConverter(datePickerStringConverter);
+		this.datePickerPopOverEditEndDate.setPromptText("22 January 2015");
 		this.datePickerPopOverEditEndDate.setConverter(datePickerStringConverter);
 		
 		

@@ -199,9 +199,9 @@ public class UIController {
 			showHelp();
 		}
 		
-		if (KEY_COMBINATION_ALARM.match(event)){
-			demoReminder();
-		}
+		//if (KEY_COMBINATION_ALARM.match(event)){
+		////	runReminder();
+		//}
 		
     }
 
@@ -454,7 +454,7 @@ public class UIController {
 		
 		this.clearContent();
 		this.initTimeClock();
-		//this.initReminder();
+		this.initReminder();
 		this.initStorage();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
@@ -921,7 +921,9 @@ public class UIController {
 			}
 		}
 
+		datePickerStartDate.setPromptText("01 January 2015");
 		datePickerStartDate.setConverter(datePickerStringConverter);
+		datePickerEndDate.setPromptText("22 January 2015");
 		datePickerEndDate.setConverter(datePickerStringConverter);
 
 		setPopOverLabelTitle(lblTitle, popWidth); //style the label title 
@@ -934,7 +936,7 @@ public class UIController {
 		txtAreaTaskTitle.setPrefRowCount(3); //text area
 		txtAreaTaskTitle.setPrefWidth(popWidth);
 		txtAreaTaskTitle.setWrapText(true);
-		txtAreaTaskTitle.setPromptText("Task Name");
+		txtAreaTaskTitle.setPromptText("Type in a new task title");
 
 		vBox.getChildren().add(lblTitle); //add title
 		vBox.getChildren().add(txtAreaTaskTitle); //add task title
@@ -1288,51 +1290,36 @@ public class UIController {
 	}
 
 	private void initReminder(){
-		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(1),
+		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
 				new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent event) {
-					for (int i = 0; i < Logic.getStorageList().size(); i++) {
-						Task extractedTask =Logic.getStorageList().get(i);
-						final String taskTitle = extractedTask.getTitle();
-						String taskCategory = extractedTask.getCategory();
-						Long reminder = extractedTask.getReminder();
-						Long timeNow = System.currentTimeMillis();
-						
-						if(reminder != 0L){
-							if(timeNow > reminder){
-								showReminder("Upcoming " + taskCategory + " " + taskTitle, 
-											"This is a reminder for " + taskTitle + " " + taskCategory);
-								
-								File file = new File (location + "/bin/sounds/alarm.mp3");
-								playAlarm(file.toURI().toString());
-							}
-						}
-					}
-				}
-	
+					runReminder();
+				}//end handle
 			}),
-			new KeyFrame(Duration.minutes(10))
+			new KeyFrame(Duration.seconds(1))
 		);
 		aTimeLine.setCycleCount(Animation.INDEFINITE);
 		aTimeLine.play();
 	}
 
-	private void demoReminder(){
+	private void runReminder(){
 		for (int i = 0; i < Logic.getStorageList().size(); i++) {
-			Task extractedTask =Logic.getStorageList().get(i);
+			Task extractedTask = Logic.getStorageList().get(i);
 			String taskTitle = extractedTask.getTitle();
-			//String taskCategory = extractedTask.getCategory();
-			Long reminder = extractedTask.getReminder();
+			boolean taskIsReminded = extractedTask.getIsReminded();
+			Long taskReminder = extractedTask.getReminder();
+			Long taskEndMillisecond = extractedTask.getEndMilliseconds();
 			Long timeNow = System.currentTimeMillis();
-			Long endMillisecond = extractedTask.getEndMilliseconds();
 			
-			
-			if(reminder != 0L){
-				if(timeNow >= reminder){
+			if(taskReminder != 0L){
+				if(timeNow >= taskReminder && !taskIsReminded){
 					String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
 					SimpleDateFormat mDateFormat = new SimpleDateFormat(datePattern);
-					String endDate = mDateFormat.format(new Date(endMillisecond));
+					String endDate = mDateFormat.format(new Date(taskEndMillisecond));
+					
+					//update the reminded status in the storage list
+					Logic.getStorageList().get(i).setIsReminded(true);
 					
 					showReminder("Upcoming task: " + taskTitle, 
 									"Due on " + endDate);
