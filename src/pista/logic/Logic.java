@@ -266,16 +266,15 @@ public class Logic {
 	private static String edit(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
 		int taskId=Integer.parseInt(tokens[0]);
-		int clearValue = 0;
 		if(isTaskInList(taskId)){
 			int taskIndex = findTaskIndex(taskId);
 			Task extractedTask = mStorage.getTaskList().get(taskIndex);
 			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
 				extractedTask=editFloatingTask(extractedTask, tokens[1]);
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
-				extractedTask=editDeadlineTask(extractedTask, tokens, clearValue);
+				extractedTask=editDeadlineTask(extractedTask, tokens);
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-				extractedTask=editTimedTask(extractedTask, tokens, clearValue);
+				extractedTask=editTimedTask(extractedTask, tokens);
 			}
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
@@ -682,10 +681,9 @@ public class Logic {
 	/**This method is to edit a Task if the Task is of the type timed
 	 * Parameters:	extractedTask - the Task that need to be edited
 	 * 				tokens - the new information to be updated
-	 * 				clearValue - 
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task editTimedTask(Task extractedTask, String[] tokens, int clearValue) {
+	private static Task editTimedTask(Task extractedTask, String[] tokens) {
 		Long remindMS = extractedTask.getReminder();
 		Long endMS = extractedTask.getEndMilliseconds();
 		Long differenceReminer = endMS - remindMS;
@@ -724,11 +722,10 @@ public class Logic {
 	
 	/**This method is to edit a Task if the Task is of the type deadline
 	 * Parameters:	extractedTask - the Task that need to be edited
-	 * 				tokens - the new information to be updated
-	 * 				clearValue - 
+	 * 				tokens - the new information to be updated	
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task editDeadlineTask(Task extractedTask, String[] tokens, int clearValue) {
+	private static Task editDeadlineTask(Task extractedTask, String[] tokens) {
 		String taskCategory = extractedTask.getCategory();
 		Long remindMS = extractedTask.getReminder();
 		Long endMS = extractedTask.getEndMilliseconds();
