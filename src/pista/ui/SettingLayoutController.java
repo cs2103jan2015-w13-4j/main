@@ -2,24 +2,22 @@ package pista.ui;
 
 import java.io.File;
 
-import pista.Constants;
-import pista.CustomPreferences;
-import pista.CustomPreferences_bak;
-import pista.MainApp;
-import pista.logic.Logic;
-import pista.storage.Storage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import pista.Constants;
+import pista.CustomPreferences;
+import pista.logic.Logic;
+import pista.storage.Storage;
 
 public class SettingLayoutController {
 
 	private static SettingLayoutController mSettingLayoutCtrl = new SettingLayoutController();
 	private Storage mStorage;
+	private Logic mLogic;
 	
 	private final String ASSERT_EMPTY_XML_FILE_PATH_MESSAGE = "File path is empty";
 	private final String STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
@@ -63,6 +61,17 @@ public class SettingLayoutController {
 		}		
 	}
     
+	public boolean initLogic(){
+		try{
+			this.mLogic = Logic.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+    
 	protected boolean initPreferences(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
@@ -89,6 +98,7 @@ public class SettingLayoutController {
     @FXML
 	public void initialize() {
     	initStorage();
+    	initLogic();
     	initPreferences();
     	setTextStatus("");
     	setTextBoxDirectory(mPrefs.getPreferenceFileLocation());
@@ -100,7 +110,7 @@ public class SettingLayoutController {
     	try{
     		chosenFilePath = chooseFile();
 
-    		isValidFile = Logic.checkFileBeforeSave(chosenFilePath);
+    		isValidFile = mLogic.checkFileBeforeSave(chosenFilePath);
     		
     		if(isValidFile){
     			setTextBoxDirectory(chosenFilePath);
@@ -128,7 +138,7 @@ public class SettingLayoutController {
     	
     	if(isValidFile){		
         	try{
-            	isFileCreated = Logic.checkFileDuringSave(chosenFilePath);
+            	isFileCreated = mLogic.checkFileDuringSave(chosenFilePath);
             	
             	if(isFileCreated){
             		String status = STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", chosenFilePath);

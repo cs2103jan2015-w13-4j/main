@@ -1,36 +1,21 @@
 package pista.ui;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 
-import javax.swing.ToolTipManager;
-
-import org.controlsfx.control.Notifications;
-import org.controlsfx.control.PopOver;
-import org.omg.CORBA.Environment;
-
-import com.sun.javafx.geom.Rectangle;
-import com.sun.nio.sctp.Notification;
-
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -39,15 +24,17 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.StringConverter;
+
+import org.controlsfx.control.Notifications;
+import org.controlsfx.control.PopOver;
+
 import pista.Constants;
 import pista.logic.Logic;
 import pista.logic.Task;
@@ -55,6 +42,7 @@ import pista.parser.MainParser;
 import pista.parser.TokenValidation;
 
 public class TaskListCell extends ListCell<Task> {
+	private Logic mLogic;
 
     private final String CSS_CELL = "task-list-cell";
     private final String CSS_CELL_ID = "task-list-cell-id";
@@ -696,6 +684,7 @@ public class TaskListCell extends ListCell<Task> {
 	}
 	
 	private boolean executeCommand(String input){
+		initLogic();
 		String[] tokens = null;
 		String parserOutput = "";
 		String logicOutput = "";
@@ -711,7 +700,7 @@ public class TaskListCell extends ListCell<Task> {
 		command = mp.getCommand();
 		tokens = mp.getTokens();
 		
-		logicOutput = Logic.runCommand(command, tokens);
+		logicOutput = mLogic.runCommand(command, tokens);
 		setUIControllerParentTextStatus(logicOutput);
 		
 		refreshUIControllerParentListView();
@@ -1433,5 +1422,16 @@ public class TaskListCell extends ListCell<Task> {
 		}
 		return str;
 	}
+	
+	public boolean initLogic(){
+		try{
+			this.mLogic = Logic.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	
 }
