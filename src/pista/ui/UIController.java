@@ -179,16 +179,9 @@ public class UIController {
 		this.mStorage.initLogging(); //initialize Storage logging
 		
 		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
-		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
-
-		this.mStorage.setDataFileLocation(getPreferenceFilePath());
-		this.mStorage.initLogging(); //initialize Storage logging
-		Logic.initLogging(); //initialize Logic logging
-		Logic.initStorage();
-		Logic.initPreference();
-
+		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtStatus.setText(logicOutput);
 
 		this.txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
@@ -206,6 +199,8 @@ public class UIController {
 			}
 		});
 
+		logicOutput = mLogic.load();
+		
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			initTaskListInListView(); //initialize listview
 		}

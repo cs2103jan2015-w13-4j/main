@@ -607,7 +607,6 @@ public class Storage {
 	 * Parameters:	doc - XML document
 	 * **/
 	private void normalize(Document doc){
-		 //normalize is not a complusory to do
 		 try{
 			 assert(doc != null) : ASSERT_XML_DOCUMENT_NULL_MESSAGE;
 			 
@@ -622,11 +621,7 @@ public class Storage {
 		 }	 	 
 	 }
 
-	
-	 
-	 
-	 
-	 /*Conversion*/
+	 /*============================= Conversion =============================*/
 	 private String convertIntToString(int input){
 		 return String.valueOf(input);
 	 }

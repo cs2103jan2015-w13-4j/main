@@ -291,7 +291,7 @@
 
 
 .start-guide-pane {
-	-fx-background-color: #33333399;
+	/* -fx-background-color: #33333399;*/
 	-fx-background-image:url("../../images/start-guide.png");
 	-fx-background-size: 100%;
 	-fx-background-position: center;
