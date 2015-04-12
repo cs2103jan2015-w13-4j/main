@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -105,12 +110,16 @@ public class Storage {
 		return isSaved;
 	}
 		
-	public boolean overwriteNewXmlFile(String newPath){
+	public boolean writeNewXmlFile(String newPath){
 		//filepath exist
 		try {
 			//String newXmlString = XML_DEFAULT_STRING.replace("[new_file_path]", newPath);
 			File file = new File(newPath);
 
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			
 			//exist and either length is 0 or not valid xml format
 			FileWriter fileWriter = new FileWriter(file, false); //overwrite the file
 			
@@ -525,6 +534,9 @@ public class Storage {
 	 }
 	 
 	 public ArrayList<Task> getTaskList(){
+		 if(this.taskList == null){
+			 taskList = new ArrayList<Task>();
+		 }
 		 return taskList;
 	 }
 	 
@@ -542,63 +554,19 @@ public class Storage {
 	 
 	 
 	 public boolean copyFile(String sourceFilePath, String destinationFilePath){
-		 boolean isCopied = false;
-		 FileChannel inputChannel = null;
-		 FileChannel outputChannel = null;
-		 
-		 InputStream input = null;
-		 OutputStream output = null;
-
-
 		 try{
-			 File inputFile = new File(sourceFilePath);
-			 File outputFile = new File(destinationFilePath);
 			 
-			 /*
+			 Path original = Paths.get(sourceFilePath); //original file 
+			 Path destination = Paths.get(destinationFilePath); //new file 
+			 Files.copy(original, destination, StandardCopyOption.REPLACE_EXISTING);
 			 
-			 inputChannel = new FileInputStream(inputFile).getChannel();
-			 outputChannel = new FileOutputStream(outputFile, false).getChannel();
-			 
-			 outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-			 */
-			 input = new FileInputStream(inputFile);
-	         output = new FileOutputStream(outputFile);
-	 
-	         byte[] buf = new byte[1024];
-	 
-	         int bytesRead;
-	 
-	         while ((bytesRead = input.read(buf)) > 0) {
-	        	 output.write(buf, 0, bytesRead);
-	         }
-
-	         input.close();
-	         output.close();
-	         
-			 isCopied = true;
+			 return true;
 		 }catch(IOException e){
 			 mLog.logSevere(e.getMessage());
 			 e.printStackTrace();
-			 isCopied = false;
-		 //}finally{
-			 
-			 /*
-			 try {
-				inputChannel.close();
-				outputChannel.close();
-				inputChannel = null;
-				outputChannel = null;
-			} catch (IOException e) {
-				mLog.logSevere(e.getMessage());
-				 e.printStackTrace();
-				 isCopied = false;
-			} 
-			*/
-			 
+			 return false;
 		 }
-		 
-		 return isCopied;
-		 
+
 	 }
 	 
 	 

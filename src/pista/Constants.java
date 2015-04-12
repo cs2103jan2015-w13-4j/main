@@ -12,6 +12,7 @@ public class Constants {
 	/*============================= UI ========================================== */
 	public static final String PRODUCT_NAME = "Pista";
 	public static final String BUILD_PATH =  Paths.get("").toAbsolutePath().toString();
+	public static final String USER_DIRECTORY = System.getProperty("user.home") + "\\";
 	
 	/*----- FXML file paths-----*/
 	public static final String MAIN_UI_LAYOUT_PATH = "ui/MainUI.fxml";
@@ -61,7 +62,6 @@ public class Constants {
 	
 	/*----- Pop Over (Pop-up) -----*/
 	public static final String UI_POP_OVER_FAILED_SETTING_MESSAGE = "Setting Failed";
-	public static final String UI_POP_OVER_INVALID_FILE_MESSAGE = "Invalid File";
 	public static final String UI_POP_OVER_SUCCESS_SETTING_MESSAGE = "Updated";
 	public static final String UI_POP_OVER_INVALID_TITLE_MESSAGE = "Task cannot be empty";
 	public static final String UI_POP_OVER_INVALID_START_TIME_MESSAGE = "Invalid Start Time";
@@ -94,7 +94,7 @@ public class Constants {
 	public static final String UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE = "[new_file_path] is loaded.";
 	public static final String UI_STATUS_SUCCESS_FILE_SAVE_AS_MESSAGE = "Tasks are saved in [new_file_path].";
 	public static final String UI_STATUS_FAIL_FILE_SAVE_AS_MESSAGE = "Unable to save tasks in [new_file_path]. Please try again.";
-	
+
 	/*----- Alarm -----*/ 
 	public static final String UI_ALARM_LOCATION = "/bin/sounds/alarm.mp3";
 	

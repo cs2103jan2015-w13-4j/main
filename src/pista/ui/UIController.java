@@ -47,7 +47,6 @@ import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -147,7 +146,7 @@ public class UIController {
 	@FXML
 	public void initialize() {
 		String logicOutput = "";
-
+		
 		this.initTimeClock();
 		this.initReminder();
 		this.initMainParser();
@@ -168,21 +167,24 @@ public class UIController {
 		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
 		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
 
+		Logic.initLogging(); //initialize Logic logging
+		Logic.initStorage();
+		Logic.initPreference();
+		
 		if(this.getPreferencePistaFlag() == Constants.PREFERENCE_FIRST_LAUNCH_VALUE){ //equals 0
 			this.initStartGuide(); //start the start guide
 			this.setPreferencePistaFlag(Constants.PREFERENCE_SUBSQUENT_LAUNCH_VALUE); //update the preference of the flag = 1
+			this.setPreferenceFilePath(this.getNewLaunchFileLocation()); //set preference file location to new file path
+			Logic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
 		}		
+		
+		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
+		this.mStorage.initLogging(); //initialize Storage logging
 		
 		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
 		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
-
-		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
-		this.mStorage.initLogging(); //initialize Storage logging
-		Logic.initLogging(); //initialize Logic logging
-		Logic.initStorage();
-		Logic.initPreference();
 
 		logicOutput = Logic.load();
 		this.txtStatus.setText(logicOutput);
@@ -384,6 +386,7 @@ public class UIController {
 		this.btnRefresh.addEventFilter(ActionEvent.ACTION, this.onBtnRefreshClick); //set click method listener
 	}
 
+	
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
 		AnchorPane.setTopAnchor(mNode, anchorTop);
@@ -398,6 +401,11 @@ public class UIController {
 		}
 	}
 
+	private String getNewLaunchFileLocation(){
+		String defaultPath = Constants.USER_DIRECTORY + "" + Constants.SETTING_SAVE_AS_DEFAULT_XML_FILE_NAME;
+		return defaultPath;
+	}
+	
 	private int getPreferencePistaFlag(){
 		try{
 			int flag = 0; //either 1 or 0
@@ -665,7 +673,6 @@ public class UIController {
 		}
 	};
 	
-	
 	//============================== POPOVER ADD NEW TASK ====================================
 	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
@@ -699,23 +706,12 @@ public class UIController {
 		final Label lblSettingTitle = new Label("Setting");
 		final Label lblCurrentFileLocationTitle = new Label("Current File Location");
 		final Label lblCurrentFileLocation = new Label("");
-		final Label lblMessage = new Label();
-		//final TextField txtBoxCurrentDirectory = new TextField();
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
-		
-
-		//Label lblOpen = new Label("Open Current File");	
 		
 		Button btnOpenFileBrowse = new Button("Open");
 		Button btnSaveAsFileBrowse = new Button("Save As");
 		Button btnSave = new Button("Save All Settings");
-
-		double txtDirectoryWidth = 380.0;
-		double btnBrowseWidth = 100.0;
-		
-		//Set Message width first
-		setPopOverLabelMessageStyle(lblMessage, Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_LABEL_MESSAGE_HEIGHT);
 
 		//Get current file location from preference
 		final String currentFileDir = mPrefs.getPreferenceFileLocation();
@@ -724,14 +720,6 @@ public class UIController {
 			lblCurrentFileLocation.setText(mPrefs.getPreferenceFileLocation());
 		}
 		
-		
-		
-		
-		//Textbox directory
-		//txtBoxCurrentDirectory.setPrefWidth(txtDirectoryWidth);
-		//txtBoxCurrentDirectory.setEditable(false);
-		//setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
-
 		//Button browse
 		btnOpenFileBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
 		btnOpenFileBrowse.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
@@ -739,16 +727,12 @@ public class UIController {
 			@Override
 			public void handle(ActionEvent event) {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
-				
-				//Hide popver message
-				//setPopOverLabelMessageVisible(lblMessage, false, false);
-
+			
 				try{
 					String newPath = openFile(currentFileDir);
 
 					isValidFilePath = Logic.checkFileBeforeSave(newPath);
 					if(isValidFilePath){
-						//setTextFieldText(txtBoxCurrentDirectory, newPath);
 						isFileCreated = Logic.checkFileDuringSave(newPath);
 
 						if(isFileCreated){
@@ -769,14 +753,10 @@ public class UIController {
 							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
 
-						//Label message
-						//setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
-						//setPopOverLabelMessageVisible(lblMessage, true, true);
-						
+						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE); //success message
 					}else{
-						//setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
-						//setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
-						//setPopOverLabelMessageVisible(lblMessage, false, true); //set to red and display
+						setPopOverLabelText(lblCurrentFileLocation, currentFileDir); //set back to old file path 
+						setTextStatus(Constants.UI_STATUS_INVALID_XML_FILE_PATH_MESSAGE); //failed message
 					}
 				}catch(AssertionError e){
 					//log
@@ -804,10 +784,8 @@ public class UIController {
 				
 				try{
 					String newPath = saveAsFile(currentFileDir);
-System.out.println("currentFileDir - " + currentFileDir);
-System.out.println("newPath - " + newPath);
 					isCopied = Logic.copyFile(currentFileDir, newPath);
-//System.out.println("isCopied - " + isCopied);
+
 					if(isCopied){
 						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_SAVE_AS_MESSAGE.replace("[new_file_path]", newPath));
 						
@@ -850,14 +828,6 @@ System.out.println("newPath - " + newPath);
 		vBox.getChildren().add(lblCurrentFileLocation);
 		vBox.getChildren().add(btnOpenFileBrowse);
 		vBox.getChildren().add(btnSaveAsFileBrowse);
-
-		//hBox = new HBox(4);
-		//HBox.setMargin(txtBoxCurrentDirectory, new Insets(2,0,0,0));
-		//hBox.getChildren().add(txtBoxCurrentDirectory); //Text box current directory
-		//hBox.getChildren().add(btnOpenFileBrowse); //Button browse
-		//vBox.getChildren().add(hBox); //each horizontal boxes
-		//vBox.getChildren().add(btnSave); //Button save
-		vBox.getChildren().add(lblMessage); //Label message (red or green)
 
 		vBox.setPrefSize(Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_SETTING_HEIGHT);
 		vBox.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_CONTENT_AREA); //set style for the vbox
@@ -914,8 +884,7 @@ System.out.println("newPath - " + newPath);
 		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels 
 		setPopOverTextFieldHourMinute(txtFieldStartHour, txtFieldStartMin);
 		setPopOverLabelTimeTip(lblTimeTip);
-		setPopOverLabelMessageStyle(lblMessage, Constants.UI_POP_OVER_ADD_WIDTH, Constants.UI_POP_OVER_LABEL_MESSAGE_HEIGHT); //set message style
-
+		
 		txtAreaTaskTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TEXTAREA);
 		txtAreaTaskTitle.setPrefRowCount(3); //text area
 		txtAreaTaskTitle.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
@@ -1131,15 +1100,6 @@ System.out.println("newPath - " + newPath);
 	private void setPopOverLabelMessageText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
-
-	private void setPopOverLabelMessageStyle(Label lbl, double width, double height){
-		lbl.setTextAlignment(TextAlignment.CENTER);
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setPrefWidth(width);
-		lbl.setPrefHeight(height);
-		setPopOverLabelMessageVisible(lbl, false, false);
-	}
-
 	
 	private String openFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();

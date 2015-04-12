@@ -187,7 +187,7 @@ public class Logic {
 		boolean isCreated = false;
 
 		if(mStorage.isFileEmpty(newFilePath)){ //if empty, overwrite new xml format 
-			isCreated = overwriteFile(newFilePath);
+			isCreated = writeNewFile(newFilePath);
 		}else{
 			isCreated = loadExistingFile(newFilePath); //not empty and format is correct
 		}
@@ -195,9 +195,23 @@ public class Logic {
 		return isCreated;
 	}
 	
+	/**This method is to write new XML file
+	 * Parameters:	newFilePath - source file path
+	 * Return:		isWritten - true or false
+	 * **/
+	public static boolean writeNewFile(String newFilePath){
+		boolean isWritten = false;
+		mStorage.initTaskList();
+		mStorage.setDataFolderLocation(newFilePath);
+		isWritten = mStorage.writeNewXmlFile(newFilePath);
+		
+		return isWritten;
+	}
+	
 	/**This method is to copy file from source file to destination file
 	 * Parameters:	src - source file path
-	 * Return:		dest - destination file path
+	 * 				dest - destination file path
+	 * Return:		isCopied - true or false
 	 * **/
 	public static boolean copyFile(String src, String dest){
 		boolean isCopied = false;
@@ -256,7 +270,6 @@ public class Logic {
 		newTask.setID(mStorage.getNextAvailableID());
 		isAddedToArray = addTaskToTaskArrayList(newTask);
 		isAddedToStorage = mStorage.save();
-
 
 		if(isAddedToArray && isAddedToStorage){
 			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
@@ -938,17 +951,6 @@ public class Logic {
 		return false;
 	}
 
-	/** This method is to overwrite the File at the given file path
-	 * Parameters:	newFilePath - the file path of the file to be overwritten
-	 * Return:		boolean - true if the file is overwritten, false otherwise
-	 * **/
-	private static boolean overwriteFile(String newFilePath){
-		mStorage.initTaskList();
-		mStorage.setDataFolderLocation(newFilePath);
-		boolean isOverwrite = mStorage.overwriteNewXmlFile(newFilePath);
-		return isOverwrite;
-	}
-	
 	/** This method is to load the existing file at the given file path to the Storage
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file loaded successfully, false otherwise
