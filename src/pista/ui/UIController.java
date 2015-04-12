@@ -800,7 +800,7 @@ public class UIController {
 				
 				try{
 					String newPath = saveAsFile(currentFileDir);
-System.out.println(newPath);
+
 					/*
 					isValidFilePath = Logic.checkFileBeforeSave(newPath);
 					if(isValidFilePath){
