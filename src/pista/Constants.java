@@ -70,7 +70,7 @@ public class Constants {
 	public static final String UI_POP_OVER_FAIL_ADD_MESSAGE = "Fail to add";
 	public static final String UI_POP_OVER_ADD_TASK_COMMAND = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
 	public static final double UI_POP_OVER_SETTING_WIDTH = 500.0;
-	public static final double UI_POP_OVER_SETTING_HEIGHT = 200.0;
+	public static final double UI_POP_OVER_SETTING_HEIGHT = 300.0;
 	public static final double UI_POP_OVER_ADD_WIDTH = 400.0;
 	public static final double UI_POP_OVER_ADD_HEIGHT = 380.0;
 	public static final double UI_POP_OVER_LABEL_MESSAGE_HEIGHT = 30.0;
@@ -98,7 +98,6 @@ public class Constants {
 	
 	
 	/*----- Setting -----*/
-	public static final String SETTING_LAYOUT_TITLE = "Setting";
 	public static final String SETTING_SAVE_AS_DEFAULT_XML_FILE_NAME = "data.xml";
 	
 	
@@ -311,11 +310,11 @@ public class Constants {
 	
 	/*============================= Preferences ===================================== */
 	public static final String PREFERENCE_URL_PATH = "pista/preference";
-	public static final String PREFERENCE_XML_DEFAULT_FILE_PATH = "preferences.xml";
-	public static final String PREFERENCE_XML_ROOT_NODE = "preferences";
-	public static final String PREFERENCE_XML_SETTING_NODE = "setting";
-	public static final String PREFERENCE_XML_FILE_LOCATION_NODE = "file_location";
-	public static final String PREFERENCE_XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><preferences><setting><file_location></file_location></setting></preferences>";
+	//public static final String PREFERENCE_XML_DEFAULT_FILE_PATH = "preferences.xml";
+	//public static final String PREFERENCE_XML_ROOT_NODE = "preferences";
+	//public static final String PREFERENCE_XML_SETTING_NODE = "setting";
+	public static final String PREFERENCE_XML_FILE_LOCATION = "file_location";
+	//public static final String PREFERENCE_XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><preferences><setting><file_location></file_location></setting></preferences>";
 	public static final String PREFERENCE_PISTA_FLAG_NODE = "flag";
 	public static final int PREFERENCE_FIRST_LAUNCH_VALUE = 0;
 	public static final int PREFERENCE_SUBSQUENT_LAUNCH_VALUE = 1;

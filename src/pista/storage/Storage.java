@@ -3,8 +3,10 @@ package pista.storage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -535,6 +537,41 @@ public class Storage {
 	 public void setDataFolderLocation(String location){
 		 data_folder_location = location;
 	 }
+	 
+	 
+	 public boolean copyFile(String sourceFilePath, String destinationFilePath){
+		 boolean isCopied = false;
+		 FileChannel inputChannel = null;
+		 FileChannel outputChannel = null;
+		 
+		 try{
+			 inputChannel = new FileInputStream(sourceFilePath).getChannel();
+			 outputChannel = new FileOutputStream(destinationFilePath).getChannel();
+			 
+			 outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+			 
+			 isCopied = true;
+		 }catch(IOException e){
+			 mLog.logSevere(e.getMessage());
+			 e.printStackTrace();
+			 isCopied = false;
+		 }finally{
+			 try {
+				inputChannel.close();
+				outputChannel.close();
+			} catch (IOException e) {
+				mLog.logSevere(e.getMessage());
+				 e.printStackTrace();
+				 isCopied = false;
+			}
+			 
+		 }
+		 
+		 return isCopied;
+		 
+	 }
+	 
+	 
 	 
 	 /*Conversion*/
 	 private String convertIntToString(int input){

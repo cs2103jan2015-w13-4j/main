@@ -25,7 +25,7 @@ public class PreferencesUnitTest {
 
 	@Test
 	public void test_read_preference(){
-		assertEquals("Is key empty?", false, isStringEmpty(Constants.PREFERENCE_XML_FILE_LOCATION_NODE));
+		assertEquals("Is key empty?", false, isStringEmpty(Constants.PREFERENCE_XML_FILE_LOCATION));
 		
 		String fileLocation = mPrefs.getPreferenceFileLocation();
 
