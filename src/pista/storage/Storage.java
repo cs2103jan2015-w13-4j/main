@@ -563,8 +563,7 @@ public class Storage {
 				mLog.logSevere(e.getMessage());
 				 e.printStackTrace();
 				 isCopied = false;
-			}
-			 
+			} 
 		 }
 		 
 		 return isCopied;
