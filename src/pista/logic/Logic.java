@@ -754,15 +754,19 @@ public class Logic {
 		extractedTask.setCategory(Constants.TASK_DEADLINE);
 		return extractedTask;
 	}
-
-	/*
-	 * if the edited enddate and end time is greater than the previous reminder, a new reminder will be set.
-	 * new reminder is obtained by subracting the difference from the current endMS.
+	
+	/**	This method edits the reminder of a Task
+	 * 	if the newly edited enddate and end time is earlier than the previous, a new reminder will be set.
+	 * 	new reminder is obtained by subracting the difference from the initial endMS.
 	 * difference is obtained from initial endMS - initial remindMS 
-	 * */
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				Long - remindMS, endMS, differenceReminder, updatedEndMS
+	 * 				tokens - the new information to be updated	
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
 	private static Task changeReminderBasedOnDifference(Task extractedTask,
 			Long remindMS, Long endMS, Long differenceReminer, Long updatedEndMS) {
-		Long updatedRemindMS;
+		Long updatedRemindMS = 0L;
 		if(updatedEndMS != endMS){
 			updatedRemindMS = updatedEndMS - differenceReminer;
 			if(remindMS >= updatedEndMS) {
@@ -772,6 +776,11 @@ public class Logic {
 		return extractedTask;
 	}
 
+	/**	This method edits the information of a deadline Task
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String array - parameters
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
 	private static Task setFieldsInDeadline(Task extractedTask, String[] tokens) {
 		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);
 		extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);
@@ -780,6 +789,12 @@ public class Logic {
 		return extractedTask;
 	}
 
+	/**	This method does the conversion of a Timed task to Deadline task
+	 * by resetting the necessary fields 
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String - task's category
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
 	private static Task resetFieldsFromTimedToDeadline(Task extractedTask,
 			String taskCategory) {
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
@@ -790,6 +805,11 @@ public class Logic {
 		return extractedTask;
 	}
 
+	/**	This method edits the information of a deadline Task
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String array - parameters
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
 	private static Task editFloatingTask(Task extractedTask, String title) {
 		String taskCategory = extractedTask.getCategory();
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
@@ -800,6 +820,12 @@ public class Logic {
 		return extractedTask;
 	}
 
+	/**	This method does the conversion of a Timed/Deadline task to floating task
+	 * by resetting the necessary fields 
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String - task's category
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
 	private static Task resetFieldsFloating(Task extractedTask,
 			String taskCategory) {
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE) 
