@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
@@ -544,26 +546,55 @@ public class Storage {
 		 FileChannel inputChannel = null;
 		 FileChannel outputChannel = null;
 		 
+		 InputStream input = null;
+		 OutputStream output = null;
+
+
 		 try{
-			 inputChannel = new FileInputStream(sourceFilePath).getChannel();
-			 outputChannel = new FileOutputStream(destinationFilePath).getChannel();
+			 File inputFile = new File(sourceFilePath);
+			 File outputFile = new File(destinationFilePath);
+			 
+			 /*
+			 
+			 inputChannel = new FileInputStream(inputFile).getChannel();
+			 outputChannel = new FileOutputStream(outputFile, false).getChannel();
 			 
 			 outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-			 
+			 */
+			 input = new FileInputStream(inputFile);
+	         output = new FileOutputStream(outputFile);
+	 
+	         byte[] buf = new byte[1024];
+	 
+	         int bytesRead;
+	 
+	         while ((bytesRead = input.read(buf)) > 0) {
+	        	 output.write(buf, 0, bytesRead);
+	         }
+
+	         input.close();
+	         output.close();
+	         
 			 isCopied = true;
 		 }catch(IOException e){
 			 mLog.logSevere(e.getMessage());
 			 e.printStackTrace();
 			 isCopied = false;
-		 }finally{
+		 //}finally{
+			 
+			 /*
 			 try {
 				inputChannel.close();
 				outputChannel.close();
+				inputChannel = null;
+				outputChannel = null;
 			} catch (IOException e) {
 				mLog.logSevere(e.getMessage());
 				 e.printStackTrace();
 				 isCopied = false;
 			} 
+			*/
+			 
 		 }
 		 
 		 return isCopied;

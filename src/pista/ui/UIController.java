@@ -88,7 +88,9 @@ public class UIController {
 	
 	private boolean isValidFilePath = false;
 	private boolean isFileCreated = false;
+	private boolean isCopied = false;
 	private boolean isPrefSave = false;
+	
 	
 	//Objects
     @FXML
@@ -694,13 +696,14 @@ public class UIController {
 	}
 
 	private void initPopOverSetting(){
+		final Label lblSettingTitle = new Label("Setting");
+		final Label lblCurrentFileLocationTitle = new Label("Current File Location");
+		final Label lblCurrentFileLocation = new Label("");
 		final Label lblMessage = new Label();
-		final TextField txtBoxCurrentDirectory = new TextField();
+		//final TextField txtBoxCurrentDirectory = new TextField();
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
-		Label lblSettingTitle = new Label("Setting");
-		Label lblCurrentFileLocationTitle = new Label("Current File Location");
-		Label lblCurrentFileLocation = new Label("");
+		
 
 		//Label lblOpen = new Label("Open Current File");	
 		
@@ -738,7 +741,7 @@ public class UIController {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
 				
 				//Hide popver message
-				setPopOverLabelMessageVisible(lblMessage, false, false);
+				//setPopOverLabelMessageVisible(lblMessage, false, false);
 
 				try{
 					String newPath = openFile(currentFileDir);
@@ -749,7 +752,7 @@ public class UIController {
 						isFileCreated = Logic.checkFileDuringSave(newPath);
 
 						if(isFileCreated){
-							String status = Constants.UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
+							String status = Constants.UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE.replace("[new_file_path]", newPath);
 							setTextStatus(status);
 						}else{
 							//logging
@@ -758,21 +761,22 @@ public class UIController {
 
 						isPrefSave = setPreferenceFilePath(newPath); //save preferences
 						if(!isPrefSave){ //unable to save
-							setTextStatus(Constants.UI_STATUS_FAIL_TO_SAVE);
+							setTextStatus(Constants.UI_STATUS_FAIL_PREFERENCE_SAVE);
 
 						}else{ //saved successfully
 							mStorage.setDataFolderLocation(newPath); //set new path to storage
 							initTaskListInListView(); //refresh the listview 
+							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
 
 						//Label message
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
-						setPopOverLabelMessageVisible(lblMessage, true, true);
+						//setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
+						//setPopOverLabelMessageVisible(lblMessage, true, true);
 						
 					}else{
-						setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
-						setPopOverLabelMessageVisible(lblMessage, false, true); //set to red and display
+						//setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
+						//setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
+						//setPopOverLabelMessageVisible(lblMessage, false, true); //set to red and display
 					}
 				}catch(AssertionError e){
 					//log
@@ -796,44 +800,31 @@ public class UIController {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
 				
 				//Hide popver message
-				setPopOverLabelMessageVisible(lblMessage, false, false);
+				//setPopOverLabelMessageVisible(lblMessage, false, false);
 				
 				try{
 					String newPath = saveAsFile(currentFileDir);
-
-					/*
-					isValidFilePath = Logic.checkFileBeforeSave(newPath);
-					if(isValidFilePath){
-						//setTextFieldText(txtBoxCurrentDirectory, newPath);
-						isFileCreated = Logic.checkFileDuringSave(newPath);
-
-						if(isFileCreated){
-							String status = Constants.UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
-							setTextStatus(status);
-						}else{
-							//logging
-							setTextStatus(Constants.UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
-						}
-
+System.out.println("currentFileDir - " + currentFileDir);
+System.out.println("newPath - " + newPath);
+					isCopied = Logic.copyFile(currentFileDir, newPath);
+//System.out.println("isCopied - " + isCopied);
+					if(isCopied){
+						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_SAVE_AS_MESSAGE.replace("[new_file_path]", newPath));
+						
 						isPrefSave = setPreferenceFilePath(newPath); //save preferences
 						if(!isPrefSave){ //unable to save
-							setTextStatus(Constants.UI_STATUS_FAIL_TO_SAVE);
+							setTextStatus(Constants.UI_STATUS_FAIL_PREFERENCE_SAVE);
 
 						}else{ //saved successfully
 							mStorage.setDataFolderLocation(newPath); //set new path to storage
 							initTaskListInListView(); //refresh the listview 
+							
+							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
-
-						//Label message
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
-						setPopOverLabelMessageVisible(lblMessage, true, true);
 						
 					}else{
-						setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
-						setPopOverLabelMessageVisible(lblMessage, false, true); //set to red and display
+						setTextStatus(Constants.UI_STATUS_FAIL_FILE_SAVE_AS_MESSAGE);
 					}
-					*/
 					
 				}catch(AssertionError e){
 					//log
@@ -843,74 +834,9 @@ public class UIController {
 					e.printStackTrace();
 				}
 				
-				
 				mPopOverSetting.setAutoHide(true); //set hide to true again after browsing
 			}
-		});
-		
-		
-		/*
-		//Button save
-		btnSave.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
-		btnSave.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
-		btnSave.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				//do save setting
-				boolean isFileCreated = false;
-				boolean isPrefSave = false;
-
-				String newPath = getTextFieldText(txtBoxCurrentDirectory); 
-
-				if(isValidFilePath){ //check valid during the browse stage	
-					try{
-						isFileCreated = Logic.checkFileDuringSave(newPath);
-
-						if(isFileCreated){
-							String status = Constants.UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
-							setTextStatus(status);
-						}else{
-							//logging
-							setTextStatus(Constants.UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
-						}
-
-						isPrefSave = setPreferenceFilePath(newPath); //save preferences
-
-						if(!isPrefSave){ //unable to save
-							setTextStatus(Constants.UI_STATUS_FAIL_TO_SAVE);
-
-						}else{ //saved successfully
-							mStorage.setDataFolderLocation(newPath); //set new path to storage
-							initTaskListInListView(); //refresh the listview 
-						}
-
-						//Label message
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
-						setPopOverLabelMessageVisible(lblMessage, true, true);
-
-					}catch(AssertionError e){
-						//log
-						e.printStackTrace();
-						setTextStatus(Constants.UI_STATUS_EMPTY_XML_FILE_PATH_MESSAGE);
-						//Label message
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAILED_SETTING_MESSAGE);
-						setPopOverLabelMessageVisible(lblMessage, false, true);
-
-					}catch(Exception e){
-						//log
-						e.printStackTrace();
-						setTextStatus(Constants.UI_STATUS_APPLICATION_ERROR_MESSAGE);
-						//Label message
-						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAILED_SETTING_MESSAGE);
-						setPopOverLabelMessageVisible(lblMessage, false, true);
-					}//end try
-
-				}//end isValidFilePath
-
-			}//end handle
-		});
-*/
-		
+		});		
 
 		//label setting title
 		lblSettingTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TITLE);
@@ -1198,6 +1124,10 @@ public class UIController {
 		txt.setText(str);
 	}
 
+	private void setPopOverLabelText(Label lbl, String msg){
+		lbl.setText(msg);
+	}
+		
 	private void setPopOverLabelMessageText(Label lbl, String msg){
 		lbl.setText(msg);
 	}

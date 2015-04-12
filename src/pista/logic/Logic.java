@@ -195,6 +195,16 @@ public class Logic {
 		return isCreated;
 	}
 	
+	/**This method is to copy file from source file to destination file
+	 * Parameters:	src - source file path
+	 * Return:		dest - destination file path
+	 * **/
+	public static boolean copyFile(String src, String dest){
+		boolean isCopied = false;
+		isCopied = mStorage.copyFile(src, dest);
+		return isCopied;
+	}
+	
 	/**This method is to process the information of a Task and construct a string
 	 * based on that. Return the string when it is done. This is for autocomplete during
 	 * editting.

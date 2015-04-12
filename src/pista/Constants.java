@@ -89,9 +89,11 @@ public class Constants {
 	public static final String UI_STATUS_INVALID_XML_FILE_PATH_MESSAGE  = "Either your file is not empty or invalid format.";
 	public static final String UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE = "Failed to load selected file.";
 	public static final String UI_STATUS_FAIL_TO_SAVE_DUE_TO_INVALID_FILE_MESSAGE = "Please ensure your file is valid before saving.";
-	public static final String UI_STATUS_FAIL_TO_SAVE = "Unable to save setting. Please try again.";
+	public static final String UI_STATUS_FAIL_PREFERENCE_SAVE = "Unable to save setting. Please try again.";
 	public static final String UI_STATUS_APPLICATION_ERROR_MESSAGE = "Application error. Please contact the administrator";
-	public static final String UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE = "[new_file_path] is loaded.";
+	public static final String UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE = "[new_file_path] is loaded.";
+	public static final String UI_STATUS_SUCCESS_FILE_SAVE_AS_MESSAGE = "Tasks are saved in [new_file_path].";
+	public static final String UI_STATUS_FAIL_FILE_SAVE_AS_MESSAGE = "Unable to save tasks in [new_file_path]. Please try again.";
 	
 	/*----- Alarm -----*/ 
 	public static final String UI_ALARM_LOCATION = "/bin/sounds/alarm.mp3";
