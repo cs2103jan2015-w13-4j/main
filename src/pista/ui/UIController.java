@@ -86,7 +86,9 @@ public class UIController {
 	private String userInput = null;
 	private String searchKeyword = null;
 	
-	private boolean isValidFilePath;
+	private boolean isValidFilePath = false;
+	private boolean isFileCreated = false;
+	private boolean isPrefSave = false;
 	
 	//Objects
     @FXML
@@ -697,8 +699,13 @@ public class UIController {
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
 		Label lblSettingTitle = new Label("Setting");
-		Label lblCurrentDirectory = new Label("Current Directory");		
-		Button btnBrowse = new Button("Browse");
+		Label lblCurrentFileLocationTitle = new Label("Current File Location");
+		Label lblCurrentFileLocation = new Label("");
+
+		//Label lblOpen = new Label("Open Current File");	
+		
+		Button btnOpenFileBrowse = new Button("Open");
+		Button btnSaveAsFileBrowse = new Button("Save As");
 		Button btnSave = new Button("Save All Settings");
 
 		double txtDirectoryWidth = 380.0;
@@ -710,29 +717,57 @@ public class UIController {
 		//Get current file location from preference
 		final String currentFileDir = mPrefs.getPreferenceFileLocation();
 
+		if(!(currentFileDir.isEmpty() || currentFileDir == "")){
+			lblCurrentFileLocation.setText(mPrefs.getPreferenceFileLocation());
+		}
+		
+		
+		
+		
 		//Textbox directory
-		txtBoxCurrentDirectory.setPrefWidth(txtDirectoryWidth);
-		txtBoxCurrentDirectory.setEditable(false);
-		setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
+		//txtBoxCurrentDirectory.setPrefWidth(txtDirectoryWidth);
+		//txtBoxCurrentDirectory.setEditable(false);
+		//setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
 
 		//Button browse
-		btnBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
-		btnBrowse.setPrefWidth(btnBrowseWidth);
-		btnBrowse.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() { //button browse click
+		btnOpenFileBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
+		btnOpenFileBrowse.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
+		btnOpenFileBrowse.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() { //button browse click
 			@Override
 			public void handle(ActionEvent event) {
-				//browse for file
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
-
+				
 				//Hide popver message
 				setPopOverLabelMessageVisible(lblMessage, false, false);
 
 				try{
-					String newPath = chooseFile(currentFileDir);
+					String newPath = openFile(currentFileDir);
 
 					isValidFilePath = Logic.checkFileBeforeSave(newPath);
 					if(isValidFilePath){
-						setTextFieldText(txtBoxCurrentDirectory, newPath);
+						//setTextFieldText(txtBoxCurrentDirectory, newPath);
+						isFileCreated = Logic.checkFileDuringSave(newPath);
+
+						if(isFileCreated){
+							String status = Constants.UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
+							setTextStatus(status);
+						}else{
+							//logging
+							setTextStatus(Constants.UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
+						}
+
+						isPrefSave = setPreferenceFilePath(newPath); //save preferences
+						if(!isPrefSave){ //unable to save
+							setTextStatus(Constants.UI_STATUS_FAIL_TO_SAVE);
+
+						}else{ //saved successfully
+							mStorage.setDataFolderLocation(newPath); //set new path to storage
+							initTaskListInListView(); //refresh the listview 
+						}
+
+						//Label message
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
+						setPopOverLabelMessageVisible(lblMessage, true, true);
 						
 					}else{
 						setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
@@ -752,6 +787,69 @@ public class UIController {
 		});
 
 
+		//Button Save As 
+		btnSaveAsFileBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
+		btnSaveAsFileBrowse.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
+		btnSaveAsFileBrowse.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
+				
+				//Hide popver message
+				setPopOverLabelMessageVisible(lblMessage, false, false);
+				
+				try{
+					String newPath = saveAsFile(currentFileDir);
+System.out.println(newPath);
+					/*
+					isValidFilePath = Logic.checkFileBeforeSave(newPath);
+					if(isValidFilePath){
+						//setTextFieldText(txtBoxCurrentDirectory, newPath);
+						isFileCreated = Logic.checkFileDuringSave(newPath);
+
+						if(isFileCreated){
+							String status = Constants.UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
+							setTextStatus(status);
+						}else{
+							//logging
+							setTextStatus(Constants.UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
+						}
+
+						isPrefSave = setPreferenceFilePath(newPath); //save preferences
+						if(!isPrefSave){ //unable to save
+							setTextStatus(Constants.UI_STATUS_FAIL_TO_SAVE);
+
+						}else{ //saved successfully
+							mStorage.setDataFolderLocation(newPath); //set new path to storage
+							initTaskListInListView(); //refresh the listview 
+						}
+
+						//Label message
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
+						setPopOverLabelMessageVisible(lblMessage, true, true);
+						
+					}else{
+						setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
+						setPopOverLabelMessageVisible(lblMessage, false, true); //set to red and display
+					}
+					*/
+					
+				}catch(AssertionError e){
+					//log
+					e.printStackTrace();
+				}catch(Exception e){
+					//log
+					e.printStackTrace();
+				}
+				
+				
+				mPopOverSetting.setAutoHide(true); //set hide to true again after browsing
+			}
+		});
+		
+		
+		/*
 		//Button save
 		btnSave.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
 		btnSave.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
@@ -811,7 +909,8 @@ public class UIController {
 
 			}//end handle
 		});
-
+*/
+		
 
 		//label setting title
 		lblSettingTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TITLE);
@@ -821,15 +920,17 @@ public class UIController {
 
 		vBox.setPadding(new Insets(5,10,5,10)); //set Padding
 		vBox.getChildren().add(lblSettingTitle);
-		vBox.getChildren().add(lblCurrentDirectory);
+		vBox.getChildren().add(lblCurrentFileLocationTitle);
+		vBox.getChildren().add(lblCurrentFileLocation);
+		vBox.getChildren().add(btnOpenFileBrowse);
+		vBox.getChildren().add(btnSaveAsFileBrowse);
 
-		hBox = new HBox(4);
-		HBox.setMargin(txtBoxCurrentDirectory, new Insets(2,0,0,0));
-		hBox.getChildren().add(txtBoxCurrentDirectory); //Text box current directory
-		hBox.getChildren().add(btnBrowse); //Button browse
-
-		vBox.getChildren().add(hBox); //each horizontal boxes
-		vBox.getChildren().add(btnSave); //Button save
+		//hBox = new HBox(4);
+		//HBox.setMargin(txtBoxCurrentDirectory, new Insets(2,0,0,0));
+		//hBox.getChildren().add(txtBoxCurrentDirectory); //Text box current directory
+		//hBox.getChildren().add(btnOpenFileBrowse); //Button browse
+		//vBox.getChildren().add(hBox); //each horizontal boxes
+		//vBox.getChildren().add(btnSave); //Button save
 		vBox.getChildren().add(lblMessage); //Label message (red or green)
 
 		vBox.setPrefSize(Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_SETTING_HEIGHT);
@@ -1109,7 +1210,8 @@ public class UIController {
 		setPopOverLabelMessageVisible(lbl, false, false);
 	}
 
-	private String chooseFile(String oldPath){
+	
+	private String openFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
 				"XML files (*.xml)", "*.xml");
@@ -1117,7 +1219,7 @@ public class UIController {
 		fileChooser.setInitialDirectory(new File(getUserDesktopDirectory())); //set init directory
 
 		File file = fileChooser.showOpenDialog(null);
-
+		
 		if(file != null){
 			if (!file.getPath().endsWith(".xml")) {
 				file = new File(file.getPath() + ".xml");
@@ -1128,7 +1230,27 @@ public class UIController {
 		return oldPath;
 	}
 	
-	
+	private String saveAsFile(String oldPath){
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+				"XML files (*.xml)", "*.xml");
+		fileChooser.getExtensionFilters().add(extFilter);
+		fileChooser.setInitialDirectory(new File(getUserDesktopDirectory())); //set init directory
+
+		File file = fileChooser.showSaveDialog(null);
+		
+		if(file != null){
+			if (!file.getPath().endsWith(".xml")) {
+				file = new File(file.getPath() + ".xml");
+			}
+			return file.getPath();
+		}
+
+		return oldPath;
+		
+	}
+
+	/*
 	private String chooseDirectory(String oldPath){
 		DirectoryChooser mDirectoryChooser = new DirectoryChooser();
 		mDirectoryChooser.setInitialDirectory(new File(getUserDesktopDirectory()));
@@ -1142,6 +1264,7 @@ public class UIController {
 		return oldPath;
 		
 	}
+	*/
 	
 
 	private String getUserDesktopDirectory(){

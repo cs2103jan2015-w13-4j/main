@@ -80,12 +80,12 @@ public class CustomPreferences {
 	}
 	
 	public boolean setPreferenceFileLocation(String value){
-		boolean isSet = this.savePreference(Constants.PREFERENCE_XML_FILE_LOCATION_NODE, value);
+		boolean isSet = this.savePreference(Constants.PREFERENCE_XML_FILE_LOCATION, value);
 		return isSet;
 	}
 	
 	public String getPreferenceFileLocation(){
-		String value = this.getPreferenceStringValue(Constants.PREFERENCE_XML_FILE_LOCATION_NODE);
+		String value = this.getPreferenceStringValue(Constants.PREFERENCE_XML_FILE_LOCATION);
 		return value;
 	}
 	
