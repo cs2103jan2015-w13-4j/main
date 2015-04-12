@@ -552,7 +552,6 @@ public class Storage {
 		 data_folder_location = location;
 	 }
 	 
-	 
 	 public boolean copyFile(String sourceFilePath, String destinationFilePath){
 		 try{
 			 

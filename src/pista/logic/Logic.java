@@ -951,20 +951,6 @@ public class Logic {
 		return false;
 	}
 
-<<<<<<< HEAD
-=======
-	/** This method is to overwrite the File at the given file path
-	 * Parameters:	newFilePath - the file path of the file to be overwritten
-	 * Return:		boolean - true if the file is overwritten, false otherwise
-	 * **/
-	private boolean overwriteFile(String newFilePath){
-		mStorage.initTaskList();
-		mStorage.setDataFolderLocation(newFilePath);
-		boolean isOverwrite = mStorage.overwriteNewXmlFile(newFilePath);
-		return isOverwrite;
-	}
-	
->>>>>>> origin/master
 	/** This method is to load the existing file at the given file path to the Storage
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file loaded successfully, false otherwise
