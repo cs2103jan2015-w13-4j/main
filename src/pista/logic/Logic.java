@@ -207,7 +207,7 @@ public class Logic {
 	
 	/**This method is to process the information of a Task and construct a string
 	 * based on that. Return the string when it is done. This is for autocomplete during
-	 * editting.
+	 * editing.
 	 * Parameters:	index - the index of the task
 	 * Return:		finalStr - the String that is constructed using the information of the given Task
 	 * **/

@@ -40,7 +40,11 @@ public class MainParser {
 	 * [0] - command type
 	 * [1] - parameter in string 
 	 * */
-
+	
+	/**This method is the main method that use to validate the input provided by the user
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		mp - a MainParser object that contains the message of validity.
+	 * **/
 	public static MainParser validateInput(String input) {
 		MainParser mp = new MainParser();
 		if (isEmptyString(input)) {
