@@ -92,7 +92,7 @@ public class Logic {
 	 * 				tokens - information provided by the user
 	 * Return: 		output - String that reflects the status of the operation
 	 * **/
-	public static String runCommand(String command, String[] tokens) {
+	public String runCommand(String command, String[] tokens) {
 		String output = "";
 		switch(command) {
 		case Constants.VALUE_ADD:
@@ -139,7 +139,7 @@ public class Logic {
 	/**This method is to load the Storage 
 	 * return the String to indicate if the load is successful or fail
 	 * **/
-	public static String load(){
+	public String load(){
 		if(mStorage.load()){
 			return Constants.LOGIC_SUCCESS_LOAD_XML;
 		}else{
@@ -150,11 +150,11 @@ public class Logic {
 	/**This method is to get the Storage list containing all the task
 	 * return an ArrayList<Task> 
 	 * **/
-	public static ArrayList<Task> getStorageList(){
+	public ArrayList<Task> getStorageList(){
 		return mStorage.getTaskList();
 	}
 	
-	public static void reorderStorageList(){
+	public void reorderStorageList(){
 		list(currentSortType);
 		reorderID();
 	}
@@ -165,7 +165,7 @@ public class Logic {
 	 * Parameters:	newFilePath - the path of the file 
 	 * Return:		boolean
 	 * **/
-	public static boolean checkFileBeforeSave(String newFilePath){
+	public boolean checkFileBeforeSave(String newFilePath){
 		if(!validateIsFileExist(newFilePath)){
 			return false;
 		}
@@ -183,7 +183,7 @@ public class Logic {
 	 * Parameters:	newFilePath - the path of the file
 	 * Return:		boolean - status if the file is empty or not
 	 * **/
-	public static boolean checkFileDuringSave(String newFilePath){
+	public boolean checkFileDuringSave(String newFilePath){
 		boolean isCreated = false;
 
 		if(mStorage.isFileEmpty(newFilePath)){ //if empty, overwrite new xml format 
@@ -213,7 +213,7 @@ public class Logic {
 	 * 				dest - destination file path
 	 * Return:		isCopied - true or false
 	 * **/
-	public static boolean copyFile(String src, String dest){
+	public boolean copyFile(String src, String dest){
 		boolean isCopied = false;
 		isCopied = mStorage.copyFile(src, dest);
 		return isCopied;
@@ -221,12 +221,12 @@ public class Logic {
 	
 	/**This method is to process the information of a Task and construct a string
 	 * based on that. Return the string when it is done. This is for autocomplete during
-	 * editting.
+	 * editing.
 	 * Parameters:	index - the index of the task
 	 * Return:		finalStr - the String that is constructed using the information of the given Task
 	 * **/
-	public static String processTaskInfo(int index){
-		Task t = Logic.getTaskByIndex(index);
+	public String processTaskInfo(int index){
+		Task t = getTaskByIndex(index);
 		String finalStr = "";
 		if ( t!= null ){
 			String title = t.getTitle();
@@ -251,7 +251,7 @@ public class Logic {
 	/**This method is to add the command executed by the user to the history
 	 * Parameters:	s - the command executed by the user
 	 * **/
-	public static void storeToHistory(String s){
+	public void storeToHistory(String s){
 		mStorage.getHistoryList().add(s);
 	}
 
@@ -259,7 +259,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains information of the new Task
 	 * Return:		String - the status of the operation
 	 * **/
-	private static String add(String[] tokens){
+	private String add(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
 		boolean isAddedToStorage = false;
 		boolean isAddedToArray = false;
@@ -286,7 +286,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains new information to be updated
 	 * Return:		String - the status of the operation
 	 * **/
-	private static String edit(String[] tokens){
+	private String edit(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
 		int taskId=Integer.parseInt(tokens[0]);
 		if(isTaskInList(taskId)){
@@ -315,7 +315,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains the ID of the Task need to be deleted or "a" means all
 	 * Return:		String - the status of the operation
 	 * **/
-	private static String delete(String[] tokens){
+	private String delete(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
 		String input = tokens[0];
 		if(input.equalsIgnoreCase("a")){
@@ -362,7 +362,7 @@ public class Logic {
 	/**This method is to undo the last action done by the user
 	 * Return:		String - the status of the operation
 	 * **/
-	private static String undo(){
+	private String undo(){
 		if(!undoList.isEmpty()){
 			ArrayList<Task> currentState = getCurrentState();
 			saveToRedo(currentState);
@@ -377,7 +377,7 @@ public class Logic {
 	/**This method is to redo the last undone action
 	 * Return:		String - the status of the operation
 	 * **/
-	private static String redo(){
+	private String redo(){
 		if(!redoList.isEmpty()){
 			ArrayList<Task> currentState = getCurrentState();
 			saveToUndo(currentState);
@@ -393,7 +393,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains the ID of the Task and the status you want to mark it with
 	 * Return:		String - the status of the operation
 	 * **/
-	private static String mark(String[] tokens){ 
+	private String mark(String[] tokens){ 
 		ArrayList<Task> currentState = getCurrentState();
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
@@ -415,80 +415,80 @@ public class Logic {
 	
 	/**This method is to sort the Storage using the default sort
 	 * **/
-	private static void sortOverView(){
+	private void sortOverView(){
 		ComparatorTask comparatorTask = new ComparatorTask();
 		Collections.sort(mStorage.getTaskList(), comparatorTask);
 	}
 	
 	/**This method is to sort the Storage by ascending title of Task
 	 * **/
-	private static void sortTitleAscending(){
+	private void sortTitleAscending(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.titleComparator);
 	}
 
 	/**This method is to sort the Storage by the type of Task
 	 * **/
-	private static void sortTypeOfTask(){
+	private void sortTypeOfTask(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.taskCategoryComparator);
 	}
 
 	/**This method is to sort the Storage by descending title of ask
 	 * **/
-	private static void sortTitleDescending(){
+	private void sortTitleDescending(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.titleComparator));
 	}
 
 	/**This method is to sort the Storage by the Done or Undone status. Undone before Done
 	 * **/
-	private static void sortIsDoneUndone(){
+	private void sortIsDoneUndone(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.isDoneComparator);
 	}
 
 	/**This method is to sort the Storage by the Done or Undone status. Done before Undone
 	 * **/
-	private static void sortIsDoneCompleted(){
+	private void sortIsDoneCompleted(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.isDoneComparator));
 	}
 
 	/**This method is to sort the Storage by ascending start date of Task
 	 * **/
-	private static void sortAscendingStartDate(){
+	private void sortAscendingStartDate(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.startDateComparator);
 	}
 
 	/**This method is to sort the Storage by descending start date of Task
 	 * **/
-	private static void sortDescendingStartDate(){
+	private void sortDescendingStartDate(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.descendingStartDateComparator));
 	}
 	
 	/**This method is to sort the Storage by ascending end date of Task
 	 * **/
-	private static void sortAscendingEndDate(){
+	private void sortAscendingEndDate(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.endDateComparator);
 	}
 
 	/**This method is to sort the Storage by descending end date of Task
 	 * **/
-	private static void sortDescendingEndDate(){
+	private void sortDescendingEndDate(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.endDateComparator));
 	}
 
 	/**This method is to sort the Storage by ascending priority of Task
 	 * **/
-	private static void sortAscendingPriority(){
+	private void sortAscendingPriority(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.priorityComparator));
 	}
 
 	/**This method is to sort the Storage by descending priority of Task
 	 * **/
-	private static void sortDescendingPriority(){
+	private void sortDescendingPriority(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
 	}
 	
 	/**This method is to open help guide
 	 * **/
-	private static String help(){
+	private String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
 
@@ -496,7 +496,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array contains type of sort the user want to sort the view by
 	 * Return:		message - the message to show the type of sort has been implemented
 	 * **/
-	private static String list(String[] tokens){ 
+	private String list(String[] tokens){ 
 		String sortType=tokens[0];
 		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
 		/*if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
@@ -534,7 +534,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains the ID of the Task and the level of priority the user want to set to that Task
 	 * Returns:		String - the status of the operation
 	 * **/
-	private static String priority(String[] tokens){
+	private String priority(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		if(taskIndex != -1){
@@ -554,7 +554,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains the ID of the task the user want to set the reminder to
 	 * Return:		String - a status of the operation
 	 * **/
-	private static String reminder(String[] tokens){
+	private String reminder(String[] tokens){
 		ArrayList<Task> currentState = getCurrentState();
 		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
 		long reminderMS = 0L;
@@ -596,7 +596,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array that contains the file location
 	 * Returns:		String - status of the operation
 	 * **/
-	private static String set(String[] tokens){
+	private String set(String[] tokens){
 		boolean isValidFile = false;
 		boolean isFileLoaded = false;
 		boolean isPrefSave = false;
@@ -627,7 +627,7 @@ public class Logic {
 	 * Parameters:	id - the ID of the Task 
 	 * Return:		Integer - the Task index in the Storage or -1 if not found
 	 * **/
-	private static Integer findTaskIndex(int id){
+	private Integer findTaskIndex(int id){
 		for (int i = 0;i < mStorage.getTaskList().size();i++){
 			if(mStorage.getTaskList().get(i).getID() == id){
 				return i;
@@ -638,14 +638,14 @@ public class Logic {
 	
 	/**This method is to clear everything in the Storage
 	 * **/
-	private static void clearList(){
+	private void clearList(){
 		mStorage.getTaskList().clear();
 	}
 
 	/**This method is to add the Task to the Storage
 	 * Parameters:	task - the Task to add into the Storage
 	 * **/
-	private static boolean addTaskToTaskArrayList(Task task){
+	private boolean addTaskToTaskArrayList(Task task){
 		if(mStorage.getTaskList().add(task)){
 			return true;
 		}else{
@@ -660,7 +660,7 @@ public class Logic {
 	 * 				category - the type of Task 
 	 * Return:		inputArray - the formated Array
 	 * **/
-	private static String[] formatArray(String[] inputArray, String category){
+	private String[] formatArray(String[] inputArray, String category){
 		if(category.equals("timed")){
 			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
 			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
@@ -677,7 +677,7 @@ public class Logic {
 	 * Parameters:	inputArray - the information of the new Task
 	 * Return:		newTask - the new Task that has been constructed using the information
 	 * **/
-	private static Task constructNewTask(String[] inputArray){
+	private Task constructNewTask(String[] inputArray){
 		Task newTask = null;
 
 		String[] newArray = new String[Constants.ARRAY_SIZE];
@@ -706,7 +706,7 @@ public class Logic {
 	 * 				tokens - the new information to be updated
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task editTimedTask(Task extractedTask, String[] tokens) {
+	private Task editTimedTask(Task extractedTask, String[] tokens) {
 		Long remindMS = extractedTask.getReminder();
 		Long endMS = extractedTask.getEndMilliseconds();
 		Long differenceReminer = endMS - remindMS;
@@ -728,7 +728,7 @@ public class Logic {
 	 * 				tokens - an Array that contains the new information
 	 * Return:		extractedTask - the Task with updated information
 	 * **/
-	private static Task setFieldsInTimed(Task extractedTask, String[] tokens) {
+	private Task setFieldsInTimed(Task extractedTask, String[] tokens) {
 		extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
 		extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
 		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3	
@@ -748,7 +748,7 @@ public class Logic {
 	 * 				tokens - the new information to be updated	
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task editDeadlineTask(Task extractedTask, String[] tokens) {
+	private Task editDeadlineTask(Task extractedTask, String[] tokens) {
 		String taskCategory = extractedTask.getCategory();
 		Long remindMS = extractedTask.getReminder();
 		Long endMS = extractedTask.getEndMilliseconds();
@@ -777,7 +777,7 @@ public class Logic {
 	 * 				tokens - the new information to be updated	
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task changeReminderBasedOnDifference(Task extractedTask,
+	private Task changeReminderBasedOnDifference(Task extractedTask,
 			Long remindMS, Long endMS, Long differenceReminer, Long updatedEndMS) {
 		Long updatedRemindMS = 0L;
 		if(updatedEndMS != endMS){
@@ -794,7 +794,7 @@ public class Logic {
 	 * 				String array - parameters
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task setFieldsInDeadline(Task extractedTask, String[] tokens) {
+	private Task setFieldsInDeadline(Task extractedTask, String[] tokens) {
 		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);
 		extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);
 		extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]
@@ -808,7 +808,7 @@ public class Logic {
 	 * 				String - task's category
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task resetFieldsFromTimedToDeadline(Task extractedTask,
+	private Task resetFieldsFromTimedToDeadline(Task extractedTask,
 			String taskCategory) {
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
 			extractedTask.setStartDate("");
@@ -823,7 +823,7 @@ public class Logic {
 	 * 				String array - parameters
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task editFloatingTask(Task extractedTask, String title) {
+	private Task editFloatingTask(Task extractedTask, String title) {
 		String taskCategory = extractedTask.getCategory();
 		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
 			extractedTask.setTitle(title);
@@ -839,7 +839,7 @@ public class Logic {
 	 * 				String - task's category
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private static Task resetFieldsFloating(Task extractedTask,
+	private Task resetFieldsFloating(Task extractedTask,
 			String taskCategory) {
 		if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE) 
 				|| taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
@@ -859,7 +859,7 @@ public class Logic {
 	 * Parameters:	taskIndex - the index in the Storage that the Task will be added to
 	 * 				extractedTask - the Task that will be insert inside the Storage
 	 * **/
-	private static void reInsertTaskInToList(int taskIndex, Task extractedTask) {
+	private void reInsertTaskInToList(int taskIndex, Task extractedTask) {
 		mStorage.getTaskList().remove(taskIndex);
 		mStorage.getTaskList().add(extractedTask);
 		mStorage.save();
@@ -869,7 +869,7 @@ public class Logic {
 	 * Parameters:	taskId - the ID of the Task
 	 * Return:		boolean - true if found, false otherwise
 	 * **/
-	private static boolean isTaskInList(int taskId){
+	private boolean isTaskInList(int taskId){
 		for(Task t: mStorage.getTaskList()){
 			if(t.getID()==taskId){
 				return true;
@@ -882,7 +882,7 @@ public class Logic {
 	 * Parameters:	date - the date value that need to be converted
 	 * 				time - the time value that need to be converted
 	 * **/
-	private static long convertDateToMillisecond(String date, String time){
+	private long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy HH:mm");
@@ -907,7 +907,7 @@ public class Logic {
 	 * Parameters:	id - the ID of the Task
 	 * Return:		Task - the Task that matched the ID , return null if not found
 	 * **/
-	private static Task getTaskByIndex(int id){
+	private Task getTaskByIndex(int id){
 		int index = findTaskIndex(id);
 		if(isTaskInList(id)){
 			return mStorage.getTaskList().get(index);
@@ -921,7 +921,7 @@ public class Logic {
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file exists, false otherwise
 	 * **/
-	private static boolean validateIsFileExist(String newFilePath){
+	private boolean validateIsFileExist(String newFilePath){
 		if(!mStorage.isFileExist(newFilePath)){ //not exist
 			return false; //maybe file is deleted after choosing
 		}
@@ -932,7 +932,7 @@ public class Logic {
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file is emptys, false otherwise
 	 * **/
-	private static boolean validateIsFileEmpty(String newFilePath){
+	private boolean validateIsFileEmpty(String newFilePath){
 		if(mStorage.isFileEmpty(newFilePath)){
 			//create xml nodes and format into the file
 			return true;
@@ -944,18 +944,32 @@ public class Logic {
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file's format is correct, false otherwise
 	 * **/
-	private static boolean validateFileFormat(String newFilePath){
+	private boolean validateFileFormat(String newFilePath){
 		if(mStorage.isFileFormatValid(newFilePath)){ //if valid
 			return true;
 		}
 		return false;
 	}
 
+<<<<<<< HEAD
+=======
+	/** This method is to overwrite the File at the given file path
+	 * Parameters:	newFilePath - the file path of the file to be overwritten
+	 * Return:		boolean - true if the file is overwritten, false otherwise
+	 * **/
+	private boolean overwriteFile(String newFilePath){
+		mStorage.initTaskList();
+		mStorage.setDataFolderLocation(newFilePath);
+		boolean isOverwrite = mStorage.overwriteNewXmlFile(newFilePath);
+		return isOverwrite;
+	}
+	
+>>>>>>> origin/master
 	/** This method is to load the existing file at the given file path to the Storage
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file loaded successfully, false otherwise
 	 * **/
-	private static boolean loadExistingFile(String newFilePath){
+	private boolean loadExistingFile(String newFilePath){
 		//read file
 		mStorage.setDataFolderLocation(newFilePath);
 		boolean isLoaded = mStorage.load(); //load the file into tasklist	
@@ -966,7 +980,7 @@ public class Logic {
 	/** This method is to save the current state of the Storage the undoLIst
 	 * Parameters:	currState - the current state of the Storage
 	 * **/
-	private static void saveToUndo(ArrayList<Task> currState){
+	private void saveToUndo(ArrayList<Task> currState){
 		if(undoList.size() < 3){
 			undoList.add(currState);
 		}else{
@@ -978,7 +992,7 @@ public class Logic {
 	/** This method is to save the current state of the Storage the redoLIst
 	 * Parameters:	currState - the current state of the Storage
 	 * **/
-	private static void saveToRedo(ArrayList<Task> currState){
+	private void saveToRedo(ArrayList<Task> currState){
 		if(redoList.size() < 3){
 			redoList.add(currState);
 		}else{
@@ -989,14 +1003,14 @@ public class Logic {
 	
 	/** This method is to clear the redoList
 	 * **/
-	private static void clearRedo(){
+	private void clearRedo(){
 		redoList.clear();
 	}
 
 	/** This method is to update the redoList and undoList when new action is performed
 	 * Parameters:	s - the current state of the Storage
 	 * **/
-	private static void updateRedoAndUndo(ArrayList<Task> s){
+	private void updateRedoAndUndo(ArrayList<Task> s){
 		clearRedo();
 		saveToUndo(s);
 	}
@@ -1004,7 +1018,7 @@ public class Logic {
 	/** This method is to get the current state of the Storage
 	 * return currentState - the current state of the Storage
 	 * **/
-	private static ArrayList<Task> getCurrentState() {
+	private ArrayList<Task> getCurrentState() {
 		ArrayList<Task> currentState = new ArrayList<Task>(getStorageList());
 		return currentState;
 	}
@@ -1012,7 +1026,7 @@ public class Logic {
 	/** This method is to reorder the ID of the Task in the Storage to make the ID in a correct sequence based on
 	 * how the Task is being shown
 	 * **/
-	private static void reorderID() {
+	private void reorderID() {
 		for (int i = 0; i < mStorage.getTaskList().size(); i++) {
 			mStorage.getTaskList().get(i).setID(i+1);
 		}

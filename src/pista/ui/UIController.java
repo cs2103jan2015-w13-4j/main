@@ -69,7 +69,8 @@ public class UIController {
 	private CustomLogging mLog = null;
 	private CustomPreferences mPrefs = null;
 	private Storage mStorage;
-	
+	private Logic mLogic;
+
 	//Controls
 	private AnchorPane anchorPaneStartGuide;
 	private Button btnOkStartGuide = null;
@@ -81,20 +82,20 @@ public class UIController {
 	private Button btnUndo;
 	private PopOver mPopOverSetting = null;
 	private PopOver mPopOverAdd = null;
-	
+
 	private String userInput = null;
 	private String searchKeyword = null;
-	
+
 	private boolean isValidFilePath = false;
 	private boolean isFileCreated = false;
 	private boolean isCopied = false;
 	private boolean isPrefSave = false;
-	
-	
+
+
 	//Objects
-    @FXML
-    private StackPane mStackPane;
-    
+	@FXML
+	private StackPane mStackPane;
+
 	@FXML
 	private AnchorPane anchorPaneMain;
 
@@ -121,7 +122,7 @@ public class UIController {
 
 	@FXML
 	private ListView<Task> listviewTask;
-	
+
 	@FXML
 	void onHelp(ActionEvent event) {
 		showHelp(); //open help guide
@@ -131,17 +132,17 @@ public class UIController {
 	void onRefresh(ActionEvent event) {
 		this.initialize(); //initialize controls in UI
 	}
-	
+
 	@FXML
-    void onUIKeyPressed(KeyEvent event) { // UI listen key press
+	void onUIKeyPressed(KeyEvent event) { // UI listen key press
 		if (Constants.KEY_COMBINATION_HELP.match(event)){ //when pressed F1, show help
 			showHelp();
 		}
-		
+
 		if (Constants.KEY_COMBINATION_START_GUIDE.match(event)){ //when pressed F2, show start guide
 			initStartGuide();
 		}	
-    }
+	}
 
 	@FXML
 	public void initialize() {
@@ -151,6 +152,7 @@ public class UIController {
 		this.initReminder();
 		this.initMainParser();
 		this.initStorage();
+		this.initLogic();
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
 		this.initButtonRedo();
@@ -177,16 +179,30 @@ public class UIController {
 			this.setPreferenceFilePath(this.getNewLaunchFileLocation()); //set preference file location to new file path
 			Logic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
 		}		
+<<<<<<< HEAD
 		
 		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
 		this.mStorage.initLogging(); //initialize Storage logging
 		
+=======
+
+>>>>>>> origin/master
 		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
 		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
 
+<<<<<<< HEAD
 		logicOutput = Logic.load();
+=======
+		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
+		this.mStorage.initLogging(); //initialize Storage logging
+		Logic.initLogging(); //initialize Logic logging
+		Logic.initStorage();
+		Logic.initPreference();
+
+		logicOutput = mLogic.load();
+>>>>>>> origin/master
 		this.txtStatus.setText(logicOutput);
 
 		this.txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
@@ -194,56 +210,56 @@ public class UIController {
 			public void handle(KeyEvent event){
 				if (Constants.KEY_COMBINATION_AUTO_COMPLETE.match(event)){
 					onCtrlSpacePressed();
-					
+
 				}else if (Constants.KEY_COMBINATION_UP.match(event)) {
 					onUpPressed();
-					
+
 				}else if (Constants.KEY_COMBINATION_DOWN.match(event)) {
 					onDownPressed();
 				}
 			}
 		});
-		
+
 		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
 			initTaskListInListView(); //initialize listview
 		}
 
 	}//end initialize
-	
+
 	private void initTimeClock(){
 		this.txtClock.getStyleClass().addAll(Constants.UI_CSS_TEXT_CLOCK);
 		this.txtClock.setTextAlignment(TextAlignment.RIGHT);
 
 		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-			new EventHandler<ActionEvent>(){
-				DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
-				@Override
-				public void handle(ActionEvent event) {
-					Calendar nowDate = Calendar.getInstance();
-					txtClock.setText(dateFormat.format(nowDate.getTime()));
-				}
-			}),
-			new KeyFrame(Duration.seconds(1))
-		);
+				new EventHandler<ActionEvent>(){
+			DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
+			@Override
+			public void handle(ActionEvent event) {
+				Calendar nowDate = Calendar.getInstance();
+				txtClock.setText(dateFormat.format(nowDate.getTime()));
+			}
+		}),
+		new KeyFrame(Duration.seconds(1))
+				);
 
 		mTimeLine.setCycleCount(Animation.INDEFINITE);
 		mTimeLine.play();
 	}
-	
+
 	private void initReminder(){
 		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
 				new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent event) {
-					runReminder();
-				}//end handle
-			}),
-			new KeyFrame(Duration.seconds(1))
-		);
+			@Override
+			public void handle(ActionEvent event) {
+				runReminder();
+			}//end handle
+		}),
+		new KeyFrame(Duration.seconds(1))
+				);
 		aTimeLine.setCycleCount(Animation.INDEFINITE);
 		aTimeLine.play();
 	}
-	
+
 	public boolean initMainParser(){
 		try{
 			//this.mParser = MainParser.getInstance();
@@ -253,7 +269,7 @@ public class UIController {
 			return false;
 		}
 	}
-	
+
 	public boolean initStorage(){
 		try{
 			this.mStorage = Storage.getInstance();
@@ -262,6 +278,16 @@ public class UIController {
 			e.printStackTrace();
 			return false;
 		}		
+	}
+
+	public boolean initLogic(){
+		try{
+			this.mLogic = Logic.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	private boolean initPreferences(){
@@ -289,28 +315,28 @@ public class UIController {
 		if(this.anchorPaneStartGuide == null){
 			this.anchorPaneStartGuide = new AnchorPane();
 		}
-		
+
 		this.anchorPaneStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_PANE);
 		this.anchorPaneStartGuide.setPrefWidth(910.0);
 		this.anchorPaneStartGuide.setPrefHeight(605.0);
-		
+
 		btnOkStartGuide = new Button("I Understand");
 		btnOkStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_BUTTON);
 		btnOkStartGuide.setPrefSize(150.0, 35.0);
 		btnOkStartGuide.addEventFilter(ActionEvent.ACTION, onBtnStartGuideClick);
-		
+
 		this.anchorPaneStartGuide.getChildren().add(btnOkStartGuide);
 		AnchorPane.setRightAnchor(btnOkStartGuide, 5.0);
 		AnchorPane.setTopAnchor(btnOkStartGuide, 350.0);
-		
+
 		this.mStackPane.setPadding(new Insets(0,0,0,0));
 		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
 	}
-	
+
 	private void hideStartGuide(){
 		this.mStackPane.getChildren().removeAll(this.anchorPaneStartGuide);
 	}
-	
+
 	private void initButtonRedo(){
 		ImageView img = new ImageView(new Image("images/redo.png"));
 		img.setPreserveRatio(true);
@@ -416,7 +442,7 @@ public class UIController {
 			return Constants.PREFERENCE_ERROR_LAUNCH_VALUE;
 		}
 	}
-	
+
 	private String getPreferenceFilePath(){ //get file path from preference
 		try{
 			String filePath = "";
@@ -427,7 +453,7 @@ public class UIController {
 			return "";
 		}
 	}
-	
+
 	private boolean setPreferencePistaFlag(int flag){
 		try{
 			this.mPrefs.setPreferencePistaFlag(flag);
@@ -512,14 +538,14 @@ public class UIController {
 			return true;
 		}
 
-		logicOutput = Logic.runCommand(command, tokens);
+		logicOutput = mLogic.runCommand(command, tokens);
 
 		this.setTextStatus(logicOutput);
 		this.initTaskListInListView();
 		this.clearTextCommand();
 
-		Logic.storeToHistory(userInput);
-		
+		mLogic.storeToHistory(userInput);
+
 		return true;
 	}
 
@@ -527,22 +553,22 @@ public class UIController {
 		this.txtBoxCommand.setText(command);
 		return true;
 	}
-	
+
 	private String getTextCommand(){
 		return this.txtBoxCommand.getText();
 	}
-	
+
 	private boolean clearTextCommand(){
 		this.txtBoxCommand.clear();
 		return true;
 	}
-	
+
 	public boolean initTaskListInListView(){
 		try{
 			ArrayList<Task> storageList = null;
-			Logic.reorderStorageList();
-			storageList = Logic.getStorageList();
-			
+			mLogic.reorderStorageList();
+			storageList = mLogic.getStorageList();
+
 			if (this.searchKeyword != null) {
 				storageList = searchTasks(storageList, this.searchKeyword);
 			}
@@ -584,7 +610,7 @@ public class UIController {
 
 		double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
 		double startY = this.mApp.getPrimaryStage().getY();
-		
+
 		this.stageHelp.setTitle(Constants.HELP_TITLE);
 		this.stageHelp.initStyle(StageStyle.UTILITY);
 		this.stageHelp.initModality(Modality.NONE);
@@ -598,7 +624,7 @@ public class UIController {
 
 		return true;
 	}
-	
+
 	public Stage getHelpStage(){
 		return this.stageHelp;
 	}
@@ -610,7 +636,7 @@ public class UIController {
 		try { 
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
-				String processedString = Logic.processTaskInfo(id);
+				String processedString = mLogic.processTaskInfo(id);
 				String finalStr = processedString;
 				this.setTextCommand(finalStr);
 			}
@@ -618,7 +644,7 @@ public class UIController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void onUpPressed(){
 		if(Constants.HISTORY_INDEX > 0){
 			Constants.HISTORY_INDEX -= 1;
@@ -644,7 +670,7 @@ public class UIController {
 			hideStartGuide();
 		}
 	};
-	
+
 	private EventHandler<ActionEvent> onBtnUndoClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -672,7 +698,12 @@ public class UIController {
 			initTaskListInListView();
 		}
 	};
+<<<<<<< HEAD
 	
+=======
+
+
+>>>>>>> origin/master
 	//============================== POPOVER ADD NEW TASK ====================================
 	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
@@ -708,18 +739,46 @@ public class UIController {
 		final Label lblCurrentFileLocation = new Label("");
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
+<<<<<<< HEAD
 		
+=======
+
+
+		//Label lblOpen = new Label("Open Current File");	
+
+>>>>>>> origin/master
 		Button btnOpenFileBrowse = new Button("Open");
 		Button btnSaveAsFileBrowse = new Button("Save As");
 		Button btnSave = new Button("Save All Settings");
 
+<<<<<<< HEAD
+=======
+		double txtDirectoryWidth = 380.0;
+		double btnBrowseWidth = 100.0;
+
+		//Set Message width first
+		setPopOverLabelMessageStyle(lblMessage, Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_LABEL_MESSAGE_HEIGHT);
+
+>>>>>>> origin/master
 		//Get current file location from preference
 		final String currentFileDir = mPrefs.getPreferenceFileLocation();
 
 		if(!(currentFileDir.isEmpty() || currentFileDir == "")){
 			lblCurrentFileLocation.setText(mPrefs.getPreferenceFileLocation());
 		}
+<<<<<<< HEAD
 		
+=======
+
+
+
+
+		//Textbox directory
+		//txtBoxCurrentDirectory.setPrefWidth(txtDirectoryWidth);
+		//txtBoxCurrentDirectory.setEditable(false);
+		//setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
+
+>>>>>>> origin/master
 		//Button browse
 		btnOpenFileBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
 		btnOpenFileBrowse.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
@@ -727,13 +786,25 @@ public class UIController {
 			@Override
 			public void handle(ActionEvent event) {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
+<<<<<<< HEAD
 			
+=======
+
+				//Hide popver message
+				//setPopOverLabelMessageVisible(lblMessage, false, false);
+
+>>>>>>> origin/master
 				try{
 					String newPath = openFile(currentFileDir);
 
-					isValidFilePath = Logic.checkFileBeforeSave(newPath);
+					isValidFilePath = mLogic.checkFileBeforeSave(newPath);
 					if(isValidFilePath){
+<<<<<<< HEAD
 						isFileCreated = Logic.checkFileDuringSave(newPath);
+=======
+						//setTextFieldText(txtBoxCurrentDirectory, newPath);
+						isFileCreated = mLogic.checkFileDuringSave(newPath);
+>>>>>>> origin/master
 
 						if(isFileCreated){
 							String status = Constants.UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE.replace("[new_file_path]", newPath);
@@ -753,7 +824,14 @@ public class UIController {
 							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
 
+<<<<<<< HEAD
 						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE); //success message
+=======
+						//Label message
+						//setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
+						//setPopOverLabelMessageVisible(lblMessage, true, true);
+
+>>>>>>> origin/master
 					}else{
 						setPopOverLabelText(lblCurrentFileLocation, currentFileDir); //set back to old file path 
 						setTextStatus(Constants.UI_STATUS_INVALID_XML_FILE_PATH_MESSAGE); //failed message
@@ -778,17 +856,24 @@ public class UIController {
 			@Override
 			public void handle(ActionEvent event) {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
-				
+
 				//Hide popver message
 				//setPopOverLabelMessageVisible(lblMessage, false, false);
-				
+
 				try{
 					String newPath = saveAsFile(currentFileDir);
+<<<<<<< HEAD
 					isCopied = Logic.copyFile(currentFileDir, newPath);
 
+=======
+					System.out.println("currentFileDir - " + currentFileDir);
+					System.out.println("newPath - " + newPath);
+					isCopied = mLogic.copyFile(currentFileDir, newPath);
+					//System.out.println("isCopied - " + isCopied);
+>>>>>>> origin/master
 					if(isCopied){
 						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_SAVE_AS_MESSAGE.replace("[new_file_path]", newPath));
-						
+
 						isPrefSave = setPreferenceFilePath(newPath); //save preferences
 						if(!isPrefSave){ //unable to save
 							setTextStatus(Constants.UI_STATUS_FAIL_PREFERENCE_SAVE);
@@ -796,14 +881,14 @@ public class UIController {
 						}else{ //saved successfully
 							mStorage.setDataFolderLocation(newPath); //set new path to storage
 							initTaskListInListView(); //refresh the listview 
-							
+
 							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
-						
+
 					}else{
 						setTextStatus(Constants.UI_STATUS_FAIL_FILE_SAVE_AS_MESSAGE);
 					}
-					
+
 				}catch(AssertionError e){
 					//log
 					e.printStackTrace();
@@ -811,7 +896,7 @@ public class UIController {
 					//log
 					e.printStackTrace();
 				}
-				
+
 				mPopOverSetting.setAutoHide(true); //set hide to true again after browsing
 			}
 		});		
@@ -1096,11 +1181,24 @@ public class UIController {
 	private void setPopOverLabelText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
-		
+
 	private void setPopOverLabelMessageText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
+<<<<<<< HEAD
 	
+=======
+
+	private void setPopOverLabelMessageStyle(Label lbl, double width, double height){
+		lbl.setTextAlignment(TextAlignment.CENTER);
+		lbl.setAlignment(Pos.CENTER);
+		lbl.setPrefWidth(width);
+		lbl.setPrefHeight(height);
+		setPopOverLabelMessageVisible(lbl, false, false);
+	}
+
+
+>>>>>>> origin/master
 	private String openFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
@@ -1109,7 +1207,7 @@ public class UIController {
 		fileChooser.setInitialDirectory(new File(getUserDesktopDirectory())); //set init directory
 
 		File file = fileChooser.showOpenDialog(null);
-		
+
 		if(file != null){
 			if (!file.getPath().endsWith(".xml")) {
 				file = new File(file.getPath() + ".xml");
@@ -1119,7 +1217,7 @@ public class UIController {
 
 		return oldPath;
 	}
-	
+
 	private String saveAsFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
@@ -1128,7 +1226,7 @@ public class UIController {
 		fileChooser.setInitialDirectory(new File(getUserDesktopDirectory())); //set init directory
 
 		File file = fileChooser.showSaveDialog(null);
-		
+
 		if(file != null){
 			if (!file.getPath().endsWith(".xml")) {
 				file = new File(file.getPath() + ".xml");
@@ -1137,14 +1235,14 @@ public class UIController {
 		}
 
 		return oldPath;
-		
+
 	}
 
 	/*
 	private String chooseDirectory(String oldPath){
 		DirectoryChooser mDirectoryChooser = new DirectoryChooser();
 		mDirectoryChooser.setInitialDirectory(new File(getUserDesktopDirectory()));
-		
+
 		File mDirectory = mDirectoryChooser.showDialog(null);
 		if(mDirectory != null){	
 			System.out.println(mDirectory.getAbsolutePath());
@@ -1152,10 +1250,10 @@ public class UIController {
 		}
 
 		return oldPath;
-		
+
 	}
-	*/
-	
+	 */
+
 
 	private String getUserDesktopDirectory(){
 		return Constants.SETTING_DEFAULT_FOLDER_PATH;
@@ -1270,54 +1368,54 @@ public class UIController {
 	private String[] makeIntoTokens(String taskDescription) {
 		return taskDescription.split("\\s+");
 	}
-		
+
 	private void runReminder(){
-		for (int i = 0; i < Logic.getStorageList().size(); i++) {
-			Task extractedTask = Logic.getStorageList().get(i);
+		for (int i = 0; i < mLogic.getStorageList().size(); i++) {
+			Task extractedTask = mLogic.getStorageList().get(i);
 			String taskTitle = extractedTask.getTitle();
 			boolean taskIsReminded = extractedTask.getIsReminded();
 			Long taskReminder = extractedTask.getReminder();
 			Long taskEndMillisecond = extractedTask.getEndMilliseconds();
 			Long timeNow = System.currentTimeMillis();
-			
+
 			if(taskReminder != 0L){
 				if(timeNow >= taskReminder && !taskIsReminded){
 					String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
 					SimpleDateFormat mDateFormat = new SimpleDateFormat(datePattern);
 					String endDate = mDateFormat.format(new Date(taskEndMillisecond));
-					
+
 					//update the reminded status in the storage list
-					Logic.getStorageList().get(i).setIsReminded(true);
-					
+					mLogic.getStorageList().get(i).setIsReminded(true);
+
 					showReminder("Upcoming task: " + taskTitle, 
-									"Due on " + endDate);
-					
+							"Due on " + endDate);
+
 					File file = new File (Constants.BUILD_PATH + Constants.UI_ALARM_LOCATION);
 					playAlarm(file.toURI().toString());
 				}
 			}
 		}
 	}
-	
+
 	private void showReminder(String title, String msg){
 		Notifications.create().title(title).text(msg).showWarning();	
 	}
-	
+
 	private void playAlarm(String url){
 		Media alarm = new Media (url);
 		startMediaPlayer(alarm);
 	}
-	
+
 	private void startMediaPlayer(Media m){
 		if(m != null){
 			MediaPlayer mp = new MediaPlayer(m);
 			mp.play();
 		}
 	}
-	
+
 	public void setMainAppController(MainApp app){
 		this.mApp = app;
 	}
-	
+
 
 }
