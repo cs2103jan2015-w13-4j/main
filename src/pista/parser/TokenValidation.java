@@ -13,7 +13,14 @@ import pista.Constants;
 public class TokenValidation {
 
 	private static String[] inputArray=new String[8];
-
+	
+	/**This method checks if the filename is valid
+	 * filename must not be empty and must have .xml as file type
+	 * Parameters: String - of name
+	 * Return:		Boolean
+	 * 				True if filename is valid
+	 * 				false if it is not
+	 * **/
 	public static boolean isFileNameValid(String name){
 		if(!name.isEmpty() && name.contains(Constants.SET_FILE_TYPE)){ //not empty and abc.xml
 			return true;
@@ -21,6 +28,13 @@ public class TokenValidation {
 		return false;
 	}
 	
+	/**This method checks if the title is valid
+	 * title must not be empty and can contain the ignore value "d"
+	 * Parameters: String - of title
+	 * Return:		Boolean
+	 * 				True if title is valid
+	 * 				false if it is not
+	 * **/
 	public static boolean isTitleValid(String title){
 		if(!title.isEmpty() || Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title)){
 			return true;
@@ -29,6 +43,12 @@ public class TokenValidation {
 		return false;
 	}
 	
+	/**This method checks if the date follows format dd/MM/yyyy
+	 * Parameters: String - of date
+	 * Return:		Boolean
+	 * 				True if date is valid
+	 * 				false if it is not
+	 * **/
 	public static boolean isDateValid(String myDate){
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		Date testDate;
@@ -50,6 +70,12 @@ public class TokenValidation {
 		return true;
 	}
 
+	/**This method checks if the time is valid in the following order HH:mm
+	 * Parameters: String - of time
+	 * Return:		Boolean
+	 * 				True if time is valid
+	 * 				false if it is not
+	 * **/
 	public static boolean isTimeValid(String myTime){
 		Pattern pattern;
 		Matcher matcher;
@@ -62,6 +88,12 @@ public class TokenValidation {
 		return false;
 	}
 	
+	/**This method checks if the start date and time occurs earlier than the end date and time of a task
+	 * Parameters: String - of start/end date and time
+	 * Return:		Boolean
+	 * 				True if start date and time is earlier than end date and time
+	 * 				false if it is not
+	 * **/
 	public static boolean isStartDateBeforeThanEndDate(String start, String end, String startTime, String endTime){
 		String sdst=start+" "+startTime;
 		String edet=end +" "+endTime;
@@ -79,7 +111,6 @@ public class TokenValidation {
 		return false;
 	}
 	
-
 	public static int compareWithCurrentDate(Long endMillisecond, Long alarmMillisecond){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Calendar cal = Calendar.getInstance();
