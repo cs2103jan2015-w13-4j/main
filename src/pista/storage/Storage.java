@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import pista.Constants;
 import pista.log.CustomLogging;
 import pista.logic.Task;
 import pista.parser.MainParser;
@@ -37,23 +38,8 @@ public class Storage {
 
 	private static final Storage mStorage = new Storage();
 	
-	private static int max_number_of_tasks;
-	private static String data_folder_location = "";
-	
-	public static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><task/></tasks>";
-	
-	private static final String NODE_ROOT_TAG = "tasks";
-	private static final String NODE_TOTAL_TASK_TAG = "total_task";
-	private static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
-	private static final String NODE_TASK_TAG = "task";
-	private static final String NODE_TASK_ID_TAG = "id";
-	private static final String NODE_TASK_TITLE_TAG = "title";
-	private static final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
-	private static final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
-	private static final String NODE_TASK_IS_DONE_TAG = "is_done";
-	private static final String NODE_TASK_CATEGORY_TAG = "category";
-	private static final String NODE_TASK_PRIORITY_TAG = "priority";
-	private static final String NODE_TASK_REMINDER_TIME_TAG = "reminder";
+	private static int max_number_of_tasks = 0;
+	private static String data_file_location = "";
 	
 	//Assertion
 	private static final String ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE = "List of task is not initialize";
@@ -74,11 +60,14 @@ public class Storage {
 	private ArrayList<String> historyList = new ArrayList<String>();
 	private static CustomLogging mLog = null;
 	
-	/*Don't allow to create a new instance*/
+	/**
+	 * Don't allow to create a new instance
+	 * **/
 	private Storage(){} 
 	
-	/*This method will return the instance of Storage class
-	 *and initialize Logging object */
+	/**This method will return the instance of Storage class
+	 *and initialize Logging object 
+	 ***/
 	public static Storage getInstance(){ 
 		if(mLog == null){
 			mStorage.initLogging();
@@ -86,6 +75,8 @@ public class Storage {
 		return mStorage;
 	}
 	
+	/**Initialize Logging
+	 * **/
 	public boolean initLogging(){
 		try{
 			mLog = CustomLogging.getInstance(Storage.class.getName());
@@ -96,20 +87,28 @@ public class Storage {
 		}	
 	}
 	
+	/**This method will load data from XML file
+	 * **/
 	public boolean load(){
-		taskList = XmltoTable(getDataFolderLocation());	
+		taskList = XmltoTable(getDataFileLocation());	
 		if(taskList != null){
 			return true;
 		}
 		return false;
 	}
 	
+	/**This methodd will save from list to XML file
+	 * **/
 	public boolean save(){
 		boolean isSaved = false;
-		isSaved = tableToXml(getDataFolderLocation(), taskList);
+		isSaved = tableToXml(getDataFileLocation(), taskList);
 		return isSaved;
 	}
 		
+	/**This method will write default string to the new XML file
+	 * Parameters:	newPath - the new xml file path
+	 * Return: 		boolean - true or false indicate success or fail
+	 * **/
 	public boolean writeNewXmlFile(String newPath){
 		//filepath exist
 		try {
@@ -124,7 +123,7 @@ public class Storage {
 			FileWriter fileWriter = new FileWriter(file, false); //overwrite the file
 			
 			BufferedWriter bufferFileWriter  = new BufferedWriter(fileWriter);
-	        fileWriter.append(XML_DEFAULT_STRING); //write the default xml string
+	        fileWriter.append(Constants.XML_DEFAULT_STRING); //write the default xml string
 	        bufferFileWriter.close();
 	        
 			fileWriter.close();
@@ -137,7 +136,10 @@ public class Storage {
 		}
 	}
 	
-	
+	/**This method will validate the given file by checking the important XML nodes
+	 * Parameters:	xmlFilePath - the xml file path
+	 * Return: 		boolean - true or false indicate valid or invalid
+	 * **/
 	public boolean isFileFormatValid(String xmlFilePath){
 		//Do a small test on e selected xml file
 		try{
@@ -149,11 +151,11 @@ public class Storage {
 			Node nRoot = null;
 			nRoot = doc.getDocumentElement(); //get root
 			NodeList nTotalList = null;
-			nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG); 
+			nTotalList = doc.getElementsByTagName(Constants.NODE_TOTAL_TASK_TAG); 
 			Node nTotalValue = null;
 			nTotalValue = nTotalList.item(0);
 			NodeList nTaskList = null;
-			nTaskList = doc.getElementsByTagName(NODE_TASK_TAG); 
+			nTaskList = doc.getElementsByTagName(Constants.NODE_TASK_TAG); 
 			
 			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeListNull(nTotalList) || isNodeListNull(nTaskList)){
 				return false; //not valid XML format
@@ -168,20 +170,10 @@ public class Storage {
 		return true;
 	}
 	
-	private boolean isNodeNull(Node n){
-		if(n == null){
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean isNodeListNull(NodeList n){
-		if(n == null){
-			return true;
-		}
-		return false;
-	}
-	
+	/**This method will check if the given file path exist
+	 * Parameters:	filePath - the xml file path
+	 * Return: 		boolean - true or false indicate exist or non-exist
+	 * **/
 	public boolean isFileExist(String filePath){
 		try{
 			File file = new File(filePath);
@@ -198,6 +190,10 @@ public class Storage {
 		}
 	}
 	
+	/**This method will check if the given file contains any value
+	 * Parameters:	filePath - the xml file path
+	 * Return: 		boolean - true or false indicate empty or not empty
+	 * **/
 	public boolean isFileEmpty(String filePath){
 		
 		try {
@@ -206,9 +202,11 @@ public class Storage {
 
 			int b = fis.read();
 			if (b == -1)  {
+				fis.close();
 				return true; //is empty
 			}
 			
+			fis.close();
 			return false;
 		
 		} catch (IOException e) {
@@ -219,10 +217,123 @@ public class Storage {
 	
 	} 
 	
-	/*
-	 * Need XML file path to read
-	 * ArrayList of tasks for input
-	 * */
+	/**This method will get the total current number of tasks
+	 * Return:	int - number of tasks
+	 * **/
+	 public int getMaxNumberOfTasks(){
+		 return max_number_of_tasks;
+	 }
+	 
+	 /**This method will get the next usable task ID
+		 * Return:	int - next non-recycled ID
+		 * **/
+	 public int getNextAvailableID(){
+		 //return max_number_of_tasks + 1;
+		 int lastID = 0;
+		 
+		 try{
+			 assert(taskList != null) : ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE;
+			 
+			 if(taskList != null){
+				for(Task mTask : taskList){
+					if(mTask.getID() > lastID){
+						lastID = mTask.getID();
+					}//end if 
+				}//end for 
+			 }//end if 
+			  
+			 mLog.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
+			 return lastID + 1;
+			 
+		 }catch(AssertionError e){
+			 mLog.logSevere(e.getMessage());
+			 return 0;
+		 }
+		 
+	 }
+	 
+	 /**This method will return current saved file location
+	 * Return:	String - file location
+	 * **/	 
+	 public String getDataFileLocation(){
+		 return data_file_location;
+	 }
+	 
+	 /**This method will initialize the task list
+	 * Return:	boolean - true
+	 * **/
+	 public boolean initTaskList(){
+		 taskList = new ArrayList<Task>();
+		 return true;
+	 }
+	 
+	 public ArrayList<Task> getTaskList(){
+		 if(this.taskList == null){
+			 taskList = new ArrayList<Task>();
+		 }
+		 return taskList;
+	 }
+	 
+	 public void setTaskList(ArrayList<Task> tl){
+		 taskList = new ArrayList<Task>(tl);
+	 }
+	 
+	 public ArrayList<String> getHistoryList(){
+		 return historyList;
+	 }
+	 
+	 public void setDataFolderLocation(String location){
+		 data_file_location = location;
+	 }
+	 
+	 /**This method will copy entirely from source to destination file
+	  * Parameters:		sourceFilePath - valid source file path
+	  * 				destinationFilePath - valid destination file path
+	  * Return:			boolean - true or false - indicate success or fail
+	  * **/
+	 public boolean copyFile(String sourceFilePath, String destinationFilePath){
+		 try{
+			 
+			 Path original = Paths.get(sourceFilePath); //original file 
+			 Path destination = Paths.get(destinationFilePath); //new file 
+			 Files.copy(original, destination, StandardCopyOption.REPLACE_EXISTING);
+			 
+			 return true;
+		 }catch(IOException e){
+			 mLog.logSevere(e.getMessage());
+			 e.printStackTrace();
+			 return false;
+		 }
+	 }
+	 
+	/**This method will check if the XML node is null
+	 * Parameters:	n - a xml node
+	 * Return: 		boolean - true or false indicate null or not null
+	 * **/
+	private boolean isNodeNull(Node n){
+		if(n == null){
+			return true;
+		}
+		return false;
+	}
+	
+	/**This method will check if the XML node list collection is null
+	 * Parameters:	n - a xml node list
+	 * Return: 		boolean - true or false indicate null or not null
+	 * **/
+	private boolean isNodeListNull(NodeList n){
+		if(n == null){
+			return true;
+		}
+		return false;
+	}
+	
+
+	/**This method will populate XML file from the task list
+	 * Parameters:	xmlFilePath - given XML file path
+	 * 				mArrayTask - given array list of tasks
+	 * Return: 		boolean - true or false indicate success or fail
+	 * **/
 	private boolean tableToXml(String xmlFilePath, ArrayList<Task> mArrayTask){
 		boolean isSaved = false;
 		boolean isAllNodesRemove = false;
@@ -250,31 +361,31 @@ public class Storage {
 			}
 			
 			//create a new root node
-			nRoot = doc.createElement(NODE_ROOT_TAG);
+			nRoot = doc.createElement(Constants.NODE_ROOT_TAG);
 			
 			//get the latest tasklist size as the total number of tasks
 			max_number_of_tasks = mArrayTask.size();
 			
 			//add total number of tasks
-			nTotal = doc.createElement(NODE_TOTAL_TASK_TAG);
-			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));//add value to total_task
+			nTotal = doc.createElement(Constants.NODE_TOTAL_TASK_TAG);
+			createNode(nTotal, Constants.NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));//add value to total_task
 			//add total node to root
 			nRoot.appendChild(nTotal);
 			
 			//add task nodes
 			for(Task mTask : mArrayTask){
 				//new task node
-				nTask = doc.createElement(NODE_TASK_TAG);
+				nTask = doc.createElement(Constants.NODE_TASK_TAG);
 
 				//create new node method
-				createNode(nTask, NODE_TASK_ID_TAG, convertIntToString(mTask.getID()));
-				createNode(nTask, NODE_TASK_TITLE_TAG, mTask.getTitle());
-				createNode(nTask, NODE_TASK_START_MILLISECOND_TAG, convertLongToString(mTask.getStartMilliseconds()));
-				createNode(nTask, NODE_TASK_END_MILLISECOND_TAG, convertLongToString(mTask.getEndMilliseconds()));
-				createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(mTask.getIsDone()));
-				createNode(nTask, NODE_TASK_CATEGORY_TAG, mTask.getCategory());
-				createNode(nTask, NODE_TASK_PRIORITY_TAG, mTask.getPriority());
-				createNode(nTask, NODE_TASK_REMINDER_TIME_TAG, convertLongToString(mTask.getReminder()));
+				createNode(nTask, Constants.NODE_TASK_ID_TAG, convertIntToString(mTask.getID()));
+				createNode(nTask, Constants.NODE_TASK_TITLE_TAG, mTask.getTitle());
+				createNode(nTask, Constants.NODE_TASK_START_MILLISECOND_TAG, convertLongToString(mTask.getStartMilliseconds()));
+				createNode(nTask, Constants.NODE_TASK_END_MILLISECOND_TAG, convertLongToString(mTask.getEndMilliseconds()));
+				createNode(nTask, Constants.NODE_TASK_IS_DONE_TAG, convertBooleanToString(mTask.getIsDone()));
+				createNode(nTask, Constants.NODE_TASK_CATEGORY_TAG, mTask.getCategory());
+				createNode(nTask, Constants.NODE_TASK_PRIORITY_TAG, mTask.getPriority());
+				createNode(nTask, Constants.NODE_TASK_REMINDER_TIME_TAG, convertLongToString(mTask.getReminder()));
 				
 				//add task node to root
 				nRoot.appendChild(nTask);
@@ -310,10 +421,10 @@ public class Storage {
 	
 	
 	
-	/*
-	 * ArrayList
-	 * value  task object
-	 * */
+	/**This method will populate task list from the XML file
+	 * Parameters:	xmlFilePath - given XML file path
+	 * Return: 		boolean - true or false indicate success or fail
+	 * **/
 	private ArrayList<Task> XmltoTable(String xmlFilePath){
 		
 		ArrayList<Task> mArrayTask = new ArrayList<Task>();
@@ -330,11 +441,11 @@ public class Storage {
 			normalize(doc);
 			
 			//Get total num of tasks from XML
-			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
+			NodeList nTotalList = doc.getElementsByTagName(Constants.NODE_TOTAL_TASK_TAG);
 			Node nTotalValue = nTotalList.item(0);
 			max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent()); //get total number
 			
-			NodeList nList = doc.getElementsByTagName(NODE_TASK_TAG);
+			NodeList nList = doc.getElementsByTagName(Constants.NODE_TASK_TAG);
 			
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				 
@@ -360,20 +471,20 @@ public class Storage {
 					String m_reminder = "";
 					
 					
-					m_id = Integer.parseInt(eElement.getElementsByTagName(NODE_TASK_ID_TAG).item(0).getTextContent());
-					m_title = eElement.getElementsByTagName(NODE_TASK_TITLE_TAG).item(0).getTextContent();
-					m_start_millisecond = eElement.getElementsByTagName(NODE_TASK_START_MILLISECOND_TAG).item(0).getTextContent();
-					m_end_millisecond = eElement.getElementsByTagName(NODE_TASK_END_MILLISECOND_TAG).item(0).getTextContent();
+					m_id = Integer.parseInt(eElement.getElementsByTagName(Constants.NODE_TASK_ID_TAG).item(0).getTextContent());
+					m_title = eElement.getElementsByTagName(Constants.NODE_TASK_TITLE_TAG).item(0).getTextContent();
+					m_start_millisecond = eElement.getElementsByTagName(Constants.NODE_TASK_START_MILLISECOND_TAG).item(0).getTextContent();
+					m_end_millisecond = eElement.getElementsByTagName(Constants.NODE_TASK_END_MILLISECOND_TAG).item(0).getTextContent();
 					
 					m_start_time = MainParser.convertMillisecondToTime(Long.valueOf(m_start_millisecond));
 					m_end_time = MainParser.convertMillisecondToTime(Long.valueOf(m_end_millisecond));
 					m_start_date = MainParser.convertMillisecondToDate(Long.valueOf(m_start_millisecond));
 					m_end_date = MainParser.convertMillisecondToDate(Long.valueOf(m_end_millisecond));
 							
-					m_is_done = Boolean.parseBoolean(eElement.getElementsByTagName(NODE_TASK_IS_DONE_TAG).item(0).getTextContent());
-					m_category = eElement.getElementsByTagName(NODE_TASK_CATEGORY_TAG).item(0).getTextContent();
-					m_priority = eElement.getElementsByTagName(NODE_TASK_PRIORITY_TAG).item(0).getTextContent();
-					m_reminder = eElement.getElementsByTagName(NODE_TASK_REMINDER_TIME_TAG).item(0).getTextContent();
+					m_is_done = Boolean.parseBoolean(eElement.getElementsByTagName(Constants.NODE_TASK_IS_DONE_TAG).item(0).getTextContent());
+					m_category = eElement.getElementsByTagName(Constants.NODE_TASK_CATEGORY_TAG).item(0).getTextContent();
+					m_priority = eElement.getElementsByTagName(Constants.NODE_TASK_PRIORITY_TAG).item(0).getTextContent();
+					m_reminder = eElement.getElementsByTagName(Constants.NODE_TASK_REMINDER_TIME_TAG).item(0).getTextContent();
 					
 					//create new task object
 					mTask = new Task(m_id, 
@@ -410,7 +521,12 @@ public class Storage {
 		return mArrayTask;
 		
 	}//end XMLtoJava
-	 
+	
+	/**This method will add a child node to the parent node of XML
+	 * Parameters:	parent - parent XML node
+	 * 				tagName - child XML node name
+	 * 				value - child XML node value
+	 * **/
 	private void createNode(Node parent, String tagName, String value){
 		Document doc = parent.getOwnerDocument();
 		//create a new node
@@ -421,6 +537,11 @@ public class Storage {
 		parent.appendChild(mNode);
 	}	
 
+	/**This method will save XML document
+	 * Parameters:	doc - XML document
+	 * 				xmlFilePath - given XML file path
+	 * Return: 		boolean - true or false indicate success or fail
+	 * **/
 	private boolean saveXml(Document doc, String xmlFilePath){
 		//Save the document
 		try{
@@ -453,7 +574,10 @@ public class Storage {
 		
 	}//end saveXML
 	
-	
+	/**This method will remove all child nodes from the given node
+	 * Parameters:	node - given node that might contains child nodes
+	 * Return: 		boolean - true or false indicate success or fail
+	 * **/
 	private boolean xmlRemoveAllTask(Node node) {
 		try{
 			assert(node != null) : ASSERT_XML_NODE_NULL_MESSAGE;
@@ -478,7 +602,10 @@ public class Storage {
 			return false;
 		}
 	}//end removeAllFromXML
-	 	 
+	 	
+	/**This method will restructure the string value in a XML node
+	 * Parameters:	doc - XML document
+	 * **/
 	private void normalize(Document doc){
 		 //normalize is not a complusory to do
 		 try{
@@ -495,78 +622,7 @@ public class Storage {
 		 }	 	 
 	 }
 
-	 public int getMaxNumberOfTasks(){
-		 return max_number_of_tasks;
-	 }
-	  
-	 public int getNextAvailableID(){
-		 //return max_number_of_tasks + 1;
-		 int lastID = 0;
-		 
-		 try{
-			 assert(taskList != null) : ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE;
-			 
-			 if(taskList != null){
-				for(Task mTask : taskList){
-					if(mTask.getID() > lastID){
-						lastID = mTask.getID();
-					}//end if 
-				}//end for 
-			 }//end if 
-			  
-			 mLog.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
-			 return lastID + 1;
-			 
-		 }catch(AssertionError e){
-			 mLog.logSevere(e.getMessage());
-			 return 0;
-		 }
-		 
-	 }
-	 
-	 public String getDataFolderLocation(){
-		 return data_folder_location;
-	 }
-	 
-	 public boolean initTaskList(){
-		 taskList = new ArrayList<Task>();
-		 return true;
-	 }
-	 
-	 public ArrayList<Task> getTaskList(){
-		 if(this.taskList == null){
-			 taskList = new ArrayList<Task>();
-		 }
-		 return taskList;
-	 }
-	 
-	 public void setTaskList(ArrayList<Task> tl){
-		 taskList = new ArrayList<Task>(tl);
-	 }
-	 
-	 public ArrayList<String> getHistoryList(){
-		 return historyList;
-	 }
-	 
-	 public void setDataFolderLocation(String location){
-		 data_folder_location = location;
-	 }
-	 
-	 public boolean copyFile(String sourceFilePath, String destinationFilePath){
-		 try{
-			 
-			 Path original = Paths.get(sourceFilePath); //original file 
-			 Path destination = Paths.get(destinationFilePath); //new file 
-			 Files.copy(original, destination, StandardCopyOption.REPLACE_EXISTING);
-			 
-			 return true;
-		 }catch(IOException e){
-			 mLog.logSevere(e.getMessage());
-			 e.printStackTrace();
-			 return false;
-		 }
-
-	 }
+	
 	 
 	 
 	 

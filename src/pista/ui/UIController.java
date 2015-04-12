@@ -162,13 +162,8 @@ public class UIController {
 		this.initButtonHelp();
 		this.initButtonRefresh();
 
-		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
-
+		this.addControlsToTopArea(); //add controls to the top anchor top area
+		
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();
 		Logic.initPreference();
@@ -187,7 +182,6 @@ public class UIController {
 		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
-
 
 		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
 		this.mStorage.initLogging(); //initialize Storage logging
@@ -218,21 +212,32 @@ public class UIController {
 
 	}//end initialize
 
+	
+	private void addControlsToTopArea(){
+		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
+	}
+	
+	
 	private void initTimeClock(){
 		this.txtClock.getStyleClass().addAll(Constants.UI_CSS_TEXT_CLOCK);
 		this.txtClock.setTextAlignment(TextAlignment.RIGHT);
 
 		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-				new EventHandler<ActionEvent>(){
-			DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
-			@Override
-			public void handle(ActionEvent event) {
-				Calendar nowDate = Calendar.getInstance();
-				txtClock.setText(dateFormat.format(nowDate.getTime()));
-			}
-		}),
+			new EventHandler<ActionEvent>(){
+				DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
+				@Override
+				public void handle(ActionEvent event) {
+					Calendar nowDate = Calendar.getInstance();
+					txtClock.setText(dateFormat.format(nowDate.getTime()));
+				}
+			}),
 		new KeyFrame(Duration.seconds(1))
-				);
+		);
 
 		mTimeLine.setCycleCount(Animation.INDEFINITE);
 		mTimeLine.play();
@@ -240,14 +245,14 @@ public class UIController {
 
 	private void initReminder(){
 		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-				new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				runReminder();
-			}//end handle
-		}),
+			new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					runReminder();
+				}//end handle
+			}),
 		new KeyFrame(Duration.seconds(1))
-				);
+		);
 		aTimeLine.setCycleCount(Animation.INDEFINITE);
 		aTimeLine.play();
 	}
@@ -309,17 +314,17 @@ public class UIController {
 		}
 
 		this.anchorPaneStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_PANE);
-		this.anchorPaneStartGuide.setPrefWidth(910.0);
-		this.anchorPaneStartGuide.setPrefHeight(605.0);
+		this.anchorPaneStartGuide.setPrefWidth(Constants.UI_START_GUIDE_WIDTH);
+		this.anchorPaneStartGuide.setPrefHeight(Constants.UI_START_GUIDE_HEIGHT);
 
-		btnOkStartGuide = new Button("I Understand");
+		btnOkStartGuide = new Button(Constants.UI_START_GUIDE_BUTTON_OK_TITLE);
 		btnOkStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_BUTTON);
-		btnOkStartGuide.setPrefSize(150.0, 35.0);
+		btnOkStartGuide.setPrefSize(Constants.UI_START_GUIDE_BUTTON_OK_WIDTH, Constants.UI_START_GUIDE_BUTTON_OK_HEIGHT);
 		btnOkStartGuide.addEventFilter(ActionEvent.ACTION, onBtnStartGuideClick);
 
 		this.anchorPaneStartGuide.getChildren().add(btnOkStartGuide);
-		AnchorPane.setRightAnchor(btnOkStartGuide, 5.0);
-		AnchorPane.setTopAnchor(btnOkStartGuide, 350.0);
+		AnchorPane.setRightAnchor(btnOkStartGuide, Constants.UI_START_GUIDE_BUTTON_OK_ANCHOR_RIGHT);
+		AnchorPane.setTopAnchor(btnOkStartGuide, Constants.UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP);
 
 		this.mStackPane.setPadding(new Insets(0,0,0,0));
 		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
@@ -330,13 +335,13 @@ public class UIController {
 	}
 
 	private void initButtonRedo(){
-		ImageView img = new ImageView(new Image("images/redo.png"));
+		ImageView img = new ImageView(new Image(Constants.UI_REDO_IMAGE_LINK));
 		img.setPreserveRatio(true);
 		img.setFitHeight(Constants.UI_IMG_INSIDE_BUTTON_WIDTH);
 		img.setFitWidth(Constants.UI_IMG_INSIDE_BUTTON_HEIGHT);
 
 		if(this.btnRedo == null){
-			this.btnRedo = new Button("Redo"); //
+			this.btnRedo = new Button(Constants.UI_REDO_BUTTON_TITLE); //
 		}
 
 		setButtonToolTip(this.btnRedo, Constants.UI_TOOLTIP_UNDO);
@@ -404,6 +409,14 @@ public class UIController {
 		this.btnRefresh.addEventFilter(ActionEvent.ACTION, this.onBtnRefreshClick); //set click method listener
 	}
 
+	/**
+	 * 
+	 * @param mNode
+	 * @param anchorTop
+	 * @param anchorRight
+	 * @param anchorBottom
+	 * @param anchorLeft
+	 */
 	
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
@@ -877,13 +890,6 @@ public class UIController {
 		Button btnAdd = new Button("Add New Task");
 		final Label lblMessage = new Label();
 
-		String startStr = "Start ";
-		String endStr = "End ";
-		String defaultDate = "01/01/1970";
-		String defaultHour = "07";
-		String defaultMin = "30";
-		String defaultTime = defaultHour + ":" + defaultMin;
-
 		if(this.mPopOverAdd != null){
 			if(this.mPopOverAdd.isShowing()){
 				this.mPopOverAdd.setAutoHide(true);
@@ -921,7 +927,10 @@ public class UIController {
 		hBox.getChildren().add(lblColon);
 		hBox.getChildren().add(txtFieldStartMin);
 		hBox.getChildren().add(lblTimeTip);
-		HBox.setMargin(lblTimeTip, new Insets(10,0,0,0));
+		HBox.setMargin(lblTimeTip, new Insets(Constants.UI_POP_OVER_HBOX_MARGIN_TOP,
+												Constants.UI_POP_OVER_HBOX_MARGIN_RIGHT,
+												Constants.UI_POP_OVER_HBOX_MARGIN_BOTTOM,
+												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
 		vBox.getChildren().add(hBox);
 
 		lblDateTitle = new Label("End Date:");
@@ -933,21 +942,26 @@ public class UIController {
 		setPopOverTextFieldHourMinute(txtFieldEndHour, txtFieldEndMin);
 		setPopOverLabelTimeTip(lblTimeTip);
 
-		hBox = new HBox(4); //end date 
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //end date 
 		hBox.getChildren().add(lblDateTitle); //start date
 		hBox.getChildren().add(datePickerEndDate);
 		vBox.getChildren().add(hBox);
 
-		hBox = new HBox(4); //end hour and minute
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //end hour and minute
 		hBox.getChildren().add(lblTimeTitle);  
 		hBox.getChildren().add(txtFieldEndHour);
 		hBox.getChildren().add(lblColon);
 		hBox.getChildren().add(txtFieldEndMin);
 		hBox.getChildren().add(lblTimeTip);
-		HBox.setMargin(lblTimeTip, new Insets(10,0,0,0));
+		HBox.setMargin(lblTimeTip, new Insets(Constants.UI_POP_OVER_HBOX_MARGIN_TOP,
+												Constants.UI_POP_OVER_HBOX_MARGIN_RIGHT,
+												Constants.UI_POP_OVER_HBOX_MARGIN_BOTTOM,
+												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
 		vBox.getChildren().add(hBox);
-
-		VBox.setMargin(btnAdd, new Insets(10,0,0,0));
+		VBox.setMargin(btnAdd, new Insets(Constants.UI_POP_OVER_VBOX_MARGIN_TOP,
+											Constants.UI_POP_OVER_VBOX_MARGIN_RIGHT,
+											Constants.UI_POP_OVER_VBOX_MARGIN_BOTTOM,
+											Constants.UI_POP_OVER_VBOX_MARGIN_LEFT));
 		vBox.setPadding(new Insets(Constants.UI_POP_OVER_VBOX_PADDING_INSETS_TOP, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT, 
 					Constants.UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_LEFT)); //set Padding
 
@@ -1009,10 +1023,10 @@ public class UIController {
 				//Check both start date and time
 				if((newStartDate.equals("") || newStartDate.isEmpty()) && 
 						(newStartHour.equals("") || newStartHour.isEmpty()) && 
-						(newStartMinute.equals("") || newStartMinute.isEmpty())){
-					//start date, time is empty
-					//remove start date and time
-					addCommand = addCommand.replace("-[start_date]", "").replace("-[start_time]", "");
+						(newStartMinute.equals("") || newStartMinute.isEmpty())){ //start date, time is empty
+	
+					addCommand = addCommand.replace("-[start_date]", "").replace("-[start_time]", ""); //remove start date and time
+					
 				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
 						((newStartHour.equals("") || newStartHour.isEmpty()) ||
 								(newStartMinute.equals("") || newStartMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
@@ -1101,14 +1115,6 @@ public class UIController {
 		lbl.setVisible(isVisible);
 	}
 
-	private String getTextFieldText(TextField txt){
-		return txt.getText();
-	}
-
-	private void setTextFieldText(TextField txt, String str){
-		txt.setText(str);
-	}
-
 	private void setPopOverLabelText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
@@ -1155,23 +1161,6 @@ public class UIController {
 		return oldPath;
 
 	}
-
-	/*
-	private String chooseDirectory(String oldPath){
-		DirectoryChooser mDirectoryChooser = new DirectoryChooser();
-		mDirectoryChooser.setInitialDirectory(new File(getUserDesktopDirectory()));
-
-		File mDirectory = mDirectoryChooser.showDialog(null);
-		if(mDirectory != null){	
-			System.out.println(mDirectory.getAbsolutePath());
-			return mDirectory.getAbsolutePath();
-		}
-
-		return oldPath;
-
-	}
-	 */
-
 
 	private String getUserDesktopDirectory(){
 		return Constants.SETTING_DEFAULT_FOLDER_PATH;

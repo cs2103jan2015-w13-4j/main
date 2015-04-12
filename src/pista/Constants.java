@@ -77,10 +77,18 @@ public class Constants {
 	public static final double UI_POP_OVER_LABEL_DATETIME_WIDTH = 80.0;
 	public static final double UI_POP_OVER_VBOX_SPACING = 8.0;
 	public static final double UI_POP_OVER_HBOX_SPACING = 4.0;
+	public static final double UI_POP_OVER_HBOX_MARGIN_TOP = 10.0;
+	public static final double UI_POP_OVER_HBOX_MARGIN_RIGHT = 0.0;
+	public static final double UI_POP_OVER_HBOX_MARGIN_BOTTOM = 0.0;
+	public static final double UI_POP_OVER_HBOX_MARGIN_LEFT = 0.0;
 	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_TOP = 5.0;
 	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT = 10.0;
 	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM = 5.0;
 	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_LEFT = 10.0;
+	public static final double UI_POP_OVER_VBOX_MARGIN_TOP = 10.0;
+	public static final double UI_POP_OVER_VBOX_MARGIN_RIGHT = 0.0;
+	public static final double UI_POP_OVER_VBOX_MARGIN_BOTTOM = 0.0;
+	public static final double UI_POP_OVER_VBOX_MARGIN_LEFT = 0.0;
 	
 	/*----- ToolTip -----*/
 	public static final String UI_TOOLTIP_HELP = "Help";
@@ -104,16 +112,27 @@ public class Constants {
 	/*----- Alarm -----*/ 
 	public static final String UI_ALARM_LOCATION = "/bin/sounds/alarm.mp3";
 	
-	
 	/*----- Setting -----*/
 	public static final String SETTING_SAVE_AS_DEFAULT_XML_FILE_NAME = "data.xml";
 	
-	
+	/*----- Start Guide ----*/
+	public static final double UI_START_GUIDE_WIDTH = 910.0;
+	public static final double UI_START_GUIDE_HEIGHT = 605.0;
+	public static final double UI_START_GUIDE_BUTTON_OK_WIDTH = 150.0;
+	public static final double UI_START_GUIDE_BUTTON_OK_HEIGHT = 35.0;
+	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_RIGHT = 5.0;
+	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP = 350.0;
+	public static final String UI_START_GUIDE_BUTTON_OK_TITLE = "I Understand";
 	
 	/*----- Date format -----*/
 	public static final String DATETIME_FORMAT_CLOCK = "dd MMM yyyy HH:mm:ss a"; //e.g. 18 Jan 2015 03:00:00 AM
 	public static final String DATETIME_FORMAT_DATEPICKER = "dd MMMM yyyy"; //e.g. 18 January 2015
 	public static final String DATETIME_FORMAT_STORAGE = "d/M/yyyy"; //e.g. 18/4/2015
+	
+	
+	/*----- Redo ----- */
+	public static final String UI_REDO_IMAGE_LINK = "images/redo.png";
+	public static final String UI_REDO_BUTTON_TITLE = "Redo";
 	
 	/*============================= End of UI =================================== */
 	
@@ -295,6 +314,22 @@ public class Constants {
 	/*============================= End of Logic ================================ */
 	
 	/*============================= Storage ===================================== */
+	public static final String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><task/></tasks>";
+	public static final String NODE_ROOT_TAG = "tasks";
+	public static final String NODE_TOTAL_TASK_TAG = "total_task";
+	public static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
+	public static final String NODE_TASK_TAG = "task";
+	public static final String NODE_TASK_ID_TAG = "id";
+	public static final String NODE_TASK_TITLE_TAG = "title";
+	public static final String NODE_TASK_START_MILLISECOND_TAG = "start_millisecond";
+	public static final String NODE_TASK_END_MILLISECOND_TAG = "end_millisecond";
+	public static final String NODE_TASK_IS_DONE_TAG = "is_done";
+	public static final String NODE_TASK_CATEGORY_TAG = "category";
+	public static final String NODE_TASK_PRIORITY_TAG = "priority";
+	public static final String NODE_TASK_REMINDER_TIME_TAG = "reminder";
+	
+	
+	
 	/*============================= End of Storage ============================== */
 	
 	/*============================= Logging ===================================== */

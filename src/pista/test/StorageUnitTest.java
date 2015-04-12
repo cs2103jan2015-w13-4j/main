@@ -51,7 +51,7 @@ public class StorageUnitTest {
 	@Test 
 	public void test_Storage_Set_Folder_location(){
 		mStorage.setDataFolderLocation(dummyFilePath);
-		assertEquals("Set correct location?", dummyFilePath, mStorage.getDataFolderLocation());
+		assertEquals("Set correct location?", dummyFilePath, mStorage.getDataFileLocation());
 	}
 	
 	@Test
