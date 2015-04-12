@@ -20,6 +20,7 @@ public class Task {
 	private String priority = "";  
 	private long reminderTime = 0L;
 	
+	public Task(){}
 	/*3 catergory
 	 * event task has start date/time and end date/time
 	 * deadline	task has end date/time only

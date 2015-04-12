@@ -1005,10 +1005,35 @@ public class Logic {
 	 * return currentState - the current state of the Storage
 	 * **/
 	private ArrayList<Task> getCurrentState() {
-		ArrayList<Task> currentState = new ArrayList<Task>(getStorageList());
+		ArrayList<Task> currentState = new ArrayList<Task>();
+		for ( Task a : getStorageList()){
+			Task temp = new Task();
+			copyTask(a, temp);
+			currentState.add(temp);
+		}
 		return currentState;
 	}
-	
+
+	/** This method is copy information from one Task to another
+	 * Parameters:	a - the Task to copy from
+	 * 				temp - the Task to copy to
+	 * **/
+	private void copyTask(Task a, Task temp) {
+		temp.setCategory(a.getCategory());
+		temp.setEndDate(a.getEndDate());
+		temp.setEndMilliseconds(a.getEndMilliseconds());
+		temp.setEndTime(a.getEndTime());
+		temp.setID(a.getID());
+		temp.setIsDone(a.getIsDone());
+		temp.setIsReminded(a.getIsReminded());
+		temp.setPriority(a.getPriority());
+		temp.setReminder(a.getReminder());
+		temp.setStartDate(a.getStartDate());
+		temp.setStartMilliseconds(a.getStartMilliseconds());
+		temp.setStartTime(a.getStartTime());
+		temp.setTitle(a.getTitle());
+	}
+
 	/** This method is to reorder the ID of the Task in the Storage to make the ID in a correct sequence based on
 	 * how the Task is being shown
 	 * **/
