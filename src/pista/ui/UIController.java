@@ -74,85 +74,30 @@ import pista.parser.MainParser;
 import pista.storage.Storage;
 
 
-
-//Contains all objects found in MainUI
 public class UIController {
 	private MainApp mApp = null;
 	private Stage stageHelp = null;
 	private CustomLogging mLog = null;
 	private CustomPreferences mPrefs = null;
 	private Storage mStorage;
+	
+	//Controls
+	private AnchorPane anchorPaneStartGuide;
+	private Button btnOkStartGuide = null;
+	private Button btnSetting;
+	private Button btnAddNewTask;
+	private Button btnRefresh;
+	private Button btnHelp;
+	private Button btnRedo;
+	private Button btnUndo;
 	private PopOver mPopOverSetting = null;
 	private PopOver mPopOverAdd = null;
-	private Button btnOkStartGuide = null;
 	
-	private final int FIRST_LAUNCH_VALUE = 0;
+	private String userInput = null;
+	private String searchKeyword = null;
 	
-	public String userInput = null;
-	private static String searchKeyword = null;
 	private boolean isValidFilePath;
-
-	private static final String CSS_IMAGE_BACKGROUND = "image-background";
-	private static final String CSS_TEXT_BACKGROUND  = "text-background";
-	private static final String CSS_TRANSPARENT_BACKGROUND = "transparent-background";
-	private static final String CSS_LIST_VIEW = "list-view-style";
-	private static final String CSS_TEXT_BOX = "text-box-style";
-	private static final String CSS_TEXT_STATUS = "text-status-style";
-	private static final String CSS_TEXT_CLOCK = "text-clock-style";
-
-	private static final String CSS_BUTTON = "button-style";
-	private static final String CSS_BUTTON_IMAGE = "button-image-style";
-	private static final String CSS_BUTTON_SETTING = "button-setting-style";
-	private static final String CSS_BUTTON_ADD = "button-add-style";
-	private static final String CSS_BUTTON_HELP = "button-help-style";
-	private static final String CSS_BUTTON_REFRESH = "button-refresh-style";
-	private static final String CSS_BUTTON_REDO = "button-redo-style";		
-	private static final String CSS_BUTTON_UNDO = "button-undo-style";
-
-	private final String CSS_START_GUIDE_PANE = "start-guide-pane";
-	private final String CSS_START_GUIDE_BUTTON = "start-guide-button";
 	
-	private final String CSS_POP_OVER_TEXTAREA = "pop-over-text-area";
-	private final String CSS_POP_OVER_TOOLTIP = "pop-label-time-tip";
-
-	private final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
-	private final String CSS_POP_OVER_TITLE= "pop-label-title";
-	private final String CSS_POP_OVER_BUTTON = "pop-btn";
-	private final String CSS_POP_OVER_ERROR_MESSAGE = "pop-label-error-message";
-	private final String CSS_POP_OVER_CORRECT_MESSAGE = "pop-label-correct-message";
-	private final String POP_OVER_FAILED_SETTING_MESSAGE = "Setting Failed";
-	private final String POP_OVER_INVALID_FILE_MESSAGE = "Invalid File";
-	private final String POP_OVER_SUCCESS_SETTING_MESSAGE = "Updated";
-	private final String POP_OVER_INVALID_TITLE_MESSAGE = "Task cannot be empty";
-	private final String POP_OVER_INVALID_START_TIME_MESSAGE = "Invalid Start Time";
-	private final String POP_OVER_INVALID_END_TIME_MESSAGE = "Invalid End Time";
-	private final String POP_OVER_SUCCESS_ADD_MESSAGE = "Added Successfully";
-	private final String POP_OVER_FAIL_ADD_MESSAGE = "Fail to add";
-
-	private final String STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
-	private final String STATUS_INVALID_XML_FILE_PATH_MESSAGE  = "Either your file is not empty or invalid format.";
-	private final String STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE = "Failed to load selected file.";
-	private final String STATUS_FAIL_TO_SAVE_DUE_TO_INVALID_FILE_MESSAGE = "Please ensure your file is valid before saving.";
-	private final String STATUS_FAIL_TO_SAVE = "Unable to save setting. Please try again.";
-	private final String STATUS_APPLICATION_ERROR_MESSAGE = "Application error. Please contact the administrator";
-	private final String STATUS_SUCCESS_FILE_CREATED_MESSAGE = "[new_file_path] is loaded.";
-
-	private final String TOOLTIP_HELP = "Help";
-	private final String TOOLTIP_SETTING = "Setting";
-	private final String TOOLTIP_REFRESH = "Refresh the list";
-	private final String TOOLTIP_ADD = "Add New Task";
-	private final String TOOLTIP_REDO = "Redo to last action";
-	private final String TOOLTIP_UNDO = "Undo to previous action";
-
-	private String addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
-
-	private Path currentRelativePath = Paths.get("");
-	private int checkPistaFlag = 0;
-	private String location = currentRelativePath.toAbsolutePath().toString();
-	private final String ALARM_COMPILE_FILE_PATH = location + "/bin/sounds/alarm.mp3";
-	
-
-
 	//Objects
     @FXML
     private StackPane mStackPane;
@@ -182,60 +127,140 @@ public class UIController {
 	private VBox vBoxMainArea;
 
 	@FXML
-	private ListView<Task> listview_task_fx_id;
-
-	private AnchorPane anchorPaneStartGuide;
-	
-	private Button btnSetting;
-	private Button btnAddNewTask;
-	private Button btnRefresh;
-	private Button btnHelp;
-	private Button btnRedo;
-	private Button btnUndo;
-
-	private final KeyCombination KEY_COMBINATION_HELP = new KeyCodeCombination(KeyCode.F1);
-	private final KeyCombination KEY_COMBINATION_START_GUIDE = new KeyCodeCombination(KeyCode.F2);
+	private ListView<Task> listviewTask;
 	
 	@FXML
 	void onHelp(ActionEvent event) {
-		showHelp();
+		showHelp(); //open help guide
 	}
 
 	@FXML
 	void onRefresh(ActionEvent event) {
-		this.initialize();
+		this.initialize(); //initialize controls in UI
 	}
 	
-	
 	@FXML
-    void onUIKeyPressed(KeyEvent event) {
-		if (KEY_COMBINATION_HELP.match(event)){ //when free F1, show help
+    void onUIKeyPressed(KeyEvent event) { // UI listen key press
+		if (Constants.KEY_COMBINATION_HELP.match(event)){ //when pressed F1, show help
 			showHelp();
 		}
 		
-		if (KEY_COMBINATION_START_GUIDE.match(event)){ //when free F1, show help
+		if (Constants.KEY_COMBINATION_START_GUIDE.match(event)){ //when pressed F2, show start guide
 			initStartGuide();
-		}
-		
-		//if (KEY_COMBINATION_ALARM.match(event)){
-		////	runReminder();
-		//}
-		
+		}	
     }
 
-	public boolean initStorage(){
+	@FXML
+	public void initialize() {
+		String logicOutput = "";
+
+		this.initTimeClock();
+		this.initReminder();
+		this.initMainParser();
+		this.initStorage();
+		this.initPreferences(); //initialize preferences
+		this.initLogging(); //initialize logging
+		this.initButtonRedo();
+		this.initButtonUndo();
+		this.initButtonSetting(); 
+		this.initButtonAddNewTask();
+		this.initButtonHelp();
+		this.initButtonRefresh();
+
+		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
+
+		if(this.getPreferencePistaFlag() == Constants.PREFERENCE_FIRST_LAUNCH_VALUE){ //equals 0
+			this.initStartGuide(); //start the start guide
+			this.setPreferencePistaFlag(Constants.PREFERENCE_SUBSQUENT_LAUNCH_VALUE); //update the preference of the flag = 1
+		}		
+		
+		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
+		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
+		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
+		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
+
+		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
+		this.mStorage.initLogging(); //initialize Storage logging
+		Logic.initLogging(); //initialize Logic logging
+		Logic.initStorage();
+		Logic.initPreference();
+
+		logicOutput = Logic.load();
+		this.txtStatus.setText(logicOutput);
+
+		this.txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
+			@Override
+			public void handle(KeyEvent event){
+				if (Constants.KEY_COMBINATION_AUTO_COMPLETE.match(event)){
+					onCtrlSpacePressed();
+					
+				}else if (Constants.KEY_COMBINATION_UP.match(event)) {
+					onUpPressed();
+					
+				}else if (Constants.KEY_COMBINATION_DOWN.match(event)) {
+					onDownPressed();
+				}
+			}
+		});
+		
+		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
+			initTaskListInListView(); //initialize listview
+		}
+
+	}//end initialize
+	
+	private void initTimeClock(){
+		this.txtClock.getStyleClass().addAll(Constants.UI_CSS_TEXT_CLOCK);
+		this.txtClock.setTextAlignment(TextAlignment.RIGHT);
+
+		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+			new EventHandler<ActionEvent>(){
+				DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
+				@Override
+				public void handle(ActionEvent event) {
+					Calendar nowDate = Calendar.getInstance();
+					txtClock.setText(dateFormat.format(nowDate.getTime()));
+				}
+			}),
+			new KeyFrame(Duration.seconds(1))
+		);
+
+		mTimeLine.setCycleCount(Animation.INDEFINITE);
+		mTimeLine.play();
+	}
+	
+	private void initReminder(){
+		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+				new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					runReminder();
+				}//end handle
+			}),
+			new KeyFrame(Duration.seconds(1))
+		);
+		aTimeLine.setCycleCount(Animation.INDEFINITE);
+		aTimeLine.play();
+	}
+	
+	public boolean initMainParser(){
 		try{
-			mStorage = Storage.getInstance();
+			//this.mParser = MainParser.getInstance();
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
-		}		
+		}
 	}
-
-	public boolean initLogging(){
+	
+	public boolean initStorage(){
 		try{
-			mLog = CustomLogging.getInstance(Storage.class.getName());
+			this.mStorage = Storage.getInstance();
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -245,8 +270,8 @@ public class UIController {
 
 	private boolean initPreferences(){
 		try{
-			mPrefs = CustomPreferences.getInstance();
-			mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
+			this.mPrefs = CustomPreferences.getInstance();
+			this.mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -254,52 +279,14 @@ public class UIController {
 		}
 	}
 
-	private int getPreferencePistaFlag(){
+	public boolean initLogging(){
 		try{
-			int flag = 0; //either 1 or 0
-			flag = mPrefs.getPreferencePistaFlag();
-			return flag;
-		}catch(Exception e){
-			e.printStackTrace();
-			return -2;
-		}
-	}
-	
-	private String getPreferenceFilePath(){ //get file path from preference
-		try{
-			String filePath = "";
-			filePath = mPrefs.getPreferenceFileLocation();
-			return filePath;
-		}catch(Exception e){
-			e.printStackTrace();
-			return "";
-		}
-	}
-	
-	private boolean setPreferencePistaFlag(int flag){
-		try{
-			mPrefs.setPreferencePistaFlag(flag);
+			this.mLog = CustomLogging.getInstance(Storage.class.getName());
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
-		}
-	}
-
-	private boolean setPreferenceFilePath(String newPath){ //set new file path from preference
-		try{
-			mPrefs.setPreferenceFileLocation(newPath);
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public void setTextStatus(String msg){
-		if(txtStatus != null){
-			txtStatus.setText(msg);
-		}
+		}		
 	}
 
 	private void initStartGuide(){
@@ -307,12 +294,12 @@ public class UIController {
 			this.anchorPaneStartGuide = new AnchorPane();
 		}
 		
-		this.anchorPaneStartGuide.getStyleClass().addAll(CSS_START_GUIDE_PANE);
+		this.anchorPaneStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_PANE);
 		this.anchorPaneStartGuide.setPrefWidth(910.0);
 		this.anchorPaneStartGuide.setPrefHeight(605.0);
 		
 		btnOkStartGuide = new Button("I Understand");
-		btnOkStartGuide.getStyleClass().addAll(CSS_START_GUIDE_BUTTON);
+		btnOkStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_BUTTON);
 		btnOkStartGuide.setPrefSize(150.0, 35.0);
 		btnOkStartGuide.addEventFilter(ActionEvent.ACTION, onBtnStartGuideClick);
 		
@@ -322,7 +309,6 @@ public class UIController {
 		
 		this.mStackPane.setPadding(new Insets(0,0,0,0));
 		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
-
 	}
 	
 	private void hideStartGuide(){
@@ -331,102 +317,80 @@ public class UIController {
 	
 	
 	private void initButtonRedo(){
-		double size = 40.0;
-
 		ImageView img = new ImageView(new Image("images/redo.png"));
 		img.setPreserveRatio(true);
-		img.setFitHeight(20);
-		img.setFitWidth(20);
+		img.setFitHeight(Constants.UI_IMG_INSIDE_BUTTON_WIDTH);
+		img.setFitWidth(Constants.UI_IMG_INSIDE_BUTTON_HEIGHT);
 
 		if(this.btnRedo == null){
-			this.btnRedo = new Button("Redo"); //, img
+			this.btnRedo = new Button("Redo"); //
 		}
 
-		setButtonToolTip(this.btnRedo, this.TOOLTIP_UNDO);
+		setButtonToolTip(this.btnRedo, Constants.UI_TOOLTIP_UNDO);
 		this.btnRedo.setTextAlignment(TextAlignment.RIGHT);
-		this.btnRedo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REDO);
-		this.btnRedo.setPrefWidth(75.0);
-		this.btnRedo.setPrefHeight(size);
+		this.btnRedo.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_REDO);
+		this.btnRedo.setPrefWidth(Constants.UI_BUTTON_IMAGE_TOP_WIDTH);
+		this.btnRedo.setPrefHeight(Constants.UI_BUTTON_TOP_HEIGHT);
 		this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnRedoClick); //set click method listener
 	}
 
 	private void initButtonUndo(){
-
-		double size = 40.0;
-
 		if(this.btnUndo == null){
 			this.btnUndo = new Button("Undo");
 		}
 
-		setButtonToolTip(this.btnUndo, this.TOOLTIP_REDO);
+		this.setButtonToolTip(this.btnUndo, Constants.UI_TOOLTIP_REDO);
 		this.btnUndo.setTextAlignment(TextAlignment.RIGHT);
-		this.btnUndo.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_UNDO);
-		this.btnUndo.setPrefWidth(75.0);
-		this.btnUndo.setPrefHeight(size);
-		this.btnUndo.addEventFilter(ActionEvent.ACTION, onBtnUndoClick); //set click method listener
+		this.btnUndo.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_UNDO);
+		this.btnUndo.setPrefWidth(Constants.UI_BUTTON_IMAGE_TOP_WIDTH);
+		this.btnUndo.setPrefHeight(Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnUndo.addEventFilter(ActionEvent.ACTION, this.onBtnUndoClick); //set click method listener
 	}
 
 	private void initButtonSetting(){
-		double size = 40.0;
-
 		if(this.btnSetting == null){
 			this.btnSetting = new Button();
 		}
 
-		setButtonToolTip(this.btnSetting, this.TOOLTIP_SETTING);
-		this.btnSetting.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_SETTING);
-		this.btnSetting.setPrefSize(size, size);
-		this.btnSetting.setMaxSize(size, size);
-		this.btnSetting.setMinSize(size, size);
-		this.btnSetting.addEventFilter(ActionEvent.ACTION, onBtnSettingClick); //set click method listener
+		this.setButtonToolTip(this.btnSetting, Constants.UI_TOOLTIP_SETTING);
+		this.btnSetting.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_SETTING);
+		this.btnSetting.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnSetting.addEventFilter(ActionEvent.ACTION, this.onBtnSettingClick); //set click method listener
 	}
 
 	private void initButtonAddNewTask(){
-		double size = 40.0;
-
 		if(this.btnAddNewTask == null){
 			this.btnAddNewTask = new Button();
 		}
 
-		setButtonToolTip(this.btnAddNewTask, this.TOOLTIP_ADD);
-		this.btnAddNewTask.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_ADD);
-		this.btnAddNewTask.setPrefSize(size, size);
-		this.btnAddNewTask.setMaxSize(size, size);
-		this.btnAddNewTask.setMinSize(size, size);
-		this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, onBtnAddNewTaskClick); //set click method listener
+		setButtonToolTip(this.btnAddNewTask, Constants.UI_TOOLTIP_ADD);
+		this.btnAddNewTask.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_ADD);
+		this.btnAddNewTask.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, this.onBtnAddNewTaskClick); //set click method listener
 	}
 
 	private void initButtonHelp(){
-		double size = 40.0;
-
 		if(this.btnHelp == null){
 			this.btnHelp = new Button();
 		}
 
-		setButtonToolTip(this.btnHelp, this.TOOLTIP_HELP);
-		this.btnHelp.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_HELP);
-		this.btnHelp.setPrefSize(size, size);
-		this.btnHelp.setMaxSize(size, size);
-		this.btnHelp.setMinSize(size, size);
-		this.btnHelp.addEventFilter(ActionEvent.ACTION, onBtnHelpClick); //set click method listener
+		setButtonToolTip(this.btnHelp, Constants.UI_TOOLTIP_HELP);
+		this.btnHelp.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_HELP);
+		this.btnHelp.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnHelp.addEventFilter(ActionEvent.ACTION, this.onBtnHelpClick); //set click method listener
 	}
 
 	private void initButtonRefresh(){
-		double size = 40.0;
-
 		if(this.btnRefresh == null){
 			this.btnRefresh = new Button();
 		}
 
-		setButtonToolTip(this.btnRefresh, this.TOOLTIP_REFRESH);
-		this.btnRefresh.getStyleClass().addAll(CSS_BUTTON_IMAGE, CSS_BUTTON_REFRESH);
-		this.btnRefresh.setPrefSize(size, size);
-		this.btnRefresh.setMaxSize(size, size);
-		this.btnRefresh.setMinSize(size, size);
-		this.btnRefresh.addEventFilter(ActionEvent.ACTION, onBtnRefreshClick); //set click method listener
+		setButtonToolTip(this.btnRefresh, Constants.UI_TOOLTIP_REFRESH);
+		this.btnRefresh.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_REFRESH);
+		this.btnRefresh.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnRefresh.addEventFilter(ActionEvent.ACTION, this.onBtnRefreshClick); //set click method listener
 	}
 
-	Group mGrp = new Group();
 	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
 		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
 		AnchorPane.setTopAnchor(mNode, anchorTop);
@@ -439,12 +403,69 @@ public class UIController {
 		if(!(anchorLeft == 0.0)){
 			AnchorPane.setLeftAnchor(mNode, anchorLeft);
 		}
-
-		//mGrp.getChildren().addAll(mNode);
 	}
 
-	private void setButtonToolTip(Button btn, String msg){
-		btn.setTooltip(new Tooltip(msg));
+	private int getPreferencePistaFlag(){
+		try{
+			int flag = 0; //either 1 or 0
+			flag = this.mPrefs.getPreferencePistaFlag();
+			return flag;
+		}catch(Exception e){
+			e.printStackTrace();
+			return Constants.PREFERENCE_ERROR_LAUNCH_VALUE;
+		}
+	}
+	
+	private String getPreferenceFilePath(){ //get file path from preference
+		try{
+			String filePath = "";
+			filePath = this.mPrefs.getPreferenceFileLocation();
+			return filePath;
+		}catch(Exception e){
+			e.printStackTrace();
+			return "";
+		}
+	}
+	
+	private boolean setPreferencePistaFlag(int flag){
+		try{
+			this.mPrefs.setPreferencePistaFlag(flag);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private boolean setPreferenceFilePath(String newPath){ //set new file path from preference
+		try{
+			this.mPrefs.setPreferenceFileLocation(newPath);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean setTextStatus(String msg){
+		if(this.txtStatus != null){
+			this.txtStatus.setText(msg);
+			return true;
+		}
+		return false;
+	}
+
+	private boolean setButtonToolTip(Button btn, String msg){
+		try{
+			if(btn != null){
+				btn.setTooltip(new Tooltip(msg));
+				return true;
+			}
+			return false;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
 	}
 
 	@FXML
@@ -460,142 +481,73 @@ public class UIController {
 		String logicOutput = "";
 		String command = "";
 
-		mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
+		this.mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
 		MainParser mp = MainParser.validateInput(userInput);
 		parserOutput = mp.getMessage();
 		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
 			//display error
-			txtStatus.setText(parserOutput);
-			mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
+			this.setTextStatus(parserOutput);
+			this.mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
 			return false; //fail
 		}
 
-		mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
+		this.mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
 
 		command = mp.getCommand();
 
 		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
 			showHelp();
-			txtStatus.setText(Constants.LOGIC_SUCCESS_HELP);
+			this.setTextStatus(Constants.LOGIC_SUCCESS_HELP);
 			return true;
 		}
 
 		tokens = mp.getTokens();
 
 		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
-			setSearchKeyword(tokens);
-			initTaskListInListView();
-			txtStatus.setText(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
-			resetSearchKeyword();
+			this.setSearchKeyword(tokens);
+			this.initTaskListInListView();
+			this.setTextStatus(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
+			this.resetSearchKeyword();
 			return true;
 		}
 
 		logicOutput = Logic.runCommand(command, tokens);
 
-		txtStatus.setText(logicOutput);
-
-		initTaskListInListView();
+		this.setTextStatus(logicOutput);
+		this.initTaskListInListView();
+		this.clearTextCommand();
 
 		Logic.storeToHistory(userInput);
-
-		txtBoxCommand.clear();
-
+		
 		return true;
 	}
 
-
-	@FXML
-	public void initialize() {
-		String logicOutput = "";
-		
-		this.clearContent();
-		this.initTimeClock();
-		this.initReminder();
-		this.initStorage();
-		this.initPreferences(); //initialize preferences
-		this.initLogging(); //initialize logging
-		
-		this.initButtonSetting();
-		this.initButtonAddNewTask();
-		this.initButtonHelp();
-		this.initButtonRefresh();
-		this.initButtonRedo();
-		this.initButtonUndo();
-
-		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
-
-		if(this.getPreferencePistaFlag() == this.FIRST_LAUNCH_VALUE){ //equals 0
-			this.initStartGuide(); //start the start guide
-			this.setPreferencePistaFlag(1); //update the preference of the flag = 1
-		}
-		
-		
-		anchorPaneMain.getStyleClass().addAll(CSS_TRANSPARENT_BACKGROUND);
-		txtStatus.getStyleClass().addAll(CSS_TEXT_BACKGROUND, CSS_TEXT_STATUS);
-		txtBoxCommand.getStyleClass().addAll(CSS_TEXT_BOX);
-		btnEnter.getStyleClass().addAll(CSS_BUTTON);
-
-		mStorage.setDataFolderLocation(getPreferenceFilePath());
-		mStorage.initLogging(); //initialize Storage logging
-		Logic.initLogging(); //initialize Logic logging
-		Logic.initStorage();
-		Logic.initPreference();
-
-		logicOutput = Logic.load();
-		txtStatus.setText(logicOutput);
-
-		final KeyCombination keyCombi = new KeyCodeCombination(KeyCode.SPACE,KeyCombination.CONTROL_DOWN);
-		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event){
-				if (keyCombi.match(event)){
-					onCtrlSpacePressed();
-				}
-			}
-		});
-		
-		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>() {
-			final KeyCombination combo1 = new KeyCodeCombination(KeyCode.UP);
-			public void handle(KeyEvent e) {
-				if (combo1.match(e)) {
-					onUpPressed();
-				}
-			}
-		});
-		txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>() {
-			final KeyCombination combo2 = new KeyCodeCombination(KeyCode.DOWN);
-			public void handle(KeyEvent t) {
-				if (combo2.match(t)) {
-					onDownPressed();
-				}
-			}
-		});
-
-		if(logicOutput.equals(Constants.LOGIC_SUCCESS_LOAD_XML)){
-			initTaskListInListView();
-		}
-
-	}//end initialize
-
+	private boolean setTextCommand(String command){
+		this.txtBoxCommand.setText(command);
+		return true;
+	}
+	
+	private String getTextCommand(){
+		return this.txtBoxCommand.getText();
+	}
+	
+	private boolean clearTextCommand(){
+		this.txtBoxCommand.clear();
+		return true;
+	}
+	
 	public boolean initTaskListInListView(){
-
 		try{
 			ArrayList<Task> storageList = Logic.getStorageList();
-			if (searchKeyword != null) {
-				storageList = searchTasks(storageList, searchKeyword);
+			if (this.searchKeyword != null) {
+				storageList = searchTasks(storageList, this.searchKeyword);
 			}
 
 			ObservableList<Task> myObservableList = FXCollections.observableList(storageList);
-			listview_task_fx_id.setItems(null); 
-			listview_task_fx_id.setItems(myObservableList);
-
-			listview_task_fx_id.getStyleClass().addAll(CSS_LIST_VIEW); //add css class
-			listview_task_fx_id.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){ //populate every task into a custom cell
+			this.listviewTask.setItems(null); 
+			this.listviewTask.setItems(myObservableList);
+			this.listviewTask.getStyleClass().addAll(Constants.UI_CSS_LIST_VIEW); //add css class
+			this.listviewTask.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>(){ //populate every task into a custom cell
 				@Override
 				public ListCell<Task> call(ListView<Task> param) {
 					final TaskListCell mCell = new TaskListCell();
@@ -606,7 +558,7 @@ public class UIController {
 
 			//Selected item
 			//currently not in use
-			listview_task_fx_id.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+			this.listviewTask.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
 				@Override      
 				public void changed(ObservableValue<? extends Task> ov,
 						Task oldTask, Task newTask) {
@@ -615,28 +567,30 @@ public class UIController {
 
 			return true;
 		}catch(Exception e){
-			mLog.logSevere(e.getMessage());
+			this.mLog.logSevere(e.getMessage());
 			return false;
 		}//end try
 
 	}//end initTaskListInListView
 
 	public boolean showHelp(){
-		stageHelp = new Stage();
+		if(this.stageHelp == null){
+			this.stageHelp = new Stage();
+		}
 
 		double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
 		double startY = this.mApp.getPrimaryStage().getY();
 		
-		stageHelp.setTitle("Help");
-		stageHelp.initStyle(StageStyle.UTILITY);
-		stageHelp.initModality(Modality.NONE);
-		stageHelp.setResizable(false);
-		stageHelp.setX(startX);
-		stageHelp.setY(startY);
+		this.stageHelp.setTitle(Constants.HELP_TITLE);
+		this.stageHelp.initStyle(StageStyle.UTILITY);
+		this.stageHelp.initModality(Modality.NONE);
+		this.stageHelp.setResizable(false);
+		this.stageHelp.setX(startX);
+		this.stageHelp.setY(startY);
 
-		Scene scene = new Scene(new Browser(), 500,700, Color.web("#666970"));
-		stageHelp.setScene(scene);    
-		stageHelp.show();
+		Scene scene = new Scene(new Browser(), 500, 700, Color.web("#666970"));
+		this.stageHelp.setScene(scene);    
+		this.stageHelp.show();
 
 		return true;
 	}
@@ -646,15 +600,15 @@ public class UIController {
 	}
 
 	public void onCtrlSpacePressed(){
-		userInput = txtBoxCommand.getText();
-		String[] temp = userInput.split(" ",2);
+		this.userInput = this.getTextCommand();
+		String[] temp = this.userInput.split(" ",2);
 		String command = temp[0];
 		try { 
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
 				String processedString = Logic.processTaskInfo(id);
 				String finalStr = processedString;
-				txtBoxCommand.appendText(finalStr);
+				this.setTextCommand(finalStr);
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
@@ -664,26 +618,22 @@ public class UIController {
 	public void onUpPressed(){
 		if(Constants.HISTORY_INDEX > 0){
 			Constants.HISTORY_INDEX -= 1;
-			txtBoxCommand.setText(mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
+			this.setTextCommand(this.mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
 		}else{
-			txtBoxCommand.setText(mStorage.getHistoryList().get(0));
+			this.setTextCommand(this.mStorage.getHistoryList().get(0));
 		}
 	}
 
 	public void onDownPressed(){
-		if(Constants.HISTORY_INDEX < mStorage.getHistoryList().size()-1){
+		if(Constants.HISTORY_INDEX < this.mStorage.getHistoryList().size() - 1){
 			Constants.HISTORY_INDEX += 1;
-			txtBoxCommand.setText(mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
+			this.setTextCommand(this.mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
 		}else{
-			Constants.HISTORY_INDEX = mStorage.getHistoryList().size();
-			txtBoxCommand.setText("");
+			Constants.HISTORY_INDEX = this.mStorage.getHistoryList().size();
+			this.clearTextCommand();
 		}
 	}
 
-	private void clearContent(){
-		txtStatus.setText("");
-	}
-	
 	private EventHandler<ActionEvent> onBtnStartGuideClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -718,55 +668,12 @@ public class UIController {
 			initTaskListInListView();
 		}
 	};
-	//============================== SEARCH FUNCTIONS ====================================
-	private void setSearchKeyword(String[] tokens) {
-		searchKeyword = getKeyword(tokens);
-	}
-
-	private String getKeyword(String[] tokens) {
-		return tokens[0];
-	}
-
-	private void resetSearchKeyword() {
-		searchKeyword = null;
-	}
-
-	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
-		ArrayList<Task> displayList = new ArrayList<Task>();
-
-		for (Task task: storageList) {
-			if (hasKeyword(task, searchKeyword)) {
-				displayList.add(task);
-			}
-		}
-
-		return displayList;
-	}
-
-	private boolean hasKeyword(Task task, String keyword) {
-		String taskDescription = task.getTitle();
-		String[] descriptionTokens = makeIntoTokens(taskDescription);
-
-		for (String token: descriptionTokens) {
-			if (keyword.equals("")) {
-				return false;
-			} else if (token.equalsIgnoreCase(keyword)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private String[] makeIntoTokens(String taskDescription) {
-		return taskDescription.split("\\s+");
-	}
+	
+	
 	//============================== POPOVER ADD NEW TASK ====================================
 	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			//initTaskListInListView();
-			System.out.println("helo");
 			showPopOverAdd();
 		}
 	};
@@ -793,32 +700,32 @@ public class UIController {
 	}
 
 	private void initPopOverSetting(){
-		final double popWidth = 500.0;
-		final double popHeight = 200.0;
-
+		final Label lblMessage = new Label();
+		final TextField txtBoxCurrentDirectory = new TextField();
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
 		Label lblSettingTitle = new Label("Setting");
-		Label lblCurrentDirectory = new Label("Current Directory");
-		final Label lblMessage = new Label();
-		final TextField txtBoxCurrentDirectory = new TextField();
+		Label lblCurrentDirectory = new Label("Current Directory");		
 		Button btnBrowse = new Button("Browse");
 		Button btnSave = new Button("Save All Settings");
 
+		double txtDirectoryWidth = 380.0;
+		double btnBrowseWidth = 100.0;
+		
 		//Set Message width first
-		setPopOverLabelMessageStyle(lblMessage, popWidth);
+		setPopOverLabelMessageStyle(lblMessage, Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_LABEL_MESSAGE_HEIGHT);
 
 		//Get current file location from preference
 		final String currentFileDir = mPrefs.getPreferenceFileLocation();
 
 		//Textbox directory
-		txtBoxCurrentDirectory.setPrefWidth(380.0);
+		txtBoxCurrentDirectory.setPrefWidth(txtDirectoryWidth);
 		txtBoxCurrentDirectory.setEditable(false);
 		setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
 
 		//Button browse
-		btnBrowse.getStyleClass().addAll(CSS_POP_OVER_BUTTON);
-		btnBrowse.setPrefWidth(100.0);
+		btnBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
+		btnBrowse.setPrefWidth(btnBrowseWidth);
 		btnBrowse.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() { //button browse click
 			@Override
 			public void handle(ActionEvent event) {
@@ -837,7 +744,7 @@ public class UIController {
 						//setTextStatus("");
 					}else{
 						setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
-						setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
 						setPopOverLabelMessageVisible(lblMessage, false, true); //set to red and display
 					}
 				}catch(AssertionError e){
@@ -854,8 +761,8 @@ public class UIController {
 
 
 		//Button save
-		btnSave.getStyleClass().addAll(CSS_POP_OVER_BUTTON);
-		btnSave.setPrefWidth(popWidth);
+		btnSave.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
+		btnSave.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
 		btnSave.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -870,17 +777,17 @@ public class UIController {
 						isFileCreated = Logic.checkFileDuringSave(newPath);
 
 						if(isFileCreated){
-							String status = STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
+							String status = Constants.UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE.replace("[new_file_path]", newPath);
 							setTextStatus(status);
 						}else{
 							//logging
-							setTextStatus(STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
+							setTextStatus(Constants.UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE);
 						}
 
 						isPrefSave = setPreferenceFilePath(newPath); //save preferences
 
 						if(!isPrefSave){ //unable to save
-							setTextStatus(STATUS_FAIL_TO_SAVE);
+							setTextStatus(Constants.UI_STATUS_FAIL_TO_SAVE);
 
 						}else{ //saved successfully
 							mStorage.setDataFolderLocation(newPath); //set new path to storage
@@ -888,23 +795,23 @@ public class UIController {
 						}
 
 						//Label message
-						setPopOverLabelMessageText(lblMessage, POP_OVER_SUCCESS_SETTING_MESSAGE);
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
 						setPopOverLabelMessageVisible(lblMessage, true, true);
 
 					}catch(AssertionError e){
 						//log
 						e.printStackTrace();
-						setTextStatus(STATUS_EMPTY_XML_FILE_PATH_MESSAGE);
+						setTextStatus(Constants.UI_STATUS_EMPTY_XML_FILE_PATH_MESSAGE);
 						//Label message
-						setPopOverLabelMessageText(lblMessage, POP_OVER_FAILED_SETTING_MESSAGE);
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAILED_SETTING_MESSAGE);
 						setPopOverLabelMessageVisible(lblMessage, false, true);
 
 					}catch(Exception e){
 						//log
 						e.printStackTrace();
-						setTextStatus(STATUS_APPLICATION_ERROR_MESSAGE);
+						setTextStatus(Constants.UI_STATUS_APPLICATION_ERROR_MESSAGE);
 						//Label message
-						setPopOverLabelMessageText(lblMessage, POP_OVER_FAILED_SETTING_MESSAGE);
+						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAILED_SETTING_MESSAGE);
 						setPopOverLabelMessageVisible(lblMessage, false, true);
 					}//end try
 
@@ -915,8 +822,8 @@ public class UIController {
 
 
 		//label setting title
-		lblSettingTitle.getStyleClass().addAll(CSS_POP_OVER_TITLE);
-		lblSettingTitle.setPrefWidth(popWidth);
+		lblSettingTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TITLE);
+		lblSettingTitle.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
 		lblSettingTitle.setTextAlignment(TextAlignment.CENTER);
 		lblSettingTitle.setAlignment(Pos.CENTER);
 
@@ -933,8 +840,8 @@ public class UIController {
 		vBox.getChildren().add(btnSave); //Button save
 		vBox.getChildren().add(lblMessage); //Label message (red or green)
 
-		vBox.setPrefSize(popWidth, popHeight);
-		vBox.getStyleClass().addAll(CSS_POP_OVER_CONTENT_AREA); //set style for the vbox
+		vBox.setPrefSize(Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_SETTING_HEIGHT);
+		vBox.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_CONTENT_AREA); //set style for the vbox
 
 		this.mPopOverSetting = new PopOver(vBox);
 		this.mPopOverSetting.setHideOnEscape(true);
@@ -946,9 +853,6 @@ public class UIController {
 
 	//================== POP OVER ADD NEW TASK ========================
 	private void showPopOverAdd(){
-		double popWidth = 400.0;
-		double popHeight = 380.0;
-
 		VBox vBox = new VBox(8);
 		HBox hBox = new HBox(4);
 
@@ -987,15 +891,15 @@ public class UIController {
 		datePickerEndDate.setPromptText("22 January 2015");
 		datePickerEndDate.setConverter(datePickerStringConverter);
 
-		setPopOverLabelTitle(lblTitle, popWidth); //style the label title 
-		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, 80.0); //style the labels 
+		setPopOverLabelTitle(lblTitle, Constants.UI_POP_OVER_ADD_WIDTH); //style the label title 
+		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels 
 		setPopOverTextFieldHourMinute(txtFieldStartHour, txtFieldStartMin);
 		setPopOverLabelTimeTip(lblTimeTip);
-		setPopOverLabelMessageStyle(lblMessage, popWidth); //set message style
+		setPopOverLabelMessageStyle(lblMessage, Constants.UI_POP_OVER_ADD_WIDTH, Constants.UI_POP_OVER_LABEL_MESSAGE_HEIGHT); //set message style
 
-		txtAreaTaskTitle.getStyleClass().addAll(this.CSS_POP_OVER_TEXTAREA);
+		txtAreaTaskTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TEXTAREA);
 		txtAreaTaskTitle.setPrefRowCount(3); //text area
-		txtAreaTaskTitle.setPrefWidth(popWidth);
+		txtAreaTaskTitle.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
 		txtAreaTaskTitle.setWrapText(true);
 		txtAreaTaskTitle.setPromptText("Type in a new task title");
 
@@ -1021,7 +925,7 @@ public class UIController {
 		lblTimeTip = new Label("(24 hrs format)");
 		lblColon = new Label(":");
 
-		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, 80.0); //style the labels again
+		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels again
 		setPopOverTextFieldHourMinute(txtFieldEndHour, txtFieldEndMin);
 		setPopOverLabelTimeTip(lblTimeTip);
 
@@ -1045,8 +949,8 @@ public class UIController {
 
 		vBox.getChildren().add(btnAdd); //add edit button
 		vBox.getChildren().add(lblMessage); //add message
-		vBox.setPrefSize(popWidth, popHeight); //set size
-		vBox.getStyleClass().addAll(this.CSS_POP_OVER_CONTENT_AREA); //set style
+		vBox.setPrefSize(Constants.UI_POP_OVER_ADD_WIDTH, Constants.UI_POP_OVER_ADD_HEIGHT); //set size
+		vBox.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_CONTENT_AREA); //set style
 
 		this.mPopOverAdd = new PopOver(vBox);
 		this.mPopOverAdd.setHideOnEscape(true);
@@ -1056,8 +960,8 @@ public class UIController {
 		this.mPopOverAdd.setDetachable(false);
 		this.mPopOverAdd.show(this.btnAddNewTask);
 
-		btnAdd.getStyleClass().addAll(CSS_POP_OVER_BUTTON);
-		btnAdd.setPrefWidth(popWidth);
+		btnAdd.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
+		btnAdd.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
 		btnAdd.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -1076,25 +980,25 @@ public class UIController {
 
 				String newStartTime = "";
 				String newEndTime = "";
-				String addCommand = addTaskCommand;
+				String addCommand = Constants.UI_POP_OVER_ADD_TASK_COMMAND;
 
 				//addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
 
 				if(!isTitleValid(newTitle)){ //check title
 					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_TITLE_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_TITLE_MESSAGE);
 					return;
 				}
 
 				if(!(isValidHour(newStartHour) && isValidMinute(newStartMinute))){ //check is valid for start hour and minute (accept empty)
 					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_START_TIME_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_START_TIME_MESSAGE);
 					return;
 				}
 
 				if(!(isValidHour(newEndHour) && isValidMinute(newEndMinute))){ //check is valid for end hour and minute (accept empty)
 					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_END_TIME_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_END_TIME_MESSAGE);
 					return;
 				}
 
@@ -1110,7 +1014,7 @@ public class UIController {
 								(newStartMinute.equals("") || newStartMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
 
 					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_START_TIME_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_START_TIME_MESSAGE);
 					return;
 
 				}else{
@@ -1130,7 +1034,7 @@ public class UIController {
 								(newEndMinute.equals("") || newEndMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
 
 					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_INVALID_END_TIME_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_END_TIME_MESSAGE);
 					return;
 
 				}else{
@@ -1144,14 +1048,13 @@ public class UIController {
 				isCreated = executeCommand(addCommand);	
 				if(isCreated){
 					setPopOverLabelMessageVisible(lblMessage, true, true); //show success message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_SUCCESS_ADD_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_ADD_MESSAGE);
 					return;
 				}else{
 					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, POP_OVER_FAIL_ADD_MESSAGE);
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAIL_ADD_MESSAGE);
 					return;
 				}
-
 
 			}//end handle
 		});
@@ -1160,7 +1063,7 @@ public class UIController {
 
 
 	private void setPopOverLabelTitle(Label lbl, double width){
-		lbl.getStyleClass().addAll(this.CSS_POP_OVER_TITLE);
+		lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TITLE);
 		lbl.setPrefWidth(width);
 		lbl.setTextAlignment(TextAlignment.CENTER);
 		lbl.setAlignment(Pos.CENTER);
@@ -1181,18 +1084,16 @@ public class UIController {
 	}
 
 	private void setPopOverLabelTimeTip(Label lbl){
-		lbl.getStyleClass().addAll(this.CSS_POP_OVER_TOOLTIP); //set tip style (after the minute input)
+		lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TOOLTIP); //set tip style (after the minute input)
 	}
 
-
 	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
-		lbl.getStyleClass().removeAll(CSS_POP_OVER_CORRECT_MESSAGE, CSS_POP_OVER_ERROR_MESSAGE);
+		lbl.getStyleClass().removeAll(Constants.UI_CSS_POP_OVER_CORRECT_MESSAGE, Constants.UI_CSS_POP_OVER_ERROR_MESSAGE);
 		if(isValid){ //valid, green background
-			lbl.getStyleClass().addAll(CSS_POP_OVER_CORRECT_MESSAGE);	
+			lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_CORRECT_MESSAGE);	
 		}else{//invalid, red background
-			lbl.getStyleClass().addAll(CSS_POP_OVER_ERROR_MESSAGE);
+			lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_ERROR_MESSAGE);
 		}
-
 		lbl.setVisible(isVisible);
 	}
 
@@ -1208,11 +1109,11 @@ public class UIController {
 		lbl.setText(msg);
 	}
 
-	private void setPopOverLabelMessageStyle(Label lbl, double width){
+	private void setPopOverLabelMessageStyle(Label lbl, double width, double height){
 		lbl.setTextAlignment(TextAlignment.CENTER);
 		lbl.setAlignment(Pos.CENTER);
 		lbl.setPrefWidth(width);
-		lbl.setPrefHeight(30.0);
+		lbl.setPrefHeight(height);
 		setPopOverLabelMessageVisible(lbl, false, false);
 	}
 
@@ -1240,9 +1141,7 @@ public class UIController {
 	}	
 
 	private StringConverter<LocalDate> datePickerStringConverter = new StringConverter<LocalDate>() {
-		String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
-
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_DATEPICKER); //e.g. 18 January 2015
 		@Override 
 		public String toString(LocalDate date) {
 			if (date != null) {
@@ -1262,14 +1161,11 @@ public class UIController {
 		}
 	};
 
-	private String convertDateToStorageFormat(LocalDate rawDate){
-		String datePatternForStorage = "d/M/yyyy"; //e.g. 18/4/2015
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePatternForStorage);
-
+	private String convertDateToStorageFormat(LocalDate rawDate){ 
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_STORAGE); //e.g. 18/4/2015
 		if(rawDate == null){
 			return "";
 		}
-
 		return dateFormatter.format(rawDate);
 	}
 
@@ -1281,8 +1177,7 @@ public class UIController {
 	}
 
 	private boolean isValidHour(String hour){
-		//accept empty, means 0
-		try{
+		try{ //accept empty, means 0
 			if(convertStringToInteger(hour) < 0 || convertStringToInteger(hour) > 23){
 				return false;
 			}
@@ -1294,8 +1189,7 @@ public class UIController {
 	}
 
 	private boolean isValidMinute(String minute){
-		//accept empty, means 0
-		try{
+		try{ //accept empty, means 0
 			if(convertStringToInteger(minute) < 0 || convertStringToInteger(minute) > 60){
 				return false;
 			}
@@ -1306,13 +1200,6 @@ public class UIController {
 		return true;
 	}
 
-	private String convertTimeEmptyToValue(String t){
-		if(t.isEmpty() || t.equals("")){
-			return "00";
-		}
-		return t;
-	}
-
 	private int convertStringToInteger(String s){
 		if(s.equals("") || s.isEmpty()){
 			return 0;
@@ -1320,50 +1207,49 @@ public class UIController {
 		return Integer.parseInt(s);
 	}
 
-	private String addLeadingZero(String str){
-		if(str.length() == 1){
-			return "0" + str;
-		}
-		return str;
+	//============================== SEARCH FUNCTIONS ====================================
+	private void setSearchKeyword(String[] tokens) {
+		this.searchKeyword = getKeyword(tokens);
 	}
 
+	private String getKeyword(String[] tokens) {
+		return tokens[0];
+	}
 
-	private void initTimeClock(){
+	private void resetSearchKeyword() {
+		this.searchKeyword = null;
+	}
 
-		txtClock.getStyleClass().addAll(CSS_TEXT_CLOCK);
-		txtClock.setTextAlignment(TextAlignment.RIGHT);
+	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
+		ArrayList<Task> displayList = new ArrayList<Task>();
 
-		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-				new EventHandler<ActionEvent>(){
-			DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss a");
-			@Override
-			public void handle(ActionEvent event) {
-				Calendar nowDate = Calendar.getInstance();
-				txtClock.setText(dateFormat.format(nowDate.getTime()));
+		for (Task task: storageList) {
+			if (hasKeyword(task, this.searchKeyword)) {
+				displayList.add(task);
 			}
-
-		}),
-		new KeyFrame(Duration.seconds(1))
-				);
-
-		mTimeLine.setCycleCount(Animation.INDEFINITE);
-		mTimeLine.play();
+		}
+		return displayList;
 	}
 
-	private void initReminder(){
-		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-				new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent event) {
-					runReminder();
-				}//end handle
-			}),
-			new KeyFrame(Duration.seconds(1))
-		);
-		aTimeLine.setCycleCount(Animation.INDEFINITE);
-		aTimeLine.play();
+	private boolean hasKeyword(Task task, String keyword) {
+		String taskDescription = task.getTitle();
+		String[] descriptionTokens = makeIntoTokens(taskDescription);
+
+		for (String token: descriptionTokens) {
+			if (keyword.equals("")) {
+				return false;
+			} else if (token.equalsIgnoreCase(keyword)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
+	private String[] makeIntoTokens(String taskDescription) {
+		return taskDescription.split("\\s+");
+	}
+		
 	private void runReminder(){
 		for (int i = 0; i < Logic.getStorageList().size(); i++) {
 			Task extractedTask = Logic.getStorageList().get(i);
@@ -1385,7 +1271,7 @@ public class UIController {
 					showReminder("Upcoming task: " + taskTitle, 
 									"Due on " + endDate);
 					
-					File file = new File (ALARM_COMPILE_FILE_PATH);
+					File file = new File (Constants.BUILD_PATH + Constants.UI_ALARM_LOCATION);
 					playAlarm(file.toURI().toString());
 				}
 			}

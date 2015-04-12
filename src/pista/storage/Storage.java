@@ -31,13 +31,11 @@ public class Storage {
 	private static int max_number_of_tasks;
 	private static String data_folder_location = "";
 	
-	private static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><task/></tasks>";
+	public static String XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><tasks><total_task><value>0</value></total_task><task/></tasks>";
 	
 	private static final String NODE_ROOT_TAG = "tasks";
 	private static final String NODE_TOTAL_TASK_TAG = "total_task";
 	private static final String NODE_TOTAL_TASK_VALUE_TAG = "value";
-	//private static final String NODE_SETTING_TAG="setting";
-	//private static final String NODE_SETTING_DATA_FOLDER_LOCATION="data_folder_location";
 	private static final String NODE_TASK_TAG = "task";
 	private static final String NODE_TASK_ID_TAG = "id";
 	private static final String NODE_TASK_TITLE_TAG = "title";
@@ -62,23 +60,17 @@ public class Storage {
 	private static final String LOG_STORAGE_SAVE_SUCCESS = "Successfully save XML file";
 	private static final String LOG_STORAGE_SAVE_FAILURE = "Fail to save XML file";
 	private static final String LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS = "Successfully get next available ID";
-	private static final String LOG_STORAGE_CREATE_NEW_FILE_SUCCESS = "Successfully create new XML file";
-	private static final String LOG_STORAGE_CREATE_NEW_FILE_FAILURE = "Fail to create new XML file";
-	
-	/*
-	final String NODE_TASK_START_TIME_TAG = "start_time";
-	final String NODE_TASK_START_DATE_TAG = "start_date";
-	final String NODE_TASK_END_TIME_TAG = "end_time";
-	final String NODE_TASK_END_DATE_TAG = "end_date";
-	*/
-	
+		
 	private ArrayList<Task> taskList = null;
 	private ArrayList<String> historyList = new ArrayList<String>();
 	private static CustomLogging mLog = null;
 	
-	private Storage(){}
+	/*Don't allow to create a new instance*/
+	private Storage(){} 
 	
-	public static Storage getInstance(){
+	/*This method will return the instance of Storage class
+	 *and initialize Logging object */
+	public static Storage getInstance(){ 
 		if(mLog == null){
 			mStorage.initLogging();
 		}
@@ -144,15 +136,12 @@ public class Storage {
 			Node nRoot = null;
 			nRoot = doc.getDocumentElement(); //get root
 			NodeList nTotalList = null;
-			nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
+			nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG); 
 			Node nTotalValue = null;
 			nTotalValue = nTotalList.item(0);
 			NodeList nTaskList = null;
-			nTaskList = doc.getElementsByTagName(NODE_TASK_TAG);
+			nTaskList = doc.getElementsByTagName(NODE_TASK_TAG); 
 			
-			//NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
-			//Node nDataFolderLocation = nSettings.item(0);
-
 			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeListNull(nTotalList) || isNodeListNull(nTaskList)){
 				return false; //not valid XML format
 			}
@@ -233,8 +222,7 @@ public class Storage {
 			Node nRoot = null;
 			Node nTask = null;
 			Node nTotal = null;
-			//Node nSetting = null;
-			
+
 			File mXmlFile = new File(xmlFilePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -259,13 +247,6 @@ public class Storage {
 			createNode(nTotal, NODE_TOTAL_TASK_VALUE_TAG, convertIntToString(max_number_of_tasks));//add value to total_task
 			//add total node to root
 			nRoot.appendChild(nTotal);
-			
-			//add setting
-			//nSetting = doc.createElement(NODE_SETTING_TAG);
-			//createNode(nSetting, NODE_SETTING_DATA_FOLDER_LOCATION, data_folder_location);
-			//add setting node to root
-			//nRoot.appendChild(nSetting);
-			
 			
 			//add task nodes
 			for(Task mTask : mArrayTask){
@@ -312,7 +293,6 @@ public class Storage {
 			return false;
 		}
 	
-		
 	}
 	
 	
@@ -340,11 +320,6 @@ public class Storage {
 			NodeList nTotalList = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG);
 			Node nTotalValue = nTotalList.item(0);
 			max_number_of_tasks = convertStringToInt(nTotalValue.getTextContent()); //get total number
-			
-			//Get settings from XML
-			//NodeList nSettings = doc.getElementsByTagName(NODE_SETTING_TAG); 
-			//Node nDataFolderLocation = nSettings.item(0);
-			//data_folder_location = nDataFolderLocation.getTextContent(); //get folder directory
 			
 			NodeList nList = doc.getElementsByTagName(NODE_TASK_TAG);
 			
@@ -423,108 +398,6 @@ public class Storage {
 		
 	}//end XMLtoJava
 	 
-	 
-/*
-	public static boolean XmlAddTask(String xmlFilePath, Task newTask){
-		boolean isSaved = false;
-		
-		//increase the total tasks by 1
-		max_number_of_tasks = max_number_of_tasks + 1;
-		
-		try{
-
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse(xmlFilePath);
-		
-			normalize(doc);
-			
-			//get root node
-			Node nRoot = doc.getFirstChild();
-			
-			Node ntotalTask = doc.getElementsByTagName(NODE_TOTAL_TASK_TAG).item(0);
-			Node nTotalTaskValue = ntotalTask.getFirstChild();
-			nTotalTaskValue.setTextContent(String.valueOf(max_number_of_tasks));
-			
-			//Create a new child of the root
-			Element nTask = doc.createElement(NODE_TASK_TAG);
-			
-			//create new node method
-			createNode(nTask, NODE_TASK_ID_TAG, convertIntToString(newTask.getID()));
-			createNode(nTask, NODE_TASK_TITLE_TAG, newTask.getTitle());
-			createNode(nTask, NODE_TASK_START_MILLISECOND_TAG, convertLongToString(newTask.getStartMilliseconds()));
-			createNode(nTask, NODE_TASK_END_MILLISECOND_TAG, convertLongToString(newTask.getEndMilliseconds()));
-			createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(newTask.getIsDone()));
-			createNode(nTask, NODE_TASK_CATEGORY_TAG, newTask.getCategory());
-			createNode(nTask, NODE_TASK_PRIORITY_TAG, newTask.getCategory());
-			createNode(nTask, NODE_TASK_IS_DONE_TAG, convertBooleanToString(newTask.getIsDone()));
-						
-			//add new task node to root
-			nRoot.appendChild(nTask);
-		
-			//Save the document
-			isSaved = saveXml(doc, xmlFilePath);
-					
-			
-			if (isSaved){
-				return true;
-			}else{
-				return false;
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}	
-		
-	}
-*/
-	
-/*	
-	//Not in used
-	private static boolean xmlDeleteTask(String xmlFilePath, Task deleteTask){
-		boolean isSaved = false;
-		
-		try{
-
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse(xmlFilePath);
-		
-			//normalize(doc);
-			Node nRoot = doc.getFirstChild();
-			
-			XPathFactory xpf = XPathFactory.newInstance();
-	        XPath xpath = xpf.newXPath();
-	        
-	        //find task node with specific ID (//tasks/task[id=??])
-	        XPathExpression expression = xpath.compile("//"+ NODE_ROOT_TAG +"/" + NODE_TASK_TAG +"["+ NODE_TASK_ID_TAG +"="+ deleteTask.getID() +"]");
-
-	        //get task node
-	        Node removeNode = (Node) expression.evaluate(doc, XPathConstants.NODE);
-	        
-	        //remove task node from root
-	        nRoot.removeChild(removeNode);
-		
-			//Save the document
-			isSaved = saveXml(doc, xmlFilePath);
-					
-			max_number_of_tasks = max_number_of_tasks - 1;
-				
-			if (isSaved){
-				return true;
-			}else{
-				return false;
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-		
-	}
-*/
-	
 	private void createNode(Node parent, String tagName, String value){
 		Document doc = parent.getOwnerDocument();
 		//create a new node
@@ -535,27 +408,6 @@ public class Storage {
 		parent.appendChild(mNode);
 	}	
 
-/*
-	private static Node searchNode(Document doc, String findID){
-		
-		Node findNode = null;
-		Node nRoot = doc.getDocumentElement();
-		NodeList nl = nRoot.getChildNodes();
-		
-		for(int i=0; i< nl.getLength(); i++){
-			
-			Node nID = nl.item(i).getChildNodes().item(0);
-			
-			if(nID.getTextContent().equals(findID)){
-				return nID;
-			}
-		}
-		
-		return null;		
-		
-	}
-*/
-	
 	private boolean saveXml(Document doc, String xmlFilePath){
 		//Save the document
 		try{
@@ -591,14 +443,12 @@ public class Storage {
 	
 	private boolean xmlRemoveAllTask(Node node) {
 		try{
-			
 			assert(node != null) : ASSERT_XML_NODE_NULL_MESSAGE;
 			NodeList mNodeList = node.getChildNodes();
 			assert(mNodeList != null) : ASSERT_XML_NODE_LIST_NULL_MESSAGE;
 			
 			if(mNodeList != null){
 				for(int i=0; i< mNodeList.getLength(); i++){
-					
 					Node n = mNodeList.item(i);  
 					node.removeChild(n);
 				}//end for	
@@ -614,12 +464,9 @@ public class Storage {
 			mLog.logSevere(e.getMessage());
 			return false;
 		}
-		
-		
 	}//end removeAllFromXML
-	 
-	 
-	 private void normalize(Document doc){
+	 	 
+	private void normalize(Document doc){
 		 //normalize is not a complusory to do
 		 try{
 			 assert(doc != null) : ASSERT_XML_DOCUMENT_NULL_MESSAGE;
@@ -632,11 +479,9 @@ public class Storage {
 			 
 		 }catch(AssertionError e){
 			 mLog.logWarning(e.getMessage());
-		 }
-		 	 
+		 }	 	 
 	 }
 
-	 
 	 public int getMaxNumberOfTasks(){
 		 return max_number_of_tasks;
 	 }
@@ -653,8 +498,7 @@ public class Storage {
 					if(mTask.getID() > lastID){
 						lastID = mTask.getID();
 					}//end if 
-				}//end for
-				 
+				}//end for 
 			 }//end if 
 			  
 			 mLog.logInfo(LOG_STORAGE_GET_NEXT_AVAILABLE_ID_SUCCESS);
@@ -712,9 +556,7 @@ public class Storage {
 	 private long convertStringToLong(String input){
 		 return Long.valueOf(input);
 	 }
-	 
-	 
-	 
+
 }//end class
 
 

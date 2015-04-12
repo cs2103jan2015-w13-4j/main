@@ -1,17 +1,101 @@
 package pista;
 
+import java.nio.file.Paths;
+
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+
 
 //contains all the constants used by the program
 public class Constants {
+	/*============================= UI ========================================== */
+	/*============================= End of UI =================================== */
 	
-	public static String PRODUCT_NAME = "Pista";
+	/*============================= Parser ====================================== */
+	/*============================= End of Parser =============================== */
 	
-	//public static String FILENAME = "Tasks.txt";
-	public static final String ADD_COMMAND = "add <Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
-	public static final String EDIT_COMMAND = "edit <ID> -<Task Name> -<DD/MM/YYYY> -<HH:MM> -<DD/MM/YYYY> -<HH:MM>";
-	public static final String DELETE_COMMAND = "delete -<TaskID>";
-	public static final String SET_COMMAND = "set <Type> -<Values>";
+	/*============================= Logic ======================================= */
+	/*============================= End of Logic ================================ */
 	
+	/*============================= Storage ===================================== */
+	/*============================= End of Storage ============================== */
+	
+	public static final String PRODUCT_NAME = "Pista";
+	public static final String BUILD_PATH =  Paths.get("").toAbsolutePath().toString();
+	
+	//User Interface (UI) - controls(button), css, popover, messages, tooltip
+	public static final double UI_BUTTON_IMAGE_TOP_WIDTH = 75.0;
+	public static final double UI_BUTTON_TOP_WIDTH = 40.0;
+	public static final double UI_BUTTON_TOP_HEIGHT = 40.0;
+	public static final double UI_IMG_INSIDE_BUTTON_WIDTH = 20.0;
+	public static final double UI_IMG_INSIDE_BUTTON_HEIGHT = 20.0;
+	
+	public static final KeyCombination KEY_COMBINATION_HELP = new KeyCodeCombination(KeyCode.F1);
+	public static final KeyCombination KEY_COMBINATION_START_GUIDE = new KeyCodeCombination(KeyCode.F2);
+	public static final KeyCombination KEY_COMBINATION_AUTO_COMPLETE = new KeyCodeCombination(KeyCode.SPACE,KeyCombination.CONTROL_DOWN);
+	public static final KeyCombination KEY_COMBINATION_UP = new KeyCodeCombination(KeyCode.UP); //press up to see latest used command
+	public static final KeyCombination KEY_COMBINATION_DOWN = new KeyCodeCombination(KeyCode.DOWN); //press down to see previous used command
+	
+	public static final String UI_CSS_IMAGE_BACKGROUND = "image-background";
+	public static final String UI_CSS_TEXT_BACKGROUND  = "text-background";
+	public static final String UI_CSS_TRANSPARENT_BACKGROUND = "transparent-background";
+	public static final String UI_CSS_LIST_VIEW = "list-view-style";
+	public static final String UI_CSS_TEXT_BOX = "text-box-style";
+	public static final String UI_CSS_TEXT_STATUS = "text-status-style";
+	public static final String UI_CSS_TEXT_CLOCK = "text-clock-style";
+	public static final String UI_CSS_BUTTON = "button-style";
+	public static final String UI_CSS_BUTTON_IMAGE = "button-image-style";
+	public static final String UI_CSS_BUTTON_SETTING = "button-setting-style";
+	public static final String UI_CSS_BUTTON_ADD = "button-add-style";
+	public static final String UI_CSS_BUTTON_HELP = "button-help-style";
+	public static final String UI_CSS_BUTTON_REFRESH = "button-refresh-style";
+	public static final String UI_CSS_BUTTON_REDO = "button-redo-style";		
+	public static final String UI_CSS_BUTTON_UNDO = "button-undo-style";
+	public static final String UI_CSS_START_GUIDE_PANE = "start-guide-pane";
+	public static final String UI_CSS_START_GUIDE_BUTTON = "start-guide-button";
+	public static final String UI_CSS_POP_OVER_TEXTAREA = "pop-over-text-area";
+	public static final String UI_CSS_POP_OVER_TOOLTIP = "pop-label-time-tip";
+	public static final String UI_CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
+	public static final String UI_CSS_POP_OVER_TITLE= "pop-label-title";
+	public static final String UI_CSS_POP_OVER_BUTTON = "pop-btn";
+	public static final String UI_CSS_POP_OVER_ERROR_MESSAGE = "pop-label-error-message";
+	public static final String UI_CSS_POP_OVER_CORRECT_MESSAGE = "pop-label-correct-message";
+	public static final String UI_POP_OVER_FAILED_SETTING_MESSAGE = "Setting Failed";
+	public static final String UI_POP_OVER_INVALID_FILE_MESSAGE = "Invalid File";
+	public static final String UI_POP_OVER_SUCCESS_SETTING_MESSAGE = "Updated";
+	public static final String UI_POP_OVER_INVALID_TITLE_MESSAGE = "Task cannot be empty";
+	public static final String UI_POP_OVER_INVALID_START_TIME_MESSAGE = "Invalid Start Time";
+	public static final String UI_POP_OVER_INVALID_END_TIME_MESSAGE = "Invalid End Time";
+	public static final String UI_POP_OVER_SUCCESS_ADD_MESSAGE = "Added Successfully";
+	public static final String UI_POP_OVER_FAIL_ADD_MESSAGE = "Fail to add";
+	public static final String UI_POP_OVER_ADD_TASK_COMMAND = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
+	public static final double UI_POP_OVER_SETTING_WIDTH = 500.0;
+	public static final double UI_POP_OVER_SETTING_HEIGHT = 200.0;
+	public static final double UI_POP_OVER_ADD_WIDTH = 400.0;
+	public static final double UI_POP_OVER_ADD_HEIGHT = 380.0;
+	public static final double UI_POP_OVER_LABEL_MESSAGE_HEIGHT = 30.0;
+	public static final double UI_POP_OVER_LABEL_DATETIME_WIDTH = 80.0;
+	
+	
+	public static final String UI_TOOLTIP_HELP = "Help";
+	public static final String UI_TOOLTIP_SETTING = "Setting";
+	public static final String UI_TOOLTIP_REFRESH = "Refresh the list";
+	public static final String UI_TOOLTIP_ADD = "Add New Task";
+	public static final String UI_TOOLTIP_REDO = "Redo to last action";
+	public static final String UI_TOOLTIP_UNDO = "Undo to previous action";
+	
+	public static final String UI_STATUS_EMPTY_XML_FILE_PATH_MESSAGE = "Please provide a XML file to keep track of your data";
+	public static final String UI_STATUS_INVALID_XML_FILE_PATH_MESSAGE  = "Either your file is not empty or invalid format.";
+	public static final String UI_STATUS_FAIL_TO_LOAD_XML_FILE_PATH_MESSAGE = "Failed to load selected file.";
+	public static final String UI_STATUS_FAIL_TO_SAVE_DUE_TO_INVALID_FILE_MESSAGE = "Please ensure your file is valid before saving.";
+	public static final String UI_STATUS_FAIL_TO_SAVE = "Unable to save setting. Please try again.";
+	public static final String UI_STATUS_APPLICATION_ERROR_MESSAGE = "Application error. Please contact the administrator";
+	public static final String UI_STATUS_SUCCESS_FILE_CREATED_MESSAGE = "[new_file_path] is loaded.";
+
+	//Alarm Location 
+	public static final String UI_ALARM_LOCATION = "/bin/sounds/alarm.mp3";
+
 	//Parser Message 
 	public static final String MESSAGE_EMPTY_STRING = "No input detected!";
 	public static final String MESSAGE_WRONG_COMMAND = "No/Wrong command detected!";
@@ -89,40 +173,41 @@ public class Constants {
 	public static final int LENGTH_TWO = 2;
 	public static final int DEFAULT_PRIORITY = 0;
 	public static final int HIGH_PRIORITY = 3;
+	
 	//Logic Message
-	public static String LOGIC_INVALID_PARAMETER_MESSAGE = "Invalid parameters detected!";
-	public static String LOGIC_VALID_PARAMETER_MESSAGE = "valid";
-	public static String LOGIC_SUCCESS_ADD_TASK = "Successfully add new task.";
-	public static String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
-	public static String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
-	public static String LOGIC_SUCCESS_HELP = "Open help";
-	public static String LOGIC_SUCCESS_SEARCH = "Searching tasks for the keyword: ";
-	public static String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
-	public static String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
-	public static String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";
-	public static String LOGIC_SUCCESS_REDO = "Successfully redo";
-	public static String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
-	public static String LOGIC_FAIL_EDIT_TIMED_TO_DEADLINE_TASK = "To edit timed to deadline, use edit id -d-ed-et-c-c";
-	public static String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
-	public static String LOGIC_SUCCESS_PRIORITY_TASK = "Successfully set priority for task";
-	public static String LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK = "Failed to set priority for task as it is not found.";
-	public static String LOGIC_SUCCESS_REMIND_TASK = "Successfully set reminder for task";
-  public static String LOGIC_SUCCESS_REMIND_OFF_TASK = "Successfully off reminder for task";
-	public static String LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK = "unable to set reminder as it is later than the end date";
-	public static String LOGIC_FAIL_REMIND_NOT_FOUND_TASK = "Failed to remind task as it is not found.";
-	public static String LOGIC_FAIL_REMIND_FLOATING_TASK = "you cannot set a reminder for floating task";
-	public static String LOGIC_FAIL_REMIND_off_FLOATING_TASK = "No reminder can be off for floating task";
-	public static String LOGIC_FAIL_MARK_NOT_FOUND_TASK = "Failed to mark task as it is not found.";
-	public static String LOGIC_FAIL_DELETE_TASK = "Failed to delete task.";
-	public static String LOGIC_FAIL_DELETE_ALL_TASKS = "Failed to delete all tasks.";
-	public static String LOGIC_DELETE_TASK_NOT_FOUND = "No such task existed.";
-	public static String LOGIC_EDIT_TASK_NOT_FOUND = "No such task existed.";
-	public static String LOGIC_MARK_TASK_NOT_FOUND = "Unable to mark as no such task existed.";
-	public static String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
-	public static String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
-	public static String LOGIC_FAIL_UNDO = "Failed to undo the last action";
-	public static String LOGIC_FAIL_REDO = "Failed to redo";
-	public static String LOGIC_SUCESS_SORTED = "List is successfully sorted in %s";
+	public static final String LOGIC_INVALID_PARAMETER_MESSAGE = "Invalid parameters detected!";
+	public static final String LOGIC_VALID_PARAMETER_MESSAGE = "valid";
+	public static final String LOGIC_SUCCESS_ADD_TASK = "Successfully add new task.";
+	public static final String LOGIC_SUCCESS_EDIT_TASK = "Successfully edit task.";
+	public static final String LOGIC_SUCCESS_MARK_TASK = "Successfully mark task.";
+	public static final String LOGIC_SUCCESS_HELP = "Open help";
+	public static final String LOGIC_SUCCESS_SEARCH = "Searching tasks for the keyword: ";
+	public static final String LOGIC_SUCCESS_DELETE_TASK = "Successfully delete task.";
+	public static final String LOGIC_SUCCESS_DELETE_ALL_TASKS = "Successfully delete all task.";
+	public static final String LOGIC_SUCCESS_UNDO = "Successfully undo the last action";
+	public static final String LOGIC_SUCCESS_REDO = "Successfully redo";
+	public static final String LOGIC_FAIL_ADD_TASK = "Failed to add new task.";
+	public static final String LOGIC_FAIL_EDIT_TIMED_TO_DEADLINE_TASK = "To edit timed to deadline, use edit id -d-ed-et-c-c";
+	public static final String LOGIC_FAIL_EDIT_TASK = "Failed to edit task.";
+	public static final String LOGIC_SUCCESS_PRIORITY_TASK = "Successfully set priority for task";
+	public static final String LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK = "Failed to set priority for task as it is not found.";
+	public static final String LOGIC_SUCCESS_REMIND_TASK = "Successfully set reminder for task";
+	public static final String LOGIC_SUCCESS_REMIND_OFF_TASK = "Successfully off reminder for task";
+	public static final String LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK = "unable to set reminder as it is later than the end date";
+	public static final String LOGIC_FAIL_REMIND_NOT_FOUND_TASK = "Failed to remind task as it is not found.";
+	public static final String LOGIC_FAIL_REMIND_FLOATING_TASK = "you cannot set a reminder for floating task";
+	public static final String LOGIC_FAIL_REMIND_off_FLOATING_TASK = "No reminder can be off for floating task";
+	public static final String LOGIC_FAIL_MARK_NOT_FOUND_TASK = "Failed to mark task as it is not found.";
+	public static final String LOGIC_FAIL_DELETE_TASK = "Failed to delete task.";
+	public static final String LOGIC_FAIL_DELETE_ALL_TASKS = "Failed to delete all tasks.";
+	public static final String LOGIC_DELETE_TASK_NOT_FOUND = "No such task existed.";
+	public static final String LOGIC_EDIT_TASK_NOT_FOUND = "No such task existed.";
+	public static final String LOGIC_MARK_TASK_NOT_FOUND = "Unable to mark as no such task existed.";
+	public static final String LOGIC_SUCCESS_LOAD_XML = "Successfully read tasks from file.";
+	public static final String LOGIC_FAIL_LOAD_XML = "Failed to read tasks from file.";
+	public static final String LOGIC_FAIL_UNDO = "Failed to undo the last action";
+	public static final String LOGIC_FAIL_REDO = "Failed to redo";
+	public static final String LOGIC_SUCESS_SORTED = "List is successfully sorted in %s";
 	public static final String LOGIC_INVALID_SET_COMMAND_TYPE = "Invalid type for set command";
 	public static final String LOGIC_INVALID_SET_COMMAND_LENGTH = "Insufficient commands.";
 	public static final String LOGIC_INVALID_SET_FILE_NAME = "Incorrect file name.";
@@ -135,15 +220,14 @@ public class Constants {
 	public static final String ROOT_LAYOUT_PATH = "ui/RootLayout.fxml";
 	public static final String LISTVIEW_LAYOUT_PATH = "ui/customListView.fxml";
 	public static final String SETTING_LAYOUT_PATH = "SettingLayout.fxml";
-	
+
 	public static final String SETTING_LAYOUT_TITLE = "Setting";
 	public static final String TASK_FLOATED = "floating";
 	public static final String TASK_DEADLINE = "deadline";
 	public static final String TASK_TIMED = "timed";
 	
-	
-	public static String STATUS_DONE="done";
-	public static String STATUS_UNDONE="undone";
+	public static final String STATUS_DONE="done";
+	public static final String STATUS_UNDONE="undone";
 	
 	public static final int ARRAY_SIZE = 10;
 	public static final int ARRAY_INDEX_TITLE = 0;
@@ -185,13 +269,12 @@ public class Constants {
 	public static final String VALUE_PRIORITY = "priority";
 	public static final String VALUE_SEARCH = "search";
 
-	
-	public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
+	//public static final String LISTVIEW_DATETIME_STRING_FORMAT = "Due on %s, %s";
 	public static final String DEFAULT_IGNORE_VALUE="d";
 	public static final String DEFAULT_CLEAR_VALUE="c";
 	
 	
-	//========== LOGGING ===========
+	//Logging
 	public static final String LOG_FILE_NAME = "pista_log.txt";
 	public static final String LOG_LOGIC_SUCCESS_ADD_TASK="Successfully added %s task of %s category into list";
 	public static final String LOG_LOGIC_SUCCESS_DELETE_TASK = "Successfully delete %s task out of list";
@@ -206,8 +289,7 @@ public class Constants {
 	
 	//Setting
 	public static final String SETTING_DEFAULT_FOLDER_PATH = System.getProperty("user.home") + "\\"+"Desktop";
-	
-	
+		
 	//Preferences
 	public static final String PREFERENCE_URL_PATH = "pista/preference";
 	public static final String PREFERENCE_XML_DEFAULT_FILE_PATH = "preferences.xml";
@@ -216,5 +298,20 @@ public class Constants {
 	public static final String PREFERENCE_XML_FILE_LOCATION_NODE = "file_location";
 	public static final String PREFERENCE_XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><preferences><setting><file_location></file_location></setting></preferences>";
 	public static final String PREFERENCE_PISTA_FLAG_NODE = "flag";
+	public static final int PREFERENCE_FIRST_LAUNCH_VALUE = 0;
+	public static final int PREFERENCE_SUBSQUENT_LAUNCH_VALUE = 1;
+	public static final int PREFERENCE_ERROR_LAUNCH_VALUE = -1;
+	
+	
+	//help
+	public static final String HELP_TITLE = "Help";
+	public static final String HELP_STAGE_HEIGHT = "700";
+	
+	
+	//Date format
+	public static final String DATETIME_FORMAT_CLOCK = "dd MMM yyyy HH:mm:ss a"; //e.g. 18 Jan 2015 03:00:00 AM
+	public static final String DATETIME_FORMAT_DATEPICKER = "dd MMMM yyyy"; //e.g. 18 January 2015
+	public static final String DATETIME_FORMAT_STORAGE = "d/M/yyyy"; //e.g. 18/4/2015
+	
 	
 }
