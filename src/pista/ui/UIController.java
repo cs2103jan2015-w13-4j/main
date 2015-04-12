@@ -2,8 +2,6 @@ package pista.ui;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -26,15 +23,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -44,9 +37,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -57,6 +47,7 @@ import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -72,7 +63,6 @@ import pista.logic.Logic;
 import pista.logic.Task;
 import pista.parser.MainParser;
 import pista.storage.Storage;
-
 
 public class UIController {
 	private MainApp mApp = null;
@@ -1137,6 +1127,22 @@ public class UIController {
 
 		return oldPath;
 	}
+	
+	
+	private String chooseDirectory(String oldPath){
+		DirectoryChooser mDirectoryChooser = new DirectoryChooser();
+		mDirectoryChooser.setInitialDirectory(new File(getUserDesktopDirectory()));
+		
+		File mDirectory = mDirectoryChooser.showDialog(null);
+		if(mDirectory != null){	
+			System.out.println(mDirectory.getAbsolutePath());
+			return mDirectory.getAbsolutePath();
+		}
+
+		return oldPath;
+		
+	}
+	
 
 	private String getUserDesktopDirectory(){
 		return Constants.SETTING_DEFAULT_FOLDER_PATH;

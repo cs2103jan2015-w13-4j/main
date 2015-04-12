@@ -99,6 +99,9 @@ public class Constants {
 	
 	/*----- Setting -----*/
 	public static final String SETTING_LAYOUT_TITLE = "Setting";
+	public static final String SETTING_SAVE_AS_DEFAULT_XML_FILE_NAME = "data.xml";
+	
+	
 	
 	/*----- Date format -----*/
 	public static final String DATETIME_FORMAT_CLOCK = "dd MMM yyyy HH:mm:ss a"; //e.g. 18 Jan 2015 03:00:00 AM
