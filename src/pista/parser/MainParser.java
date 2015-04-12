@@ -72,6 +72,12 @@ public class MainParser {
 		}
 	}
 
+	/**This method is checks if a string is empty
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		Boolean
+	 * 				True if empty
+	 * 				false if it is not
+	 * **/
 	public static boolean isEmptyString(String input){
 		if(input.isEmpty()){
 			return true;
@@ -79,14 +85,20 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method extracts the user command from a string
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		String - which consists only the command
+	 * **/
 	public static String getCommand(String input){
 		String command=input.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ZERO];
 		return command;
 	}
 	
-	/*
-	 * Grabs user command and verify if matches the supported commands
-	 * Add, edit, delete*/
+	/**This method checks if the command entered is supported by the program
+	 * Parameters: String - a string that contains the user's command
+	 * Return:		True if it is a valid command
+	 * 				False if it is not
+	 * **/
 	private static boolean isCommandValid(String command){
 		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
 				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
@@ -104,9 +116,11 @@ public class MainParser {
 
 	}//end checkCommand
 
-	/*
-	 * Splits all parameters except command into a string array
-	 * */
+	/**This method extracts parameters from a string and put them inside a String array
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		String array - Provided that all parameters have been entered
+	 * 				null if no parameters are entered after the command
+	 * **/
 	public static String[] getTokens(String input){
 		String[] temp = input.split(" ",Constants.SPLIT_INTO_TWO);
 
@@ -119,11 +133,14 @@ public class MainParser {
 		}
 	}
 
-	/*
-	 * check parameters
-	 * true=parameter exists
-	 * false=no parameters
-	 */
+	/**This method checks if the tokens/parameters supplied by the user
+	 * Parameters: Object of MainParser -  
+	 * 				String - contains the user's command
+	 * 				String array - contains all parameters  
+	 * Return:		Boolean -
+	 * 				True if all tokens/parameters are correct
+	 * 				False if the tokens/parameters are wrong
+	 * **/
 	private boolean isTokensValid(MainParser mp, String command, String[] tokens){
 		switch(command) {
 		case Constants.VALUE_ADD:
@@ -153,6 +170,13 @@ public class MainParser {
 		}
 	}
 	
+	/**This method checks the tokens for the Add command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -166,8 +190,6 @@ public class MainParser {
 			mp.setMessage(Constants.MESSAGE_EMPTY_TITLE);
 			return false;
 		}
-
-
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])){
 				if(!isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_DEADLINE_ENDDATE, 
@@ -178,7 +200,6 @@ public class MainParser {
 			}
 			return false;
 		}
-
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
 			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])) {
 				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
@@ -203,6 +224,13 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method checks the tokens for the Edit command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -253,6 +281,13 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method checks the tokens for the Delete command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
 		mp.setTokens(tokens);
 		if(tokens == null){
@@ -279,6 +314,13 @@ public class MainParser {
 		}
 	}
 	
+	/**This method checks the tokens for the Mark command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkMarkTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -293,6 +335,13 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method checks the tokens for the Reminder command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkReminderTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -318,6 +367,13 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method checks the tokens for the Priority command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -334,6 +390,13 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method checks the tokens for the Set file location command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkSetTokens(MainParser mp, String[] tokens){
 		String getType = "";
 		String getFileLocation = "";
@@ -365,6 +428,13 @@ public class MainParser {
 
 	}
 	
+	/**This method checks the tokens for the Search command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
 		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -380,6 +450,13 @@ public class MainParser {
 		return true;
 	}
 	
+	/**This method checks the tokens for the Sort command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
 	private boolean checkSortTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
@@ -405,6 +482,16 @@ public class MainParser {
 		return false;
 	}
 	
+	/**This method validates both the Date and Time Tokens using inbuilt validation. 
+	 * If the inbuilt validation does not recognizes, it will be passed on to Natty to interpret it 
+	 * before going through the inbuilt validation again
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * 				int - contains the index of both date and time found in the array
+	 * Return:		Boolean 
+	 * 				True if both the Date and Time tokens are correct
+	 * 				False if both the Date and Time tokens are wrong 
+	 * **/
 	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
 		Parser parser = new Parser();
 		List<DateGroup> groups;
@@ -454,9 +541,11 @@ public class MainParser {
 		return true;
 	}
 
-	/*
-	 * reorder of data format for natty as it recognizes mm/dd/yyyy instead of dd/mm/yyyy
-	 * */
+	/**This method reorder of data format for natty as it recognizes mm/dd/yyyy instead of dd/mm/yyyy
+	 * Parameters: String array - contains all parameters
+	 * 				int - contains the index of a date in the array 
+	 * Return:		String - in the order which natty recognizes
+	 * **/
 	private static String nattyInputFormat(String[] tokens, int dateIndex) {
 		String requiredNattyInputDateFormat = "";
 		String[] temp = tokens[dateIndex].split("/");
@@ -469,6 +558,12 @@ public class MainParser {
 		return requiredNattyInputDateFormat;
 	}
 
+	/**This method lets the third party library Natty interprets date and time 
+	 * which the inbuilt validator does not recognizes
+	 * Parameters: List<DateGroup>
+	 * Return:		String - if natty recognizes what it represents 
+	 * 				else it returns an empty string
+	 * **/
 	private static String intrepretInputNatty(List<DateGroup> groups) {
 		List dates = null;
 		for(DateGroup group: groups){
@@ -480,12 +575,20 @@ public class MainParser {
 
 	}
 
+	/**This method converts unix epoch into a String of Date and Time
+	 * Parameters: Long - milliseconds
+	 * Return:		String - date in the format dd/MM/yyyy
+	 * **/
 	public static String convertMillisecondToDate(long ms){
 		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
 		return date.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ZERO];
 
 	}//end /convertMillisecondToDate
 
+	/**This method converts unix epoch into Time
+	 * Parameters: Long - in milliseconds
+	 * Return:		String - time in the format HH:mm
+	 * **/
 	public static String convertMillisecondToTime(long ms){
 		//get time in HH:mm
 		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
@@ -493,6 +596,10 @@ public class MainParser {
 
 	}
 
+	/**This method converts Date and Time into unix epoch
+	 * Parameters: String - contains date and time
+	 * Return:		Long - time in milliseconds
+	 * **/
 	public static long convertDateToMillisecond(String date, String time){
 		//date format dd/mm/yyyy
 		//time format HH:mm;	
@@ -512,10 +619,18 @@ public class MainParser {
 		return cal.getTimeInMillis();
 	}
 
+	/**This method converts a string into Int
+	 * Parameters: String - input
+	 * Return:		Integer - converted string representation in int
+	 * **/
 	public static int stringToInt(String input){
 		return Integer.parseInt(input.trim());
 	}
 
+	/**This method removes leading and trailing white spaces in an array
+	 * Parameters: String array - contains parameters with whitespaces
+	 * Return:		String array = parameters without whitespaces
+	 * **/
 	private static String[] trimWhiteSpace(String[] temp){
 		for (int i = 0; i < temp.length; i++) {
 			temp[i]=temp[i].trim();
@@ -523,10 +638,11 @@ public class MainParser {
 		return temp;
 	}
 	
-	/*
-	 * recognize dots and convert data to slash format
+	/**This method recognize dots and convert data to slash format
 	 * removes leading zeros from date etc 000005/00011/2015
-	 * */
+	 * Parameters: String - in the format dd/MM/yyyy or dd.MM.yyyy
+	 * Return:		String - in the format dd/MM/yyyy
+	 * **/
 	private static String flexibleDateFormat(String myDate){
 		StringBuffer sb=new StringBuffer();
 		ArrayList<String> aL=new ArrayList<String>();
