@@ -149,9 +149,12 @@ public class Logic {
 	 * return an ArrayList<Task> 
 	 * **/
 	public static ArrayList<Task> getStorageList(){
+		return mStorage.getTaskList();
+	}
+	
+	public static void reorderStorageList(){
 		list(currentSortType);
 		reorderID();
-		return mStorage.getTaskList();
 	}
 	
 	/**This method is to check the file before saving to the file

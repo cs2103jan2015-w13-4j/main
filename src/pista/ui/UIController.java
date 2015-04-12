@@ -538,7 +538,10 @@ public class UIController {
 	
 	public boolean initTaskListInListView(){
 		try{
-			ArrayList<Task> storageList = Logic.getStorageList();
+			ArrayList<Task> storageList = null;
+			Logic.reorderStorageList();
+			storageList = Logic.getStorageList();
+			
 			if (this.searchKeyword != null) {
 				storageList = searchTasks(storageList, this.searchKeyword);
 			}
