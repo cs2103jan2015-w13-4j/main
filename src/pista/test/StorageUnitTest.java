@@ -50,13 +50,13 @@ public class StorageUnitTest {
 	
 	@Test 
 	public void test_Storage_Set_Folder_location(){
-		mStorage.setDataFolderLocation(dummyFilePath);
+		mStorage.setDataFileLocation(dummyFilePath);
 		assertEquals("Set correct location?", dummyFilePath, mStorage.getDataFileLocation());
 	}
 	
 	@Test
 	public void test_Storage_Content(){
-		mStorage.setDataFolderLocation(dummyFilePath);
+		mStorage.setDataFileLocation(dummyFilePath);
 		mStorage.load();
 		ArrayList<Task> mList = mStorage.getTaskList();
 		assertEquals("Assume task list size", 1, mList.size());

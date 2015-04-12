@@ -282,7 +282,7 @@ public class Storage {
 		 return historyList;
 	 }
 	 
-	 public void setDataFolderLocation(String location){
+	 public void setDataFileLocation(String location){
 		 data_file_location = location;
 	 }
 	 

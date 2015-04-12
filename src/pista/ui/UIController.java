@@ -175,7 +175,7 @@ public class UIController {
 			Logic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
 		}		
 
-		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
+		this.mStorage.setDataFileLocation(getPreferenceFilePath());
 		this.mStorage.initLogging(); //initialize Storage logging
 		
 		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
@@ -183,7 +183,7 @@ public class UIController {
 		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
 
-		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
+		this.mStorage.setDataFileLocation(getPreferenceFilePath());
 		this.mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();
@@ -775,7 +775,7 @@ public class UIController {
 							setTextStatus(Constants.UI_STATUS_FAIL_PREFERENCE_SAVE);
 
 						}else{ //saved successfully
-							mStorage.setDataFolderLocation(newPath); //set new path to storage
+							mStorage.setDataFileLocation(newPath); //set new path to storage
 							initTaskListInListView(); //refresh the listview 
 							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
@@ -822,7 +822,7 @@ public class UIController {
 							setTextStatus(Constants.UI_STATUS_FAIL_PREFERENCE_SAVE);
 
 						}else{ //saved successfully
-							mStorage.setDataFolderLocation(newPath); //set new path to storage
+							mStorage.setDataFileLocation(newPath); //set new path to storage
 							initTaskListInListView(); //refresh the listview 
 
 							setPopOverLabelText(lblCurrentFileLocation, newPath);

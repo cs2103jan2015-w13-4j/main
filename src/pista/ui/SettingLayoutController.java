@@ -154,7 +154,7 @@ public class SettingLayoutController {
             		setTextStatus(STATUS_FAIL_TO_SAVE);
             		
             	}else{ //saved successfully
-            		mStorage.setDataFolderLocation(chosenFilePath); //set new path to storage
+            		mStorage.setDataFileLocation(chosenFilePath); //set new path to storage
             		refreshUIListView();
             	}
 

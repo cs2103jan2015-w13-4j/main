@@ -202,7 +202,7 @@ public class Logic {
 	public static boolean writeNewFile(String newFilePath){
 		boolean isWritten = false;
 		mStorage.initTaskList();
-		mStorage.setDataFolderLocation(newFilePath);
+		mStorage.setDataFileLocation(newFilePath);
 		isWritten = mStorage.writeNewXmlFile(newFilePath);
 		
 		return isWritten;
@@ -957,7 +957,7 @@ public class Logic {
 	 * **/
 	private boolean loadExistingFile(String newFilePath){
 		//read file
-		mStorage.setDataFolderLocation(newFilePath);
+		mStorage.setDataFileLocation(newFilePath);
 		boolean isLoaded = mStorage.load(); //load the file into tasklist	
 		return isLoaded;
 	}
