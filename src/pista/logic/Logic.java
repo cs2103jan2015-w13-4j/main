@@ -23,6 +23,8 @@ public class Logic {
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
 	private static String[] currentSortType = new String[1];
 
+	/**This constructor prevent creating a new instance of Logic 
+	 * **/
 	private Logic(){}
 	
 	/**This method is to get the current instance of Logic
@@ -968,7 +970,7 @@ public class Logic {
 	 * return currentState - the current state of the Storage
 	 * **/
 	private static ArrayList<Task> getCurrentState() {
-		ArrayList<Task> currentState = new ArrayList<Task>(mStorage.getTaskList());
+		ArrayList<Task> currentState = new ArrayList<Task>(getStorageList());
 		return currentState;
 	}
 	

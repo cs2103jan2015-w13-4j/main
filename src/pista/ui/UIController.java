@@ -315,7 +315,6 @@ public class UIController {
 		this.mStackPane.getChildren().removeAll(this.anchorPaneStartGuide);
 	}
 	
-	
 	private void initButtonRedo(){
 		ImageView img = new ImageView(new Image("images/redo.png"));
 		img.setPreserveRatio(true);
@@ -744,7 +743,7 @@ public class UIController {
 					isValidFilePath = Logic.checkFileBeforeSave(newPath);
 					if(isValidFilePath){
 						setTextFieldText(txtBoxCurrentDirectory, newPath);
-						//setTextStatus("");
+						
 					}else{
 						setTextFieldText(txtBoxCurrentDirectory, currentFileDir); //set back to old file path 
 						setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_FILE_MESSAGE); //show user file is invalid
