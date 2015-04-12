@@ -75,6 +75,12 @@ public class Constants {
 	public static final double UI_POP_OVER_ADD_HEIGHT = 380.0;
 	public static final double UI_POP_OVER_LABEL_MESSAGE_HEIGHT = 30.0;
 	public static final double UI_POP_OVER_LABEL_DATETIME_WIDTH = 80.0;
+	public static final double UI_POP_OVER_VBOX_SPACING = 8.0;
+	public static final double UI_POP_OVER_HBOX_SPACING = 4.0;
+	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_TOP = 5.0;
+	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT = 10.0;
+	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM = 5.0;
+	public static final double UI_POP_OVER_VBOX_PADDING_INSETS_LEFT = 10.0;
 	
 	/*----- ToolTip -----*/
 	public static final String UI_TOOLTIP_HELP = "Help";
@@ -307,21 +313,17 @@ public class Constants {
 	
 	/*============================= Setting ===================================== */
 	public static final String SETTING_DEFAULT_FOLDER_PATH = System.getProperty("user.home") + "\\"+"Desktop";
-		
+	
 	/*============================= End of Setting ============================== */
 	
 	/*============================= Preferences ===================================== */
 	public static final String PREFERENCE_URL_PATH = "pista/preference";
-	//public static final String PREFERENCE_XML_DEFAULT_FILE_PATH = "preferences.xml";
-	//public static final String PREFERENCE_XML_ROOT_NODE = "preferences";
-	//public static final String PREFERENCE_XML_SETTING_NODE = "setting";
 	public static final String PREFERENCE_XML_FILE_LOCATION = "file_location";
-	//public static final String PREFERENCE_XML_DEFAULT_STRING = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><preferences><setting><file_location></file_location></setting></preferences>";
 	public static final String PREFERENCE_PISTA_FLAG_NODE = "flag";
 	public static final int PREFERENCE_FIRST_LAUNCH_VALUE = 0;
 	public static final int PREFERENCE_SUBSQUENT_LAUNCH_VALUE = 1;
 	public static final int PREFERENCE_ERROR_LAUNCH_VALUE = -1;
-	/*============================= End of Prefences ============================== */
+	/*============================= End of Preferences ============================== */
 
 
 	/*============================= Help ===================================== */

@@ -179,30 +179,22 @@ public class UIController {
 			this.setPreferenceFilePath(this.getNewLaunchFileLocation()); //set preference file location to new file path
 			Logic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
 		}		
-<<<<<<< HEAD
-		
+
 		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
 		this.mStorage.initLogging(); //initialize Storage logging
 		
-=======
-
->>>>>>> origin/master
 		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
 		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
 
-<<<<<<< HEAD
-		logicOutput = Logic.load();
-=======
+
 		this.mStorage.setDataFolderLocation(getPreferenceFilePath());
 		this.mStorage.initLogging(); //initialize Storage logging
 		Logic.initLogging(); //initialize Logic logging
 		Logic.initStorage();
 		Logic.initPreference();
 
-		logicOutput = mLogic.load();
->>>>>>> origin/master
 		this.txtStatus.setText(logicOutput);
 
 		this.txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
@@ -698,12 +690,7 @@ public class UIController {
 			initTaskListInListView();
 		}
 	};
-<<<<<<< HEAD
-	
-=======
 
-
->>>>>>> origin/master
 	//============================== POPOVER ADD NEW TASK ====================================
 	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
@@ -737,48 +724,16 @@ public class UIController {
 		final Label lblSettingTitle = new Label("Setting");
 		final Label lblCurrentFileLocationTitle = new Label("Current File Location");
 		final Label lblCurrentFileLocation = new Label("");
-		VBox vBox = new VBox(8);
-		HBox hBox = new HBox(4);
-<<<<<<< HEAD
-		
-=======
+		final String currentFileDir = mPrefs.getPreferenceFileLocation(); //Get current file location from preference
+		VBox vBox = new VBox(Constants.UI_POP_OVER_VBOX_SPACING);
 
-
-		//Label lblOpen = new Label("Open Current File");	
-
->>>>>>> origin/master
 		Button btnOpenFileBrowse = new Button("Open");
 		Button btnSaveAsFileBrowse = new Button("Save As");
-		Button btnSave = new Button("Save All Settings");
-
-<<<<<<< HEAD
-=======
-		double txtDirectoryWidth = 380.0;
-		double btnBrowseWidth = 100.0;
-
-		//Set Message width first
-		setPopOverLabelMessageStyle(lblMessage, Constants.UI_POP_OVER_SETTING_WIDTH, Constants.UI_POP_OVER_LABEL_MESSAGE_HEIGHT);
-
->>>>>>> origin/master
-		//Get current file location from preference
-		final String currentFileDir = mPrefs.getPreferenceFileLocation();
 
 		if(!(currentFileDir.isEmpty() || currentFileDir == "")){
 			lblCurrentFileLocation.setText(mPrefs.getPreferenceFileLocation());
 		}
-<<<<<<< HEAD
-		
-=======
 
-
-
-
-		//Textbox directory
-		//txtBoxCurrentDirectory.setPrefWidth(txtDirectoryWidth);
-		//txtBoxCurrentDirectory.setEditable(false);
-		//setTextFieldText(txtBoxCurrentDirectory, currentFileDir);
-
->>>>>>> origin/master
 		//Button browse
 		btnOpenFileBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
 		btnOpenFileBrowse.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
@@ -786,25 +741,13 @@ public class UIController {
 			@Override
 			public void handle(ActionEvent event) {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
-<<<<<<< HEAD
-			
-=======
 
-				//Hide popver message
-				//setPopOverLabelMessageVisible(lblMessage, false, false);
-
->>>>>>> origin/master
 				try{
 					String newPath = openFile(currentFileDir);
 
 					isValidFilePath = mLogic.checkFileBeforeSave(newPath);
 					if(isValidFilePath){
-<<<<<<< HEAD
-						isFileCreated = Logic.checkFileDuringSave(newPath);
-=======
-						//setTextFieldText(txtBoxCurrentDirectory, newPath);
 						isFileCreated = mLogic.checkFileDuringSave(newPath);
->>>>>>> origin/master
 
 						if(isFileCreated){
 							String status = Constants.UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE.replace("[new_file_path]", newPath);
@@ -824,14 +767,8 @@ public class UIController {
 							setPopOverLabelText(lblCurrentFileLocation, newPath);
 						}
 
-<<<<<<< HEAD
 						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_OPEN_MESSAGE); //success message
-=======
-						//Label message
-						//setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_SETTING_MESSAGE);
-						//setPopOverLabelMessageVisible(lblMessage, true, true);
 
->>>>>>> origin/master
 					}else{
 						setPopOverLabelText(lblCurrentFileLocation, currentFileDir); //set back to old file path 
 						setTextStatus(Constants.UI_STATUS_INVALID_XML_FILE_PATH_MESSAGE); //failed message
@@ -862,15 +799,8 @@ public class UIController {
 
 				try{
 					String newPath = saveAsFile(currentFileDir);
-<<<<<<< HEAD
-					isCopied = Logic.copyFile(currentFileDir, newPath);
 
-=======
-					System.out.println("currentFileDir - " + currentFileDir);
-					System.out.println("newPath - " + newPath);
 					isCopied = mLogic.copyFile(currentFileDir, newPath);
-					//System.out.println("isCopied - " + isCopied);
->>>>>>> origin/master
 					if(isCopied){
 						setTextStatus(Constants.UI_STATUS_SUCCESS_FILE_SAVE_AS_MESSAGE.replace("[new_file_path]", newPath));
 
@@ -907,7 +837,8 @@ public class UIController {
 		lblSettingTitle.setTextAlignment(TextAlignment.CENTER);
 		lblSettingTitle.setAlignment(Pos.CENTER);
 
-		vBox.setPadding(new Insets(5,10,5,10)); //set Padding
+		vBox.setPadding(new Insets(Constants.UI_POP_OVER_VBOX_PADDING_INSETS_TOP, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT, 
+					Constants.UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_LEFT)); //set Padding
 		vBox.getChildren().add(lblSettingTitle);
 		vBox.getChildren().add(lblCurrentFileLocationTitle);
 		vBox.getChildren().add(lblCurrentFileLocation);
@@ -927,8 +858,8 @@ public class UIController {
 
 	//================== POP OVER ADD NEW TASK ========================
 	private void showPopOverAdd(){
-		VBox vBox = new VBox(8);
-		HBox hBox = new HBox(4);
+		VBox vBox = new VBox(Constants.UI_POP_OVER_VBOX_SPACING);
+		HBox hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING);
 
 		final TextArea txtAreaTaskTitle = new TextArea();
 		Label lblTitle = new Label("Add New Task");
@@ -979,12 +910,12 @@ public class UIController {
 		vBox.getChildren().add(lblTitle); //add title
 		vBox.getChildren().add(txtAreaTaskTitle); //add task title
 
-		hBox = new HBox(4); //start date
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //start date
 		hBox.getChildren().add(lblDateTitle); 
 		hBox.getChildren().add(datePickerStartDate);
 		vBox.getChildren().add(hBox);
 
-		hBox = new HBox(4); //start hour and minute		
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //start hour and minute		
 		hBox.getChildren().add(lblTimeTitle);  
 		hBox.getChildren().add(txtFieldStartHour);
 		hBox.getChildren().add(lblColon);
@@ -1016,9 +947,9 @@ public class UIController {
 		HBox.setMargin(lblTimeTip, new Insets(10,0,0,0));
 		vBox.getChildren().add(hBox);
 
-
 		VBox.setMargin(btnAdd, new Insets(10,0,0,0));
-		vBox.setPadding(new Insets(5,10,5,10));
+		vBox.setPadding(new Insets(Constants.UI_POP_OVER_VBOX_PADDING_INSETS_TOP, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT, 
+					Constants.UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_LEFT)); //set Padding
 
 		vBox.getChildren().add(btnAdd); //add edit button
 		vBox.getChildren().add(lblMessage); //add message
@@ -1185,20 +1116,7 @@ public class UIController {
 	private void setPopOverLabelMessageText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
-<<<<<<< HEAD
-	
-=======
 
-	private void setPopOverLabelMessageStyle(Label lbl, double width, double height){
-		lbl.setTextAlignment(TextAlignment.CENTER);
-		lbl.setAlignment(Pos.CENTER);
-		lbl.setPrefWidth(width);
-		lbl.setPrefHeight(height);
-		setPopOverLabelMessageVisible(lbl, false, false);
-	}
-
-
->>>>>>> origin/master
 	private String openFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
