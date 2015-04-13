@@ -23,10 +23,11 @@ public class Logic {
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
 	private static String[] currentSortType = new String[1];
 
+	//@author A0125474E
 	/**This constructor prevent creating a new instance of Logic 
 	 * **/
 	private Logic(){}
-	
+
 	/**This method is to get the current instance of Logic
 	 * return the instance of Logic
 	 * **/
@@ -62,7 +63,7 @@ public class Logic {
 			return false;
 		}		
 	}
-	
+
 	/**This method is to initiate the Logging class
 	 * return true if done successfully
 	 * return false otherwise
@@ -76,7 +77,7 @@ public class Logic {
 			return false;
 		}		
 	}
-	
+
 	/**This method is to return the instance of storage that is belong 
 	 * to the Logic. Created mainly for testing purposes.
 	 * **/
@@ -84,6 +85,7 @@ public class Logic {
 		return mStorage;
 	}
 
+	//@author A0111721Y
 	/**This method is the main controller of Logic class, from here all function can be called. UIController will access 
 	 * Logic mainly through this method. Return a String regarding the status of operation
 	 * Parameters:	command - the command that the user is calling
@@ -134,6 +136,7 @@ public class Logic {
 		return output;
 	}
 
+	//@author A0125474E
 	/**This method is to load the Storage 
 	 * return the String to indicate if the load is successful or fail
 	 * **/
@@ -144,19 +147,20 @@ public class Logic {
 			return Constants.LOGIC_FAIL_LOAD_XML;
 		}
 	}
-	
+
 	/**This method is to get the Storage list containing all the task
 	 * return an ArrayList<Task> 
 	 * **/
 	public ArrayList<Task> getStorageList(){
 		return mStorage.getTaskList();
 	}
-	
+
 	public void reorderStorageList(){
 		sort(currentSortType);
 		reorderID();
 	}
-	
+
+	//@author A0125474E
 	/**This method is to check the file before saving to the file
 	 * return false if the file is non-exist, empty or invalid
 	 * return true otherwise.
@@ -174,7 +178,7 @@ public class Logic {
 
 		return true;	
 	}
-	
+
 	/**This method is to check the file during the saving operation
 	 * if the file is empty, overwrite the file
 	 * if the file is not empty, load the file
@@ -192,7 +196,7 @@ public class Logic {
 
 		return isCreated;
 	}
-	
+
 	/**This method is to write new XML file
 	 * Parameters:	newFilePath - source file path
 	 * Return:		isWritten - true or false
@@ -202,10 +206,10 @@ public class Logic {
 		mStorage.initTaskList();
 		mStorage.setDataFileLocation(newFilePath);
 		isWritten = mStorage.writeNewXmlFile(newFilePath);
-		
+
 		return isWritten;
 	}
-	
+
 	/**This method is to copy file from source file to destination file
 	 * Parameters:	src - source file path
 	 * 				dest - destination file path
@@ -216,7 +220,8 @@ public class Logic {
 		isCopied = mStorage.copyFile(src, dest);
 		return isCopied;
 	}
-	
+
+	//@author A0112522Y
 	/**This method is to process the information of a Task and construct a string
 	 * based on that. Return the string when it is done. This is for autocomplete during
 	 * editing.
@@ -253,6 +258,7 @@ public class Logic {
 		mStorage.getHistoryList().add(s);
 	}
 
+	//@author A0111884E
 	/**This method is to add a new Task to the program using the given information
 	 * Parameters:	tokens - an Array that contains information of the new Task
 	 * Return:		String - the status of the operation
@@ -309,6 +315,7 @@ public class Logic {
 		}
 	}
 
+	//@author A0112522Y
 	/**This method is to delete a specific Task or all of Tasks in the system
 	 * Parameters:	tokens - an Array that contains the ID of the Task need to be deleted or "a" means all
 	 * Return:		String - the status of the operation
@@ -333,12 +340,12 @@ public class Logic {
 			try{
 				if( index > -1){
 					assert index < mStorage.getTaskList().size() : "Index out of bound";
-					//Task temp = mStorage.getTaskList().get(index);
+					Task temp = getTaskByIndex(index);
 					mStorage.getTaskList().remove(index);
+					mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 					return Constants.LOGIC_SUCCESS_DELETE_TASK;
-					//mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
 				}else{
-					//mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
+					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
 					return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
 				}
 			}catch(AssertionError e){
@@ -356,7 +363,7 @@ public class Logic {
 			}
 		}
 	}
-	
+
 	/**This method is to undo the last action done by the user
 	 * Return:		String - the status of the operation
 	 * **/
@@ -367,8 +374,10 @@ public class Logic {
 			mStorage.setTaskList(undoList.get(undoList.size()-1));
 			undoList.remove(undoList.size()-1);
 			mStorage.save();
+			mLog.logInfo(Constants.LOGIC_SUCCESS_UNDO);
 			return Constants.LOGIC_SUCCESS_UNDO;
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_UNDO);
 		return Constants.LOGIC_FAIL_UNDO;
 	}
 
@@ -382,11 +391,14 @@ public class Logic {
 			mStorage.setTaskList(redoList.get(redoList.size()-1));
 			redoList.remove(redoList.size()-1);
 			mStorage.save();
+			mLog.logInfo(Constants.LOGIC_SUCCESS_REDO);
 			return Constants.LOGIC_SUCCESS_REDO;
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_REDO);
 		return Constants.LOGIC_SUCCESS_REDO;
 	}
-	
+
+	//@author A0111884E
 	/**This method is to mark a certain Task as done or undone
 	 * Parameters:	tokens - an Array that contains the ID of the Task and the status you want to mark it with
 	 * Return:		String - the status of the operation
@@ -410,14 +422,14 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
 	}//end mark
-	
+
 	/**This method is to sort the Storage using the default sort
 	 * **/
 	private void sortOverView(){
 		ComparatorTask comparatorTask = new ComparatorTask();
 		Collections.sort(mStorage.getTaskList(), comparatorTask);
 	}
-	
+
 	/**This method is to sort the Storage by ascending title of Task
 	 * **/
 	private void sortTitleAscending(){
@@ -459,7 +471,7 @@ public class Logic {
 	private void sortDescendingStartDate(){
 		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.descendingStartDateComparator));
 	}
-	
+
 	/**This method is to sort the Storage by ascending end date of Task
 	 * **/
 	private void sortAscendingEndDate(){
@@ -483,13 +495,15 @@ public class Logic {
 	private void sortDescendingPriority(){
 		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
 	}
-	
+
+	//@author A0125474E
 	/**This method is to open help guide
 	 * **/
 	private String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
 
+	//@author A0111884E
 	/**This method is to sort the listview in a certain sorting option
 	 * Parameters:	tokens - an Array contains type of sort the user want to sort the view by
 	 * Return:		message - the message to show the type of sort has been implemented
@@ -527,7 +541,7 @@ public class Logic {
 		mStorage.save();
 		return message;
 	}
-	
+
 	/**This method is to set priority to a Task .
 	 * Parameters:	tokens - an Array that contains the ID of the Task and the level of priority the user want to set to that Task
 	 * Returns:		String - the status of the operation
@@ -547,7 +561,7 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
 	}
-	
+
 	/**This method is set the reminder to a certain Task
 	 * Parameters:	tokens - an Array that contains the ID of the task the user want to set the reminder to
 	 * Return:		String - a status of the operation
@@ -589,7 +603,8 @@ public class Logic {
 		}
 		return Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK;
 	}
-	
+
+	//@author A0125474E
 	/**This method is to set the file location that the data will be saved
 	 * Parameters:	tokens - an Array that contains the file location
 	 * Returns:		String - status of the operation
@@ -621,6 +636,7 @@ public class Logic {
 
 	}
 
+	//@author A0112522Y
 	/**This method is to find the Task index in the Storage, given its id
 	 * Parameters:	id - the ID of the Task 
 	 * Return:		Integer - the Task index in the Storage or -1 if not found
@@ -633,13 +649,14 @@ public class Logic {
 		}
 		return -1;
 	}
-	
+
 	/**This method is to clear everything in the Storage
 	 * **/
 	private void clearList(){
 		mStorage.getTaskList().clear();
 	}
 
+	//@author A0111884E
 	/**This method is to add the Task to the Storage
 	 * Parameters:	task - the Task to add into the Storage
 	 * **/
@@ -651,7 +668,7 @@ public class Logic {
 		}
 		return false;
 	}
-	
+
 	/**This method is to format the Array that contains the information of the Task based on the 
 	 * type of Task it is.
 	 * Parameters:	inputArray - an Array that contains information of the Task
@@ -740,7 +757,7 @@ public class Logic {
 		extractedTask.setCategory(Constants.TASK_TIMED);
 		return extractedTask;
 	}
-	
+
 	/**This method is to edit a Task if the Task is of the type deadline
 	 * Parameters:	extractedTask - the Task that need to be edited
 	 * 				tokens - the new information to be updated	
@@ -765,7 +782,7 @@ public class Logic {
 		extractedTask.setCategory(Constants.TASK_DEADLINE);
 		return extractedTask;
 	}
-	
+
 	/**	This method edits the reminder of a Task
 	 * 	if the newly edited enddate and end time is earlier than the previous, a new reminder will be set.
 	 * 	new reminder is obtained by subracting the difference from the initial endMS.
@@ -852,7 +869,7 @@ public class Logic {
 		}
 		return extractedTask;
 	}
-	
+
 	/**This method is to reinsert a Task to the Storage
 	 * Parameters:	taskIndex - the index in the Storage that the Task will be added to
 	 * 				extractedTask - the Task that will be insert inside the Storage
@@ -862,20 +879,27 @@ public class Logic {
 		mStorage.getTaskList().add(extractedTask);
 		mStorage.save();
 	}
-	
+
+	//@author A0112522Y
 	/**This method is to check if a Task is in the Storage based on its ID
 	 * Parameters:	taskId - the ID of the Task
 	 * Return:		boolean - true if found, false otherwise
 	 * **/
 	private boolean isTaskInList(int taskId){
-		for(Task t: mStorage.getTaskList()){
-			if(t.getID()==taskId){
-				return true;
+		try{
+			for(Task t: mStorage.getTaskList()){
+				if(t.getID()==taskId){
+					return true;
+				}
 			}
+			return false;
+		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
+			return false;
 		}
-		return false;
 	}
-	
+
+	//@author A0111884E
 	/**This method is to convert a Date to its corresponding Millisecond value
 	 * Parameters:	date - the date value that need to be converted
 	 * 				time - the time value that need to be converted
@@ -900,21 +924,27 @@ public class Logic {
 			return 0L;
 		}
 	}
-	
+
+	//@author A0112522Y
 	/**This method is to return a Task in the Storage based on its id
 	 * Parameters:	id - the ID of the Task
 	 * Return:		Task - the Task that matched the ID , return null if not found
 	 * **/
 	private Task getTaskByIndex(int id){
-		int index = findTaskIndex(id);
-		if(isTaskInList(id)){
-			return mStorage.getTaskList().get(index);
-		}else{
-			return null;
-		}
+		try{
+			int index = findTaskIndex(id);
+			if(isTaskInList(id)){
+				return mStorage.getTaskList().get(index);
+			}else{
+				return null;
+			}}catch(Exception e){
+				mLog.logSevere(e.getMessage());
+				return null;
+			}
 	}
 
 	//============= API FOR SETTING PAGE ======================
+	//@author A0125474E
 	/** This method is to validate if the File in the given path is existed
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file exists, false otherwise
@@ -961,6 +991,7 @@ public class Logic {
 	}
 
 	//================================= UNDO & REDO =================================
+	//@author A0112522Y
 	/** This method is to save the current state of the Storage the undoLIst
 	 * Parameters:	currState - the current state of the Storage
 	 * **/
@@ -984,7 +1015,7 @@ public class Logic {
 			redoList.add(currState);
 		}
 	}
-	
+
 	/** This method is to clear the redoList
 	 * **/
 	private void clearRedo(){
@@ -1032,6 +1063,7 @@ public class Logic {
 		temp.setTitle(a.getTitle());
 	}
 
+	//@author A0111884E
 	/** This method is to reorder the ID of the Task in the Storage to make the ID in a correct sequence based on
 	 * how the Task is being shown
 	 * **/
