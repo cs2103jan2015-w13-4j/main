@@ -37,7 +37,7 @@ public class LogicTest {
 	public void testEdit(){
 		populateList();
 		// boundary case of positive value within the size of the taskList
-		assertEquals(tLogic.runCommand("edit",new String[] {"1,"}),Constants.LOGIC_EDIT_TASK_NOT_FOUND);
+		assertEquals(tLogic.runCommand("edit",new String[] {"1,new title"}),Constants.LOGIC_SUCCESS_EDIT_TASK);
 //		assertEquals(tLogic.edit(new String[] {"7", "meeting"}),Constants.LOGIC_SUCCESS_EDIT_TASK);
 	}
 	
