@@ -1,4 +1,3 @@
-//@author A0125474E
 package pista.storage;
 
 import java.io.BufferedWriter;
@@ -40,7 +39,7 @@ public class Storage {
 	private static final Storage mStorage = new Storage();
 	
 	private static int max_number_of_tasks = 0;
-	private static String data_file_location = "";
+	private String data_file_location = "";
 	
 	//Assertion
 	private static final String ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE = "List of task is not initialize";
@@ -49,6 +48,9 @@ public class Storage {
 	private static final String ASSERT_XML_DOCUMENT_ROOT_NULL_MESSAGE = "XML root is undefined or null";
 	private static final String ASSERT_XML_NODE_NULL_MESSAGE = "XML node is undefined or null";
 	private static final String ASSERT_XML_NODE_LIST_NULL_MESSAGE = "XML node list is undefined or null";
+	private static final String ASSERT_SOURCE_FILE_PATH_EMPTY_MESSAGE = "Source file path is empty";
+	private static final String ASSERT_DESTINATION_FILE_PATH_EMPTY_MESSAGE = "Destination file path is empty";
+	
 	
 	//Logging
 	private static final String LOG_STORAGE_LOAD_SUCCESS = "Successfully Load XML file to task list";
@@ -61,11 +63,13 @@ public class Storage {
 	private ArrayList<String> historyList = new ArrayList<String>();
 	private static CustomLogging mLog = null;
 	
+	//@author A0125474E
 	/**
 	 * Don't allow to create a new instance
 	 * **/
 	private Storage(){} 
 	
+	//@author A0125474E
 	/**This method will return the instance of Storage class
 	 *and initialize Logging object 
 	 ***/
@@ -76,6 +80,7 @@ public class Storage {
 		return mStorage;
 	}
 	
+	//@author A0125474E
 	/**Initialize Logging
 	 * **/
 	public boolean initLogging(){
@@ -88,6 +93,7 @@ public class Storage {
 		}	
 	}
 	
+	//@author A0125474E
 	/**This method will load data from XML file
 	 * **/
 	public boolean load(){
@@ -98,6 +104,7 @@ public class Storage {
 		return false;
 	}
 	
+	//@author A0125474E
 	/**This methodd will save from list to XML file
 	 * **/
 	public boolean save(){
@@ -105,7 +112,8 @@ public class Storage {
 		isSaved = tableToXml(getDataFileLocation(), taskList);
 		return isSaved;
 	}
-		
+	
+	//@author A0125474E
 	/**This method will write default string to the new XML file
 	 * Parameters:	newPath - the new xml file path
 	 * Return: 		boolean - true or false indicate success or fail
@@ -113,7 +121,8 @@ public class Storage {
 	public boolean writeNewXmlFile(String newPath){
 		//filepath exist
 		try {
-			//String newXmlString = XML_DEFAULT_STRING.replace("[new_file_path]", newPath);
+			assert(newPath.isEmpty() == false) : "writeNewXmlFile: " + ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+
 			File file = new File(newPath);
 
 			if(!file.exists()){
@@ -130,6 +139,12 @@ public class Storage {
 			fileWriter.close();
 
 			return true;
+			
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return false;
+			
 		} catch (IOException e) {
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
@@ -137,6 +152,7 @@ public class Storage {
 		}
 	}
 	
+	//@author A0125474E
 	/**This method will validate the given file by checking the important XML nodes
 	 * Parameters:	xmlFilePath - the xml file path
 	 * Return: 		boolean - true or false indicate valid or invalid
@@ -144,6 +160,8 @@ public class Storage {
 	public boolean isFileFormatValid(String xmlFilePath){
 		//Do a small test on e selected xml file
 		try{
+			assert(xmlFilePath.isEmpty() == false) : "isFileFormatValid: " + ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+
 			File mXmlFile = new File(xmlFilePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -161,7 +179,12 @@ public class Storage {
 			if(isNodeNull(nRoot) || isNodeNull(nTotalValue) || isNodeListNull(nTotalList) || isNodeListNull(nTaskList)){
 				return false; //not valid XML format
 			}
-
+			
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return false;
+			
 		}catch (Exception e){
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
@@ -171,12 +194,16 @@ public class Storage {
 		return true;
 	}
 	
+	//@author A0125474E
 	/**This method will check if the given file path exist
 	 * Parameters:	filePath - the xml file path
 	 * Return: 		boolean - true or false indicate exist or non-exist
 	 * **/
 	public boolean isFileExist(String filePath){
 		try{
+			assert(filePath.isEmpty() == false) : "isFileExist: " + ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+			
+			
 			File file = new File(filePath);
 			if(file.exists()){
 				return true;
@@ -184,6 +211,11 @@ public class Storage {
 			//not exist
 			return false;
 			
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return false;
+			 
 		}catch(Exception e){
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
@@ -191,6 +223,7 @@ public class Storage {
 		}
 	}
 	
+	//@author A0125474E
 	/**This method will check if the given file contains any value
 	 * Parameters:	filePath - the xml file path
 	 * Return: 		boolean - true or false indicate empty or not empty
@@ -198,6 +231,9 @@ public class Storage {
 	public boolean isFileEmpty(String filePath){
 		
 		try {
+			
+			assert(filePath.isEmpty() == false) : "isFileEmpty: " + ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+			
 			File file = new File(filePath);
 			FileInputStream fis = new FileInputStream(file);  
 
@@ -210,6 +246,11 @@ public class Storage {
 			fis.close();
 			return false;
 		
+		}catch(AssertionError e){
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return true;
+				
 		} catch (IOException e) {
 			mLog.logSevere(e.getMessage());
 			e.printStackTrace();
@@ -218,6 +259,7 @@ public class Storage {
 	
 	} 
 	
+	//@author A0125474E
 	/**This method will get the total current number of tasks
 	 * Return:	int - number of tasks
 	 * **/
@@ -225,11 +267,11 @@ public class Storage {
 		 return max_number_of_tasks;
 	 }
 	 
+	//@author A0125474E
 	 /**This method will get the next usable task ID
 		 * Return:	int - next non-recycled ID
 		 * **/
 	 public int getNextAvailableID(){
-		 //return max_number_of_tasks + 1;
 		 int lastID = 0;
 		 
 		 try{
@@ -248,11 +290,17 @@ public class Storage {
 			 
 		 }catch(AssertionError e){
 			 mLog.logSevere(e.getMessage());
-			 return 0;
+			 return -1;
+			 
+		 }catch(Exception e){
+			 mLog.logSevere(e.getMessage());
+			 return -1;
+			 
 		 }
 		 
 	 }
 	 
+	//@author A0125474E
 	 /**This method will return current saved file location
 	 * Return:	String - file location
 	 * **/	 
@@ -260,33 +308,60 @@ public class Storage {
 		 return data_file_location;
 	 }
 	 
+	 //@author A0125474E
 	 /**This method will initialize the task list
 	 * Return:	boolean - true
 	 * **/
-	 public boolean initTaskList(){
-		 taskList = new ArrayList<Task>();
-		 return true;
+	 public void initTaskList(){
+		 this.taskList = new ArrayList<Task>();
 	 }
 	 
+	 //@author A0112522Y
+	 /**This method will get the task list
+	 * Return:		ArrayList<Task>
+	 * **/
 	 public ArrayList<Task> getTaskList(){
 		 if(this.taskList == null){
-			 taskList = new ArrayList<Task>();
+			 this.taskList = new ArrayList<Task>();
 		 }
-		 return taskList;
+		 return this.taskList;
 	 }
 	 
+	 //@author A0112522Y
+	 /**This method will set the task list
+		 * **/
 	 public void setTaskList(ArrayList<Task> tl){
-		 taskList = new ArrayList<Task>(tl);
+		 if(tl == null){
+			 this.taskList = new ArrayList<Task>();
+		 }else{
+			 this.taskList = new ArrayList<Task>(tl);
+		 }	 
 	 }
 	 
+	 //@author A0112522Y
+	 /**This method will get the history list
+		 * Return:		ArrayList<String>
+		 * **/
 	 public ArrayList<String> getHistoryList(){
-		 return historyList;
+		 return this.historyList;
 	 }
 	 
+	 //@author A0125474E
+	 /**This method will copy entirely from source to destination file
+	  * Parameters:		location - a new file location
+	  * **/
 	 public void setDataFileLocation(String location){
-		 data_file_location = location;
+		 try{
+			 assert(location.isEmpty() == false) : "setDataFileLocation: " + ASSERT_XML_FILE_PATH_EMPTY_MESSAGE;
+			 this.data_file_location = location;
+			 
+		 }catch(AssertionError e){
+			 mLog.logSevere(e.getMessage());
+		 } 
+		 
 	 }
 	 
+	 //@author A0125474E
 	 /**This method will copy entirely from source to destination file
 	  * Parameters:		sourceFilePath - valid source file path
 	  * 				destinationFilePath - valid destination file path
@@ -295,11 +370,19 @@ public class Storage {
 	 public boolean copyFile(String sourceFilePath, String destinationFilePath){
 		 try{
 			 
+			 assert(sourceFilePath.isEmpty() == false) : "copyFile: " + ASSERT_SOURCE_FILE_PATH_EMPTY_MESSAGE;
+			 assert(destinationFilePath.isEmpty() == false) : "copyFile: " + ASSERT_DESTINATION_FILE_PATH_EMPTY_MESSAGE;
+			 
 			 Path original = Paths.get(sourceFilePath); //original file 
 			 Path destination = Paths.get(destinationFilePath); //new file 
 			 Files.copy(original, destination, StandardCopyOption.REPLACE_EXISTING);
 			 
 			 return true;
+		 }catch(AssertionError e){
+			 mLog.logSevere(e.getMessage());
+			 e.printStackTrace();
+			 return false;
+			 
 		 }catch(IOException e){
 			 mLog.logSevere(e.getMessage());
 			 e.printStackTrace();
@@ -307,6 +390,7 @@ public class Storage {
 		 }
 	 }
 	 
+	//@author A0125474E
 	/**This method will check if the XML node is null
 	 * Parameters:	n - a xml node
 	 * Return: 		boolean - true or false indicate null or not null
@@ -318,6 +402,7 @@ public class Storage {
 		return false;
 	}
 	
+	//@author A0125474E
 	/**This method will check if the XML node list collection is null
 	 * Parameters:	n - a xml node list
 	 * Return: 		boolean - true or false indicate null or not null
@@ -329,7 +414,7 @@ public class Storage {
 		return false;
 	}
 	
-
+	//@author A0125474E
 	/**This method will populate XML file from the task list
 	 * Parameters:	xmlFilePath - given XML file path
 	 * 				mArrayTask - given array list of tasks
@@ -420,11 +505,10 @@ public class Storage {
 	
 	}
 	
-	
-	
+	//@author A0125474E
 	/**This method will populate task list from the XML file
 	 * Parameters:	xmlFilePath - given XML file path
-	 * Return: 		boolean - true or false indicate success or fail
+	 * Return: 		ArrayList<Task> - list of tasks
 	 * **/
 	private ArrayList<Task> XmltoTable(String xmlFilePath){
 		
@@ -523,6 +607,7 @@ public class Storage {
 		
 	}//end XMLtoJava
 	
+	//@author A0125474E
 	/**This method will add a child node to the parent node of XML
 	 * Parameters:	parent - parent XML node
 	 * 				tagName - child XML node name
@@ -538,6 +623,7 @@ public class Storage {
 		parent.appendChild(mNode);
 	}	
 
+	//@author A0125474E
 	/**This method will save XML document
 	 * Parameters:	doc - XML document
 	 * 				xmlFilePath - given XML file path
@@ -575,6 +661,7 @@ public class Storage {
 		
 	}//end saveXML
 	
+	//@author A0125474E
 	/**This method will remove all child nodes from the given node
 	 * Parameters:	node - given node that might contains child nodes
 	 * Return: 		boolean - true or false indicate success or fail
@@ -604,6 +691,7 @@ public class Storage {
 		}
 	}//end removeAllFromXML
 	 	
+	//@author A0125474E
 	/**This method will restructure the string value in a XML node
 	 * Parameters:	doc - XML document
 	 * **/
@@ -623,22 +711,27 @@ public class Storage {
 	 }
 
 	 /*============================= Conversion =============================*/
-	 private String convertIntToString(int input){
+	//@author A0125474E
+	private String convertIntToString(int input){
 		 return String.valueOf(input);
-	 }
+	}
 	 
+	 //@author A0125474E
 	 private int convertStringToInt(String input){
 		 return Integer.parseInt(input);
 	 }
 	 
+	 //@author A0125474E
 	 private String convertBooleanToString(boolean input){
 		 return String.valueOf(input);
 	 }
 	 
+	 //@author A0125474E
 	 private String convertLongToString(long input){
 		 return String.valueOf(input);
 	 }
 	 
+	 //@author A0125474E
 	 private long convertStringToLong(String input){
 		 return Long.valueOf(input);
 	 }
