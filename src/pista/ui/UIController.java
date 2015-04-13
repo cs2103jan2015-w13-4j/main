@@ -141,19 +141,19 @@ public class UIController {
 	public void initialize() {
 		String logicOutput = "";
 		
-		this.initTimeClock();
-		this.initReminder();
-		this.initMainParser();
-		this.initStorage();
-		this.initLogic();
+		this.initTimeClock(); //initialize clock at the bottom right corner 
+		this.initReminder(); //initialize reminder which is a timer that loop every second
+		this.initMainParser(); 
+		this.initStorage(); //initialize storage
+		this.initLogic(); //initialize logic
 		this.initPreferences(); //initialize preferences
 		this.initLogging(); //initialize logging
-		this.initButtonRedo();
-		this.initButtonUndo();
-		this.initButtonSetting(); 
-		this.initButtonAddNewTask();
-		this.initButtonHelp();
-		this.initButtonRefresh();
+		this.initButtonRedo(); //initialize button redo
+		this.initButtonUndo(); //initialize button undo
+		this.initButtonSetting(); //initialize button setting
+		this.initButtonAddNewTask(); //initialize button add new task
+		this.initButtonHelp(); //initialize button help
+		this.initButtonRefresh(); //initialize button refresh
 
 		this.addControlsToTopArea(); //add controls to the top anchor top area
 		
@@ -168,29 +168,17 @@ public class UIController {
 			this.mLogic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
 		}		
 
-		this.mStorage.setDataFileLocation(getPreferenceFilePath());
+		this.mStorage.setDataFileLocation(getPreferenceFilePath()); //set storage file location
 		this.mStorage.initLogging(); //initialize Storage logging
 		
 		this.anchorPaneMain.getStyleClass().addAll(Constants.UI_CSS_TRANSPARENT_BACKGROUND);
-		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
 		this.btnEnter.getStyleClass().addAll(Constants.UI_CSS_BUTTON);
+		this.txtBoxCommand.getStyleClass().addAll(Constants.UI_CSS_TEXT_BOX);
+		this.txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED, this.txtBoxCommandEventHandler);
 		this.txtStatus.getStyleClass().addAll(Constants.UI_CSS_TEXT_BACKGROUND, Constants.UI_CSS_TEXT_STATUS);
 		this.txtStatus.setText(logicOutput);
 
-		this.txtBoxCommand.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent event){
-				if (Constants.KEY_COMBINATION_AUTO_COMPLETE.match(event)){
-					onCtrlSpacePressed();
-
-				}else if (Constants.KEY_COMBINATION_UP.match(event)) {
-					onUpPressed();
-
-				}else if (Constants.KEY_COMBINATION_DOWN.match(event)) {
-					onDownPressed();
-				}
-			}
-		});
+		
 
 		logicOutput = mLogic.load();
 		
@@ -199,7 +187,7 @@ public class UIController {
 		}
 
 	}//end initialize
-
+	
 	//@author A0125474E
 	@FXML
 	public void enter() throws IOException {
@@ -1539,6 +1527,24 @@ public class UIController {
 	private String getTime() {
 		return this.possibleKeywords[Constants.SEARCH_KEYWORD_TIME];
 	}
+	
+	//@author A0125474Es
+	/**This method is to handle the key event for text box command
+	 * **/
+	EventHandler<KeyEvent> txtBoxCommandEventHandler = new EventHandler<KeyEvent>(){
+		@Override
+		public void handle(KeyEvent event){
+			if (Constants.KEY_COMBINATION_AUTO_COMPLETE.match(event)){
+				onCtrlSpacePressed();
+
+			}else if (Constants.KEY_COMBINATION_UP.match(event)) {
+				onUpPressed();
+
+			}else if (Constants.KEY_COMBINATION_DOWN.match(event)) {
+				onDownPressed();
+			}
+		}
+	};
 
 	//@author A0125474E
 	/**This method is to handle the click for button start guide 

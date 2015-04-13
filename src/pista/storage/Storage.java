@@ -43,6 +43,7 @@ public class Storage {
 	
 	//Assertion
 	private static final String ASSERT_ARRAY_LIST_TASK_NULL_MESSAGE = "List of task is not initialize";
+	private static final String ASSERT_PARAMTER_ARRAY_LIST_TASK_NULL_MESSAGE = "Task list as a parameter is null";
 	private static final String ASSERT_XML_FILE_PATH_EMPTY_MESSAGE = "XML file path is empty";
 	private static final String ASSERT_XML_DOCUMENT_NULL_MESSAGE = "XML document is not initialize";
 	private static final String ASSERT_XML_DOCUMENT_ROOT_NULL_MESSAGE = "XML root is undefined or null";
@@ -50,7 +51,6 @@ public class Storage {
 	private static final String ASSERT_XML_NODE_LIST_NULL_MESSAGE = "XML node list is undefined or null";
 	private static final String ASSERT_SOURCE_FILE_PATH_EMPTY_MESSAGE = "Source file path is empty";
 	private static final String ASSERT_DESTINATION_FILE_PATH_EMPTY_MESSAGE = "Destination file path is empty";
-	
 	
 	//Logging
 	private static final String LOG_STORAGE_LOAD_SUCCESS = "Successfully Load XML file to task list";
@@ -331,11 +331,16 @@ public class Storage {
 	 /**This method will set the task list
 		 * **/
 	 public void setTaskList(ArrayList<Task> tl){
-		 if(tl == null){
-			 this.taskList = new ArrayList<Task>();
-		 }else{
-			 this.taskList = new ArrayList<Task>(tl);
-		 }	 
+		 try{
+			 assert(tl != null) : "setTaskList: " + ASSERT_PARAMTER_ARRAY_LIST_TASK_NULL_MESSAGE;
+			 
+			 if(tl != null){
+				 this.taskList = new ArrayList<Task>(tl);
+			 }	
+		 }catch(AssertionError e){
+			 mLog.logSevere(e.getMessage()); 
+		 }
+		 
 	 }
 	 
 	 //@author A0112522Y

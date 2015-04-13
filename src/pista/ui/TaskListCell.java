@@ -48,6 +48,11 @@ public class TaskListCell extends ListCell<Task> {
     private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
     private String DISPLAY_END_DATE_TIME = "To [datetime]";
     private final int MAX_CHARACTER_IN_TITLE = 45;
+    private final double PREF_GRID_HEIGHT = 70.0;
+    private final double BUTTON_IS_DONE_WIDTH = 70.0;
+    private final double BUTTON_IS_DONE_HEIGHT = this.PREF_GRID_HEIGHT - 4.0;
+    private final double BUTTON_IMAGE_WIDTH = 55.0;
+    private final double BUTTON_IMAGE_HEIGHT = this.PREF_GRID_HEIGHT - 4.0;
     
     private UIController mUIParent = null;
 	private GridPane grid = null;
@@ -109,12 +114,7 @@ public class TaskListCell extends ListCell<Task> {
     private String deleteCommand = "delete [id]";
     private String editTaskcommand = "edit [id] -[new_title] -[new_start_date] -[new_start_time] -[new_end_date] -[new_end_time]";
     
-    private final double PREF_GRID_HEIGHT = 70.0;
-    private final double BUTTON_IS_DONE_WIDTH = 70.0;
-    private final double BUTTON_IS_DONE_HEIGHT = this.PREF_GRID_HEIGHT - 4.0;
-    private final double BUTTON_IMAGE_WIDTH = 55.0;
-    private final double BUTTON_IMAGE_HEIGHT = this.PREF_GRID_HEIGHT - 4.0;
-	
+
     @Override
 	public void updateItem(Task mTask, boolean empty){
 		super.updateItem(mTask,  empty);
