@@ -777,7 +777,7 @@ public class UIController {
 				this.setAppendTextCommand(finalStr);			
 			}
 		}catch(NumberFormatException e) {
-			e.printStackTrace();
+			mLog.logSevere(e.getMessage());
 		}
 	}
 
