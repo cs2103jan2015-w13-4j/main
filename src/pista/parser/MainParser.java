@@ -436,10 +436,18 @@ public class MainParser {
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
 	 * Return:		Boolean 
-	 * 				True if the tokens are correct
+	 * 				True if the tokens are co
 	 * 				False if the tokens are wrong 
 	 * **/
 	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		Parser parser = new Parser();
+		String requiredNattyInputFormat = "";
+		String interpretOutputDateFromNatty = "";
+		List<DateGroup> groups;
+		
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		
 		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
 			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
@@ -450,7 +458,50 @@ public class MainParser {
 			return false;
 		}
 		
-		mp.setTokens(tokens);
+		String[] possibleKeywords = new String[Constants.SEARCH_POSSIBLE_PARAMETERS];
+		mp.setTokens(possibleKeywords);
+		mp.setIndexInToken(Constants.SEARCH_KEYWORD_STRING, tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+		
+		//checks if keyword is a date
+		if(!TokenValidation.isDateValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			requiredNattyInputFormat = nattyInputFormat(tokens, Constants.SEARCH_TOKEN_KEYWORD);
+			
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			}
+
+			try {
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputDateFromNatty = "";
+			}
+			
+			if(TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_DATE, interpretOutputDateFromNatty);
+			}
+		}
+				
+		//checks if keyword is a time
+		String interpretOutputTimeFromNatty="";
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		
+		if(!TokenValidation.isTimeValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputTimeFromNatty = "";
+			}
+			
+			if(TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_TIME, interpretOutputTimeFromNatty);
+			}
+		}
+		
+		System.out.println(mp.getTokens()[0] + mp.getTokens()[1] + mp.getTokens()[2]);
 		return true;
 	}
 	
@@ -502,10 +553,13 @@ public class MainParser {
 		String requiredNattyInputFormat = ""; 
 		String interpretOutputDateFromNatty="";
 		String interpretOutputTimeFromNatty="";
+		
 		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		
 		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
+		
 		if(!TokenValidation.isDateValid(tokens[dateIndex])){
 			requiredNattyInputFormat = nattyInputFormat(tokens, dateIndex);
 			if(!requiredNattyInputFormat.isEmpty()){
@@ -515,7 +569,7 @@ public class MainParser {
 			}
 
 			try {
-				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(intrepretInputNatty(groups)));
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
 			} catch (ParseException e1) {
 				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
 				return false;
@@ -527,10 +581,11 @@ public class MainParser {
 				mp.setIndexInToken(dateIndex, interpretOutputDateFromNatty);
 			}
 		}
+		
 		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
 			groups = parser.parse(tokens[timeIndex]);
 			try {
-				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(intrepretInputNatty(groups)));
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
 			} catch (ParseException e1) {
 				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
 				return false;
@@ -568,7 +623,7 @@ public class MainParser {
 	 * Return:		String - if natty recognizes what it represents 
 	 * 				else it returns an empty string
 	 * **/
-	private static String intrepretInputNatty(List<DateGroup> groups) {
+	private static String interpretInputNatty(List<DateGroup> groups) {
 		List dates = null;
 		for(DateGroup group: groups){
 			dates = group.getDates();

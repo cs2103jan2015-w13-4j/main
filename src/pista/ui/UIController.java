@@ -85,6 +85,7 @@ public class UIController {
 
 	private String userInput = null;
 	private String searchKeyword = null;
+	private String[] possibleKeywords = null;
 
 	private boolean isValidFilePath = false;
 	private boolean isFileCreated = false;
@@ -636,14 +637,14 @@ public class UIController {
 
 	public void onCtrlSpacePressed(){
 		this.userInput = this.getTextCommand();
-		String[] temp = this.userInput.split(" ",2);
+		String[] temp = this.userInput.split("\\s+",2);
 		String command = temp[0];
 		try { 
 			int id = Integer.parseInt(temp[1]);
 			if( command.equalsIgnoreCase("edit")){
 				String processedString = mLogic.processTaskInfo(id);
 				String finalStr = processedString;
-				this.setTextCommand(finalStr);
+				this.setTextCommand(this.userInput + finalStr);
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
@@ -1236,44 +1237,75 @@ public class UIController {
 	//============================== SEARCH FUNCTIONS ====================================
 	private void setSearchKeyword(String[] tokens) {
 		this.searchKeyword = getKeyword(tokens);
+		this.possibleKeywords = tokens;
 	}
 
 	private String getKeyword(String[] tokens) {
-		return tokens[0];
+		return tokens[Constants.SEARCH_TOKEN_KEYWORD];
 	}
 
 	private void resetSearchKeyword() {
 		this.searchKeyword = null;
+		this.possibleKeywords = null;
 	}
 
 	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
 		ArrayList<Task> displayList = new ArrayList<Task>();
 
 		for (Task task: storageList) {
-			if (hasKeyword(task, this.searchKeyword)) {
+			if (hasKeyword(task, possibleKeywords)) {
 				displayList.add(task);
 			}
 		}
 		return displayList;
 	}
 
-	private boolean hasKeyword(Task task, String keyword) {
+	private boolean hasKeyword(Task task, String[] possibleKeywords) {
 		String taskDescription = task.getTitle();
+		String taskStartDate = task.getStartDate();
+		String taskEndDate = task.getEndDate();
+		String taskStartTime = task.getStartTime();
+		String taskEndTime = task.getEndTime();
+
+		//check if keyword exists in title of task
 		String[] descriptionTokens = makeIntoTokens(taskDescription);
 
 		for (String token: descriptionTokens) {
-			if (keyword.equals("")) {
-				return false;
-			} else if (token.equalsIgnoreCase(keyword)) {
+			if (token.equalsIgnoreCase(searchKeyword)) {
 				return true;
 			}
 		}
-
+		
+		//check if keyword is a time
+		String keywordAsTime = this.getTime();
+		if (keywordAsTime != null) {
+			if (keywordAsTime.equals(taskStartTime) || keywordAsTime.equals(taskEndTime)) {
+				System.out.println("checking as time");
+				return true;
+			}
+		}
+				
+		//check if keyword is a date
+		String keywordAsDate = this.getDate();
+		if (keywordAsDate != null) {
+			if (keywordAsDate.equals(taskStartDate) || keywordAsDate.equals(taskEndDate)) {
+				return true;
+			}
+		}
+		
 		return false;
 	}
 
 	private String[] makeIntoTokens(String taskDescription) {
 		return taskDescription.split("\\s+");
+	}
+	
+	private String getDate() {
+		return this.possibleKeywords[Constants.SEARCH_KEYWORD_DATE];
+	}
+	
+	private String getTime() {
+		return this.possibleKeywords[Constants.SEARCH_KEYWORD_TIME];
 	}
 
 	private void runReminder(){
