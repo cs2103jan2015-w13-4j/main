@@ -11,22 +11,21 @@ public class MiscComparator {
 		public int compare (Task one, Task two){
 			String titleOne=one.getTitle();
 			String titleTwo=two.getTitle();
-			return titleOne.compareTo(titleTwo);
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				return titleOne.compareTo(titleTwo);
+			}
+			return 1;
 		}
 	};	//added ; to resolve ClassBodyDeclarations	
 
 	public static Comparator<Task> isDoneComparator = new Comparator<Task>(){
 		@Override
 		public int compare (Task one, Task two){
-			boolean taskOneIsDone = one.getIsDone();
-			boolean taskTwoIsDone = two.getIsDone();
-			if(taskOneIsDone == true && taskTwoIsDone == false){
-				return 1;
-			}else if (taskOneIsDone == false && taskTwoIsDone == true) {
-				return -1;
-			}else{	// this is when taskOneStatus == statusTwoStatus  T==T or F==F
-				return 0;
-			}
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			return compareIsDone(taskOneStatus, taskTwoStatus);
 		}
 	};
 
@@ -35,18 +34,24 @@ public class MiscComparator {
 		public int compare (Task one, Task two){
 			long taskOneDate = one.getEndMilliseconds();
 			long taskTwoDate = two.getEndMilliseconds();
-			if (taskOneDate == 0L && taskTwoDate != 0L){
-				return -1;
-			}
-			if(taskOneDate != 0L && taskTwoDate != 0L){
-				if(taskOneDate < taskTwoDate){
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if (taskOneDate == 0L && taskTwoDate != 0L){
 					return -1;
-				}else if(taskOneDate == taskTwoDate){
-					return 0;
-				}else if (taskOneDate > taskTwoDate){
-					return 1;
+				}
+				if(taskOneDate != 0L && taskTwoDate != 0L){
+					if(taskOneDate < taskTwoDate){
+						return -1;
+					}else if(taskOneDate == taskTwoDate){
+						return 0;
+					}else if (taskOneDate > taskTwoDate){
+						return 1;
+					}
 				}
 			}
+			
+			
 			return 1;
 		}
 	};
@@ -56,18 +61,24 @@ public class MiscComparator {
 		public int compare (Task one, Task two){
 			long taskOneDate = one.getStartMilliseconds();
 			long taskTwoDate = two.getStartMilliseconds();
-			if (taskOneDate == 0L && taskTwoDate != 0L){
-				return 1;
-			}
-			if(taskOneDate != 0L && taskTwoDate != 0L){
-				if(taskOneDate < taskTwoDate){
-					return -1;
-				}else if(taskOneDate == taskTwoDate){
-					return 0;
-				}else if (taskOneDate > taskTwoDate){
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if (taskOneDate == 0L && taskTwoDate != 0L){
 					return 1;
 				}
+				if(taskOneDate != 0L && taskTwoDate != 0L){
+					if(taskOneDate < taskTwoDate){
+						return -1;
+					}else if(taskOneDate == taskTwoDate){
+						return 0;
+					}else if (taskOneDate > taskTwoDate){
+						return 1;
+					}
+				}
 			}
+			
+			
 			return -1;
 		}
 	};
@@ -77,18 +88,22 @@ public class MiscComparator {
 		public int compare (Task one, Task two){
 			long taskOneDate = one.getStartMilliseconds();
 			long taskTwoDate = two.getStartMilliseconds();
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
 			if (taskOneDate == 0L && taskTwoDate != 0L){
 				return -1;
 			}
-			if(taskOneDate != 0L && taskTwoDate != 0L){
-				if(taskOneDate < taskTwoDate){
-					return -1;
-				}else if(taskOneDate == taskTwoDate){
-					return 0;
-				}else if (taskOneDate > taskTwoDate){
-					return 1;
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if(taskOneDate != 0L && taskTwoDate != 0L){
+					if(taskOneDate < taskTwoDate){
+						return -1;
+					}else if(taskOneDate == taskTwoDate){
+						return 0;
+					}else if (taskOneDate > taskTwoDate){
+						return 1;
+					}
 				}
-			}
+			}		
 			return 1;
 		}
 	};
@@ -100,8 +115,6 @@ public class MiscComparator {
 			String catTwo = two.getCategory();
 			Integer orderOne = taskOrder(catOne);
 			Integer orderTwo = taskOrder(catTwo);
-			System.out.println(one.getTitle() +" "+ orderOne);
-			System.out.println(two.getTitle() + " "+orderTwo);
 			return orderOne.compareTo(orderTwo);
 		}
 

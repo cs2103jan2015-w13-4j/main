@@ -252,50 +252,50 @@ public class Constants {
 	
 	/*============================= Parser ====================================== */
 	/*----- Parser Message -----*/
-	public static final String MESSAGE_EMPTY_STRING = "No input detected!";
-	public static final String MESSAGE_WRONG_COMMAND = "No/Wrong command detected!";
-	public static final String MESSAGE_WRONG_PARAMETERS = "No/Wrong parameters detected!";
-	public static final String MESSAGE_VALID_INPUT = "Valid";
-	public static final String MESSAGE_STARTDATE_GREATER_THAN_ENDDATE = "Start date cannot be greater than end date";
-	public static final String MESSAGE_INVALID_DATE_INPUT = "Invalid date input";
-	public static final String MESSAGE_INVALID_TIME_INPUT = "Invalid time input";
-	public static final String MESSAGE_INVALID_TOKEN_LENGTH = "Invalid token length";
-	public static final String MESSAGE_ID_LESS_THAN_ONE = "ID cannot be less than one";
-	public static final String MESSAGE_INVALID_SHORTHAND = "invalid shorthand for delete";
-	public static final String MESSAGE_INVALD_NATTY_DATE = "Unable to interpret the date format you have typed";
-  	public static final String MESSAGE_INVALD_NATTY_TIME = "Unable to interpret the time format you have typed";
-  	public static final String MESSAGE_EMPTY_TITLE = "The title cannot be empty";
-  	public static final String MESSAGE_EDIT_EMPTY_TOKENS = "Empty tokens detected for Edit function";
-  	public static final String MESSAGE_INVALID_SORT_FUNCTION = "The sort function you have entered is invalid";
-  	public static final String MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
-	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT = "Invalid clear count. To change from Timed to floated task, there must be 4 clear count. To deadline, 2 clear count  ";
-	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT_TIMED_TO_DEADLINE = "To convert timed to deadline, make sure the last 2 parameters contain c";
+    public static final String PARSER_MESSAGE_EMPTY_STRING = "No input detected!";
+	public static final String PARSER_MESSAGE_WRONG_COMMAND = "No/Wrong command detected!";
+	public static final String PARSER_MESSAGE_WRONG_PARAMETERS = "No/Wrong parameters detected!";
+	public static final String PARSER_MESSAGE_VALID_INPUT = "Valid";
+	public static final String PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE = "Start date cannot be greater than end date";
+	public static final String PARSER_MESSAGE_INVALID_DATE_INPUT = "Invalid date input";
+	public static final String PARSER_MESSAGE_INVALID_TIME_INPUT = "Invalid time input";
+	public static final String PARSER_MESSAGE_INVALID_TOKEN_LENGTH = "Invalid token length";
+	public static final String PARSER_MESSAGE_ID_LESS_THAN_ONE = "ID cannot be less than one";
+	public static final String PARSER_MESSAGE_INVALID_SHORTHAND = "invalid shorthand for delete";
+	public static final String PARSER_MESSAGE_INVALD_NATTY_DATE = "Unable to interpret the date format you have typed";
+  	public static final String PARSER_MESSAGE_INVALD_NATTY_TIME = "Unable to interpret the time format you have typed";
+  	public static final String PARSER_MESSAGE_EMPTY_TITLE = "The title cannot be empty";
+  	public static final String PARSER_MESSAGE_EDIT_EMPTY_TOKENS = "Empty tokens detected for Edit function";
+  	public static final String PARSER_MESSAGE_INVALID_SORT_FUNCTION = "The sort function you have entered is invalid";
+  	public static final String PARSER_MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
+	public static final String PARSER_MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT = "Invalid clear count. To change from Timed to floated task, there must be 4 clear count. To deadline, 2 clear count  ";
+	public static final String PARSER_MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT_TIMED_TO_DEADLINE = "To convert timed to deadline, make sure the last 2 parameters contain c";
 	
-  	public static final String REMINDER_OFF = "off";
-  	public static final String REMINDER_INVALID_STATUS = "only allowed to set reminder as off";
+  	public static final String PARSER_REMINDER_OFF = "off";
+  	public static final String PARSER_REMINDER_INVALID_STATUS = "only allowed to set reminder as off";
   	
-  	public static final String MARK_DONE = "done";
-  	public static final String MARK_UNDONE = "undone";
+  	public static final String PARSER_MARK_DONE = "done";
+  	public static final String PARSER_MARK_UNDONE = "undone";
 	
-  	public static final String INVALID_MARK = "You can only mark task as done or undone";
-	public static final String INVALID_REMINDER = "invalid reminder tokens paramter";
-	public static final String INVALID_PRIORITY_SCORE = "Prority range can be only 0-3";
+  	public static final String PARSER_INVALID_MARK = "You can only mark task as done or undone";
+	public static final String PARSER_INVALID_REMINDER = "invalid reminder tokens paramter";
+	public static final String PARSER_INVALID_PRIORITY_SCORE = "Prority range can be only 0-3";
 	
-	public static final String SORT_TYPE = "type";
-	public static final String SORT_OVERVIEW = "overview";
-	public static final String SORT_ASCENDING_START_DATE = "ascending start date";
-	public static final String SORT_DESCENDING_START_DATE = "descending start date";
-	public static final String SORT_ASCENDING_END_DATE = "ascending end date";
-	public static final String SORT_DESCENDING_END_DATE = "descending end date";
-	public static final String SORT_ASCENDING_TITLE = "ascending title";
-	public static final String SORT_DESCENDING_TITLE = "descending title";
-	public static final String SORT_ASCENDING_PRIORITY = "ascending priority";
-	public static final String SORT_DESCENDING_PRIORITY = "descending priority";
-	public static final String SORT_ISDONE_UNDONE = "undone";
-	public static final String SORT_ISDONE_DONE = "done";
-	public static final String SORT_PRIORITY = "priority";
-	public static final String SET_TYPE_FILE_LOCATION = "file location";
-	public static final String SET_FILE_TYPE = ".xml";
+	public static final String PARSER_SORT_TYPE = "type";
+	public static final String PARSER_SORT_OVERVIEW = "overview";
+	public static final String PARSER_SORT_ASCENDING_START_DATE = "ascending start date";
+	public static final String PARSER_SORT_DESCENDING_START_DATE = "descending start date";
+	public static final String PARSER_SORT_ASCENDING_END_DATE = "ascending end date";
+	public static final String PARSER_SORT_DESCENDING_END_DATE = "descending end date";
+	public static final String PARSER_SORT_ASCENDING_TITLE = "ascending title";
+	public static final String PARSER_SORT_DESCENDING_TITLE = "descending title";
+	public static final String PARSER_SORT_ASCENDING_PRIORITY = "ascending priority";
+	public static final String PARSER_SORT_DESCENDING_PRIORITY = "descending priority";
+	public static final String PARSER_SORT_ISDONE_UNDONE = "undone";
+	public static final String PARSER_SORT_ISDONE_DONE = "done";
+	public static final String PARSER_SORT_PRIORITY = "priority";
+	public static final String PARSER_SET_TYPE_FILE_LOCATION = "file location";
+	public static final String PARSER_SET_FILE_TYPE = ".xml";
 	
 	public static final int TOKEN_NUM_PRIORITY_SCORE = 1;
 	public static final int TOKEN_NUM_PRORITY_ID = 0;

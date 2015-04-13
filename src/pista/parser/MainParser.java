@@ -29,11 +29,9 @@ public class MainParser {
 	public String[] getTokens(){return tokens;}
 	public String getItemInTokenIndex(int index){return tokens[index];}
 	public String getMessage(){return message;}
-	public boolean getValidTokens(){return validTokens;}
 	private void setCommand(String command){this.command = command;}
 	private void setTokens(String[] tokens){this.tokens = tokens;}
 	private void setMessage(String message){this.message = message;}
-	private void setValidToken(boolean status){this.validTokens = status;}
 	private void setIndexInToken(int index, String input){this.tokens[index] = input;}	
 	/*
 	 * tokens
@@ -48,17 +46,17 @@ public class MainParser {
 	public static MainParser validateInput(String input) {
 		MainParser mp = new MainParser();
 		if (isEmptyString(input)) {
-			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
 			return mp;
 		} else {
 			String command = getCommand(input);
 			if (!isCommandValid(command)) {
-				mp.setMessage(Constants.MESSAGE_WRONG_COMMAND);
+				mp.setMessage(Constants.PARSER_MESSAGE_WRONG_COMMAND);
 				return mp;
 			} else {
 				if (command.equalsIgnoreCase(Constants.VALUE_HELP)) {
 					mp.setCommand(command);
-					mp.setMessage(Constants.MESSAGE_VALID_INPUT);
+					mp.setMessage(Constants.PARSER_MESSAGE_VALID_INPUT);
 					return mp;
 				} else {
 					String[] tokens = getTokens(input);
@@ -68,7 +66,7 @@ public class MainParser {
 						return mp;
 					} else {
 						mp.setCommand(command);
-						mp.setMessage(Constants.MESSAGE_VALID_INPUT);
+						mp.setMessage(Constants.PARSER_MESSAGE_VALID_INPUT);
 						return mp;
 					}
 				}
@@ -183,7 +181,7 @@ public class MainParser {
 	 * **/
 	private boolean checkAddTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
@@ -191,7 +189,7 @@ public class MainParser {
 			if(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]))){
 				return true;
 			}
-			mp.setMessage(Constants.MESSAGE_EMPTY_TITLE);
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_TITLE);
 			return false;
 		}
 		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
@@ -215,7 +213,7 @@ public class MainParser {
 							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME))){
 						return true;
 					}else{
-						mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+						mp.setMessage(Constants.PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
 						return false;
 					}
 				}
@@ -237,7 +235,7 @@ public class MainParser {
 	 * **/
 	private boolean checkEditTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
@@ -271,7 +269,7 @@ public class MainParser {
 								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDTIME))){						
 							return true;
 						}else{
-							mp.setMessage(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+							mp.setMessage(Constants.PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
 							return false;
 						}
 					}
@@ -281,7 +279,7 @@ public class MainParser {
 			return false;
 		}
 		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
-		mp.setMessage(Constants.MESSAGE_EDIT_EMPTY_TOKENS);
+		mp.setMessage(Constants.PARSER_MESSAGE_EDIT_EMPTY_TOKENS);
 		return false;
 	}
 	
@@ -295,7 +293,7 @@ public class MainParser {
 	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
 		mp.setTokens(tokens);
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 
@@ -304,14 +302,14 @@ public class MainParser {
 			int id = Integer.parseInt(input); 
 			// if it is a number
 			if( id < 1 ){
-				mp.setMessage(Constants.MESSAGE_ID_LESS_THAN_ONE);
+				mp.setMessage(Constants.PARSER_MESSAGE_ID_LESS_THAN_ONE);
 				return false;
 			}
 			return true;
 
 		} catch(NumberFormatException e) { //if it is not a number
 			if(!input.equalsIgnoreCase("a")){
-				mp.setMessage(Constants.MESSAGE_INVALID_SHORTHAND);
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALID_SHORTHAND);
 				return false;
 			}
 			return true;
@@ -327,15 +325,15 @@ public class MainParser {
 	 * **/
 	private boolean checkMarkTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
 		String status = tokens[Constants.INDEX_ONE];
-		if(Constants.MARK_DONE.equalsIgnoreCase(status) || Constants.MARK_UNDONE.equalsIgnoreCase(status)){
+		if(Constants.PARSER_MARK_DONE.equalsIgnoreCase(status) || Constants.PARSER_MARK_UNDONE.equalsIgnoreCase(status)){
 			return true;
 		}
-		mp.setMessage(Constants.INVALID_MARK);
+		mp.setMessage(Constants.PARSER_INVALID_MARK);
 		return false;
 	}
 	
@@ -348,15 +346,15 @@ public class MainParser {
 	 * **/
 	private boolean checkReminderTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
 		if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
-			if(tokens[Constants.TOKEN_NUM_REMINDER_OFF].equalsIgnoreCase(Constants.REMINDER_OFF)){
+			if(tokens[Constants.TOKEN_NUM_REMINDER_OFF].equalsIgnoreCase(Constants.PARSER_REMINDER_OFF)){
 				return true;
 			}
-			mp.setMessage(Constants.REMINDER_INVALID_STATUS);
+			mp.setMessage(Constants.PARSER_REMINDER_INVALID_STATUS);
 			return false;
 		}else if(tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
 			//String taskId = tokens[TOKEN_REMINDER_ID];
@@ -367,7 +365,7 @@ public class MainParser {
 			return true;
 		}
 
-		mp.setMessage(Constants.INVALID_REMINDER);
+		mp.setMessage(Constants.PARSER_INVALID_REMINDER);
 		return false;
 	}
 	
@@ -380,17 +378,20 @@ public class MainParser {
 	 * **/
 	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
 		if(tokens.length == Constants.LENGTH_TWO){
 			int priorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
-			if(priorityScore >= Constants.DEFAULT_PRIORITY || priorityScore <= Constants.HIGH_PRIORITY){
+			if(priorityScore >= Constants.DEFAULT_PRIORITY && priorityScore <= Constants.HIGH_PRIORITY){
 				return true;
+			}else {
+				mp.setMessage(Constants.PARSER_INVALID_PRIORITY_SCORE);
+				return false;
 			}
 		}
-		mp.setMessage(Constants.INVALID_PRIORITY_SCORE);
+		mp.setMessage(Constants.PARSER_INVALID_PRIORITY_SCORE);
 		return false;
 	}
 	
@@ -406,7 +407,7 @@ public class MainParser {
 		String getFileLocation = "";
 
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 
@@ -416,7 +417,7 @@ public class MainParser {
 		}
 
 		getType = tokens[Constants.SET_TYPE_INDEX]; //index of type is 0
-		if(!getType.equalsIgnoreCase(Constants.SET_TYPE_FILE_LOCATION)){
+		if(!getType.equalsIgnoreCase(Constants.PARSER_SET_TYPE_FILE_LOCATION)){
 			mp.setMessage(Constants.LOGIC_INVALID_SET_COMMAND_TYPE);	
 			return false;
 		}
@@ -449,12 +450,12 @@ public class MainParser {
 		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
 		
 		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		
 		if (tokens[Constants.INDEX_ZERO].equals("")) {
-			mp.setMessage(Constants.MESSAGE_EMPTY_STRING);
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
 			return false;
 		}
 		
@@ -514,26 +515,26 @@ public class MainParser {
 	 * **/
 	private boolean checkSortTokens(MainParser mp, String[] tokens) {
 		if(tokens == null){
-			mp.setMessage(Constants.MESSAGE_INVALID_TOKEN_LENGTH);
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
 			return false;
 		}
 		mp.setTokens(tokens);
 		String sortType = tokens[Constants.INDEX_ZERO];
-		if(Constants.SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
-				Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
-				Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
-				Constants.SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
-				Constants.SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
-				Constants.SORT_DESCENDING_TITLE.equals(sortType) || 
-				Constants.SORT_ISDONE_DONE.equals(sortType) || 
-				Constants.SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
-				Constants.SORT_OVERVIEW.equalsIgnoreCase(sortType) || 
-				Constants.SORT_TYPE.equalsIgnoreCase(sortType) 
-				|| Constants.SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
-				Constants.SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+		if(Constants.PARSER_SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
+				Constants.PARSER_SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
+				Constants.PARSER_SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
+				Constants.PARSER_SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_DESCENDING_TITLE.equals(sortType) || 
+				Constants.PARSER_SORT_ISDONE_DONE.equals(sortType) || 
+				Constants.PARSER_SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_OVERVIEW.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_TYPE.equalsIgnoreCase(sortType) 
+				|| Constants.PARSER_SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
+				Constants.PARSER_SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
 			return true;
 		}
-		mp.setMessage(Constants.MESSAGE_INVALID_SORT_FUNCTION);
+		mp.setMessage(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION);
 		return false;
 	}
 	
@@ -571,11 +572,11 @@ public class MainParser {
 			try {
 				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
 			} catch (ParseException e1) {
-				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_DATE);
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALD_NATTY_DATE);
 				return false;
 			}
 			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
-				mp.setMessage(Constants.MESSAGE_INVALID_DATE_INPUT);
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALID_DATE_INPUT);
 				return false;
 			}else{
 				mp.setIndexInToken(dateIndex, interpretOutputDateFromNatty);
@@ -587,11 +588,11 @@ public class MainParser {
 			try {
 				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
 			} catch (ParseException e1) {
-				mp.setMessage(Constants.MESSAGE_INVALD_NATTY_TIME);
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALD_NATTY_TIME);
 				return false;
 			}
 			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
-				mp.setMessage(Constants.MESSAGE_INVALID_TIME_INPUT);
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TIME_INPUT);
 				return false;
 			}else{
 				mp.setIndexInToken(timeIndex, interpretOutputTimeFromNatty);

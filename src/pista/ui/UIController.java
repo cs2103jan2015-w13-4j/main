@@ -229,7 +229,7 @@ public class UIController {
 		this.mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
 		MainParser mp = MainParser.validateInput(userInput);
 		parserOutput = mp.getMessage();
-		if(!parserOutput.equals(Constants.MESSAGE_VALID_INPUT)){
+		if(!parserOutput.equals(Constants.PARSER_MESSAGE_VALID_INPUT)){
 			//display error
 			this.setTextStatus(parserOutput);
 			this.mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);

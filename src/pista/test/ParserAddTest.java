@@ -35,25 +35,25 @@ public class ParserAddTest {
 	@Test
 	public void testParserAddWithoutToken() {
 		MainParser mp = MainParser.validateInput("add");
-		assertEquals(Constants.MESSAGE_INVALID_TOKEN_LENGTH,mp.getMessage());
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH,mp.getMessage());
 	}
 	
 	@Test
 	public void testParserAddFloatedToken() {
 		MainParser mp = MainParser.validateInput("add floatedtask");
-		assertEquals(Constants.MESSAGE_VALID_INPUT, mp.getMessage());
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
 	}
 	
 	@Test
 	public void testParserAddDeadlineToken() {
 		MainParser mp = MainParser.validateInput("add deadlinetask -12/05/2015 -14:14");
-		assertEquals(Constants.MESSAGE_VALID_INPUT, mp.getMessage());
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
 	}
 	
 	@Test
 	public void testParserAddTimedToken() {
 		MainParser mp = MainParser.validateInput("add deadlinetask -12/05/2015 -14:14 -13/7/2015 -15:15");
-		assertEquals(Constants.MESSAGE_VALID_INPUT, mp.getMessage());
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
 	}
 	
 	@Test
@@ -120,7 +120,7 @@ public class ParserAddTest {
 		assertEquals("05:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME));
 		
 		mp = MainParser.validateInput("add timed -tomorrow -1 hours after noon -yesterday -5 hours after midnight");
-		assertEquals(Constants.MESSAGE_STARTDATE_GREATER_THAN_ENDDATE, mp.getMessage());
+		assertEquals(Constants.PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE, mp.getMessage());
 
 	}
 
