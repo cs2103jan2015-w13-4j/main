@@ -19,24 +19,6 @@
 	-fx-text-fill: rgba(0, 0, 0, 0.5);
 }
 
-/*
-.task-list-cell-id-black{
-	-fx-text-fill: #000000;
-}
-
-.task-list-cell-id-green{
-	-fx-text-fill: #00C13F;
-}
-
-.task-list-cell-id-yellow{
-	-fx-text-fill: #E1B700;
-}
-
-.task-list-cell-id-red{
-	-fx-text-fill: #FF2E12;
-}
- */
- 
 .task-list-cell-box-red {
 	-fx-background-color: #FF4444; /* #FF2E12  */
 	-fx-effect: dropshadow( three-pass-box, rgba(0,0,0,0.4), 2, 0.7, 0, 0);
