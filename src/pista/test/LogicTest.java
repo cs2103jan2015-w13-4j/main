@@ -54,7 +54,17 @@ public class LogicTest {
 		populateList();
 		assertEquals("Test setting new priority",tLogic.runCommand("priority", new String[] {"1","3"}),Constants.LOGIC_SUCCESS_PRIORITY_TASK);
 		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getPriority(),"3");
-		
+		assertEquals("Test setting for task that is not in the list",tLogic.runCommand("priority", new String[] {"10","3"}),Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK);
+	}
+	
+	@Test
+	public void testMark(){
+		populateList();
+		assertEquals("Test marking a task as done",tLogic.runCommand("mark", new String[] {"1","done"}),Constants.LOGIC_SUCCESS_MARK_TASK);
+		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getIsDone(),true);
+		assertEquals("Test marking for task that is not in the list",tLogic.runCommand("mark", new String[] {"10","done"}),Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK);
+		assertEquals("Test marking a task as undone",tLogic.runCommand("mark", new String[] {"1","undone"}),Constants.LOGIC_SUCCESS_MARK_TASK);
+		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getIsDone(),false);
 	}
 	
 	public void populateList(){
