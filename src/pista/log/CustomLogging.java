@@ -1,3 +1,4 @@
+//@author A0125474E
 package pista.log;
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -23,15 +24,7 @@ public class CustomLogging {
 	
 	private boolean initLog(String className, String logFileName){
 		mLogger = Logger.getLogger(className);
-		try {
-			/*
-			if(fh != null){
-				fh.flush();
-				fh.close();
-				fh = null;
-			}
-			*/
-			
+		try {		
 			fh = new FileHandler(logFileName, true);
 			mLogger.addHandler(fh);
 			
@@ -49,8 +42,7 @@ public class CustomLogging {
 			e.printStackTrace();
 			return false;
 			
-		}
-		
+		}	
 	}
 	
 	public boolean closeLog(){
