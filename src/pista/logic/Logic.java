@@ -22,7 +22,8 @@ public class Logic {
 	private static ArrayList<ArrayList<Task>> undoList = new ArrayList<ArrayList<Task>>();
 	private static ArrayList<ArrayList<Task>> redoList = new ArrayList<ArrayList<Task>>();
 	private static String[] currentSortType = new String[1];
-
+	
+	//@author A0125474E
 	/**This constructor prevent creating a new instance of Logic 
 	 * **/
 	private Logic(){}
@@ -84,6 +85,7 @@ public class Logic {
 		return mStorage;
 	}
 
+	//@author A0111721Y
 	/**This method is the main controller of Logic class, from here all function can be called. UIController will access 
 	 * Logic mainly through this method. Return a String regarding the status of operation
 	 * Parameters:	command - the command that the user is calling
@@ -134,6 +136,7 @@ public class Logic {
 		return output;
 	}
 
+	//@author A0125474E
 	/**This method is to load the Storage 
 	 * return the String to indicate if the load is successful or fail
 	 * **/
@@ -157,6 +160,7 @@ public class Logic {
 		reorderID();
 	}
 	
+	//@author A0125474E
 	/**This method is to check the file before saving to the file
 	 * return false if the file is non-exist, empty or invalid
 	 * return true otherwise.
@@ -217,6 +221,7 @@ public class Logic {
 		return isCopied;
 	}
 	
+	//@author A0112522Y
 	/**This method is to process the information of a Task and construct a string
 	 * based on that. Return the string when it is done. This is for autocomplete during
 	 * editing.
@@ -253,6 +258,7 @@ public class Logic {
 		mStorage.getHistoryList().add(s);
 	}
 
+	//@author A0111884E
 	/**This method is to add a new Task to the program using the given information
 	 * Parameters:	tokens - an Array that contains information of the new Task
 	 * Return:		String - the status of the operation
@@ -309,6 +315,7 @@ public class Logic {
 		}
 	}
 
+	//@author A0112522Y
 	/**This method is to delete a specific Task or all of Tasks in the system
 	 * Parameters:	tokens - an Array that contains the ID of the Task need to be deleted or "a" means all
 	 * Return:		String - the status of the operation
@@ -387,6 +394,7 @@ public class Logic {
 		return Constants.LOGIC_SUCCESS_REDO;
 	}
 	
+	//@author A0111884E
 	/**This method is to mark a certain Task as done or undone
 	 * Parameters:	tokens - an Array that contains the ID of the Task and the status you want to mark it with
 	 * Return:		String - the status of the operation
@@ -484,12 +492,14 @@ public class Logic {
 		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
 	}
 	
+	//@author A0125474E
 	/**This method is to open help guide
 	 * **/
 	private String help(){
 		return Constants.LOGIC_SUCCESS_HELP;
 	}
 
+	//@author A0111884E
 	/**This method is to sort the listview in a certain sorting option
 	 * Parameters:	tokens - an Array contains type of sort the user want to sort the view by
 	 * Return:		message - the message to show the type of sort has been implemented
@@ -590,6 +600,7 @@ public class Logic {
 		return Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK;
 	}
 	
+	//@author A0125474E
 	/**This method is to set the file location that the data will be saved
 	 * Parameters:	tokens - an Array that contains the file location
 	 * Returns:		String - status of the operation
@@ -621,6 +632,7 @@ public class Logic {
 
 	}
 
+	//@author A0112522Y
 	/**This method is to find the Task index in the Storage, given its id
 	 * Parameters:	id - the ID of the Task 
 	 * Return:		Integer - the Task index in the Storage or -1 if not found
@@ -640,6 +652,7 @@ public class Logic {
 		mStorage.getTaskList().clear();
 	}
 
+	//@author A0111884E
 	/**This method is to add the Task to the Storage
 	 * Parameters:	task - the Task to add into the Storage
 	 * **/
@@ -863,6 +876,7 @@ public class Logic {
 		mStorage.save();
 	}
 	
+	//@author A0112522Y
 	/**This method is to check if a Task is in the Storage based on its ID
 	 * Parameters:	taskId - the ID of the Task
 	 * Return:		boolean - true if found, false otherwise
@@ -876,6 +890,7 @@ public class Logic {
 		return false;
 	}
 	
+	//@author A0111884E
 	/**This method is to convert a Date to its corresponding Millisecond value
 	 * Parameters:	date - the date value that need to be converted
 	 * 				time - the time value that need to be converted
@@ -901,6 +916,7 @@ public class Logic {
 		}
 	}
 	
+	//@author A0112522Y
 	/**This method is to return a Task in the Storage based on its id
 	 * Parameters:	id - the ID of the Task
 	 * Return:		Task - the Task that matched the ID , return null if not found
@@ -915,6 +931,7 @@ public class Logic {
 	}
 
 	//============= API FOR SETTING PAGE ======================
+	//@author A0125474E
 	/** This method is to validate if the File in the given path is existed
 	 * Parameters:	newFilePath - the file path of the file
 	 * Return:		boolean - true if the file exists, false otherwise
@@ -961,6 +978,7 @@ public class Logic {
 	}
 
 	//================================= UNDO & REDO =================================
+	//@author A0112522Y
 	/** This method is to save the current state of the Storage the undoLIst
 	 * Parameters:	currState - the current state of the Storage
 	 * **/
@@ -1032,6 +1050,7 @@ public class Logic {
 		temp.setTitle(a.getTitle());
 	}
 
+	//@author A0111884E
 	/** This method is to reorder the ID of the Task in the Storage to make the ID in a correct sequence based on
 	 * how the Task is being shown
 	 * **/
