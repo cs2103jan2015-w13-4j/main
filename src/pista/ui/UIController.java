@@ -165,8 +165,8 @@ public class UIController {
 		this.addControlsToTopArea(); //add controls to the top anchor top area
 		
 		Logic.initLogging(); //initialize Logic logging
-		Logic.initStorage();
-		Logic.initPreference();
+		Logic.initStorage(); //initialize Logic storage
+		Logic.initPreference(); //initialize Logic preference
 		
 		if(this.getPreferencePistaFlag() == Constants.PREFERENCE_FIRST_LAUNCH_VALUE){ //equals 0
 			this.initStartGuide(); //start the start guide
@@ -275,6 +275,13 @@ public class UIController {
 			return true;
 		}
 		return false;
+	}
+	
+	/**This method set the mainApp
+	 * Parameters:		app - mainApp which the parent stage for UIController
+	 * **/
+	public void setMainAppController(MainApp app){
+		this.mApp = app;
 	}
 	
 	/**This method will add controls which belongs to the top area
@@ -604,6 +611,13 @@ public class UIController {
 	private void setTextCommand(String command){
 		this.txtBoxCommand.setText(command);
 	}
+	
+	/**This method will append text in the text field command
+	 * with the cursor moving to the front
+	 * **/
+	private void setAppendTextCommand(String command){
+		this.txtBoxCommand.appendText(command);
+	}
 
 	/**This method will get text from text field command
 	 * Returns:			String - get text inside the text field command
@@ -709,7 +723,7 @@ public class UIController {
 			if( command.equalsIgnoreCase("edit")){
 				String processedString = mLogic.processTaskInfo(id);
 				String finalStr = processedString;
-				this.setTextCommand(finalStr);
+				this.setAppendTextCommand(finalStr);			
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
@@ -739,6 +753,8 @@ public class UIController {
 		}
 	}
 
+	/**This method is to handle the click for button start guide 
+	 * **/
 	private EventHandler<ActionEvent> onBtnStartGuideClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -746,20 +762,26 @@ public class UIController {
 		}
 	};
 
+	/**This method is to handle the click for button undo 
+	 * **/
 	private EventHandler<ActionEvent> onBtnUndoClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			executeCommand("undo");
+			executeCommand(Constants.UI_UNDO_COMMAND);
 		}
 	};
 
+	/**This method is to handle the click for button redo 
+	 * **/
 	private EventHandler<ActionEvent> onBtnRedoClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			executeCommand("redo");
+			executeCommand(Constants.UI_REDO_COMMAND);
 		}
 	};
 
+	/**This method is to handle the click for button help
+	 * **/
 	private EventHandler<ActionEvent> onBtnHelpClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -767,6 +789,8 @@ public class UIController {
 		}
 	};
 
+	/**This method is to handle the click for button refresh 
+	 * **/
 	private EventHandler<ActionEvent> onBtnRefreshClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
@@ -774,45 +798,265 @@ public class UIController {
 		}
 	};
 
-	//============================== POPOVER ADD NEW TASK ====================================
+	/**This method is to handle the click for button add new task 
+	 * **/
 	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			showPopOverAdd();
+			initPopOverAdd(); //initialize the Pop-over add
+			showPopOverAdd(); //open pop-over add
 		}
 	};
 
-	//============================== POPOVER Setting ======================================
+	/**This method is to handle the click for button setting
+	 * **/
 	private EventHandler<ActionEvent> onBtnSettingClick = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			showPopOverSetting();
+			initPopOverSetting();
+			showPopOverSetting(); //open pop-over setting
 		}
 	};
 
+	/**This method is to show the pop over add
+	 * **/
+	private void showPopOverAdd(){
+		this.mPopOverAdd.show(this.btnAddNewTask);
+	}
+	
+	/**This method is to show the pop over setting
+	 * **/
 	private void showPopOverSetting(){
+		this.mPopOverSetting.show(this.btnSetting); 
+	}
+
+	/**This method is to initialize the pop over add
+	 * **/
+	private void initPopOverAdd(){
+		VBox vBox = new VBox(Constants.UI_POP_OVER_VBOX_SPACING);
+		HBox hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING);
+
+		final TextArea txtAreaTaskTitle = new TextArea();
+		Label lblTitle = new Label(Constants.UI_POP_OVER_ADD_TITLE);
+		Label lblDateTitle = new Label(Constants.UI_POP_OVER_ADD_START_DATE_TITLE);
+		Label lblTimeTitle = new Label(Constants.UI_POP_OVER_ADD_START_TIME_TITLE);
+		Label lblTimeTip = new Label(Constants.UI_POP_OVER_ADD_TIME_TIP);
+		Label lblColon = new Label(Constants.UI_POP_OVER_ADD_COLON);
+		final DatePicker datePickerStartDate = new DatePicker(); //start date
+		final DatePicker datePickerEndDate = new DatePicker(); //start date
+		final TextField txtFieldStartHour = new TextField(); //end hour
+		final TextField txtFieldStartMin = new TextField(); //end min
+		final TextField txtFieldEndHour = new TextField(); //end hour
+		final TextField txtFieldEndMin = new TextField(); //end min
+
+		Button btnAdd = new Button(Constants.UI_POP_OVER_ADD_BUTTON_ADD);
+		final Label lblMessage = new Label();
+
+		if(this.mPopOverAdd != null){
+			if(this.mPopOverAdd.isShowing()){
+				this.mPopOverAdd.setAutoHide(true);
+				return;
+			}
+		}
+
+		datePickerStartDate.setPromptText(Constants.UI_POP_OVER_ADD_DATEPICKER_START_DATE_PROMPT_TEXT);
+		datePickerStartDate.setConverter(datePickerStringConverter);
+		datePickerEndDate.setPromptText(Constants.UI_POP_OVER_ADD_DATEPICKER_END_DATE_PROMPT_TEXT);
+		datePickerEndDate.setConverter(datePickerStringConverter);
+
+		setPopOverLabelTitle(lblTitle, Constants.UI_POP_OVER_ADD_WIDTH); //style the label title 
+		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels 
+		setPopOverTextFieldHourMinute(txtFieldStartHour, txtFieldStartMin);
+		setPopOverLabelTimeTip(lblTimeTip);
+		
+		txtAreaTaskTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TEXTAREA);
+		txtAreaTaskTitle.setPrefRowCount(3); //text area
+		txtAreaTaskTitle.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
+		txtAreaTaskTitle.setWrapText(true);
+		txtAreaTaskTitle.setPromptText("Type in a new task title");
+
+		vBox.getChildren().add(lblTitle); //add title
+		vBox.getChildren().add(txtAreaTaskTitle); //add task title
+
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //start date
+		hBox.getChildren().add(lblDateTitle); 
+		hBox.getChildren().add(datePickerStartDate);
+		vBox.getChildren().add(hBox);
+
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //start hour and minute		
+		hBox.getChildren().add(lblTimeTitle);  
+		hBox.getChildren().add(txtFieldStartHour);
+		hBox.getChildren().add(lblColon);
+		hBox.getChildren().add(txtFieldStartMin);
+		hBox.getChildren().add(lblTimeTip);
+		HBox.setMargin(lblTimeTip, new Insets(Constants.UI_POP_OVER_HBOX_MARGIN_TOP,
+												Constants.UI_POP_OVER_HBOX_MARGIN_RIGHT,
+												Constants.UI_POP_OVER_HBOX_MARGIN_BOTTOM,
+												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
+		vBox.getChildren().add(hBox);
+
+		lblDateTitle = new Label(Constants.UI_POP_OVER_ADD_END_DATE_TITLE);
+		lblTimeTitle = new Label(Constants.UI_POP_OVER_ADD_END_TIME_TITLE);
+		lblTimeTip = new Label(Constants.UI_POP_OVER_ADD_TIME_TIP);
+		lblColon = new Label(Constants.UI_POP_OVER_ADD_COLON);
+
+		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels again
+		setPopOverTextFieldHourMinute(txtFieldEndHour, txtFieldEndMin);
+		setPopOverLabelTimeTip(lblTimeTip);
+
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //end date 
+		hBox.getChildren().add(lblDateTitle); //start date
+		hBox.getChildren().add(datePickerEndDate);
+		vBox.getChildren().add(hBox);
+
+		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //end hour and minute
+		hBox.getChildren().add(lblTimeTitle);  
+		hBox.getChildren().add(txtFieldEndHour);
+		hBox.getChildren().add(lblColon);
+		hBox.getChildren().add(txtFieldEndMin);
+		hBox.getChildren().add(lblTimeTip);
+		HBox.setMargin(lblTimeTip, new Insets(Constants.UI_POP_OVER_HBOX_MARGIN_TOP,
+												Constants.UI_POP_OVER_HBOX_MARGIN_RIGHT,
+												Constants.UI_POP_OVER_HBOX_MARGIN_BOTTOM,
+												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
+		vBox.getChildren().add(hBox);
+		VBox.setMargin(btnAdd, new Insets(Constants.UI_POP_OVER_VBOX_MARGIN_TOP,
+											Constants.UI_POP_OVER_VBOX_MARGIN_RIGHT,
+											Constants.UI_POP_OVER_VBOX_MARGIN_BOTTOM,
+											Constants.UI_POP_OVER_VBOX_MARGIN_LEFT));
+		vBox.setPadding(new Insets(Constants.UI_POP_OVER_VBOX_PADDING_INSETS_TOP, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT, 
+					Constants.UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_LEFT)); //set Padding
+
+		vBox.getChildren().add(btnAdd); //add edit button
+		vBox.getChildren().add(lblMessage); //add message
+		vBox.setPrefSize(Constants.UI_POP_OVER_ADD_WIDTH, Constants.UI_POP_OVER_ADD_HEIGHT); //set size
+		vBox.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_CONTENT_AREA); //set style
+
+		this.mPopOverAdd = new PopOver(vBox);
+		this.mPopOverAdd.setHideOnEscape(true);
+		this.mPopOverAdd.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+		this.mPopOverAdd.setAutoFix(true);
+		this.mPopOverAdd.setAutoHide(true);
+		this.mPopOverAdd.setDetachable(false);
+
+		btnAdd.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
+		btnAdd.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
+		btnAdd.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				boolean isCreated = false;
+
+				LocalDate rawStartDate = datePickerStartDate.getValue();
+				LocalDate rawEndDate = datePickerEndDate.getValue();
+
+				String newTitle = txtAreaTaskTitle.getText(); //new title
+				String newStartDate = convertDateToStorageFormat(rawStartDate); //new start date
+				String newEndDate = convertDateToStorageFormat(rawEndDate); //new end date
+				String newStartHour = txtFieldStartHour.getText(); //new start hour
+				String newStartMinute = txtFieldStartMin.getText(); //new start minute
+				String newEndHour = txtFieldEndHour.getText(); //new end hour
+				String newEndMinute = txtFieldEndMin.getText(); //new end minute
+
+				String newStartTime = "";
+				String newEndTime = "";
+				String addCommand = Constants.UI_POP_OVER_ADD_TASK_COMMAND;
+
+				//e.g. addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
+				if(!isTitleValid(newTitle)){ //check title
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_TITLE_MESSAGE);
+					return;
+				}
+
+				if(!(isValidHour(newStartHour) && isValidMinute(newStartMinute))){ //check is valid for start hour and minute (accept empty)
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_START_TIME_MESSAGE);
+					return;
+				}
+
+				if(!(isValidHour(newEndHour) && isValidMinute(newEndMinute))){ //check is valid for end hour and minute (accept empty)
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_END_TIME_MESSAGE);
+					return;
+				}
+
+				//Check both start date and time
+				if((newStartDate.equals("") || newStartDate.isEmpty()) && 
+						(newStartHour.equals("") || newStartHour.isEmpty()) && 
+						(newStartMinute.equals("") || newStartMinute.isEmpty())){ //start date, time is empty
+	
+					addCommand = addCommand.replace("-[start_date]", "").replace("-[start_time]", ""); //remove start date and time
+					
+				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
+						((newStartHour.equals("") || newStartHour.isEmpty()) ||
+								(newStartMinute.equals("") || newStartMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
+
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_START_TIME_MESSAGE);
+					return;
+
+				}else{
+					newStartTime = newStartHour + Constants.UI_POP_OVER_ADD_COLON + newStartMinute;
+					addCommand = addCommand.replace("[start_date]", newStartDate).replace("[start_time]", newStartTime);
+				}
+
+				//Check both end date and time
+				if((newEndDate.equals("") || newEndDate.isEmpty()) && 
+						(newEndHour.equals("") || newEndHour.isEmpty()) && 
+						(newEndMinute.equals("") || newEndMinute.isEmpty())){
+					//start date, time is empty
+					//remove start date and time
+					addCommand = addCommand.replace("-[end_date]", "").replace("-[end_time]", "");
+				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
+						((newEndHour.equals("") || newEndHour.isEmpty()) ||
+								(newEndMinute.equals("") || newEndMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
+
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_END_TIME_MESSAGE);
+					return;
+
+				}else{
+					newEndTime = newEndHour + ":" + newEndMinute;
+					addCommand = addCommand.replace("[end_date]", newEndDate).replace("[end_time]", newEndTime);
+				}
+
+				addCommand = addCommand.replace("[task_title]", newTitle);	
+
+				isCreated = executeCommand(addCommand);	
+				if(isCreated){
+					setPopOverLabelMessageVisible(lblMessage, true, true); //show success message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_ADD_MESSAGE);
+					return;
+				}else{
+					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
+					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAIL_ADD_MESSAGE);
+					return;
+				}
+
+			}//end handle
+		});
+
+	}
+
+	/**This method is to initialize the pop over setting
+	 * **/	
+	private void initPopOverSetting(){
+		final Label lblSettingTitle = new Label(Constants.UI_POP_OVER_SETTING_TITLE);
+		final Label lblCurrentFileLocationTitle = new Label(Constants.UI_POP_OVER_SETTING_FILE_CURRENT_LOCATION_TITLE);
+		final Label lblCurrentFileLocation = new Label("");
+		final String currentFileDir = mPrefs.getPreferenceFileLocation(); //Get current file location from preference
+		VBox vBox = new VBox(Constants.UI_POP_OVER_VBOX_SPACING);
+
+		Button btnOpenFileBrowse = new Button(Constants.UI_POP_OVER_SETTING_BUTTON_OPEN_TITLE);
+		Button btnSaveAsFileBrowse = new Button(Constants.UI_POP_OVER_SETTING_BUTTON_SAVE_AS_TITLE);
+
 		if(this.mPopOverSetting != null){
 			if(this.mPopOverSetting.isShowing()){
 				this.mPopOverSetting.setAutoHide(true);
 				return;
 			}
 		}
-		this.mPopOverSetting = new PopOver();
-		this.initPopOverSetting();
-		this.mPopOverSetting.show(this.btnSetting); 
-
-	}
-
-	private void initPopOverSetting(){
-		final Label lblSettingTitle = new Label("Setting");
-		final Label lblCurrentFileLocationTitle = new Label("Current File Location");
-		final Label lblCurrentFileLocation = new Label("");
-		final String currentFileDir = mPrefs.getPreferenceFileLocation(); //Get current file location from preference
-		VBox vBox = new VBox(Constants.UI_POP_OVER_VBOX_SPACING);
-
-		Button btnOpenFileBrowse = new Button("Open");
-		Button btnSaveAsFileBrowse = new Button("Save As");
-
+		
 		if(!(currentFileDir.isEmpty() || currentFileDir == "")){
 			lblCurrentFileLocation.setText(mPrefs.getPreferenceFileLocation());
 		}
@@ -876,10 +1120,7 @@ public class UIController {
 			@Override
 			public void handle(ActionEvent event) {
 				mPopOverSetting.setAutoHide(false); //set hide to false when browse file
-
-				//Hide popver message
-				//setPopOverLabelMessageVisible(lblMessage, false, false);
-
+				
 				try{
 					String newPath = saveAsFile(currentFileDir);
 
@@ -939,217 +1180,8 @@ public class UIController {
 		this.mPopOverSetting.setDetachable(false);
 	}
 
-	//================== POP OVER ADD NEW TASK ========================
-	private void showPopOverAdd(){
-		VBox vBox = new VBox(Constants.UI_POP_OVER_VBOX_SPACING);
-		HBox hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING);
-
-		final TextArea txtAreaTaskTitle = new TextArea();
-		Label lblTitle = new Label("Add New Task");
-		Label lblDateTitle = new Label("Start Date:");
-		Label lblTimeTitle = new Label("Start Time:");
-		Label lblTimeTip = new Label("(24 hrs format)");
-		Label lblColon = new Label(":");
-		final DatePicker datePickerStartDate = new DatePicker(); //start date
-		final DatePicker datePickerEndDate = new DatePicker(); //start date
-		final TextField txtFieldStartHour = new TextField(); //end hour
-		final TextField txtFieldStartMin = new TextField(); //end min
-		final TextField txtFieldEndHour = new TextField(); //end hour
-		final TextField txtFieldEndMin = new TextField(); //end min
-
-		Button btnAdd = new Button("Add New Task");
-		final Label lblMessage = new Label();
-
-		if(this.mPopOverAdd != null){
-			if(this.mPopOverAdd.isShowing()){
-				this.mPopOverAdd.setAutoHide(true);
-				return;
-			}
-		}
-
-		datePickerStartDate.setPromptText("01 January 2015");
-		datePickerStartDate.setConverter(datePickerStringConverter);
-		datePickerEndDate.setPromptText("22 January 2015");
-		datePickerEndDate.setConverter(datePickerStringConverter);
-
-		setPopOverLabelTitle(lblTitle, Constants.UI_POP_OVER_ADD_WIDTH); //style the label title 
-		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels 
-		setPopOverTextFieldHourMinute(txtFieldStartHour, txtFieldStartMin);
-		setPopOverLabelTimeTip(lblTimeTip);
-		
-		txtAreaTaskTitle.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TEXTAREA);
-		txtAreaTaskTitle.setPrefRowCount(3); //text area
-		txtAreaTaskTitle.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
-		txtAreaTaskTitle.setWrapText(true);
-		txtAreaTaskTitle.setPromptText("Type in a new task title");
-
-		vBox.getChildren().add(lblTitle); //add title
-		vBox.getChildren().add(txtAreaTaskTitle); //add task title
-
-		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //start date
-		hBox.getChildren().add(lblDateTitle); 
-		hBox.getChildren().add(datePickerStartDate);
-		vBox.getChildren().add(hBox);
-
-		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //start hour and minute		
-		hBox.getChildren().add(lblTimeTitle);  
-		hBox.getChildren().add(txtFieldStartHour);
-		hBox.getChildren().add(lblColon);
-		hBox.getChildren().add(txtFieldStartMin);
-		hBox.getChildren().add(lblTimeTip);
-		HBox.setMargin(lblTimeTip, new Insets(Constants.UI_POP_OVER_HBOX_MARGIN_TOP,
-												Constants.UI_POP_OVER_HBOX_MARGIN_RIGHT,
-												Constants.UI_POP_OVER_HBOX_MARGIN_BOTTOM,
-												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
-		vBox.getChildren().add(hBox);
-
-		lblDateTitle = new Label("End Date:");
-		lblTimeTitle = new Label("End Time:");
-		lblTimeTip = new Label("(24 hrs format)");
-		lblColon = new Label(":");
-
-		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels again
-		setPopOverTextFieldHourMinute(txtFieldEndHour, txtFieldEndMin);
-		setPopOverLabelTimeTip(lblTimeTip);
-
-		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //end date 
-		hBox.getChildren().add(lblDateTitle); //start date
-		hBox.getChildren().add(datePickerEndDate);
-		vBox.getChildren().add(hBox);
-
-		hBox = new HBox(Constants.UI_POP_OVER_HBOX_SPACING); //end hour and minute
-		hBox.getChildren().add(lblTimeTitle);  
-		hBox.getChildren().add(txtFieldEndHour);
-		hBox.getChildren().add(lblColon);
-		hBox.getChildren().add(txtFieldEndMin);
-		hBox.getChildren().add(lblTimeTip);
-		HBox.setMargin(lblTimeTip, new Insets(Constants.UI_POP_OVER_HBOX_MARGIN_TOP,
-												Constants.UI_POP_OVER_HBOX_MARGIN_RIGHT,
-												Constants.UI_POP_OVER_HBOX_MARGIN_BOTTOM,
-												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
-		vBox.getChildren().add(hBox);
-		VBox.setMargin(btnAdd, new Insets(Constants.UI_POP_OVER_VBOX_MARGIN_TOP,
-											Constants.UI_POP_OVER_VBOX_MARGIN_RIGHT,
-											Constants.UI_POP_OVER_VBOX_MARGIN_BOTTOM,
-											Constants.UI_POP_OVER_VBOX_MARGIN_LEFT));
-		vBox.setPadding(new Insets(Constants.UI_POP_OVER_VBOX_PADDING_INSETS_TOP, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_RIGHT, 
-					Constants.UI_POP_OVER_VBOX_PADDING_INSETS_BOTTOM, Constants.UI_POP_OVER_VBOX_PADDING_INSETS_LEFT)); //set Padding
-
-		vBox.getChildren().add(btnAdd); //add edit button
-		vBox.getChildren().add(lblMessage); //add message
-		vBox.setPrefSize(Constants.UI_POP_OVER_ADD_WIDTH, Constants.UI_POP_OVER_ADD_HEIGHT); //set size
-		vBox.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_CONTENT_AREA); //set style
-
-		this.mPopOverAdd = new PopOver(vBox);
-		this.mPopOverAdd.setHideOnEscape(true);
-		this.mPopOverAdd.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
-		this.mPopOverAdd.setAutoFix(true);
-		this.mPopOverAdd.setAutoHide(true);
-		this.mPopOverAdd.setDetachable(false);
-		this.mPopOverAdd.show(this.btnAddNewTask);
-
-		btnAdd.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
-		btnAdd.setPrefWidth(Constants.UI_POP_OVER_ADD_WIDTH);
-		btnAdd.addEventFilter(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				boolean isCreated = false;
-
-				LocalDate rawStartDate = datePickerStartDate.getValue();
-				LocalDate rawEndDate = datePickerEndDate.getValue();
-
-				String newTitle = txtAreaTaskTitle.getText(); //new title
-				String newStartDate = convertDateToStorageFormat(rawStartDate); //new start date
-				String newEndDate = convertDateToStorageFormat(rawEndDate); //new end date
-				String newStartHour = txtFieldStartHour.getText(); //new start hour
-				String newStartMinute = txtFieldStartMin.getText(); //new start minute
-				String newEndHour = txtFieldEndHour.getText(); //new end hour
-				String newEndMinute = txtFieldEndMin.getText(); //new end minute
-
-				String newStartTime = "";
-				String newEndTime = "";
-				String addCommand = Constants.UI_POP_OVER_ADD_TASK_COMMAND;
-
-				//addTaskCommand = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
-
-				if(!isTitleValid(newTitle)){ //check title
-					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_TITLE_MESSAGE);
-					return;
-				}
-
-				if(!(isValidHour(newStartHour) && isValidMinute(newStartMinute))){ //check is valid for start hour and minute (accept empty)
-					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_START_TIME_MESSAGE);
-					return;
-				}
-
-				if(!(isValidHour(newEndHour) && isValidMinute(newEndMinute))){ //check is valid for end hour and minute (accept empty)
-					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_END_TIME_MESSAGE);
-					return;
-				}
-
-				//Check both start date and time
-				if((newStartDate.equals("") || newStartDate.isEmpty()) && 
-						(newStartHour.equals("") || newStartHour.isEmpty()) && 
-						(newStartMinute.equals("") || newStartMinute.isEmpty())){ //start date, time is empty
-	
-					addCommand = addCommand.replace("-[start_date]", "").replace("-[start_time]", ""); //remove start date and time
-					
-				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
-						((newStartHour.equals("") || newStartHour.isEmpty()) ||
-								(newStartMinute.equals("") || newStartMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
-
-					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_START_TIME_MESSAGE);
-					return;
-
-				}else{
-					newStartTime = newStartHour + ":" + newStartMinute;
-					addCommand = addCommand.replace("[start_date]", newStartDate).replace("[start_time]", newStartTime);
-				}
-
-				//Check both end date and time
-				if((newEndDate.equals("") || newEndDate.isEmpty()) && 
-						(newEndHour.equals("") || newEndHour.isEmpty()) && 
-						(newEndMinute.equals("") || newEndMinute.isEmpty())){
-					//start date, time is empty
-					//remove start date and time
-					addCommand = addCommand.replace("-[end_date]", "").replace("-[end_time]", "");
-				}else if(!(newStartDate.equals("") || newStartDate.isEmpty()) && 
-						((newEndHour.equals("") || newEndHour.isEmpty()) ||
-								(newEndMinute.equals("") || newEndMinute.isEmpty()))) { //date is not empty, but hour or minute is empty
-
-					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_INVALID_END_TIME_MESSAGE);
-					return;
-
-				}else{
-					newEndTime = newEndHour + ":" + newEndMinute;
-					addCommand = addCommand.replace("[end_date]", newEndDate).replace("[end_time]", newEndTime);
-				}
-
-				addCommand = addCommand.replace("[task_title]", newTitle);	
-				System.out.println(addCommand);
-
-				isCreated = executeCommand(addCommand);	
-				if(isCreated){
-					setPopOverLabelMessageVisible(lblMessage, true, true); //show success message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_SUCCESS_ADD_MESSAGE);
-					return;
-				}else{
-					setPopOverLabelMessageVisible(lblMessage, false, true); //show error message
-					setPopOverLabelMessageText(lblMessage, Constants.UI_POP_OVER_FAIL_ADD_MESSAGE);
-					return;
-				}
-
-			}//end handle
-		});
-
-	}
-
-
+	/**This method set individual pop over label title style
+	 * **/	
 	private void setPopOverLabelTitle(Label lbl, double width){
 		lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TITLE);
 		lbl.setPrefWidth(width);
@@ -1157,6 +1189,8 @@ public class UIController {
 		lbl.setAlignment(Pos.CENTER);
 	}
 
+	/**This method set individual pop over label date time style
+	 * **/	
 	private void setPopOverLabelDateTime(Label lblDate, Label lblTime, double width){
 		lblDate.setPrefWidth(width);
 		lblDate.setAlignment(Pos.CENTER_RIGHT);
@@ -1164,6 +1198,8 @@ public class UIController {
 		lblTime.setAlignment(Pos.CENTER_RIGHT);
 	}
 
+	/**This method set individual pop over text field hour and minute style
+	 * **/	
 	private void setPopOverTextFieldHourMinute(TextField txtHr, TextField txtMin){
 		txtHr.setPrefWidth(60.0);
 		txtHr.setPromptText("HH");
@@ -1171,10 +1207,14 @@ public class UIController {
 		txtMin.setPromptText("MM");
 	}
 
+	/**This method set individual pop over label time tip style
+	 * **/	
 	private void setPopOverLabelTimeTip(Label lbl){
 		lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TOOLTIP); //set tip style (after the minute input)
 	}
 
+	/**This method set individual pop over label message style
+	 * **/	
 	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
 		lbl.getStyleClass().removeAll(Constants.UI_CSS_POP_OVER_CORRECT_MESSAGE, Constants.UI_CSS_POP_OVER_ERROR_MESSAGE);
 		if(isValid){ //valid, green background
@@ -1185,26 +1225,33 @@ public class UIController {
 		lbl.setVisible(isVisible);
 	}
 
+	/**This method set individual pop over label text
+	 * **/	
 	private void setPopOverLabelText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
 
+	/**This method set individual pop over label message text
+	 * **/	
 	private void setPopOverLabelMessageText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
 
+	/**This method opens the window environment file browser
+	 * Only allow user to choose a XML file
+	 * **/	
 	private String openFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-				"XML files (*.xml)", "*.xml");
+					Constants.UI_POP_OVER_SETTING_FILE_EXTENSION_FILTER_1, Constants.UI_POP_OVER_SETTING_FILE_EXTENSION_FILTER_2);
 		fileChooser.getExtensionFilters().add(extFilter);
 		fileChooser.setInitialDirectory(new File(getUserDesktopDirectory())); //set init directory
 
 		File file = fileChooser.showOpenDialog(null);
 
 		if(file != null){
-			if (!file.getPath().endsWith(".xml")) {
-				file = new File(file.getPath() + ".xml");
+			if (!file.getPath().endsWith(Constants.XML_FILE_EXTENSION)) {
+				file = new File(file.getPath() + Constants.XML_FILE_EXTENSION);
 			}
 			return file.getPath();
 		}
@@ -1212,30 +1259,37 @@ public class UIController {
 		return oldPath;
 	}
 
+	/**This method opens the window environment file browser
+	 * Allow user to either specify a new file name or choose a file 
+	 * **/
 	private String saveAsFile(String oldPath){
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-				"XML files (*.xml)", "*.xml");
+				Constants.UI_POP_OVER_SETTING_FILE_EXTENSION_FILTER_1, Constants.UI_POP_OVER_SETTING_FILE_EXTENSION_FILTER_2);
 		fileChooser.getExtensionFilters().add(extFilter);
 		fileChooser.setInitialDirectory(new File(getUserDesktopDirectory())); //set init directory
 
 		File file = fileChooser.showSaveDialog(null);
 
 		if(file != null){
-			if (!file.getPath().endsWith(".xml")) {
-				file = new File(file.getPath() + ".xml");
+			if (!file.getPath().endsWith(Constants.XML_FILE_EXTENSION)) {
+				file = new File(file.getPath() + Constants.XML_FILE_EXTENSION);
 			}
 			return file.getPath();
 		}
 
 		return oldPath;
-
 	}
-
+	
+	/**This method get the default user desktop directory
+	 * **/
 	private String getUserDesktopDirectory(){
 		return Constants.SETTING_DEFAULT_FOLDER_PATH;
 	}	
 
+	/**This method get change the date format in datepicker
+	 * Returns:		
+	 * **/
 	private StringConverter<LocalDate> datePickerStringConverter = new StringConverter<LocalDate>() {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_DATEPICKER); //e.g. 18 January 2015
 		@Override 
@@ -1257,6 +1311,10 @@ public class UIController {
 		}
 	};
 
+	/**This method converts date to storage formatted date
+	 * Parameters:		rawDate - LocalDate which is not in storage format
+	 * Returns:			String - return storage date format d/M/yyyy
+	 * **/
 	private String convertDateToStorageFormat(LocalDate rawDate){ 
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_STORAGE); //e.g. 18/4/2015
 		if(rawDate == null){
@@ -1265,6 +1323,10 @@ public class UIController {
 		return dateFormatter.format(rawDate);
 	}
 
+	/**This method validate the title string 
+	 * Parameters:		title - string value
+	 * Returns:			boolean - true or false
+	 * **/
 	private boolean isTitleValid(String title){
 		if(title.isEmpty() || title.equals("")){ //don't accept empty
 			return false;
@@ -1272,6 +1334,10 @@ public class UIController {
 		return true;
 	}
 
+	/**This method validate the hour string 
+	 * Parameters:		hour - the hour value in string
+	 * Returns:			boolean - true or false
+	 * **/
 	private boolean isValidHour(String hour){
 		try{ //accept empty, means 0
 			if(convertStringToInteger(hour) < 0 || convertStringToInteger(hour) > 23){
@@ -1284,6 +1350,10 @@ public class UIController {
 		return true;
 	}
 
+	/**This method validate the minute string 
+	 * Parameters:		minute - the minute value in string
+	 * Returns:			boolean - true or false
+	 * **/
 	private boolean isValidMinute(String minute){
 		try{ //accept empty, means 0
 			if(convertStringToInteger(minute) < 0 || convertStringToInteger(minute) > 60){
@@ -1346,6 +1416,8 @@ public class UIController {
 		return taskDescription.split("\\s+");
 	}
 
+	/**This method will run the remainder
+	 * **/
 	private void runReminder(){
 		for (int i = 0; i < mLogic.getStorageList().size(); i++) {
 			Task extractedTask = mLogic.getStorageList().get(i);
@@ -1374,15 +1446,23 @@ public class UIController {
 		}
 	}
 
+	/**This method show the remainder notification
+	 * **/
 	private void showReminder(String title, String msg){
 		Notifications.create().title(title).text(msg).showWarning();	
 	}
 
+	/**This method play the alarm sound
+	 * Parameters:		url - valid alarm file path
+	 * **/
 	private void playAlarm(String url){
 		Media alarm = new Media (url);
 		startMediaPlayer(alarm);
 	}
 
+	/**This method start media player which run the 
+	 * Parameters:		m - string value
+	 * **/
 	private void startMediaPlayer(Media m){
 		if(m != null){
 			MediaPlayer mp = new MediaPlayer(m);
@@ -1390,9 +1470,4 @@ public class UIController {
 		}
 	}
 
-	public void setMainAppController(MainApp app){
-		this.mApp = app;
-	}
-
-
-}
+}//end class

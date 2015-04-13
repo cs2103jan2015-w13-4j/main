@@ -13,6 +13,8 @@ public class Constants {
 	public static final String PRODUCT_NAME = "Pista";
 	public static final String BUILD_PATH =  Paths.get("").toAbsolutePath().toString();
 	public static final String USER_DIRECTORY = System.getProperty("user.home") + "\\";
+	public static final String XML_FILE_EXTENSION = ".xml";
+	
 	
 	/*----- FXML file paths-----*/
 	public static final String MAIN_UI_LAYOUT_PATH = "ui/MainUI.fxml";
@@ -69,10 +71,30 @@ public class Constants {
 	public static final String UI_POP_OVER_SUCCESS_ADD_MESSAGE = "Added Successfully";
 	public static final String UI_POP_OVER_FAIL_ADD_MESSAGE = "Fail to add";
 	public static final String UI_POP_OVER_ADD_TASK_COMMAND = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
+	/*pop over setting*/
 	public static final double UI_POP_OVER_SETTING_WIDTH = 500.0;
 	public static final double UI_POP_OVER_SETTING_HEIGHT = 300.0;
+	public static final String UI_POP_OVER_SETTING_TITLE = "Setting";
+	public static final String UI_POP_OVER_SETTING_FILE_CURRENT_LOCATION_TITLE = "Current File Location";
+	public static final String UI_POP_OVER_SETTING_BUTTON_OPEN_TITLE = "Open";
+	public static final String UI_POP_OVER_SETTING_BUTTON_SAVE_AS_TITLE = "Save As";
+	public static final String UI_POP_OVER_SETTING_FILE_EXTENSION_FILTER_1 = "XML files (*.xml)";
+	public static final String UI_POP_OVER_SETTING_FILE_EXTENSION_FILTER_2 = "*.xml";
+	
+	/*pop over add new task*/
 	public static final double UI_POP_OVER_ADD_WIDTH = 400.0;
 	public static final double UI_POP_OVER_ADD_HEIGHT = 380.0;
+	public static final String UI_POP_OVER_ADD_TITLE = "Add New Task";
+	public static final String UI_POP_OVER_ADD_START_DATE_TITLE = "Start Date:";
+	public static final String UI_POP_OVER_ADD_END_DATE_TITLE = "End Date:";
+	public static final String UI_POP_OVER_ADD_START_TIME_TITLE = "Start Time:";
+	public static final String UI_POP_OVER_ADD_END_TIME_TITLE = "End Time:";
+	public static final String UI_POP_OVER_ADD_TIME_TIP = "(24 hrs format)";
+	public static final String UI_POP_OVER_ADD_COLON = ":";
+	public static final String UI_POP_OVER_ADD_BUTTON_ADD = "Add New Task";
+	public static final String UI_POP_OVER_ADD_DATEPICKER_START_DATE_PROMPT_TEXT = "06 October 2015";
+	public static final String UI_POP_OVER_ADD_DATEPICKER_END_DATE_PROMPT_TEXT = "23 November 2015";
+	
 	public static final double UI_POP_OVER_LABEL_MESSAGE_HEIGHT = 30.0;
 	public static final double UI_POP_OVER_LABEL_DATETIME_WIDTH = 80.0;
 	public static final double UI_POP_OVER_VBOX_SPACING = 8.0;
@@ -133,6 +155,10 @@ public class Constants {
 	/*----- Redo ----- */
 	public static final String UI_REDO_IMAGE_LINK = "images/redo.png";
 	public static final String UI_REDO_BUTTON_TITLE = "Redo";
+	public static final String UI_REDO_COMMAND = "redo";
+	
+	/*----- Undo ----- */
+	public static final String UI_UNDO_COMMAND = "undo";
 	
 	/*============================= End of UI =================================== */
 	
