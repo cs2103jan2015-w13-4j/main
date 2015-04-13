@@ -112,7 +112,6 @@ public class TaskListCell extends ListCell<Task> {
     private Label lblDateTime = new Label();
     private Button btnIsDone = new Button();
     private UIController mUIParent = null;
-    private VBox vBoxColor = new VBox(0);
     
     private Button btnAlarm = new Button();
     private Button btnPriority = new Button();
@@ -191,7 +190,10 @@ public class TaskListCell extends ListCell<Task> {
     }
     
     private void configureGrid() {
-        this.grid.setHgap(0);
+        final double ColMarkDonePercentWidth = 8.0;
+        
+    	
+    	this.grid.setHgap(0);
         this.grid.setVgap(0);
         this.grid.setPadding(new Insets(0, 0, 0, 0));
         this.grid.setMaxHeight(PREF_GRID_HEIGHT);
@@ -199,7 +201,7 @@ public class TaskListCell extends ListCell<Task> {
         this.grid.setPrefHeight(PREF_GRID_HEIGHT);
 
         ColumnConstraints colMarkDone = new ColumnConstraints(); //check box
-        colMarkDone.setPercentWidth(8); //3
+        colMarkDone.setPercentWidth(ColMarkDonePercentWidth); // mark done/undone
         colMarkDone.setHalignment(HPos.CENTER);
         
         ColumnConstraints colID = new ColumnConstraints(); //ID

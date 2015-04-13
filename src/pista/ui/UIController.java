@@ -724,11 +724,8 @@ public class UIController {
 			if( command.equalsIgnoreCase("edit")){
 				String processedString = mLogic.processTaskInfo(id);
 				String finalStr = processedString;
-<<<<<<< HEAD
+				
 				this.setAppendTextCommand(finalStr);			
-=======
-				this.setTextCommand(this.userInput + finalStr);
->>>>>>> origin/master
 			}
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
