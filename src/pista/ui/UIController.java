@@ -207,294 +207,6 @@ public class UIController {
 
 	}//end initialize
 
-	
-	private void addControlsToTopArea(){
-		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
-		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
-	}
-	
-	
-	private void initTimeClock(){
-		this.txtClock.getStyleClass().addAll(Constants.UI_CSS_TEXT_CLOCK);
-		this.txtClock.setTextAlignment(TextAlignment.RIGHT);
-
-		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-			new EventHandler<ActionEvent>(){
-				DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
-				@Override
-				public void handle(ActionEvent event) {
-					Calendar nowDate = Calendar.getInstance();
-					txtClock.setText(dateFormat.format(nowDate.getTime()));
-				}
-			}),
-		new KeyFrame(Duration.seconds(1))
-		);
-
-		mTimeLine.setCycleCount(Animation.INDEFINITE);
-		mTimeLine.play();
-	}
-
-	private void initReminder(){
-		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-			new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent event) {
-					runReminder();
-				}//end handle
-			}),
-		new KeyFrame(Duration.seconds(1))
-		);
-		aTimeLine.setCycleCount(Animation.INDEFINITE);
-		aTimeLine.play();
-	}
-
-	public boolean initMainParser(){
-		try{
-			//this.mParser = MainParser.getInstance();
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public boolean initStorage(){
-		try{
-			this.mStorage = Storage.getInstance();
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}		
-	}
-
-	public boolean initLogic(){
-		try{
-			this.mLogic = Logic.getInstance();
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	private boolean initPreferences(){
-		try{
-			this.mPrefs = CustomPreferences.getInstance();
-			this.mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public boolean initLogging(){
-		try{
-			this.mLog = CustomLogging.getInstance(Storage.class.getName());
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}		
-	}
-
-	private void initStartGuide(){
-		if(this.anchorPaneStartGuide == null){
-			this.anchorPaneStartGuide = new AnchorPane();
-		}
-
-		this.anchorPaneStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_PANE);
-		this.anchorPaneStartGuide.setPrefWidth(Constants.UI_START_GUIDE_WIDTH);
-		this.anchorPaneStartGuide.setPrefHeight(Constants.UI_START_GUIDE_HEIGHT);
-
-		btnOkStartGuide = new Button(Constants.UI_START_GUIDE_BUTTON_OK_TITLE);
-		btnOkStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_BUTTON);
-		btnOkStartGuide.setPrefSize(Constants.UI_START_GUIDE_BUTTON_OK_WIDTH, Constants.UI_START_GUIDE_BUTTON_OK_HEIGHT);
-		btnOkStartGuide.addEventFilter(ActionEvent.ACTION, onBtnStartGuideClick);
-
-		this.anchorPaneStartGuide.getChildren().add(btnOkStartGuide);
-		AnchorPane.setRightAnchor(btnOkStartGuide, Constants.UI_START_GUIDE_BUTTON_OK_ANCHOR_RIGHT);
-		AnchorPane.setTopAnchor(btnOkStartGuide, Constants.UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP);
-
-		this.mStackPane.setPadding(new Insets(0,0,0,0));
-		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
-	}
-
-	private void hideStartGuide(){
-		this.mStackPane.getChildren().removeAll(this.anchorPaneStartGuide);
-	}
-
-	private void initButtonRedo(){
-		ImageView img = new ImageView(new Image(Constants.UI_REDO_IMAGE_LINK));
-		img.setPreserveRatio(true);
-		img.setFitHeight(Constants.UI_IMG_INSIDE_BUTTON_WIDTH);
-		img.setFitWidth(Constants.UI_IMG_INSIDE_BUTTON_HEIGHT);
-
-		if(this.btnRedo == null){
-			this.btnRedo = new Button(Constants.UI_REDO_BUTTON_TITLE); //
-		}
-
-		setButtonToolTip(this.btnRedo, Constants.UI_TOOLTIP_UNDO);
-		this.btnRedo.setTextAlignment(TextAlignment.RIGHT);
-		this.btnRedo.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_REDO);
-		this.btnRedo.setPrefWidth(Constants.UI_BUTTON_IMAGE_TOP_WIDTH);
-		this.btnRedo.setPrefHeight(Constants.UI_BUTTON_TOP_HEIGHT);
-		this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnRedoClick); //set click method listener
-	}
-
-	private void initButtonUndo(){
-		if(this.btnUndo == null){
-			this.btnUndo = new Button("Undo");
-		}
-
-		this.setButtonToolTip(this.btnUndo, Constants.UI_TOOLTIP_REDO);
-		this.btnUndo.setTextAlignment(TextAlignment.RIGHT);
-		this.btnUndo.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_UNDO);
-		this.btnUndo.setPrefWidth(Constants.UI_BUTTON_IMAGE_TOP_WIDTH);
-		this.btnUndo.setPrefHeight(Constants.UI_BUTTON_TOP_HEIGHT);
-		this.btnUndo.addEventFilter(ActionEvent.ACTION, this.onBtnUndoClick); //set click method listener
-	}
-
-	private void initButtonSetting(){
-		if(this.btnSetting == null){
-			this.btnSetting = new Button();
-		}
-
-		this.setButtonToolTip(this.btnSetting, Constants.UI_TOOLTIP_SETTING);
-		this.btnSetting.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_SETTING);
-		this.btnSetting.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
-		this.btnSetting.addEventFilter(ActionEvent.ACTION, this.onBtnSettingClick); //set click method listener
-	}
-
-	private void initButtonAddNewTask(){
-		if(this.btnAddNewTask == null){
-			this.btnAddNewTask = new Button();
-		}
-
-		setButtonToolTip(this.btnAddNewTask, Constants.UI_TOOLTIP_ADD);
-		this.btnAddNewTask.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_ADD);
-		this.btnAddNewTask.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
-		this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, this.onBtnAddNewTaskClick); //set click method listener
-	}
-
-	private void initButtonHelp(){
-		if(this.btnHelp == null){
-			this.btnHelp = new Button();
-		}
-
-		setButtonToolTip(this.btnHelp, Constants.UI_TOOLTIP_HELP);
-		this.btnHelp.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_HELP);
-		this.btnHelp.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
-		this.btnHelp.addEventFilter(ActionEvent.ACTION, this.onBtnHelpClick); //set click method listener
-	}
-
-	private void initButtonRefresh(){
-		if(this.btnRefresh == null){
-			this.btnRefresh = new Button();
-		}
-
-		setButtonToolTip(this.btnRefresh, Constants.UI_TOOLTIP_REFRESH);
-		this.btnRefresh.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_REFRESH);
-		this.btnRefresh.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
-		this.btnRefresh.addEventFilter(ActionEvent.ACTION, this.onBtnRefreshClick); //set click method listener
-	}
-
-	/**
-	 * 
-	 * @param mNode
-	 * @param anchorTop
-	 * @param anchorRight
-	 * @param anchorBottom
-	 * @param anchorLeft
-	 */
-	
-	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
-		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
-		AnchorPane.setTopAnchor(mNode, anchorTop);
-		AnchorPane.setBottomAnchor(mNode, anchorBottom);
-
-		if(!(anchorRight == 0.0)){
-			AnchorPane.setRightAnchor(mNode, anchorRight);
-		}
-
-		if(!(anchorLeft == 0.0)){
-			AnchorPane.setLeftAnchor(mNode, anchorLeft);
-		}
-	}
-
-	private String getNewLaunchFileLocation(){
-		String defaultPath = Constants.USER_DIRECTORY + "" + Constants.SETTING_SAVE_AS_DEFAULT_XML_FILE_NAME;
-		return defaultPath;
-	}
-	
-	private int getPreferencePistaFlag(){
-		try{
-			int flag = 0; //either 1 or 0
-			flag = this.mPrefs.getPreferencePistaFlag();
-			return flag;
-		}catch(Exception e){
-			e.printStackTrace();
-			return Constants.PREFERENCE_ERROR_LAUNCH_VALUE;
-		}
-	}
-
-	private String getPreferenceFilePath(){ //get file path from preference
-		try{
-			String filePath = "";
-			filePath = this.mPrefs.getPreferenceFileLocation();
-			return filePath;
-		}catch(Exception e){
-			e.printStackTrace();
-			return "";
-		}
-	}
-
-	private boolean setPreferencePistaFlag(int flag){
-		try{
-			this.mPrefs.setPreferencePistaFlag(flag);
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	private boolean setPreferenceFilePath(String newPath){ //set new file path from preference
-		try{
-			this.mPrefs.setPreferenceFileLocation(newPath);
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public boolean setTextStatus(String msg){
-		if(this.txtStatus != null){
-			this.txtStatus.setText(msg);
-			return true;
-		}
-		return false;
-	}
-
-	private boolean setButtonToolTip(Button btn, String msg){
-		try{
-			if(btn != null){
-				btn.setTooltip(new Tooltip(msg));
-				return true;
-			}
-			return false;
-		}catch(Exception e){
-			e.printStackTrace();
-			return false;
-		}		
-	}
-
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
@@ -502,6 +214,10 @@ public class UIController {
 		executeCommand(userInput);
 	}
 
+	/**This method will execute the command based on the command that is given
+	 * Parameters: 		userInput - the command that is entered by the user
+	 * Returns:			boolean - true or false
+	 * **/
 	public boolean executeCommand(String userInput){
 		String[] tokens = null;
 		String parserOutput = "";
@@ -548,21 +264,363 @@ public class UIController {
 
 		return true;
 	}
+	
+	/**This method will set text in the text field status
+	 * Parameters:		msg - message that will be showing
+	 * Returns:			boolean - true or false
+	 * **/
+	public boolean setTextStatus(String msg){
+		if(this.txtStatus != null){
+			this.txtStatus.setText(msg);
+			return true;
+		}
+		return false;
+	}
+	
+	/**This method will add controls which belongs to the top area
+	 * **/
+	private void addControlsToTopArea(){
+		this.addControlsToAnchorPaneAreaTop(this.btnSetting, 0.0, 5.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnAddNewTask, 0.0, 45.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRefresh, 0.0, 85.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnHelp, 0.0, 125.0, 0.0, 0.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnUndo, 0.0, 0.0, 0.0, 5.0);
+		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
+	}
+	
+	/**This method will initialize and start the clock at the bottom right corner of Pista 
+	 * **/
+	private void initTimeClock(){
+		this.txtClock.getStyleClass().addAll(Constants.UI_CSS_TEXT_CLOCK);
+		this.txtClock.setTextAlignment(TextAlignment.RIGHT);
 
-	private boolean setTextCommand(String command){
-		this.txtBoxCommand.setText(command);
-		return true;
+		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+			new EventHandler<ActionEvent>(){
+				DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
+				@Override
+				public void handle(ActionEvent event) {
+					Calendar nowDate = Calendar.getInstance();
+					txtClock.setText(dateFormat.format(nowDate.getTime()));
+				}
+			}),
+		new KeyFrame(Duration.seconds(1))
+		);
+
+		mTimeLine.setCycleCount(Animation.INDEFINITE);
+		mTimeLine.play();
 	}
 
+	/**This method will initialize and start reminder
+	 * **/
+	private void initReminder(){
+		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+			new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					runReminder();
+				}//end handle
+			}),
+		new KeyFrame(Duration.seconds(1))
+		);
+		aTimeLine.setCycleCount(Animation.INDEFINITE);
+		aTimeLine.play();
+	}
+
+	
+	private boolean initMainParser(){
+		try{
+			//this.mParser = MainParser.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private boolean initStorage(){
+		try{
+			this.mStorage = Storage.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+
+	private boolean initLogic(){
+		try{
+			this.mLogic = Logic.getInstance();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private boolean initPreferences(){
+		try{
+			this.mPrefs = CustomPreferences.getInstance();
+			this.mPrefs.initPreference(Constants.PREFERENCE_URL_PATH);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private boolean initLogging(){
+		try{
+			this.mLog = CustomLogging.getInstance(Storage.class.getName());
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+
+	/**This method will initialize the start/quick guide,
+	 * styling and adding control to the start guide
+	 * **/
+	private void initStartGuide(){
+		if(this.anchorPaneStartGuide == null){
+			this.anchorPaneStartGuide = new AnchorPane();
+		}
+
+		this.anchorPaneStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_PANE);
+		this.anchorPaneStartGuide.setPrefWidth(Constants.UI_START_GUIDE_WIDTH);
+		this.anchorPaneStartGuide.setPrefHeight(Constants.UI_START_GUIDE_HEIGHT);
+
+		btnOkStartGuide = new Button(Constants.UI_START_GUIDE_BUTTON_OK_TITLE);
+		btnOkStartGuide.getStyleClass().addAll(Constants.UI_CSS_START_GUIDE_BUTTON);
+		btnOkStartGuide.setPrefSize(Constants.UI_START_GUIDE_BUTTON_OK_WIDTH, Constants.UI_START_GUIDE_BUTTON_OK_HEIGHT);
+		btnOkStartGuide.addEventFilter(ActionEvent.ACTION, onBtnStartGuideClick);
+
+		this.anchorPaneStartGuide.getChildren().add(btnOkStartGuide);
+		AnchorPane.setRightAnchor(btnOkStartGuide, Constants.UI_START_GUIDE_BUTTON_OK_ANCHOR_RIGHT);
+		AnchorPane.setTopAnchor(btnOkStartGuide, Constants.UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP);
+
+		this.mStackPane.setPadding(new Insets(0,0,0,0));
+		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
+	}
+
+	/**This method will hide the start guide
+	 * **/
+	private void hideStartGuide(){
+		this.mStackPane.getChildren().removeAll(this.anchorPaneStartGuide);
+	}
+
+	/**This method will initialize the button redo which involves styling
+	 * **/
+	private void initButtonRedo(){
+		ImageView img = new ImageView(new Image(Constants.UI_REDO_IMAGE_LINK));
+		img.setPreserveRatio(true);
+		img.setFitHeight(Constants.UI_IMG_INSIDE_BUTTON_WIDTH);
+		img.setFitWidth(Constants.UI_IMG_INSIDE_BUTTON_HEIGHT);
+
+		if(this.btnRedo == null){
+			this.btnRedo = new Button(Constants.UI_REDO_BUTTON_TITLE); //
+		}
+
+		setButtonToolTip(this.btnRedo, Constants.UI_TOOLTIP_UNDO);
+		this.btnRedo.setTextAlignment(TextAlignment.RIGHT);
+		this.btnRedo.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_REDO);
+		this.btnRedo.setPrefWidth(Constants.UI_BUTTON_IMAGE_TOP_WIDTH);
+		this.btnRedo.setPrefHeight(Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnRedoClick); //set click method listener
+	}
+
+	/**This method will initialize the button undo which involves styling
+	 * **/
+	private void initButtonUndo(){
+		if(this.btnUndo == null){
+			this.btnUndo = new Button("Undo");
+		}
+
+		this.setButtonToolTip(this.btnUndo, Constants.UI_TOOLTIP_REDO);
+		this.btnUndo.setTextAlignment(TextAlignment.RIGHT);
+		this.btnUndo.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_UNDO);
+		this.btnUndo.setPrefWidth(Constants.UI_BUTTON_IMAGE_TOP_WIDTH);
+		this.btnUndo.setPrefHeight(Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnUndo.addEventFilter(ActionEvent.ACTION, this.onBtnUndoClick); //set click method listener
+	}
+
+	/**This method will initialize the button setting which involves styling
+	 * **/
+	private void initButtonSetting(){
+		if(this.btnSetting == null){
+			this.btnSetting = new Button();
+		}
+
+		this.setButtonToolTip(this.btnSetting, Constants.UI_TOOLTIP_SETTING);
+		this.btnSetting.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_SETTING);
+		this.btnSetting.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnSetting.addEventFilter(ActionEvent.ACTION, this.onBtnSettingClick); //set click method listener
+	}
+
+	/**This method will initialize the button add new task which involves styling
+	 * **/
+	private void initButtonAddNewTask(){
+		if(this.btnAddNewTask == null){
+			this.btnAddNewTask = new Button();
+		}
+
+		setButtonToolTip(this.btnAddNewTask, Constants.UI_TOOLTIP_ADD);
+		this.btnAddNewTask.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_ADD);
+		this.btnAddNewTask.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, this.onBtnAddNewTaskClick); //set click method listener
+	}
+
+	/**This method will initialize the button help which involves styling
+	 * **/
+	private void initButtonHelp(){
+		if(this.btnHelp == null){
+			this.btnHelp = new Button();
+		}
+
+		setButtonToolTip(this.btnHelp, Constants.UI_TOOLTIP_HELP);
+		this.btnHelp.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_HELP);
+		this.btnHelp.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnHelp.addEventFilter(ActionEvent.ACTION, this.onBtnHelpClick); //set click method listener
+	}
+
+	/**This method will initialize the button refresh which involves styling
+	 * **/
+	private void initButtonRefresh(){
+		if(this.btnRefresh == null){
+			this.btnRefresh = new Button();
+		}
+
+		setButtonToolTip(this.btnRefresh, Constants.UI_TOOLTIP_REFRESH);
+		this.btnRefresh.getStyleClass().addAll(Constants.UI_CSS_BUTTON_IMAGE, Constants.UI_CSS_BUTTON_REFRESH);
+		this.btnRefresh.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
+		this.btnRefresh.addEventFilter(ActionEvent.ACTION, this.onBtnRefreshClick); //set click method listener
+	}
+
+	/**This method will add controls(e.g. undo, redo, help, refresh, add, setting) to the top area 
+	 * Parameter	mNode - refers to single control (e.g. button)
+	 * 				anchorTop - double value
+	 * 				anchorRight - double value
+	 * 				anchorBottom - double value
+	 * 				anchorLeft - double value
+	 * **/
+	private void addControlsToAnchorPaneAreaTop(Node mNode, double anchorTop, double anchorRight, double anchorBottom, double anchorLeft){
+		this.anchorPaneButtonAreaTop.getChildren().add(mNode);
+		AnchorPane.setTopAnchor(mNode, anchorTop);
+		AnchorPane.setBottomAnchor(mNode, anchorBottom);
+
+		if(!(anchorRight == 0.0)){
+			AnchorPane.setRightAnchor(mNode, anchorRight);
+		}
+
+		if(!(anchorLeft == 0.0)){
+			AnchorPane.setLeftAnchor(mNode, anchorLeft);
+		}
+	}
+
+	/**This method will populate the first launch file location
+	 * Usually is the default file path when Pista first launch on a desktop
+	 * **/
+	private String getNewLaunchFileLocation(){
+		String defaultPath = Constants.USER_DIRECTORY + "" + Constants.SETTING_SAVE_AS_DEFAULT_XML_FILE_NAME;
+		return defaultPath;
+	}
+	
+	/**This method will get the launch flag from preferences
+	 * Usually from local user registry
+	 * **/
+	private int getPreferencePistaFlag(){
+		try{
+			int flag = 0; //either 1 or 0
+			flag = this.mPrefs.getPreferencePistaFlag();
+			return flag;
+		}catch(Exception e){
+			e.printStackTrace();
+			return Constants.PREFERENCE_ERROR_LAUNCH_VALUE;
+		}
+	}
+
+	/**This method will get the file location from preferences
+	 * Usually from local user registry
+	 * **/
+	private String getPreferenceFilePath(){ //get file path from preference
+		try{
+			String filePath = "";
+			filePath = this.mPrefs.getPreferenceFileLocation();
+			return filePath;
+		}catch(Exception e){
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	/**This method will set the launch flag from preferences
+	 * Usually from local user registry
+	 * **/
+	private boolean setPreferencePistaFlag(int flag){
+		try{
+			this.mPrefs.setPreferencePistaFlag(flag);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**This method will set the file location from preferences
+	 * Usually from local user registry
+	 * **/
+	private boolean setPreferenceFilePath(String newPath){ //set new file path from preference
+		try{
+			this.mPrefs.setPreferenceFileLocation(newPath);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	
+
+	/**This method will set text in the tooltip for buttons
+	 * Parameters:		btn - a button that will be adding a tooltip
+	 * 					msg - message that will be showing
+	 * Returns:			boolean - true or false
+	 * **/
+	private boolean setButtonToolTip(Button btn, String msg){
+		try{
+			if(btn != null){
+				btn.setTooltip(new Tooltip(msg));
+				return true;
+			}
+			return false;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}		
+	}
+
+	/**This method will set text in the text field command
+	 * **/
+	private void setTextCommand(String command){
+		this.txtBoxCommand.setText(command);
+	}
+
+	/**This method will get text from text field command
+	 * Returns:			String - get text inside the text field command
+	 * **/
 	private String getTextCommand(){
 		return this.txtBoxCommand.getText();
 	}
 
-	private boolean clearTextCommand(){
+	/**This method will set text in the text field command
+	 * **/
+	private void clearTextCommand(){
 		this.txtBoxCommand.clear();
-		return true;
 	}
 
+	/**This method will initialize the task list view which populate all the task from XML 
+	 * Returns:			boolean - true or false
+	 * **/
 	public boolean initTaskListInListView(){
 		try{
 			ArrayList<Task> storageList = null;
@@ -603,33 +661,46 @@ public class UIController {
 
 	}//end initTaskListInListView
 
+	/**This method will create and show the help guide
+	 * Returns:			boolean - true or false
+	 * **/
 	public boolean showHelp(){
-		if(this.stageHelp == null){
-			this.stageHelp = new Stage();
+		try{
+			if(this.stageHelp == null){
+				this.stageHelp = new Stage();
+			}
+	
+			double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
+			double startY = this.mApp.getPrimaryStage().getY();
+	
+			this.stageHelp.setTitle(Constants.HELP_TITLE);
+			this.stageHelp.initStyle(StageStyle.UTILITY);
+			this.stageHelp.initModality(Modality.NONE);
+			this.stageHelp.setResizable(false);
+			this.stageHelp.setX(startX);
+			this.stageHelp.setY(startY);
+	
+			Scene scene = new Scene(new Browser(), 500, 700, Color.web("#666970"));
+			this.stageHelp.setScene(scene);    
+			this.stageHelp.show();
+	
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
 		}
-
-		double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
-		double startY = this.mApp.getPrimaryStage().getY();
-
-		this.stageHelp.setTitle(Constants.HELP_TITLE);
-		this.stageHelp.initStyle(StageStyle.UTILITY);
-		this.stageHelp.initModality(Modality.NONE);
-		this.stageHelp.setResizable(false);
-		this.stageHelp.setX(startX);
-		this.stageHelp.setY(startY);
-
-		Scene scene = new Scene(new Browser(), 500, 700, Color.web("#666970"));
-		this.stageHelp.setScene(scene);    
-		this.stageHelp.show();
-
-		return true;
 	}
 
+	/**This method will return the help guide stages
+	 * Returns:		Stage - get the help guide stage
+	 * **/
 	public Stage getHelpStage(){
 		return this.stageHelp;
 	}
 
-	public void onCtrlSpacePressed(){
+	/**This method is to handle the auto-complete command when user press Ctrl+Space
+	 * **/
+	private void onCtrlSpacePressed(){
 		this.userInput = this.getTextCommand();
 		String[] temp = this.userInput.split(" ",2);
 		String command = temp[0];
@@ -645,7 +716,9 @@ public class UIController {
 		}
 	}
 
-	public void onUpPressed(){
+	/**This method is to toggle the history commands when user press Up
+	 * **/
+	private void onUpPressed(){
 		if(Constants.HISTORY_INDEX > 0){
 			Constants.HISTORY_INDEX -= 1;
 			this.setTextCommand(this.mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
@@ -654,7 +727,9 @@ public class UIController {
 		}
 	}
 
-	public void onDownPressed(){
+	/**This method is to toggle the history commands when user press Down
+	 * **/
+	private void onDownPressed(){
 		if(Constants.HISTORY_INDEX < this.mStorage.getHistoryList().size() - 1){
 			Constants.HISTORY_INDEX += 1;
 			this.setTextCommand(this.mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
