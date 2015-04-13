@@ -76,6 +76,13 @@ public class Logic {
 			return false;
 		}		
 	}
+	
+	/**This method is to return the instance of storage that is belong 
+	 * to the Logic. Created mainly for testing purposes.
+	 * **/
+	public Storage getStorage(){
+		return mStorage;
+	}
 
 	/**This method is the main controller of Logic class, from here all function can be called. UIController will access 
 	 * Logic mainly through this method. Return a String regarding the status of operation
