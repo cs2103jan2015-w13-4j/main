@@ -115,7 +115,7 @@ public class Logic {
 			output = help();
 			break;
 		case Constants.VALUE_SORT:
-			output = list(tokens);
+			output = sort(tokens);
 			break;
 		case Constants.VALUE_REMINDER:
 			output = reminder(tokens);
@@ -153,7 +153,7 @@ public class Logic {
 	}
 	
 	public void reorderStorageList(){
-		list(currentSortType);
+		sort(currentSortType);
 		reorderID();
 	}
 	
@@ -295,7 +295,7 @@ public class Logic {
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
 				extractedTask=editDeadlineTask(extractedTask, tokens);
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-				extractedTask=editTimedTask(extractedTask, tokens);
+				extractedTask=editEventTask(extractedTask, tokens);
 			}
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
@@ -494,7 +494,7 @@ public class Logic {
 	 * Parameters:	tokens - an Array contains type of sort the user want to sort the view by
 	 * Return:		message - the message to show the type of sort has been implemented
 	 * **/
-	private String list(String[] tokens){ 
+	private String sort(String[] tokens){ 
 		String sortType=tokens[0];
 		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
 		/*if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
@@ -704,7 +704,7 @@ public class Logic {
 	 * 				tokens - the new information to be updated
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private Task editTimedTask(Task extractedTask, String[] tokens) {
+	private Task editEventTask(Task extractedTask, String[] tokens) {
 		Long remindMS = extractedTask.getReminder();
 		Long endMS = extractedTask.getEndMilliseconds();
 		Long differenceReminer = endMS - remindMS;
