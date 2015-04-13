@@ -135,7 +135,19 @@ public class UIController {
 			initStartGuide();
 		}	
 	}
-
+	
+	public UIController(){
+		this.initReminder();
+		this.initMainParser();
+		this.initStorage();
+		this.initLogic();
+		this.mLogic.initStorage();
+		this.mLogic.initLogging();
+		this.mLogic.initPreference();
+		this.initPreferences(); //initialize preferences
+		this.initLogging(); //initialize logging
+	}
+	
 	//@author A0125474E
 	@FXML
 	public void initialize() {
@@ -245,6 +257,51 @@ public class UIController {
 		mLogic.storeToHistory(userInput);
 
 		return true;
+	}
+	
+	/** This method is created for testing purpose only
+	 * It will not be used in the main program
+	 * **/
+	public String executeCommandForTest(String userInput){
+		String[] tokens = null;
+		String parserOutput = "";
+		String logicOutput = "";
+		String command = "";
+
+		this.mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
+		MainParser mp = MainParser.validateInput(userInput);
+		parserOutput = mp.getMessage();
+		if(!parserOutput.equals(Constants.PARSER_MESSAGE_VALID_INPUT)){
+			//display error
+			this.mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
+			return parserOutput; //fail
+		}
+
+		this.mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
+
+		command = mp.getCommand();
+
+		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
+			showHelp();
+			return Constants.LOGIC_SUCCESS_HELP;
+		}
+
+		tokens = mp.getTokens();
+
+		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
+			this.setSearchKeyword(tokens);
+			this.initTaskListInListView();
+			this.resetSearchKeyword();
+			return Constants.LOGIC_SUCCESS_SEARCH + searchKeyword;
+		}
+
+		logicOutput = mLogic.runCommand(command, tokens);
+
+		this.initTaskListInListView();
+
+		mLogic.storeToHistory(userInput);
+
+		return logicOutput;
 	}
 	
 	//@author A0125474E
