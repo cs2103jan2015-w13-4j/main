@@ -229,6 +229,7 @@ public class MainParser {
 		}
 
 		assert false:"Tokens number in add function are "+tokens.length +" allowed length are 1,3,5";
+		mp.setMessage(Constants.PARSER_MESSAGE_ADD_EMPTY_TOKENS);
 		return false;
 	}
 	
@@ -625,6 +626,8 @@ public class MainParser {
 					+"/"+ temp [Constants.INDEX_TWO];
 		}else if (StringUtils.countMatches(tokens[dateIndex], "/") == Constants.LENGTH_ONE){
 			requiredNattyInputDateFormat = temp[Constants.INDEX_ONE] +"/"+ temp [Constants.INDEX_ZERO];
+		}else {
+			assert StringUtils.countMatches(tokens[dateIndex], "/") > 3 ;
 		}
 		return requiredNattyInputDateFormat;
 	}
@@ -736,8 +739,10 @@ public class MainParser {
 					if(extractedValue < 10 && extractedValue > 0){
 						sb.append("0");
 						sb.append(Integer.valueOf(temp[i])+"/");
-					}else {
+					}else if(extractedValue >= 10 && extractedValue <=31){
 						sb.append(Integer.valueOf(extractedValue)+"/");
+					}else{
+						assert extractedValue > 32;
 					}
 				}
 				sb.append(temp[temp.length-1]);;

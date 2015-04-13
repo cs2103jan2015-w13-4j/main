@@ -340,9 +340,8 @@ public class Logic {
 			try{
 				if( index > -1){
 					assert index < mStorage.getTaskList().size() : "Index out of bound";
-					Task temp = getTaskByIndex(index);
 					mStorage.getTaskList().remove(index);
-					mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
+					mLog.logInfo(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK);
 					return Constants.LOGIC_SUCCESS_DELETE_TASK;
 				}else{
 					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
@@ -418,8 +417,10 @@ public class Logic {
 			}
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
+			mLog.logInfo(Constants.LOGIC_SUCCESS_MARK_TASK);
 			return Constants.LOGIC_SUCCESS_MARK_TASK;
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK);
 		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
 	}//end mark
 
@@ -539,6 +540,7 @@ public class Logic {
 		}
 		currentSortType[0] = sortType;
 		mStorage.save();
+		mLog.logInfo(message);
 		return message;
 	}
 
@@ -556,9 +558,11 @@ public class Logic {
 				extractedTask.setPriority(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
 				reInsertTaskInToList(taskIndex, extractedTask);
 				updateRedoAndUndo(currentState);
+				mLog.logInfo(Constants.LOGIC_SUCCESS_PRIORITY_TASK);
 				return Constants.LOGIC_SUCCESS_PRIORITY_TASK;
 			}
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK);
 		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
 	}
 
@@ -577,30 +581,36 @@ public class Logic {
 			taskCategory = extractedTask.getCategory();
 			if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
 				if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+					mLog.logInfo(Constants.LOGIC_FAIL_REMIND_FLOATING_TASK);
 					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
 				}else{
 					extractedTask.setReminder(0L);
 					reInsertTaskInToList(taskIndex, extractedTask);
 					updateRedoAndUndo(currentState);
+					mLog.logInfo(Constants.LOGIC_SUCCESS_REMIND_OFF_TASK);
 					return Constants.LOGIC_SUCCESS_REMIND_OFF_TASK;
 				}
 			}else if (tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
 				endMS = extractedTask.getEndMilliseconds();
 				reminderMS = MainParser.convertDateToMillisecond(tokens[Constants.REMINDER_DATE], tokens[Constants.REMINDER_TIME]);
 				if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+					mLog.logInfo(Constants.LOGIC_FAIL_REMIND_FLOATING_TASK);
 					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
 				}else{
 					if(reminderMS <= endMS){
 						extractedTask.setReminder(reminderMS);
 						reInsertTaskInToList(taskIndex, extractedTask);
 						updateRedoAndUndo(currentState);
+						mLog.logInfo(Constants.LOGIC_SUCCESS_REMIND_TASK);
 						return Constants.LOGIC_SUCCESS_REMIND_TASK;
 					}else{
+						mLog.logInfo(Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK);
 						return Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK;
 					}
 				}
 			}
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK);
 		return Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK;
 	}
 

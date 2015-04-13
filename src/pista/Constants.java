@@ -265,6 +265,7 @@ public class Constants {
 	public static final String PARSER_MESSAGE_INVALD_NATTY_DATE = "Unable to interpret the date format you have typed";
   	public static final String PARSER_MESSAGE_INVALD_NATTY_TIME = "Unable to interpret the time format you have typed";
   	public static final String PARSER_MESSAGE_EMPTY_TITLE = "The title cannot be empty";
+  	public static final String PARSER_MESSAGE_ADD_EMPTY_TOKENS = "Empty tokens detected for Adit function";
   	public static final String PARSER_MESSAGE_EDIT_EMPTY_TOKENS = "Empty tokens detected for Edit function";
   	public static final String PARSER_MESSAGE_INVALID_SORT_FUNCTION = "The sort function you have entered is invalid";
   	public static final String PARSER_MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
