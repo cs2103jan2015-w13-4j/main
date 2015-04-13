@@ -1,4 +1,3 @@
-//@author A0125474E
 package pista.ui;
 
 import java.io.File;
@@ -125,16 +124,7 @@ public class UIController {
 	@FXML
 	private ListView<Task> listviewTask;
 
-	@FXML
-	void onHelp(ActionEvent event) {
-		showHelp(); //open help guide
-	}
-
-	@FXML
-	void onRefresh(ActionEvent event) {
-		this.initialize(); //initialize controls in UI
-	}
-
+	//@author A0125474E
 	@FXML
 	void onUIKeyPressed(KeyEvent event) { // UI listen key press
 		if (Constants.KEY_COMBINATION_HELP.match(event)){ //when pressed F1, show help
@@ -146,6 +136,7 @@ public class UIController {
 		}	
 	}
 
+	//@author A0125474E
 	@FXML
 	public void initialize() {
 		String logicOutput = "";
@@ -209,6 +200,7 @@ public class UIController {
 
 	}//end initialize
 
+	//@author A0125474E
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
@@ -267,6 +259,7 @@ public class UIController {
 		return true;
 	}
 	
+	//@author A0125474E
 	/**This method will set text in the text field status
 	 * Parameters:		msg - message that will be showing
 	 * Returns:			boolean - true or false
@@ -279,6 +272,7 @@ public class UIController {
 		return false;
 	}
 	
+	//@author A0125474E
 	/**This method set the mainApp
 	 * Parameters:		app - mainApp which the parent stage for UIController
 	 * **/
@@ -286,6 +280,7 @@ public class UIController {
 		this.mApp = app;
 	}
 	
+	//@author A0125474E
 	/**This method will add controls which belongs to the top area
 	 * **/
 	private void addControlsToTopArea(){
@@ -297,75 +292,100 @@ public class UIController {
 		this.addControlsToAnchorPaneAreaTop(this.btnRedo, 0.0, 0.0, 0.0, 70.0);
 	}
 	
+	//@author A0125474E
 	/**This method will initialize and start the clock at the bottom right corner of Pista 
 	 * **/
 	private void initTimeClock(){
 		this.txtClock.getStyleClass().addAll(Constants.UI_CSS_TEXT_CLOCK);
 		this.txtClock.setTextAlignment(TextAlignment.RIGHT);
 
-		Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-			new EventHandler<ActionEvent>(){
-				DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
-				@Override
-				public void handle(ActionEvent event) {
-					Calendar nowDate = Calendar.getInstance();
-					txtClock.setText(dateFormat.format(nowDate.getTime()));
-				}
-			}),
-		new KeyFrame(Duration.seconds(1))
-		);
-
-		mTimeLine.setCycleCount(Animation.INDEFINITE);
-		mTimeLine.play();
+		try{
+			Timeline mTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+				new EventHandler<ActionEvent>(){
+					DateFormat dateFormat = new SimpleDateFormat(Constants.DATETIME_FORMAT_CLOCK);
+					@Override
+					public void handle(ActionEvent event) {
+						Calendar nowDate = Calendar.getInstance();
+						txtClock.setText(dateFormat.format(nowDate.getTime()));
+					}
+				}),
+			new KeyFrame(Duration.seconds(1))
+			);
+	
+			mTimeLine.setCycleCount(Animation.INDEFINITE);
+			mTimeLine.play();
+			
+		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
+		}
 	}
 
+	//@author A0125474E
 	/**This method will initialize and start reminder
 	 * **/
 	private void initReminder(){
-		Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
-			new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent event) {
-					runReminder();
-				}//end handle
-			}),
-		new KeyFrame(Duration.seconds(1))
-		);
-		aTimeLine.setCycleCount(Animation.INDEFINITE);
-		aTimeLine.play();
+		try{
+			Timeline aTimeLine = new Timeline(new KeyFrame(Duration.seconds(0),
+				new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent event) {
+						runReminder();
+					}//end handle
+				}),
+			new KeyFrame(Duration.seconds(1))
+			);
+			aTimeLine.setCycleCount(Animation.INDEFINITE);
+			aTimeLine.play();
+			
+		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
+		}
 	}
 
-	
+	//@author A0125474E
+	/**This method will initialize the main parser
+	 * **/
 	private boolean initMainParser(){
 		try{
 			//this.mParser = MainParser.getInstance();
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
+			mLog.logSevere(e.getMessage());
 			return false;
 		}
 	}
 
+	//@author A0125474E
+	/**This method will initialize storage
+	 * **/
 	private boolean initStorage(){
 		try{
 			this.mStorage = Storage.getInstance();
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
+			mLog.logSevere(e.getMessage());
 			return false;
 		}		
 	}
 
+	/**This method will initialize the logic
+	 * **/
 	private boolean initLogic(){
 		try{
 			this.mLogic = Logic.getInstance();
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
+			mLog.logSevere(e.getMessage());
 			return false;
 		}
 	}
 
+	//@author A0125474E
+	/**This method will initialize preferences
+	 * **/
 	private boolean initPreferences(){
 		try{
 			this.mPrefs = CustomPreferences.getInstance();
@@ -373,10 +393,14 @@ public class UIController {
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
+			mLog.logSevere(e.getMessage());
 			return false;
 		}
 	}
 
+	//@author A0125474E
+	/**This method will initialize logging
+	 * **/
 	private boolean initLogging(){
 		try{
 			this.mLog = CustomLogging.getInstance(Storage.class.getName());
@@ -387,6 +411,7 @@ public class UIController {
 		}		
 	}
 
+	//@author A0125474E
 	/**This method will initialize the start/quick guide,
 	 * styling and adding control to the start guide
 	 * **/
@@ -412,12 +437,14 @@ public class UIController {
 		this.mStackPane.getChildren().add(1, this.anchorPaneStartGuide);
 	}
 
+	//@author A0125474E
 	/**This method will hide the start guide
 	 * **/
 	private void hideStartGuide(){
 		this.mStackPane.getChildren().removeAll(this.anchorPaneStartGuide);
 	}
 
+	//@author A0125474E
 	/**This method will initialize the button redo which involves styling
 	 * **/
 	private void initButtonRedo(){
@@ -438,6 +465,7 @@ public class UIController {
 		this.btnRedo.addEventFilter(ActionEvent.ACTION, onBtnRedoClick); //set click method listener
 	}
 
+	//@author A0125474E
 	/**This method will initialize the button undo which involves styling
 	 * **/
 	private void initButtonUndo(){
@@ -453,6 +481,7 @@ public class UIController {
 		this.btnUndo.addEventFilter(ActionEvent.ACTION, this.onBtnUndoClick); //set click method listener
 	}
 
+	//@author A0125474E
 	/**This method will initialize the button setting which involves styling
 	 * **/
 	private void initButtonSetting(){
@@ -466,6 +495,7 @@ public class UIController {
 		this.btnSetting.addEventFilter(ActionEvent.ACTION, this.onBtnSettingClick); //set click method listener
 	}
 
+	//@author A0125474E
 	/**This method will initialize the button add new task which involves styling
 	 * **/
 	private void initButtonAddNewTask(){
@@ -479,6 +509,7 @@ public class UIController {
 		this.btnAddNewTask.addEventFilter(ActionEvent.ACTION, this.onBtnAddNewTaskClick); //set click method listener
 	}
 
+	//@author A0125474E
 	/**This method will initialize the button help which involves styling
 	 * **/
 	private void initButtonHelp(){
@@ -491,7 +522,8 @@ public class UIController {
 		this.btnHelp.setPrefSize(Constants.UI_BUTTON_TOP_WIDTH, Constants.UI_BUTTON_TOP_HEIGHT);
 		this.btnHelp.addEventFilter(ActionEvent.ACTION, this.onBtnHelpClick); //set click method listener
 	}
-
+	
+	//@author A0125474E
 	/**This method will initialize the button refresh which involves styling
 	 * **/
 	private void initButtonRefresh(){
@@ -505,6 +537,7 @@ public class UIController {
 		this.btnRefresh.addEventFilter(ActionEvent.ACTION, this.onBtnRefreshClick); //set click method listener
 	}
 
+	//@author A0125474E
 	/**This method will add controls(e.g. undo, redo, help, refresh, add, setting) to the top area 
 	 * Parameter	mNode - refers to single control (e.g. button)
 	 * 				anchorTop - double value
@@ -526,6 +559,15 @@ public class UIController {
 		}
 	}
 
+	//@author A0125474E
+	/**This method will get text from text field command
+	 * Returns:			String - get text inside the text field command
+	 * **/
+	private String getTextCommand(){
+		return this.txtBoxCommand.getText();
+	}
+		
+	//@author A0125474E
 	/**This method will populate the first launch file location
 	 * Usually is the default file path when Pista first launch on a desktop
 	 * **/
@@ -534,6 +576,22 @@ public class UIController {
 		return defaultPath;
 	}
 	
+	//@author A0125474E
+	/**This method will get the file location from preferences
+	 * Usually from local user registry
+	 * **/
+	private String getPreferenceFilePath(){ //get file path from preference
+		try{
+			String filePath = "";
+			filePath = this.mPrefs.getPreferenceFileLocation();
+			return filePath;
+		}catch(Exception e){
+			e.printStackTrace();
+			return "";
+		}
+	}
+		
+	//@author A0125474E
 	/**This method will get the launch flag from preferences
 	 * Usually from local user registry
 	 * **/
@@ -548,20 +606,7 @@ public class UIController {
 		}
 	}
 
-	/**This method will get the file location from preferences
-	 * Usually from local user registry
-	 * **/
-	private String getPreferenceFilePath(){ //get file path from preference
-		try{
-			String filePath = "";
-			filePath = this.mPrefs.getPreferenceFileLocation();
-			return filePath;
-		}catch(Exception e){
-			e.printStackTrace();
-			return "";
-		}
-	}
-
+	//@author A0125474E
 	/**This method will set the launch flag from preferences
 	 * Usually from local user registry
 	 * **/
@@ -575,6 +620,7 @@ public class UIController {
 		}
 	}
 
+	//@author A0125474E
 	/**This method will set the file location from preferences
 	 * Usually from local user registry
 	 * **/
@@ -588,8 +634,7 @@ public class UIController {
 		}
 	}
 
-	
-
+	//@author A0125474E
 	/**This method will set text in the tooltip for buttons
 	 * Parameters:		btn - a button that will be adding a tooltip
 	 * 					msg - message that will be showing
@@ -608,32 +653,9 @@ public class UIController {
 		}		
 	}
 
-	/**This method will set text in the text field command
-	 * **/
-	private void setTextCommand(String command){
-		this.txtBoxCommand.setText(command);
-	}
 	
-	/**This method will append text in the text field command
-	 * with the cursor moving to the front
-	 * **/
-	private void setAppendTextCommand(String command){
-		this.txtBoxCommand.appendText(command);
-	}
 
-	/**This method will get text from text field command
-	 * Returns:			String - get text inside the text field command
-	 * **/
-	private String getTextCommand(){
-		return this.txtBoxCommand.getText();
-	}
-
-	/**This method will set text in the text field command
-	 * **/
-	private void clearTextCommand(){
-		this.txtBoxCommand.clear();
-	}
-
+	//@author A0125474E
 	/**This method will initialize the task list view which populate all the task from XML 
 	 * Returns:			boolean - true or false
 	 * **/
@@ -677,6 +699,7 @@ public class UIController {
 
 	}//end initTaskListInListView
 
+	//@author A0125474E
 	/**This method will create and show the help guide
 	 * Returns:			boolean - true or false
 	 * **/
@@ -707,11 +730,19 @@ public class UIController {
 		}
 	}
 
+	//@author A0125474E
 	/**This method will return the help guide stages
 	 * Returns:		Stage - get the help guide stage
 	 * **/
 	public Stage getHelpStage(){
 		return this.stageHelp;
+	}
+
+	//@author A0125474E
+	/**This method will set text in the text field command
+	 * **/
+	private void clearTextCommand(){
+		this.txtBoxCommand.clear();
 	}
 
 	/**This method is to handle the auto-complete command when user press Ctrl+Space
@@ -733,6 +764,7 @@ public class UIController {
 		}
 	}
 
+
 	/**This method is to toggle the history commands when user press Up
 	 * **/
 	private void onUpPressed(){
@@ -743,6 +775,7 @@ public class UIController {
 			this.setTextCommand(this.mStorage.getHistoryList().get(0));
 		}
 	}
+
 
 	/**This method is to toggle the history commands when user press Down
 	 * **/
@@ -756,83 +789,38 @@ public class UIController {
 		}
 	}
 
-	/**This method is to handle the click for button start guide 
+	//@author A0125474E
+	/**This method will set text in the text field command
 	 * **/
-	private EventHandler<ActionEvent> onBtnStartGuideClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			hideStartGuide();
-		}
-	};
-
-	/**This method is to handle the click for button undo 
+	private void setTextCommand(String command){
+		this.txtBoxCommand.setText(command);
+	}
+	
+	//@author A0125474E
+	/**This method will append text in the text field command
+	 * with the cursor moving to the front
 	 * **/
-	private EventHandler<ActionEvent> onBtnUndoClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			executeCommand(Constants.UI_UNDO_COMMAND);
-		}
-	};
+	private void setAppendTextCommand(String command){
+		this.txtBoxCommand.appendText(command);
+	}
+	
+	
 
-	/**This method is to handle the click for button redo 
-	 * **/
-	private EventHandler<ActionEvent> onBtnRedoClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			executeCommand(Constants.UI_REDO_COMMAND);
-		}
-	};
-
-	/**This method is to handle the click for button help
-	 * **/
-	private EventHandler<ActionEvent> onBtnHelpClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			showHelp();
-		}
-	};
-
-	/**This method is to handle the click for button refresh 
-	 * **/
-	private EventHandler<ActionEvent> onBtnRefreshClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			initTaskListInListView();
-		}
-	};
-
-	/**This method is to handle the click for button add new task 
-	 * **/
-	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			initPopOverAdd(); //initialize the Pop-over add
-			showPopOverAdd(); //open pop-over add
-		}
-	};
-
-	/**This method is to handle the click for button setting
-	 * **/
-	private EventHandler<ActionEvent> onBtnSettingClick = new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent event) {
-			initPopOverSetting();
-			showPopOverSetting(); //open pop-over setting
-		}
-	};
-
+	//@author A0125474E
 	/**This method is to show the pop over add
 	 * **/
 	private void showPopOverAdd(){
 		this.mPopOverAdd.show(this.btnAddNewTask);
 	}
 	
+	//@author A0125474E
 	/**This method is to show the pop over setting
 	 * **/
 	private void showPopOverSetting(){
 		this.mPopOverSetting.show(this.btnSetting); 
 	}
 
+	//@author A0125474E
 	/**This method is to initialize the pop over add
 	 * **/
 	private void initPopOverAdd(){
@@ -1041,6 +1029,7 @@ public class UIController {
 
 	}
 
+	//@author A0125474E
 	/**This method is to initialize the pop over setting
 	 * **/	
 	private void initPopOverSetting(){
@@ -1115,7 +1104,6 @@ public class UIController {
 			}
 		});
 
-
 		//Button Save As 
 		btnSaveAsFileBrowse.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_BUTTON);
 		btnSaveAsFileBrowse.setPrefWidth(Constants.UI_POP_OVER_SETTING_WIDTH);
@@ -1183,6 +1171,7 @@ public class UIController {
 		this.mPopOverSetting.setDetachable(false);
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over label title style
 	 * **/	
 	private void setPopOverLabelTitle(Label lbl, double width){
@@ -1192,6 +1181,7 @@ public class UIController {
 		lbl.setAlignment(Pos.CENTER);
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over label date time style
 	 * **/	
 	private void setPopOverLabelDateTime(Label lblDate, Label lblTime, double width){
@@ -1201,6 +1191,7 @@ public class UIController {
 		lblTime.setAlignment(Pos.CENTER_RIGHT);
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over text field hour and minute style
 	 * **/	
 	private void setPopOverTextFieldHourMinute(TextField txtHr, TextField txtMin){
@@ -1210,12 +1201,14 @@ public class UIController {
 		txtMin.setPromptText("MM");
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over label time tip style
 	 * **/	
 	private void setPopOverLabelTimeTip(Label lbl){
 		lbl.getStyleClass().addAll(Constants.UI_CSS_POP_OVER_TOOLTIP); //set tip style (after the minute input)
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over label message style
 	 * **/	
 	private void setPopOverLabelMessageVisible(Label lbl, boolean isValid, boolean isVisible){
@@ -1228,18 +1221,80 @@ public class UIController {
 		lbl.setVisible(isVisible);
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over label text
 	 * **/	
 	private void setPopOverLabelText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
 
+	//@author A0125474E
 	/**This method set individual pop over label message text
 	 * **/	
 	private void setPopOverLabelMessageText(Label lbl, String msg){
 		lbl.setText(msg);
 	}
 
+	//@author A0125474E
+	/**This method will run the remainder
+	 * **/
+	private void runReminder(){
+		for (int i = 0; i < mLogic.getStorageList().size(); i++) {
+			Task extractedTask = mLogic.getStorageList().get(i);
+			String taskTitle = extractedTask.getTitle();
+			boolean taskIsReminded = extractedTask.getIsReminded();
+			Long taskReminder = extractedTask.getReminder();
+			Long taskEndMillisecond = extractedTask.getEndMilliseconds();
+			Long timeNow = System.currentTimeMillis();
+
+			if(taskReminder != 0L){
+				if(timeNow >= taskReminder && !taskIsReminded){
+					String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
+					SimpleDateFormat mDateFormat = new SimpleDateFormat(datePattern);
+					String endDate = mDateFormat.format(new Date(taskEndMillisecond));
+
+					//update the reminded status in the storage list
+					mLogic.getStorageList().get(i).setIsReminded(true);
+
+					showReminder("Upcoming task: " + taskTitle, 
+							"Due on " + endDate);
+
+					File file = new File (Constants.BUILD_PATH + Constants.UI_ALARM_LOCATION);
+					playAlarm(file.toURI().toString());
+				}
+			}
+		}
+	}
+
+	//@author A0125474E
+	/**This method show the remainder notification
+	 * **/
+	private void showReminder(String title, String msg){
+		Notifications.create().title(title).text(msg).showWarning();	
+	}
+
+	//@author A0125474E
+	/**This method play the alarm sound
+	 * Parameters:		url - valid alarm file path
+	 * **/
+	private void playAlarm(String url){
+		Media alarm = new Media (url);
+		startMediaPlayer(alarm);
+	}
+
+	//@author A0125474E
+	/**This method start media player which run the 
+	 * Parameters:		m - string value
+	 * **/
+	private void startMediaPlayer(Media m){
+		if(m != null){
+			MediaPlayer mp = new MediaPlayer(m);
+			mp.play();
+		}
+	}
+
+		
+	//@author A0125474E
 	/**This method opens the window environment file browser
 	 * Only allow user to choose a XML file
 	 * **/	
@@ -1262,6 +1317,7 @@ public class UIController {
 		return oldPath;
 	}
 
+	//@author A0125474E
 	/**This method opens the window environment file browser
 	 * Allow user to either specify a new file name or choose a file 
 	 * **/
@@ -1284,12 +1340,14 @@ public class UIController {
 		return oldPath;
 	}
 	
+	//@author A0125474E
 	/**This method get the default user desktop directory
 	 * **/
 	private String getUserDesktopDirectory(){
 		return Constants.SETTING_DEFAULT_FOLDER_PATH;
 	}	
 
+	//@author A0125474E
 	/**This method get change the date format in datepicker
 	 * Returns:		
 	 * **/
@@ -1314,6 +1372,7 @@ public class UIController {
 		}
 	};
 
+	//@author A0125474E
 	/**This method converts date to storage formatted date
 	 * Parameters:		rawDate - LocalDate which is not in storage format
 	 * Returns:			String - return storage date format d/M/yyyy
@@ -1326,6 +1385,7 @@ public class UIController {
 		return dateFormatter.format(rawDate);
 	}
 
+	//@author A0125474E
 	/**This method validate the title string 
 	 * Parameters:		title - string value
 	 * Returns:			boolean - true or false
@@ -1337,6 +1397,7 @@ public class UIController {
 		return true;
 	}
 
+	//@author A0125474E
 	/**This method validate the hour string 
 	 * Parameters:		hour - the hour value in string
 	 * Returns:			boolean - true or false
@@ -1353,6 +1414,7 @@ public class UIController {
 		return true;
 	}
 
+	//@author A0125474E
 	/**This method validate the minute string 
 	 * Parameters:		minute - the minute value in string
 	 * Returns:			boolean - true or false
@@ -1369,6 +1431,7 @@ public class UIController {
 		return true;
 	}
 
+	//@author A0125474E
 	private int convertStringToInteger(String s){
 		if(s.equals("") || s.isEmpty()){
 			return 0;
@@ -1450,58 +1513,76 @@ public class UIController {
 		return this.possibleKeywords[Constants.SEARCH_KEYWORD_TIME];
 	}
 
-	/**This method will run the remainder
+	//@author A0125474E
+	/**This method is to handle the click for button start guide 
 	 * **/
-	private void runReminder(){
-		for (int i = 0; i < mLogic.getStorageList().size(); i++) {
-			Task extractedTask = mLogic.getStorageList().get(i);
-			String taskTitle = extractedTask.getTitle();
-			boolean taskIsReminded = extractedTask.getIsReminded();
-			Long taskReminder = extractedTask.getReminder();
-			Long taskEndMillisecond = extractedTask.getEndMilliseconds();
-			Long timeNow = System.currentTimeMillis();
-
-			if(taskReminder != 0L){
-				if(timeNow >= taskReminder && !taskIsReminded){
-					String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
-					SimpleDateFormat mDateFormat = new SimpleDateFormat(datePattern);
-					String endDate = mDateFormat.format(new Date(taskEndMillisecond));
-
-					//update the reminded status in the storage list
-					mLogic.getStorageList().get(i).setIsReminded(true);
-
-					showReminder("Upcoming task: " + taskTitle, 
-							"Due on " + endDate);
-
-					File file = new File (Constants.BUILD_PATH + Constants.UI_ALARM_LOCATION);
-					playAlarm(file.toURI().toString());
-				}
-			}
+	private EventHandler<ActionEvent> onBtnStartGuideClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			hideStartGuide();
 		}
-	}
+	};
 
-	/**This method show the remainder notification
+	//@author A0125474E
+	/**This method is to handle the click for button undo 
 	 * **/
-	private void showReminder(String title, String msg){
-		Notifications.create().title(title).text(msg).showWarning();	
-	}
-
-	/**This method play the alarm sound
-	 * Parameters:		url - valid alarm file path
-	 * **/
-	private void playAlarm(String url){
-		Media alarm = new Media (url);
-		startMediaPlayer(alarm);
-	}
-
-	/**This method start media player which run the 
-	 * Parameters:		m - string value
-	 * **/
-	private void startMediaPlayer(Media m){
-		if(m != null){
-			MediaPlayer mp = new MediaPlayer(m);
-			mp.play();
+	private EventHandler<ActionEvent> onBtnUndoClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			executeCommand(Constants.UI_UNDO_COMMAND);
 		}
-	}
+	};
 
+	//@author A0125474E
+	/**This method is to handle the click for button redo 
+	 * **/
+	private EventHandler<ActionEvent> onBtnRedoClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			executeCommand(Constants.UI_REDO_COMMAND);
+		}
+	};
+
+	//@author A0125474E
+	/**This method is to handle the click for button help
+	 * **/
+	private EventHandler<ActionEvent> onBtnHelpClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			showHelp();
+		}
+	};
+
+	//@author A0125474E
+	/**This method is to handle the click for button refresh 
+	 * **/
+	private EventHandler<ActionEvent> onBtnRefreshClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			initTaskListInListView();
+		}
+	};
+
+	//@author A0125474E
+	/**This method is to handle the click for button add new task 
+	 * **/
+	private EventHandler<ActionEvent> onBtnAddNewTaskClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			initPopOverAdd(); //initialize the Pop-over add
+			showPopOverAdd(); //open pop-over add
+		}
+	};
+
+	//@author A0125474E
+	/**This method is to handle the click for button setting
+	 * **/
+	private EventHandler<ActionEvent> onBtnSettingClick = new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent event) {
+			initPopOverSetting();
+			showPopOverSetting(); //open pop-over setting
+		}
+	};
+	
 }//end class
