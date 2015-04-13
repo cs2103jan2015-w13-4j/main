@@ -1,0 +1,631 @@
+//@author: a0111721y
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is the main controller of Logic class, from here all function can be called. UIController will access 
+	 * Logic mainly through this method. Return a String regarding the status of operation
+	 * Parameters:	command - the command that the user is calling
+	 * 				tokens - information provided by the user
+	 * Return: 		output - String that reflects the status of the operation
+	 * **/
+	public String runCommand(String command, String[] tokens) {
+		String output = "";
+		switch(command) {
+		case Constants.VALUE_ADD:
+			output = add(tokens);
+			break;
+		case Constants.VALUE_EDIT:
+			output = edit(tokens);
+			break;
+		case Constants.VALUE_DELETE:
+			output = delete(tokens) ;
+			break;
+		case Constants.VALUE_UNDO:
+			output = undo() ;
+			break;
+		case Constants.VALUE_REDO:
+			output = redo() ;
+			break;
+		case Constants.VALUE_MARK:
+			output = mark(tokens);
+			break;
+		case Constants.VALUE_HELP:
+			output = help();
+			break;
+		case Constants.VALUE_SORT:
+			output = sort(tokens);
+			break;
+		case Constants.VALUE_REMINDER:
+			output = reminder(tokens);
+			break;
+		case Constants.VALUE_PRIORITY:
+			output = priority(tokens);
+			break;
+		case Constants.VALUE_SET:
+			output = set(tokens);
+			break;
+		default:
+			assert false:"invalid comand in runCommand: "+command;
+		break;
+		}
+		Constants.HISTORY_INDEX += 1;
+		return output;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\MainApp.java
+	 */
+
+	private Stage primaryStage;
+    private BorderPane rootLayout;
+      
+    
+    private UIController mUICtrl = null;
+    private RootLayoutController mRootCtrl = null;
+    
+    
+    //initialises the stage
+    @Override
+    public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle(Constants.PRODUCT_NAME);
+        this.primaryStage.initStyle(StageStyle.DECORATED);
+        this.primaryStage.setResizable(false);
+        this.primaryStage.setOnCloseRequest(this.stageHandler);
+        
+        initRootLayout();
+        initMainUI();
+        
+        this.mRootCtrl.setUIController(mUICtrl);
+
+    }
+    
+    
+    //sets up the base root layout inclusive of the menu bar
+    public void initRootLayout() {
+        try {
+            // Load root layout from fxml file
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource(Constants.ROOT_LAYOUT_PATH)); //RootLayout.fxml
+            this.rootLayout = (BorderPane) loader.load();
+
+            this.mRootCtrl = loader.getController();
+            
+            // Show the scene containing the root layout
+            Scene scene = new Scene(this.rootLayout);
+            this.primaryStage.setScene(scene);
+            this.primaryStage.getIcons().addAll(new Image("images/pista_icon.png"));
+            this.primaryStage.show();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+	//sets up inside the base root layout the main UI
+    public void initMainUI() {
+        try {
+            // Load MainUI
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource(Constants.MAIN_UI_LAYOUT_PATH)); //MainUI.fxml
+            AnchorPane uiLayout = (AnchorPane) loader.load();
+
+            this.mUICtrl = loader.getController();
+            this.mUICtrl.setMainAppController(this);
+            
+            // Set MainUI into the center of RootLayout
+            this.rootLayout.setCenter(uiLayout);      
+            
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //returns primary stage
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
+    }
+    
+    public double getPrimaryStageWidth(){
+    	return this.primaryStage.getWidth();
+    }
+    
+    public double getPrimaryStageHeight(){
+    	return this.primaryStage.getHeight();
+    }
+    
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+	
+	EventHandler<WindowEvent> stageHandler = new EventHandler<WindowEvent>() {
+        public void handle(WindowEvent we) {
+        	Stage helpStage = mUICtrl.getHelpStage();
+        	if(helpStage != null){
+        		helpStage.close();
+        	}
+        }
+    };
+	
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\MainApp.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/*
+	 * tokens
+	 * [0] - command type
+	 * [1] - parameter in string 
+	 * */
+	
+	/**This method is the main method that use to validate the input provided by the user
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		mp - a MainParser object that contains the message of validity.
+	 * **/
+	public static MainParser validateInput(String input) {
+		MainParser mp = new MainParser();
+		if (isEmptyString(input)) {
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
+			return mp;
+		} else {
+			String command = getCommand(input);
+			if (!isCommandValid(command)) {
+				mp.setMessage(Constants.PARSER_MESSAGE_WRONG_COMMAND);
+				return mp;
+			} else {
+				if (command.equalsIgnoreCase(Constants.VALUE_HELP)) {
+					mp.setCommand(command);
+					mp.setMessage(Constants.PARSER_MESSAGE_VALID_INPUT);
+					return mp;
+				} else {
+					String[] tokens = getTokens(input);
+
+					if (!mp.isTokensValid(mp, command, tokens)) {
+						//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
+						return mp;
+					} else {
+						mp.setCommand(command);
+						mp.setMessage(Constants.PARSER_MESSAGE_VALID_INPUT);
+						return mp;
+					}
+				}
+			}
+		}
+	}
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks if the tokens/parameters supplied by the user
+	 * Parameters: Object of MainParser -  
+	 * 				String - contains the user's command
+	 * 				String array - contains all parameters  
+	 * Return:		Boolean -
+	 * 				True if all tokens/parameters are correct
+	 * 				False if the tokens/parameters are wrong
+	 * **/
+	private boolean isTokensValid(MainParser mp, String command, String[] tokens){
+		switch(command) {
+		case Constants.VALUE_ADD:
+			return checkAddTokens(mp, tokens);
+		case Constants.VALUE_EDIT:
+			return checkEditTokens(mp, tokens);
+		case Constants.VALUE_DELETE:
+			return checkDeleteTokens(mp, tokens);
+		case Constants.VALUE_MARK:
+			return checkMarkTokens(mp, tokens);
+		case Constants.VALUE_REDO:
+			return true;
+		case Constants.VALUE_UNDO:
+			return true;
+		case Constants.VALUE_REMINDER:
+			return checkReminderTokens(mp, tokens);
+		case Constants.VALUE_PRIORITY:
+			return checkPriorityTokens(mp, tokens);
+		case Constants.VALUE_SET:
+			return checkSetTokens(mp, tokens);
+		case Constants.VALUE_SEARCH:
+			return checkSearchTokens(mp, tokens);
+		case Constants.VALUE_SORT:
+			return checkSortTokens(mp, tokens);
+		default:
+			return false;
+		}
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Search command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are co
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		Parser parser = new Parser();
+		String requiredNattyInputFormat = "";
+		String interpretOutputDateFromNatty = "";
+		List<DateGroup> groups;
+		
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		
+		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		if (tokens[Constants.INDEX_ZERO].equals("")) {
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
+			return false;
+		}
+		
+		String[] possibleKeywords = new String[Constants.SEARCH_POSSIBLE_PARAMETERS];
+		mp.setTokens(possibleKeywords);
+		mp.setIndexInToken(Constants.SEARCH_KEYWORD_STRING, tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+		
+		//checks if keyword is a date
+		if(!TokenValidation.isDateValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			requiredNattyInputFormat = nattyInputFormat(tokens, Constants.SEARCH_TOKEN_KEYWORD);
+			
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			}
+
+			try {
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputDateFromNatty = "";
+			}
+			
+			if(TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_DATE, interpretOutputDateFromNatty);
+			}
+		}
+				
+		//checks if keyword is a time
+		String interpretOutputTimeFromNatty="";
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		
+		if(!TokenValidation.isTimeValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputTimeFromNatty = "";
+			}
+			
+			if(TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_TIME, interpretOutputTimeFromNatty);
+			}
+		}
+		
+		System.out.println(mp.getTokens()[0] + mp.getTokens()[1] + mp.getTokens()[2]);
+		return true;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	@FXML
+	public void enter() throws IOException {
+		//user click mouse on the enter button
+		String userInput = txtBoxCommand.getText();
+		executeCommand(userInput);
+	}
+
+	/**This method will execute the command based on the command that is given
+	 * Parameters: 		userInput - the command that is entered by the user
+	 * Returns:			boolean - true or false
+	 * **/
+	public boolean executeCommand(String userInput){
+		String[] tokens = null;
+		String parserOutput = "";
+		String logicOutput = "";
+		String command = "";
+
+		this.mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
+		MainParser mp = MainParser.validateInput(userInput);
+		parserOutput = mp.getMessage();
+		if(!parserOutput.equals(Constants.PARSER_MESSAGE_VALID_INPUT)){
+			//display error
+			this.setTextStatus(parserOutput);
+			this.mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
+			return false; //fail
+		}
+
+		this.mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
+
+		command = mp.getCommand();
+
+		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
+			showHelp();
+			this.setTextStatus(Constants.LOGIC_SUCCESS_HELP);
+			return true;
+		}
+
+		tokens = mp.getTokens();
+
+		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
+			this.setSearchKeyword(tokens);
+			this.initTaskListInListView();
+			this.setTextStatus(Constants.LOGIC_SUCCESS_SEARCH + searchKeyword);
+			this.resetSearchKeyword();
+			return true;
+		}
+
+		logicOutput = mLogic.runCommand(command, tokens);
+
+		this.setTextStatus(logicOutput);
+		this.initTaskListInListView();
+		this.clearTextCommand();
+
+		mLogic.storeToHistory(userInput);
+
+		return true;
+	}
+	
+	/** This method is created for testing purpose only
+	 * It will not be used in the main program
+	 * **/
+	public String executeCommandForTest(String userInput){
+		String[] tokens = null;
+		String parserOutput = "";
+		String logicOutput = "";
+		String command = "";
+
+		this.mLog.logInfo(Constants.LOG_UI_RUN_ON_ENTER + userInput);
+		MainParser mp = MainParser.validateInput(userInput);
+		parserOutput = mp.getMessage();
+		if(!parserOutput.equals(Constants.PARSER_MESSAGE_VALID_INPUT)){
+			//display error
+			this.mLog.logInfo(Constants.LOG_UI_FAIL_VALIDATE_INPUT + parserOutput);
+			return parserOutput; //fail
+		}
+
+		this.mLog.logInfo(Constants.LOG_UI_SUCCESS_VALIDATE_INPUT + parserOutput);
+
+		command = mp.getCommand();
+
+		if(command.equalsIgnoreCase(Constants.VALUE_HELP)){
+			showHelp();
+			return Constants.LOGIC_SUCCESS_HELP;
+		}
+
+		tokens = mp.getTokens();
+
+		if(command.equalsIgnoreCase(Constants.VALUE_SEARCH)){
+			this.setSearchKeyword(tokens);
+			this.initTaskListInListView();
+			this.resetSearchKeyword();
+			return Constants.LOGIC_SUCCESS_SEARCH + searchKeyword;
+		}
+
+		logicOutput = mLogic.runCommand(command, tokens);
+
+		this.initTaskListInListView();
+
+		mLogic.storeToHistory(userInput);
+
+		return logicOutput;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	/**This method will set text in the text field command
+	 * **/
+	private void setTextCommand(String command){
+		this.txtBoxCommand.setText(command);
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private void setSearchKeyword(String[] tokens) {
+		this.searchKeyword = getKeyword(tokens);
+		this.possibleKeywords = tokens;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private String getKeyword(String[] tokens) {
+		return tokens[Constants.SEARCH_TOKEN_KEYWORD];
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private void resetSearchKeyword() {
+		this.searchKeyword = null;
+		this.possibleKeywords = null;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
+		ArrayList<Task> displayList = new ArrayList<Task>();
+
+		for (Task task: storageList) {
+			if (hasKeyword(task, possibleKeywords)) {
+				displayList.add(task);
+			}
+		}
+		return displayList;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private boolean hasKeyword(Task task, String[] possibleKeywords) {
+		String taskDescription = task.getTitle();
+		String taskStartDate = task.getStartDate();
+		String taskEndDate = task.getEndDate();
+		String taskStartTime = task.getStartTime();
+		String taskEndTime = task.getEndTime();
+
+		//check if keyword exists in title of task
+		String[] descriptionTokens = makeIntoTokens(taskDescription);
+
+		for (String token: descriptionTokens) {
+			if (token.equalsIgnoreCase(searchKeyword)) {
+				return true;
+			}
+		}
+		
+		//check if keyword is a time
+		String keywordAsTime = this.getTime();
+		if (keywordAsTime != null) {
+			if (keywordAsTime.equals(taskStartTime) || keywordAsTime.equals(taskEndTime)) {
+				System.out.println("checking as time");
+				return true;
+			}
+		}
+				
+		//check if keyword is a date
+		String keywordAsDate = this.getDate();
+		if (keywordAsDate != null) {
+			if (keywordAsDate.equals(taskStartDate) || keywordAsDate.equals(taskEndDate)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private String[] makeIntoTokens(String taskDescription) {
+		return taskDescription.split("\\s+");
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private String getDate() {
+		return this.possibleKeywords[Constants.SEARCH_KEYWORD_DATE];
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	private String getTime() {
+		return this.possibleKeywords[Constants.SEARCH_KEYWORD_TIME];
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+

@@ -1,0 +1,651 @@
+//@author: a0112522y
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to process the information of a Task and construct a string
+	 * based on that. Return the string when it is done. This is for autocomplete during
+	 * editing.
+	 * Parameters:	index - the index of the task
+	 * Return:		finalStr - the String that is constructed using the information of the given Task
+	 * **/
+	public String processTaskInfo(int index){
+		Task t = getTaskByIndex(index);
+		String finalStr = "";
+		if ( t!= null ){
+			String title = t.getTitle();
+			String startDate = t.getStartDate();
+			String startTime = t.getStartTime();
+			String endDate = t.getEndDate();
+			String endTime = t.getEndTime();
+			String category = t.getCategory();
+
+			if(category.equalsIgnoreCase("timed")){
+				finalStr += " -"+title+" -"+startDate+" -"+startTime+" -"+endDate+" -"+endTime;
+			}
+			else if(category.equalsIgnoreCase("deadline")){
+				finalStr += " -"+title+" -"+endDate+" -"+endTime;
+			}else{
+				finalStr += " -"+title;
+			}
+		}
+		return finalStr ;
+	}
+
+	/**This method is to add the command executed by the user to the history
+	 * Parameters:	s - the command executed by the user
+	 * **/
+	public void storeToHistory(String s){
+		mStorage.getHistoryList().add(s);
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to delete a specific Task or all of Tasks in the system
+	 * Parameters:	tokens - an Array that contains the ID of the Task need to be deleted or "a" means all
+	 * Return:		String - the status of the operation
+	 * **/
+	private String delete(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
+		String input = tokens[0];
+		if(input.equalsIgnoreCase("a")){
+			clearList();
+			if(mStorage.save()){
+				updateRedoAndUndo(currentState);
+				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS);
+				return Constants.LOGIC_SUCCESS_DELETE_ALL_TASKS;
+			}else{
+				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_ALL_TASKS);
+				return Constants.LOGIC_FAIL_DELETE_ALL_TASKS;
+			}
+		}else {
+			int id = Integer.parseInt(input);
+			int index = findTaskIndex(id);
+
+			try{
+				if( index > -1){
+					assert index < mStorage.getTaskList().size() : "Index out of bound";
+					mStorage.getTaskList().remove(index);
+					mLog.logInfo(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK);
+					return Constants.LOGIC_SUCCESS_DELETE_TASK;
+				}else{
+					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);
+					return Constants.LOGIC_DELETE_TASK_NOT_FOUND;
+				}
+			}catch(AssertionError e){
+				mLog.logSevere(e.getMessage());
+				e.printStackTrace();
+			}
+
+			if (mStorage.save()){
+				updateRedoAndUndo(currentState);
+				mLog.logInfo(Constants.LOGIC_SUCCESS_DELETE_TASK);
+				return Constants.LOGIC_SUCCESS_DELETE_TASK;
+			}else{
+				mLog.logInfo(Constants.LOGIC_FAIL_DELETE_TASK);
+				return Constants.LOGIC_FAIL_DELETE_TASK;
+			}
+		}
+	}
+
+	/**This method is to undo the last action done by the user
+	 * Return:		String - the status of the operation
+	 * **/
+	private String undo(){
+		if(!undoList.isEmpty()){
+			ArrayList<Task> currentState = getCurrentState();
+			saveToRedo(currentState);
+			mStorage.setTaskList(undoList.get(undoList.size()-1));
+			undoList.remove(undoList.size()-1);
+			mStorage.save();
+			mLog.logInfo(Constants.LOGIC_SUCCESS_UNDO);
+			return Constants.LOGIC_SUCCESS_UNDO;
+		}
+		mLog.logInfo(Constants.LOGIC_FAIL_UNDO);
+		return Constants.LOGIC_FAIL_UNDO;
+	}
+
+	/**This method is to redo the last undone action
+	 * Return:		String - the status of the operation
+	 * **/
+	private String redo(){
+		if(!redoList.isEmpty()){
+			ArrayList<Task> currentState = getCurrentState();
+			saveToUndo(currentState);
+			mStorage.setTaskList(redoList.get(redoList.size()-1));
+			redoList.remove(redoList.size()-1);
+			mStorage.save();
+			mLog.logInfo(Constants.LOGIC_SUCCESS_REDO);
+			return Constants.LOGIC_SUCCESS_REDO;
+		}
+		mLog.logInfo(Constants.LOGIC_FAIL_REDO);
+		return Constants.LOGIC_SUCCESS_REDO;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to find the Task index in the Storage, given its id
+	 * Parameters:	id - the ID of the Task 
+	 * Return:		Integer - the Task index in the Storage or -1 if not found
+	 * **/
+	private Integer findTaskIndex(int id){
+		for (int i = 0;i < mStorage.getTaskList().size();i++){
+			if(mStorage.getTaskList().get(i).getID() == id){
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**This method is to clear everything in the Storage
+	 * **/
+	private void clearList(){
+		mStorage.getTaskList().clear();
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to check if a Task is in the Storage based on its ID
+	 * Parameters:	taskId - the ID of the Task
+	 * Return:		boolean - true if found, false otherwise
+	 * **/
+	private boolean isTaskInList(int taskId){
+		try{
+			for(Task t: mStorage.getTaskList()){
+				if(t.getID()==taskId){
+					return true;
+				}
+			}
+			return false;
+		}catch(Exception e){
+			mLog.logSevere(e.getMessage());
+			return false;
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to return a Task in the Storage based on its id
+	 * Parameters:	id - the ID of the Task
+	 * Return:		Task - the Task that matched the ID , return null if not found
+	 * **/
+	private Task getTaskByIndex(int id){
+		try{
+			int index = findTaskIndex(id);
+			if(isTaskInList(id)){
+				return mStorage.getTaskList().get(index);
+			}else{
+				return null;
+			}}catch(Exception e){
+				mLog.logSevere(e.getMessage());
+				return null;
+			}
+	}
+
+	//============= API FOR SETTING PAGE ======================
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/** This method is to save the current state of the Storage the undoLIst
+	 * Parameters:	currState - the current state of the Storage
+	 * **/
+	private void saveToUndo(ArrayList<Task> currState){
+		if(undoList.size() < 3){
+			undoList.add(currState);
+		}else{
+			undoList.remove(0);
+			undoList.add(currState);
+		}
+	}
+
+	/** This method is to save the current state of the Storage the redoLIst
+	 * Parameters:	currState - the current state of the Storage
+	 * **/
+	private void saveToRedo(ArrayList<Task> currState){
+		if(redoList.size() < 3){
+			redoList.add(currState);
+		}else{
+			redoList.remove(0);
+			redoList.add(currState);
+		}
+	}
+
+	/** This method is to clear the redoList
+	 * **/
+	private void clearRedo(){
+		redoList.clear();
+	}
+
+	/** This method is to update the redoList and undoList when new action is performed
+	 * Parameters:	s - the current state of the Storage
+	 * **/
+	private void updateRedoAndUndo(ArrayList<Task> s){
+		clearRedo();
+		saveToUndo(s);
+	}
+
+	/** This method is to get the current state of the Storage
+	 * return currentState - the current state of the Storage
+	 * **/
+	private ArrayList<Task> getCurrentState() {
+		ArrayList<Task> currentState = new ArrayList<Task>();
+		for ( Task a : getStorageList()){
+			Task temp = new Task();
+			copyTask(a, temp);
+			currentState.add(temp);
+		}
+		return currentState;
+	}
+
+	/** This method is copy information from one Task to another
+	 * Parameters:	a - the Task to copy from
+	 * 				temp - the Task to copy to
+	 * **/
+	private void copyTask(Task a, Task temp) {
+		temp.setCategory(a.getCategory());
+		temp.setEndDate(a.getEndDate());
+		temp.setEndMilliseconds(a.getEndMilliseconds());
+		temp.setEndTime(a.getEndTime());
+		temp.setID(a.getID());
+		temp.setIsDone(a.getIsDone());
+		temp.setIsReminded(a.getIsReminded());
+		temp.setPriority(a.getPriority());
+		temp.setReminder(a.getReminder());
+		temp.setStartDate(a.getStartDate());
+		temp.setStartMilliseconds(a.getStartMilliseconds());
+		temp.setStartTime(a.getStartTime());
+		temp.setTitle(a.getTitle());
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method is checks if a string is empty
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		Boolean
+	 * 				True if empty
+	 * 				false if it is not
+	 * **/
+	public static boolean isEmptyString(String input){
+		if(input.isEmpty()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**This method extracts the user command from a string
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		String - which consists only the command
+	 * **/
+	public static String getCommand(String input){
+		String command=input.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ZERO];
+		return command;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks if the command entered is supported by the program
+	 * Parameters: String - a string that contains the user's command
+	 * Return:		True if it is a valid command
+	 * 				False if it is not
+	 * **/
+	private static boolean isCommandValid(String command){
+		if(command.equalsIgnoreCase(Constants.VALUE_ADD) || command.equalsIgnoreCase(Constants.VALUE_EDIT) || 
+				command.equalsIgnoreCase(Constants.VALUE_DELETE) || command.equalsIgnoreCase(Constants.VALUE_REDO) || 
+				command.equalsIgnoreCase(Constants.VALUE_UNDO) || command.equalsIgnoreCase(Constants.VALUE_MARK) ||
+				command.equalsIgnoreCase(Constants.VALUE_HELP) || command.equalsIgnoreCase(Constants.VALUE_SORT) || 
+				command.equalsIgnoreCase(Constants.VALUE_SET) ||
+				command.equalsIgnoreCase(Constants.VALUE_REMINDER) ||
+				command.equalsIgnoreCase(Constants.VALUE_PRIORITY) ||
+				command.equalsIgnoreCase(Constants.VALUE_SEARCH)){ //check for command type		
+			return true;
+		}else{
+			assert false:"unacceptable command typed: "+command;
+		return false;
+		}//end if
+
+	}//end checkCommand
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Delete command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private static boolean checkDeleteTokens(MainParser mp, String[] tokens) {
+		mp.setTokens(tokens);
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+
+		String input = tokens[Constants.INDEX_ZERO];
+		try { 
+			int id = Integer.parseInt(input); 
+			// if it is a number
+			if( id < 1 ){
+				mp.setMessage(Constants.PARSER_MESSAGE_ID_LESS_THAN_ONE);
+				return false;
+			}
+			return true;
+
+		} catch(NumberFormatException e) { //if it is not a number
+			if(!input.equalsIgnoreCase("a")){
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALID_SHORTHAND);
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\storage\Storage.java
+	 */
+
+	 /**This method will get the task list
+	 * Return:		ArrayList<Task>
+	 * **/
+	 public ArrayList<Task> getTaskList(){
+		 if(this.taskList == null){
+			 this.taskList = new ArrayList<Task>();
+		 }
+		 return this.taskList;
+	 }
+	 
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\storage\Storage.java
+	 */
+
+	 /**This method will set the task list
+		 * **/
+	 public void setTaskList(ArrayList<Task> tl){
+		 try{
+			 assert(tl != null) : "setTaskList: " + ASSERT_PARAMTER_ARRAY_LIST_TASK_NULL_MESSAGE;
+			 
+			 if(tl != null){
+				 this.taskList = new ArrayList<Task>(tl);
+			 }	
+		 }catch(AssertionError e){
+			 mLog.logSevere(e.getMessage()); 
+		 }
+		 
+	 }
+	 
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\storage\Storage.java
+	 */
+
+	 /**This method will get the history list
+		 * Return:		ArrayList<String>
+		 * **/
+	 public ArrayList<String> getHistoryList(){
+		 return this.historyList;
+	 }
+	 
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\LogicTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import pista.Constants;
+import pista.logic.Logic;
+import pista.logic.Task;
+
+public class LogicTest {
+	Logic tLogic;
+	
+	@Before
+	public void init(){
+		ArrayList<Task> tempList = new ArrayList<Task>();
+		tLogic = Logic.getInstance();
+		tLogic.initStorage();
+		tLogic.initLogging();
+		tLogic.initPreference();
+		tLogic.getStorage().setDataFileLocation("test.xml");
+		tLogic.getStorage().setTaskList(tempList);
+	}
+	
+	@Test
+	public void testAdd(){
+		assertEquals("Test adding floating Task",tLogic.runCommand("add",new String[] {"meeting"}),Constants.LOGIC_SUCCESS_ADD_TASK);
+		assertEquals("Test adding deadline Task",tLogic.runCommand("add",new String[] {"meeting1","today","2pm"}),Constants.LOGIC_SUCCESS_ADD_TASK);
+		assertEquals("Test adding timed Task",tLogic.runCommand("add",new String[] {"meeting2","today","2pm","20/4/2015","10:00"}),Constants.LOGIC_SUCCESS_ADD_TASK);
+		
+	}
+	
+	@Test
+	public void testEdit(){
+		populateList();
+		assertEquals("Test editing Task succesfully",tLogic.runCommand("edit",new String[] {"1","new title"}),Constants.LOGIC_SUCCESS_EDIT_TASK);
+		assertEquals("Checking edited date",tLogic.getStorage().getTaskList().get(2).getTitle(),"new title");
+		assertEquals("Test editing Task with ID out of range",tLogic.runCommand("edit",new String[] {"5","new title"}),Constants.LOGIC_EDIT_TASK_NOT_FOUND);
+	}
+	
+	@Test
+	public void testDelete(){
+		populateList();
+		assertEquals("Test delete a task",tLogic.runCommand("delete", new String[] {"1"}),Constants.LOGIC_SUCCESS_DELETE_TASK);
+		assertEquals("Check if the task is deleted",tLogic.getStorage().getTaskList().size(),2);
+		assertEquals("Test delete task that is non existent",tLogic.runCommand("delete", new String[] {"10"}),Constants.LOGIC_DELETE_TASK_NOT_FOUND);
+	}
+	
+	@Test
+	public void testPriority(){
+		populateList();
+		assertEquals("Test setting new priority",tLogic.runCommand("priority", new String[] {"1","3"}),Constants.LOGIC_SUCCESS_PRIORITY_TASK);
+		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getPriority(),"3");
+		assertEquals("Test setting for task that is not in the list",tLogic.runCommand("priority", new String[] {"10","3"}),Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK);
+	}
+	
+	@Test
+	public void testMark(){
+		populateList();
+		assertEquals("Test marking a task as done",tLogic.runCommand("mark", new String[] {"1","done"}),Constants.LOGIC_SUCCESS_MARK_TASK);
+		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getIsDone(),true);
+		assertEquals("Test marking for task that is not in the list",tLogic.runCommand("mark", new String[] {"10","done"}),Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK);
+		assertEquals("Test marking a task as undone",tLogic.runCommand("mark", new String[] {"1","undone"}),Constants.LOGIC_SUCCESS_MARK_TASK);
+		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getIsDone(),false);
+	}
+	
+	public void populateList(){
+		tLogic.runCommand("add",new String[] {"meeting"});
+		tLogic.runCommand("add",new String[] {"meeting1","today","2pm"});
+		tLogic.runCommand("add",new String[] {"meeting2","today","2pm","20/4/2015","10:00"});
+	}
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\LogicTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	/**This method is to handle the auto-complete command when user press Ctrl+Space
+	 * **/
+	private void onCtrlSpacePressed(){
+		this.userInput = this.getTextCommand();
+		String[] temp = this.userInput.split("\\s+",2);
+		String command = temp[0];
+		try { 
+			int id = Integer.parseInt(temp[1]);
+			if( command.equalsIgnoreCase("edit")){
+				String processedString = mLogic.processTaskInfo(id);
+				String finalStr = processedString;
+				
+				this.setAppendTextCommand(finalStr);			
+			}
+		}catch(NumberFormatException e) {
+			mLog.logSevere(e.getMessage());
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	/**This method is to toggle the history commands when user press Up
+	 * **/
+	private void onUpPressed(){
+		if(Constants.HISTORY_INDEX > 0){
+			Constants.HISTORY_INDEX -= 1;
+			this.setTextCommand(this.mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
+		}else{
+			this.setTextCommand(this.mStorage.getHistoryList().get(0));
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	/**This method is to toggle the history commands when user press Down
+	 * **/
+	private void onDownPressed(){
+		if(Constants.HISTORY_INDEX < this.mStorage.getHistoryList().size() - 1){
+			Constants.HISTORY_INDEX += 1;
+			this.setTextCommand(this.mStorage.getHistoryList().get(Constants.HISTORY_INDEX));
+		}else{
+			Constants.HISTORY_INDEX = this.mStorage.getHistoryList().size();
+			this.clearTextCommand();
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	/**This method will append text in the text field command
+	 * with the cursor moving to the front
+	 * **/
+	private void setAppendTextCommand(String command){
+		this.txtBoxCommand.appendText(command);
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+

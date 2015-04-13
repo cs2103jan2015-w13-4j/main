@@ -1585,7 +1585,7 @@ public class UIController {
 		return this.possibleKeywords[Constants.SEARCH_KEYWORD_TIME];
 	}
 	
-	//@author A0125474Es
+	//@author A0125474E
 	/**This method is to handle the key event for text box command
 	 * **/
 	EventHandler<KeyEvent> txtBoxCommandEventHandler = new EventHandler<KeyEvent>(){

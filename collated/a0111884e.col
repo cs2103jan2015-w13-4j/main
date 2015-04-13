@@ -1,0 +1,2161 @@
+//@author: a0111884e
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\ComparatorTask.java
+	 */
+
+package pista.logic;
+
+import java.util.Comparator;
+
+public class ComparatorTask implements Comparator <Task> {
+	@Override
+	public int compare(Task taskOne, Task taskTwo){
+		if(compareIsDone(taskOne.getIsDone(), taskTwo.getIsDone()) == 0){
+			if(compareDate(taskOne.getEndMilliseconds(), taskTwo.getEndMilliseconds()) == 0){
+				if(comparePriority(Integer.parseInt(taskOne.getPriority()), Integer.parseInt(taskTwo.getPriority())) == 0){
+					return compareTitle(taskOne.getTitle(), taskTwo.getTitle());
+				}else{
+					return comparePriority(Integer.parseInt(taskOne.getPriority()), Integer.parseInt(taskTwo.getPriority()));
+				}
+			}else{
+				return compareDate(taskOne.getEndMilliseconds(), taskTwo.getEndMilliseconds());
+			}
+		}else{
+			return compareIsDone(taskOne.getIsDone(), taskTwo.getIsDone());
+		}
+	} 
+
+	private int compareDate(long taskOneDate, long taskTwoDate){
+		if(taskOneDate != 0L && taskTwoDate != 0L){
+			if(taskOneDate < taskTwoDate){
+				return -1;
+			}else if(taskOneDate == taskTwoDate){
+				return 0;
+			}else if (taskOneDate > taskTwoDate){
+				return 1;
+			}
+		}else if (taskOneDate == 0L && taskTwoDate != 0L){
+			return 1;
+		}else if (taskOneDate != 0L && taskTwoDate == 0L) {
+			return -1;
+		}
+		return 0;
+	}
+
+	private int compareTitle(String taskOneTitle, String taskTwoTitle){
+		return taskOneTitle.compareTo(taskTwoTitle);
+	}
+
+	private int compareIsDone(boolean taskOneIsDone, boolean taskTwoIsDone){
+		if(taskOneIsDone == true && taskTwoIsDone == false){
+			return 1;
+		}else if (taskOneIsDone == false && taskTwoIsDone == true) {
+			return -1;
+		}else{	// this is when taskOneStatus == statusTwoStatus  T==T or F==F
+			return 0;
+		}
+	}
+
+	private int comparePriority(int taskOnePriority, int taskTwoPriority){
+		if(taskOnePriority < taskTwoPriority ){
+			return 1;
+		}else if (taskOnePriority > taskTwoPriority) {
+			return -1;
+		}else{
+			return 0;
+		}
+	}
+
+
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\ComparatorTask.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to add a new Task to the program using the given information
+	 * Parameters:	tokens - an Array that contains information of the new Task
+	 * Return:		String - the status of the operation
+	 * **/
+	private String add(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
+		boolean isAddedToStorage = false;
+		boolean isAddedToArray = false;
+
+		Task newTask = null;
+
+		newTask = constructNewTask(tokens);
+		newTask.setID(mStorage.getNextAvailableID());
+		isAddedToArray = addTaskToTaskArrayList(newTask);
+		isAddedToStorage = mStorage.save();
+
+		if(isAddedToArray && isAddedToStorage){
+			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_ADD_TASK, newTask.getTitle(), newTask.getCategory()));
+			updateRedoAndUndo(currentState);
+			return Constants.LOGIC_SUCCESS_ADD_TASK;
+		}else{
+			mLog.logInfo(Constants.LOG_LOGIC_FAIL_ADD_TASK);
+			return Constants.LOGIC_FAIL_ADD_TASK;
+		}
+	}
+
+	/**This method is to edit an existing Task with new information provided by the user.
+	 * Editing will be done differently depends on the type of Task the user is updating.
+	 * Parameters:	tokens - an Array that contains new information to be updated
+	 * Return:		String - the status of the operation
+	 * **/
+	private String edit(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
+		int taskId=Integer.parseInt(tokens[0]);
+		if(isTaskInList(taskId)){
+			int taskIndex = findTaskIndex(taskId);
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
+				extractedTask=editFloatingTask(extractedTask, tokens[1]);
+			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
+				extractedTask=editDeadlineTask(extractedTask, tokens);
+			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
+				extractedTask=editEventTask(extractedTask, tokens);
+			}
+			reInsertTaskInToList(taskIndex, extractedTask);
+			updateRedoAndUndo(currentState);
+
+			mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_EDIT_TASK, extractedTask.getTitle(), extractedTask.getCategory()));
+			return Constants.LOGIC_SUCCESS_EDIT_TASK;
+		}
+		else{
+			mLog.logInfo(Constants.LOG_LOGIC_FAIL_EDIT_TASK);
+			return Constants.LOGIC_EDIT_TASK_NOT_FOUND;
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to mark a certain Task as done or undone
+	 * Parameters:	tokens - an Array that contains the ID of the Task and the status you want to mark it with
+	 * Return:		String - the status of the operation
+	 * **/
+	private String mark(String[] tokens){ 
+		ArrayList<Task> currentState = getCurrentState();
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		if(taskIndex != -1){
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			String status=tokens[1];
+
+			if(Constants.STATUS_DONE.equalsIgnoreCase(status)){
+				extractedTask.setIsDone(true);
+			}
+			else if(Constants.STATUS_UNDONE.equalsIgnoreCase(status)){
+				extractedTask.setIsDone(false);
+			}
+			reInsertTaskInToList(taskIndex, extractedTask);
+			updateRedoAndUndo(currentState);
+			mLog.logInfo(Constants.LOGIC_SUCCESS_MARK_TASK);
+			return Constants.LOGIC_SUCCESS_MARK_TASK;
+		}
+		mLog.logInfo(Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK);
+		return Constants.LOGIC_FAIL_MARK_NOT_FOUND_TASK;
+	}//end mark
+
+	/**This method is to sort the Storage using the default sort
+	 * **/
+	private void sortOverView(){
+		ComparatorTask comparatorTask = new ComparatorTask();
+		Collections.sort(mStorage.getTaskList(), comparatorTask);
+	}
+
+	/**This method is to sort the Storage by ascending title of Task
+	 * **/
+	private void sortTitleAscending(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.titleComparator);
+	}
+
+	/**This method is to sort the Storage by the type of Task
+	 * **/
+	private void sortTypeOfTask(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.taskCategoryComparator);
+	}
+
+	/**This method is to sort the Storage by descending title of ask
+	 * **/
+	private void sortTitleDescending(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.titleComparator));
+	}
+
+	/**This method is to sort the Storage by the Done or Undone status. Undone before Done
+	 * **/
+	private void sortIsDoneUndone(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.isDoneComparator);
+	}
+
+	/**This method is to sort the Storage by the Done or Undone status. Done before Undone
+	 * **/
+	private void sortIsDoneCompleted(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.isDoneComparator));
+	}
+
+	/**This method is to sort the Storage by ascending start date of Task
+	 * **/
+	private void sortAscendingStartDate(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.startDateComparator);
+	}
+
+	/**This method is to sort the Storage by descending start date of Task
+	 * **/
+	private void sortDescendingStartDate(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.descendingStartDateComparator));
+	}
+
+	/**This method is to sort the Storage by ascending end date of Task
+	 * **/
+	private void sortAscendingEndDate(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.endDateComparator);
+	}
+
+	/**This method is to sort the Storage by descending end date of Task
+	 * **/
+	private void sortDescendingEndDate(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.endDateComparator));
+	}
+
+	/**This method is to sort the Storage by ascending priority of Task
+	 * **/
+	private void sortAscendingPriority(){
+		Collections.sort(mStorage.getTaskList(), Collections.reverseOrder(MiscComparator.priorityComparator));
+	}
+
+	/**This method is to sort the Storage by descending priority of Task
+	 * **/
+	private void sortDescendingPriority(){
+		Collections.sort(mStorage.getTaskList(), MiscComparator.priorityComparator);
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to sort the listview in a certain sorting option
+	 * Parameters:	tokens - an Array contains type of sort the user want to sort the view by
+	 * Return:		message - the message to show the type of sort has been implemented
+	 * **/
+	private String sort(String[] tokens){ 
+		String sortType=tokens[0];
+		String message=String.format(Constants.LOGIC_SUCESS_SORTED, sortType);
+		/*if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
+			sortAscendingEndDate();
+		}phased out since overview is sorted in isDone, priority, ascending end date, title*/
+		if(Constants.PARSER_SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
+			sortDescendingEndDate();
+		}else if(Constants.PARSER_SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
+			sortAscendingStartDate();
+		}else if(Constants.PARSER_SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) ){
+			sortDescendingStartDate();
+		}else if(Constants.PARSER_SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType)){
+			sortTitleAscending();
+		}else if(Constants.PARSER_SORT_DESCENDING_TITLE.equals(sortType)){
+			sortTitleDescending();
+		}else if(Constants.PARSER_SORT_ISDONE_DONE.equalsIgnoreCase(sortType) ){
+			sortIsDoneCompleted();
+		}else if(Constants.PARSER_SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) ){
+			sortIsDoneUndone();
+		}else if(Constants.PARSER_SORT_OVERVIEW.equalsIgnoreCase(sortType)){
+			sortOverView();
+		}else if(Constants.PARSER_SORT_TYPE.equalsIgnoreCase(sortType)){
+			sortTypeOfTask();
+		}else if (Constants.PARSER_SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+			sortAscendingPriority();
+		}else if (Constants.PARSER_SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+			sortDescendingPriority();
+		}
+		currentSortType[0] = sortType;
+		mStorage.save();
+		mLog.logInfo(message);
+		return message;
+	}
+
+	/**This method is to set priority to a Task .
+	 * Parameters:	tokens - an Array that contains the ID of the Task and the level of priority the user want to set to that Task
+	 * Returns:		String - the status of the operation
+	 * **/
+	private String priority(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		if(taskIndex != -1){
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			int prorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+			if(prorityScore >=0 && prorityScore <=3) {
+				extractedTask.setPriority(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+				reInsertTaskInToList(taskIndex, extractedTask);
+				updateRedoAndUndo(currentState);
+				mLog.logInfo(Constants.LOGIC_SUCCESS_PRIORITY_TASK);
+				return Constants.LOGIC_SUCCESS_PRIORITY_TASK;
+			}
+		}
+		mLog.logInfo(Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK);
+		return Constants.LOGIC_FAIL_PRIORITY_NOT_FOUND_TASK;
+	}
+
+	/**This method is set the reminder to a certain Task
+	 * Parameters:	tokens - an Array that contains the ID of the task the user want to set the reminder to
+	 * Return:		String - a status of the operation
+	 * **/
+	private String reminder(String[] tokens){
+		ArrayList<Task> currentState = getCurrentState();
+		int taskIndex = findTaskIndex(Integer.parseInt(tokens[0]));
+		long reminderMS = 0L;
+		long endMS = 0L;
+		String taskCategory = "";
+		if(taskIndex != -1){
+			Task extractedTask = mStorage.getTaskList().get(taskIndex);
+			taskCategory = extractedTask.getCategory();
+			if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
+				if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+					mLog.logInfo(Constants.LOGIC_FAIL_REMIND_FLOATING_TASK);
+					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
+				}else{
+					extractedTask.setReminder(0L);
+					reInsertTaskInToList(taskIndex, extractedTask);
+					updateRedoAndUndo(currentState);
+					mLog.logInfo(Constants.LOGIC_SUCCESS_REMIND_OFF_TASK);
+					return Constants.LOGIC_SUCCESS_REMIND_OFF_TASK;
+				}
+			}else if (tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
+				endMS = extractedTask.getEndMilliseconds();
+				reminderMS = MainParser.convertDateToMillisecond(tokens[Constants.REMINDER_DATE], tokens[Constants.REMINDER_TIME]);
+				if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+					mLog.logInfo(Constants.LOGIC_FAIL_REMIND_FLOATING_TASK);
+					return Constants.LOGIC_FAIL_REMIND_FLOATING_TASK;
+				}else{
+					if(reminderMS <= endMS){
+						extractedTask.setReminder(reminderMS);
+						reInsertTaskInToList(taskIndex, extractedTask);
+						updateRedoAndUndo(currentState);
+						mLog.logInfo(Constants.LOGIC_SUCCESS_REMIND_TASK);
+						return Constants.LOGIC_SUCCESS_REMIND_TASK;
+					}else{
+						mLog.logInfo(Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK);
+						return Constants.LOGIC_FAIL_REMIND_LATER_THAN_ENDDATE_TASK;
+					}
+				}
+			}
+		}
+		mLog.logInfo(Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK);
+		return Constants.LOGIC_FAIL_REMIND_NOT_FOUND_TASK;
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to add the Task to the Storage
+	 * Parameters:	task - the Task to add into the Storage
+	 * **/
+	private boolean addTaskToTaskArrayList(Task task){
+		if(mStorage.getTaskList().add(task)){
+			return true;
+		}else{
+			assert false:"unable to add task to arraylist";
+		}
+		return false;
+	}
+
+	/**This method is to format the Array that contains the information of the Task based on the 
+	 * type of Task it is.
+	 * Parameters:	inputArray - an Array that contains information of the Task
+	 * 				category - the type of Task 
+	 * Return:		inputArray - the formated Array
+	 * **/
+	private String[] formatArray(String[] inputArray, String category){
+		if(category.equals("timed")){
+			inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_START_DATE], inputArray[Constants.ARRAY_INDEX_START_TIME]));
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
+		}
+		else{
+			inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]=String.valueOf(convertDateToMillisecond(inputArray[Constants.ARRAY_INDEX_END_DATE], inputArray[Constants.ARRAY_INDEX_END_TIME]));
+		}
+
+
+		return inputArray;
+	}
+
+	/**This method is to construct a new Task based on given information
+	 * Parameters:	inputArray - the information of the new Task
+	 * Return:		newTask - the new Task that has been constructed using the information
+	 * **/
+	private Task constructNewTask(String[] inputArray){
+		Task newTask = null;
+
+		String[] newArray = new String[Constants.ARRAY_SIZE];
+		if(inputArray.length==Constants.FLOATING_TASK 
+				|| inputArray.length==Constants.TIMED_TASK){
+			System.arraycopy(inputArray, 0, newArray, 0, inputArray.length); //copy inputArray into newArray
+		}
+		else if(inputArray.length==Constants.DEADLINE_TASK){
+			System.arraycopy(inputArray, 0, newArray, 0, 1); //copy title of inputArray into newArray postition
+			System.arraycopy(inputArray, 1, newArray, 3, inputArray.length-1); //copy end date and end time of inputArray into newArray postition
+		}
+
+		if(inputArray.length==Constants.DEADLINE_TASK){
+			newArray = formatArray(newArray,"deadline"); //add in epoh time for parser
+		}
+		else if(inputArray.length==Constants.TIMED_TASK){
+			newArray = formatArray(newArray,"timed"); //add in epoh time for parser
+		}
+
+		newTask = new Task(newArray); //id will auto generate inside Task class
+		return newTask;	
+	}//end constructNewTask
+
+	/**This method is to edit a Task if the Task is of the type timed
+	 * Parameters:	extractedTask - the Task that need to be edited
+	 * 				tokens - the new information to be updated
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task editEventTask(Task extractedTask, String[] tokens) {
+		Long remindMS = extractedTask.getReminder();
+		Long endMS = extractedTask.getEndMilliseconds();
+		Long differenceReminer = endMS - remindMS;
+		Long updatedRemindMS = 0L;
+		Long updatedEndMS = 0L;
+		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
+			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
+		}
+		extractedTask = setFieldsInTimed(extractedTask, tokens);
+		updatedEndMS = extractedTask.getEndMilliseconds();
+		extractedTask =changeReminderBasedOnDifference(extractedTask, remindMS, endMS,
+				differenceReminer, updatedEndMS);
+
+		return extractedTask;
+	}
+
+	/**This method is to set the fields of the timed Task. Use to update new information to the Task
+	 * Parameters:	extractTask - the Task to be updated
+	 * 				tokens - an Array that contains the new information
+	 * Return:		extractedTask - the Task with updated information
+	 * **/
+	private Task setFieldsInTimed(Task extractedTask, String[] tokens) {
+		extractedTask.setStartDate(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]);//1
+		extractedTask.setStartTime(tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]);//2
+		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]);//3	
+		extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]);//4
+		extractedTask.setStartMilliseconds(Long.parseLong("0"));
+		extractedTask.setEndMilliseconds(Long.parseLong("0"));
+		extractedTask.setStartMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_STARTDATE]
+				, tokens[Constants.EDIT_TOKEN_TIMED_STARTTIME]));
+		extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_TIMED_ENDDATE]
+				, tokens[Constants.EDIT_TOKEN_TIMED_ENDTIME]));
+		extractedTask.setCategory(Constants.TASK_TIMED);
+		return extractedTask;
+	}
+
+	/**This method is to edit a Task if the Task is of the type deadline
+	 * Parameters:	extractedTask - the Task that need to be edited
+	 * 				tokens - the new information to be updated	
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task editDeadlineTask(Task extractedTask, String[] tokens) {
+		String taskCategory = extractedTask.getCategory();
+		Long remindMS = extractedTask.getReminder();
+		Long endMS = extractedTask.getEndMilliseconds();
+		Long differenceReminer = endMS - remindMS;
+		Long updatedRemindMS = 0L;
+		Long updatedEndMS = 0L;
+		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(tokens[Constants.EDIT_TOKEN_TITLE])){
+			extractedTask.setTitle(tokens[Constants.EDIT_TOKEN_TITLE]);//0
+		}
+		extractedTask = setFieldsInDeadline(extractedTask, tokens);
+		extractedTask = resetFieldsFromTimedToDeadline(extractedTask, taskCategory);
+		updatedEndMS = extractedTask.getEndMilliseconds();
+		extractedTask =changeReminderBasedOnDifference(extractedTask, remindMS, endMS,
+				differenceReminer, updatedEndMS);
+
+		extractedTask.setCategory(Constants.TASK_DEADLINE);
+		return extractedTask;
+	}
+
+	/**	This method edits the reminder of a Task
+	 * 	if the newly edited enddate and end time is earlier than the previous, a new reminder will be set.
+	 * 	new reminder is obtained by subracting the difference from the initial endMS.
+	 * difference is obtained from initial endMS - initial remindMS 
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				Long - remindMS, endMS, differenceReminder, updatedEndMS
+	 * 				tokens - the new information to be updated	
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task changeReminderBasedOnDifference(Task extractedTask,
+			Long remindMS, Long endMS, Long differenceReminer, Long updatedEndMS) {
+		Long updatedRemindMS = 0L;
+		if(updatedEndMS != endMS){
+			updatedRemindMS = updatedEndMS - differenceReminer;
+			if(remindMS >= updatedEndMS) {
+				extractedTask.setReminder(updatedRemindMS);
+			}
+		}
+		return extractedTask;
+	}
+
+	/**	This method edits the information of a deadline Task
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String array - parameters
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task setFieldsInDeadline(Task extractedTask, String[] tokens) {
+		extractedTask.setEndDate(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]);
+		extractedTask.setEndTime(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]);
+		extractedTask.setEndMilliseconds(MainParser.convertDateToMillisecond(tokens[Constants.EDIT_TOKEN_DEADLINE_ENDDATE]
+				, tokens[Constants.EDIT_TOKEN_DEADLINE_ENDTIME]));
+		return extractedTask;
+	}
+
+	/**	This method does the conversion of a Timed task to Deadline task
+	 * by resetting the necessary fields 
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String - task's category
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task resetFieldsFromTimedToDeadline(Task extractedTask,
+			String taskCategory) {
+		if(taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
+			extractedTask.setStartDate("");
+			extractedTask.setStartTime("");
+			extractedTask.setStartMilliseconds(Long.parseLong("0"));
+		}
+		return extractedTask;
+	}
+
+	/**	This method edits the information of a deadline Task
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String array - parameters
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task editFloatingTask(Task extractedTask, String title) {
+		String taskCategory = extractedTask.getCategory();
+		if(!Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title) ){
+			extractedTask.setTitle(title);
+		}
+		extractedTask = resetFieldsFloating(extractedTask, taskCategory);		
+		extractedTask.setCategory(Constants.TASK_FLOATED);
+		return extractedTask;
+	}
+
+	/**	This method does the conversion of a Timed/Deadline task to floating task
+	 * by resetting the necessary fields 
+	 * Parameters:	Task - the Task that need to be edited
+	 * 				String - task's category
+	 * Return:		extractedTask - the Task with information updated
+	 * **/
+	private Task resetFieldsFloating(Task extractedTask,
+			String taskCategory) {
+		if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE) 
+				|| taskCategory.equalsIgnoreCase(Constants.TASK_TIMED)){
+			extractedTask.setStartDate("");
+			extractedTask.setStartTime("");
+			extractedTask.setEndDate("");
+			extractedTask.setEndTime("");
+			extractedTask.setStartMilliseconds(Long.parseLong("0"));
+			extractedTask.setEndMilliseconds(Long.parseLong("0"));
+			extractedTask.setReminder(Long.parseLong("0"));
+
+		}
+		return extractedTask;
+	}
+
+	/**This method is to reinsert a Task to the Storage
+	 * Parameters:	taskIndex - the index in the Storage that the Task will be added to
+	 * 				extractedTask - the Task that will be insert inside the Storage
+	 * **/
+	private void reInsertTaskInToList(int taskIndex, Task extractedTask) {
+		mStorage.getTaskList().remove(taskIndex);
+		mStorage.getTaskList().add(extractedTask);
+		mStorage.save();
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/**This method is to convert a Date to its corresponding Millisecond value
+	 * Parameters:	date - the date value that need to be converted
+	 * 				time - the time value that need to be converted
+	 * **/
+	private long convertDateToMillisecond(String date, String time){
+		//date format dd/mm/yyyy
+		//time format HH:mm;	
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy HH:mm");
+		String combined=date+" "+time;
+		Date date1 = null;
+		try {
+			date1=sdf.parse(combined);
+
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date1);
+
+			return cal.getTimeInMillis();
+
+		} catch (ParseException e) {
+			mLog.logSevere(e.getMessage());
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+	 */
+
+	/** This method is to reorder the ID of the Task in the Storage to make the ID in a correct sequence based on
+	 * how the Task is being shown
+	 * **/
+	private void reorderID() {
+		for (int i = 0; i < mStorage.getTaskList().size(); i++) {
+			mStorage.getTaskList().get(i).setID(i+1);
+		}
+		mStorage.save();
+	}
+
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\MiscComparator.java
+	 */
+
+package pista.logic;
+
+import java.util.Comparator;
+
+import pista.Constants;
+
+public class MiscComparator {
+	
+	public static Comparator<Task> titleComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			String titleOne=one.getTitle();
+			String titleTwo=two.getTitle();
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				return titleOne.compareTo(titleTwo);
+			}
+			return 1;
+		}
+	};	//added ; to resolve ClassBodyDeclarations	
+
+	public static Comparator<Task> isDoneComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			return compareIsDone(taskOneStatus, taskTwoStatus);
+		}
+	};
+
+	public static Comparator<Task> endDateComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			long taskOneDate = one.getEndMilliseconds();
+			long taskTwoDate = two.getEndMilliseconds();
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if (taskOneDate == 0L && taskTwoDate != 0L){
+					return -1;
+				}
+				if(taskOneDate != 0L && taskTwoDate != 0L){
+					if(taskOneDate < taskTwoDate){
+						return -1;
+					}else if(taskOneDate == taskTwoDate){
+						return 0;
+					}else if (taskOneDate > taskTwoDate){
+						return 1;
+					}
+				}
+			}
+			
+			
+			return 1;
+		}
+	};
+
+	public static Comparator<Task> startDateComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			long taskOneDate = one.getStartMilliseconds();
+			long taskTwoDate = two.getStartMilliseconds();
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if (taskOneDate == 0L && taskTwoDate != 0L){
+					return 1;
+				}
+				if(taskOneDate != 0L && taskTwoDate != 0L){
+					if(taskOneDate < taskTwoDate){
+						return -1;
+					}else if(taskOneDate == taskTwoDate){
+						return 0;
+					}else if (taskOneDate > taskTwoDate){
+						return 1;
+					}
+				}
+			}
+			
+			
+			return -1;
+		}
+	};
+
+	public static Comparator<Task> descendingStartDateComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			long taskOneDate = one.getStartMilliseconds();
+			long taskTwoDate = two.getStartMilliseconds();
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if (taskOneDate == 0L && taskTwoDate != 0L){
+				return -1;
+			}
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if(taskOneDate != 0L && taskTwoDate != 0L){
+					if(taskOneDate < taskTwoDate){
+						return -1;
+					}else if(taskOneDate == taskTwoDate){
+						return 0;
+					}else if (taskOneDate > taskTwoDate){
+						return 1;
+					}
+				}
+			}		
+			return 1;
+		}
+	};
+
+	public static Comparator<Task> taskCategoryComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			String catOne = one.getCategory();
+			String catTwo = two.getCategory();
+			Integer orderOne = taskOrder(catOne);
+			Integer orderTwo = taskOrder(catTwo);
+			return orderOne.compareTo(orderTwo);
+		}
+
+		private int taskOrder(String taskCategory){
+			if(taskCategory.equalsIgnoreCase(Constants.TASK_FLOATED)){
+				return -1;
+			}else if(taskCategory.equalsIgnoreCase(Constants.TASK_DEADLINE)){
+				return 0;
+			}
+
+			return 1;	
+		}
+	};
+	public static Comparator<Task> priorityComparator = new Comparator<Task>(){
+		@Override
+		public int compare (Task one, Task two){
+			int taskOnePriority = Integer.parseInt(one.getPriority());
+			int taskTwoPriority = Integer.parseInt(two.getPriority());
+			boolean taskOneStatus = one.getIsDone();
+			boolean taskTwoStatus = two.getIsDone();
+			if(compareIsDone(taskOneStatus, taskTwoStatus) == 0){
+				if(taskOnePriority < taskTwoPriority ){
+					return 1;
+				}else if (taskOnePriority > taskTwoPriority) {
+					return -1;
+				}else{
+					return 0;
+				}
+			}
+			return 1;
+		}
+	};
+
+	private static int compareIsDone(boolean taskOneIsDone, boolean taskTwoIsDone){
+		if(taskOneIsDone == true && taskTwoIsDone == false){
+			return 1;
+		}else if (taskOneIsDone == false && taskTwoIsDone == true) {
+			return -1;
+		}else{	// this is when taskOneStatus == statusTwoStatus  T==T or F==F
+			return 0;
+		}
+	}
+}
+
+
+
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\MiscComparator.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Task.java
+	 */
+
+package pista.logic;
+
+import pista.Constants;
+import pista.storage.Storage;
+
+public class Task {
+	private Storage mStorage;
+	private String title="";
+	//private String description;
+	private int id;
+	private String startDate = "";
+	private String endDate = "";
+	private String startTime = "";
+	private String endTime = "";
+	private boolean isDone = false;
+	private boolean isReminded = false;
+	private long startMilliseconds;
+	private long endMilliseconds;
+	private String category = "";
+	private String priority = "";  
+	private long reminderTime = 0L;
+	
+	public Task(){}
+	/*3 catergory
+	 * event task has start date/time and end date/time
+	 * deadline	task has end date/time only
+	 * free time task does not have start and end date/time*/
+	public Task(String[] inputArray){
+		initStorage();
+		this.title=inputArray[Constants.ARRAY_INDEX_TITLE];
+		this.id= mStorage.getNextAvailableID();
+		this.startDate=inputArray[Constants.ARRAY_INDEX_START_DATE];
+		this.startTime=inputArray[Constants.ARRAY_INDEX_START_TIME];
+		this.endDate=inputArray[Constants.ARRAY_INDEX_END_DATE];
+		this.endTime=inputArray[Constants.ARRAY_INDEX_END_TIME];
+		this.isDone=false;
+		this.isReminded = false; //default task is not reminded
+		this.priority ="0";
+		
+		setCategoryInConstructor(inputArray);
+		
+	}
+
+	private void setCategoryInConstructor(String[] inputArray) {
+		if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]==null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
+			this.category="floating";
+			
+		}else if(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]!=null && inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]==null){
+			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
+			this.category="deadline";
+			
+		}else{
+			this.startMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_START_MILLISECONDS]);
+			this.endMilliseconds=Long.parseLong(inputArray[Constants.ARRAY_INDEX_END_MILLISECONDS]);
+			this.category="timed";
+		}
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Task.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Task.java
+	 */
+
+	public String getTitle(){
+		return title;
+	}
+	
+	public int getID(){
+		return this.id;
+	}
+	
+	public String getStartTime(){
+		return this.startTime;
+	}
+	
+	public String getEndTime(){
+		return this.endTime;
+	}
+	
+	public String getStartDate(){
+		return this.startDate;
+	}
+	
+	public String getEndDate(){
+		return this.endDate;
+	}
+	
+	public long getStartMilliseconds(){
+		return this.startMilliseconds;
+	}
+	
+	public long getEndMilliseconds(){
+		return this.endMilliseconds;
+	}
+	
+	public boolean getIsDone(){
+		return this.isDone;
+	}
+	
+	public boolean getIsReminded(){
+		return this.isReminded;
+	}
+	
+	public String getCategory() {
+		return this.category;
+	}
+	
+	public String getPriority(){
+		return this.priority;
+	}
+	
+	public long getReminder(){
+		return this.reminderTime;
+	}
+	
+	public void setID(int id){
+		this.id = id;
+	}
+	
+	public void setTitle(String title){
+		this.title=title;
+	}
+	
+	public void setStartTime(String startTime){
+		this.startTime=startTime;
+	}
+	
+	public void setEndTime(String endTime){
+		this.endTime=endTime;
+	}
+	
+	public void setStartDate(String startDate){
+		this.startDate=startDate;
+	}
+	
+	public void setEndDate(String endDate){
+		this.endDate=endDate;
+	}
+	
+	
+	public void setStartMilliseconds(long start){
+		this.startMilliseconds = start; 
+	}
+	
+	public void setEndMilliseconds(long start){
+		this.endMilliseconds = start; 
+	}
+	
+	public void setIsDone(boolean status){
+		this.isDone=status;
+	}
+	
+	public void setIsReminded(boolean reminded){
+		this.isReminded = reminded;
+	}
+
+	public void setCategory(String cat){
+		this.category = cat;
+	}
+	
+	public void setPriority(String p){
+		this.priority = p;
+	}
+	
+	public long setReminder(long reminderTime){
+		return this.reminderTime = reminderTime;
+	}
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\logic\Task.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+package pista.parser;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import pista.Constants;
+import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.Parser;
+
+public class MainParser {
+
+	String command="";
+	String[] tokens;
+	String message="";
+	boolean validTokens=false;
+
+
+	public MainParser(){
+		tokens=null;
+	}
+
+	public String getCommand(){return command;}
+	public String[] getTokens(){return tokens;}
+	public String getItemInTokenIndex(int index){return tokens[index];}
+	public String getMessage(){return message;}
+	private void setCommand(String command){this.command = command;}
+	private void setTokens(String[] tokens){this.tokens = tokens;}
+	private void setMessage(String message){this.message = message;}
+	private void setIndexInToken(int index, String input){this.tokens[index] = input;}	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method extracts parameters from a string and put them inside a String array
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		String array - Provided that all parameters have been entered
+	 * 				null if no parameters are entered after the command
+	 * **/
+	public static String[] getTokens(String input){
+		String[] temp = input.split(" ",Constants.SPLIT_INTO_TWO);
+
+		if(temp.length > 1){
+			String[] arr = temp[Constants.INDEX_ONE].split("-");
+			trimWhiteSpace(arr);
+			return arr;
+		}else{
+			return null;
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Add command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkAddTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		if(tokens.length == Constants.TOKEN_NUM_ADD_ONE){
+			if(TokenValidation.isTitleValid((tokens[Constants.ADD_TOKEN_TITLE]))){
+				return true;
+			}
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_TITLE);
+			return false;
+		}
+		else if(tokens.length == Constants.TOKEN_NUM_ADD_THREE){
+			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])){
+				if(!isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_DEADLINE_ENDDATE, 
+						Constants.ADD_TOKEN_DEADLINE_ENDTIME)){
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		else if(tokens.length == Constants.TOKEN_NUM_ADD_FIVE){
+			if(TokenValidation.isTitleValid(tokens[Constants.ADD_TOKEN_TITLE])) {
+				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_STARTDATE, Constants.ADD_TOKEN_TIMED_STARTTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, Constants.ADD_TOKEN_TIMED_ENDDATE, Constants.ADD_TOKEN_TIMED_ENDTIME);
+				if(startDateTimeValid && endDateTimeValid){
+					if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE),
+							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE), 
+							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME), 
+							mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME))){
+						return true;
+					}else{
+						mp.setMessage(Constants.PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+						return false;
+					}
+				}
+				return false;
+			}
+			return false;
+		}
+
+		assert false:"Tokens number in add function are "+tokens.length +" allowed length are 1,3,5";
+		mp.setMessage(Constants.PARSER_MESSAGE_ADD_EMPTY_TOKENS);
+		return false;
+	}
+	
+	/**This method checks the tokens for the Edit command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkEditTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		if(tokens.length==Constants.TOKEN_NUM_EDIT_TWO){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){	//edit id -title 
+				return true;
+			}
+		}
+
+		else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])) {
+				if(!isDateAndTimeValid(mp, tokens, Constants.EDIT_TOKEN_DEADLINE_ENDDATE, 
+						Constants.EDIT_TOKEN_DEADLINE_ENDTIME)){
+					return false;
+				}
+				return true;
+			}			
+			return false;
+		}
+
+		else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
+			if(TokenValidation.isTitleValid(tokens[Constants.EDIT_TOKEN_TITLE])){
+				boolean startDateTimeValid = isDateAndTimeValid(mp, tokens, 
+						Constants.EDIT_TOKEN_TIMED_STARTDATE, Constants.EDIT_TOKEN_TIMED_STARTTIME);
+				boolean endDateTimeValid = isDateAndTimeValid(mp, tokens, 
+						Constants.EDIT_TOKEN_TIMED_ENDDATE, Constants.EDIT_TOKEN_TIMED_ENDTIME);
+					if(startDateTimeValid && endDateTimeValid){
+						if(TokenValidation.isStartDateBeforeThanEndDate(mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTDATE),
+								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDDATE), 
+								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_STARTTIME), 
+								mp.getItemInTokenIndex(Constants.EDIT_TOKEN_TIMED_ENDTIME))){						
+							return true;
+						}else{
+							mp.setMessage(Constants.PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE);
+							return false;
+						}
+					}
+					return false;
+			
+			}
+			return false;
+		}
+		assert false:"Tokens number in edit function are "+tokens.length +"allowed length is 2,4,6";
+		mp.setMessage(Constants.PARSER_MESSAGE_EDIT_EMPTY_TOKENS);
+		return false;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Mark command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkMarkTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		String status = tokens[Constants.INDEX_ONE];
+		if(Constants.PARSER_MARK_DONE.equalsIgnoreCase(status) || Constants.PARSER_MARK_UNDONE.equalsIgnoreCase(status)){
+			return true;
+		}
+		mp.setMessage(Constants.PARSER_INVALID_MARK);
+		return false;
+	}
+	
+	/**This method checks the tokens for the Reminder command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkReminderTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		if(tokens.length == Constants.TOKEN_NUM_REMINDER_TWO){
+			if(tokens[Constants.TOKEN_NUM_REMINDER_OFF].equalsIgnoreCase(Constants.PARSER_REMINDER_OFF)){
+				return true;
+			}
+			mp.setMessage(Constants.PARSER_REMINDER_INVALID_STATUS);
+			return false;
+		}else if(tokens.length == Constants.TOKEN_NUM_REMINDER_THREE){
+			//String taskId = tokens[TOKEN_REMINDER_ID];
+			if(!isDateAndTimeValid(mp, tokens, Constants.REMINDER_DATE, 
+					Constants.REMINDER_TIME)){
+				return false;
+			}
+			return true;
+		}
+
+		mp.setMessage(Constants.PARSER_INVALID_REMINDER);
+		return false;
+	}
+	
+	/**This method checks the tokens for the Priority command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkPriorityTokens (MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		if(tokens.length == Constants.LENGTH_TWO){
+			int priorityScore = Integer.parseInt(tokens[Constants.TOKEN_NUM_PRIORITY_SCORE]);
+			if(priorityScore >= Constants.DEFAULT_PRIORITY && priorityScore <= Constants.HIGH_PRIORITY){
+				return true;
+			}else {
+				mp.setMessage(Constants.PARSER_INVALID_PRIORITY_SCORE);
+				return false;
+			}
+		}
+		mp.setMessage(Constants.PARSER_INVALID_PRIORITY_SCORE);
+		return false;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Sort command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are correct
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkSortTokens(MainParser mp, String[] tokens) {
+		if(tokens == null){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		mp.setTokens(tokens);
+		String sortType = tokens[Constants.INDEX_ZERO];
+		if(Constants.PARSER_SORT_ASCENDING_END_DATE.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType) ||
+				Constants.PARSER_SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType) ||
+				Constants.PARSER_SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)|| 
+				Constants.PARSER_SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_DESCENDING_TITLE.equals(sortType) || 
+				Constants.PARSER_SORT_ISDONE_DONE.equals(sortType) || 
+				Constants.PARSER_SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_OVERVIEW.equalsIgnoreCase(sortType) || 
+				Constants.PARSER_SORT_TYPE.equalsIgnoreCase(sortType) 
+				|| Constants.PARSER_SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType) ||
+				Constants.PARSER_SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+			return true;
+		}
+		mp.setMessage(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION);
+		return false;
+	}
+	
+	/**This method validates both the Date and Time Tokens using inbuilt validation. 
+	 * If the inbuilt validation does not recognizes, it will be passed on to Natty to interpret it 
+	 * before going through the inbuilt validation again
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * 				int - contains the index of both date and time found in the array
+	 * Return:		Boolean 
+	 * 				True if both the Date and Time tokens are correct
+	 * 				False if both the Date and Time tokens are wrong 
+	 * **/
+	private static boolean isDateAndTimeValid(MainParser mp, String[] tokens, int dateIndex, int timeIndex) {
+		Parser parser = new Parser();
+		List<DateGroup> groups;
+		String requiredNattyInputFormat = ""; 
+		String interpretOutputDateFromNatty="";
+		String interpretOutputTimeFromNatty="";
+		
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		
+		tokens[dateIndex]=flexibleDateFormat(tokens[dateIndex]);
+		
+		if(!TokenValidation.isDateValid(tokens[dateIndex])){
+			requiredNattyInputFormat = nattyInputFormat(tokens, dateIndex);
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[dateIndex]);
+			}
+
+			try {
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALD_NATTY_DATE);
+				return false;
+			}
+			if(!TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALID_DATE_INPUT);
+				return false;
+			}else{
+				mp.setIndexInToken(dateIndex, interpretOutputDateFromNatty);
+			}
+		}
+		
+		if(!TokenValidation.isTimeValid(tokens[timeIndex])){
+			groups = parser.parse(tokens[timeIndex]);
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALD_NATTY_TIME);
+				return false;
+			}
+			if(!TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
+				mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TIME_INPUT);
+				return false;
+			}else{
+				mp.setIndexInToken(timeIndex, interpretOutputTimeFromNatty);
+			}
+		}
+		return true;
+	}
+
+	/**This method reorder of data format for natty as it recognizes mm/dd/yyyy instead of dd/mm/yyyy
+	 * Parameters: String array - contains all parameters
+	 * 				int - contains the index of a date in the array 
+	 * Return:		String - in the order which natty recognizes
+	 * **/
+	private static String nattyInputFormat(String[] tokens, int dateIndex) {
+		String requiredNattyInputDateFormat = "";
+		String[] temp = tokens[dateIndex].split("/");
+		if(StringUtils.countMatches(tokens[dateIndex], "/") == Constants.LENGTH_TWO){
+			requiredNattyInputDateFormat = temp[Constants.INDEX_ONE] +"/"+ temp [Constants.INDEX_ZERO] 
+					+"/"+ temp [Constants.INDEX_TWO];
+		}else if (StringUtils.countMatches(tokens[dateIndex], "/") == Constants.LENGTH_ONE){
+			requiredNattyInputDateFormat = temp[Constants.INDEX_ONE] +"/"+ temp [Constants.INDEX_ZERO];
+		}else {
+			assert StringUtils.countMatches(tokens[dateIndex], "/") > 3 ;
+		}
+		return requiredNattyInputDateFormat;
+	}
+
+	/**This method lets the third party library Natty interprets date and time 
+	 * which the inbuilt validator does not recognizes
+	 * Parameters: List<DateGroup>
+	 * Return:		String - if natty recognizes what it represents 
+	 * 				else it returns an empty string
+	 * **/
+	private static String interpretInputNatty(List<DateGroup> groups) {
+		List dates = null;
+		for(DateGroup group: groups){
+			dates = group.getDates();
+			return dates.toString();
+		}
+
+		return "";
+
+	}
+
+	/**This method converts unix epoch into a String of Date and Time
+	 * Parameters: Long - milliseconds
+	 * Return:		String - date in the format dd/MM/yyyy
+	 * **/
+	public static String convertMillisecondToDate(long ms){
+		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
+		return date.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ZERO];
+
+	}//end /convertMillisecondToDate
+
+	/**This method converts unix epoch into Time
+	 * Parameters: Long - in milliseconds
+	 * Return:		String - time in the format HH:mm
+	 * **/
+	public static String convertMillisecondToTime(long ms){
+		//get time in HH:mm
+		String date = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(ms);	 
+		return date.split(" ",Constants.SPLIT_INTO_TWO)[Constants.INDEX_ONE];
+
+	}
+
+	/**This method converts Date and Time into unix epoch
+	 * Parameters: String - contains date and time
+	 * Return:		Long - time in milliseconds
+	 * **/
+	public static long convertDateToMillisecond(String date, String time){
+		//date format dd/mm/yyyy
+		//time format HH:mm;	
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy HH:mm");
+		String combined=date+" "+time;
+		Date date1 = null;
+		try {
+			date1=sdf.parse(combined);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date1);
+
+		return cal.getTimeInMillis();
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method removes leading and trailing white spaces in an array
+	 * Parameters: String array - contains parameters with whitespaces
+	 * Return:		String array = parameters without whitespaces
+	 * **/
+	private static String[] trimWhiteSpace(String[] temp){
+		for (int i = 0; i < temp.length; i++) {
+			temp[i]=temp[i].trim();
+		}
+		return temp;
+	}
+	
+	/**This method recognize dots and convert data to slash format
+	 * removes leading zeros from date etc 000005/00011/2015
+	 * Parameters: String - in the format dd/MM/yyyy or dd.MM.yyyy
+	 * Return:		String - in the format dd/MM/yyyy
+	 * **/
+	private static String flexibleDateFormat(String myDate){
+		StringBuffer sb=new StringBuffer();
+		ArrayList<String> aL=new ArrayList<String>();
+		aL.add(".");
+		aL.add("/");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		for(String pattern : aL){
+			if(StringUtils.countMatches(myDate, pattern) == Constants.LENGTH_TWO ){
+				String[] temp = null;
+				if(pattern.equals(".")){
+					temp = myDate.split("\\.");
+				}else{
+					temp = myDate.split("/");
+				}
+				for (int i = 0; i < temp.length-1; i++) {
+					int extractedValue = Integer.parseInt(temp[i]);
+					//to fix d/m/yyyy to dd/MM/yyyy
+					if(extractedValue < 10 && extractedValue > 0){
+						sb.append("0");
+						sb.append(Integer.valueOf(temp[i])+"/");
+					}else if(extractedValue >= 10 && extractedValue <=31){
+						sb.append(Integer.valueOf(extractedValue)+"/");
+					}else{
+						assert extractedValue > 32;
+					}
+				}
+				sb.append(temp[temp.length-1]);;
+				return sb.toString();
+			}
+		}
+		return myDate;
+	}
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\TokenValidation.java
+	 */
+
+package pista.parser;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import pista.Constants;
+
+
+public class TokenValidation {
+
+	private static String[] inputArray=new String[8];
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\TokenValidation.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\TokenValidation.java
+	 */
+
+	/**This method checks if the title is valid
+	 * title must not be empty and can contain the ignore value "d"
+	 * Parameters: String - of title
+	 * Return:		Boolean
+	 * 				True if title is valid
+	 * 				false if it is not
+	 * **/
+	public static boolean isTitleValid(String title){
+		if(!title.isEmpty() || Constants.DEFAULT_IGNORE_VALUE.equalsIgnoreCase(title)){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**This method checks if the date follows format dd/MM/yyyy
+	 * Parameters: String - of date
+	 * Return:		Boolean
+	 * 				True if date is valid
+	 * 				false if it is not
+	 * **/
+	public static boolean isDateValid(String myDate){
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		Date testDate;
+		
+		sdf.setLenient(false);
+		if(Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(myDate)){
+			return true;
+		}
+		if(myDate.length()!=sdf.toPattern().length()){
+			return false;
+		}
+		
+		try {
+			testDate = sdf.parse(myDate);
+			
+		} catch (ParseException e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**This method checks if the time is valid in the following order HH:mm
+	 * Parameters: String - of time
+	 * Return:		Boolean
+	 * 				True if time is valid
+	 * 				false if it is not
+	 * **/
+	public static boolean isTimeValid(String myTime){
+		Pattern pattern;
+		Matcher matcher;
+		String TIME24HOURS_PATTERN ="([01]?[0-9]|2[0-3]):[0-5][0-9]";
+		pattern = Pattern.compile(TIME24HOURS_PATTERN);
+		matcher=pattern.matcher(myTime);
+		if(matcher.matches() || Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(myTime)){
+			return true;
+		}
+		return false;
+	}
+	
+	/**This method checks if the start date and time occurs earlier than the end date and time of a task
+	 * Parameters: String - of start/end date and time
+	 * Return:		Boolean
+	 * 				True if start date and time is earlier than end date and time
+	 * 				false if it is not
+	 * **/
+	public static boolean isStartDateBeforeThanEndDate(String start, String end, String startTime, String endTime){
+		String sdst=start+" "+startTime;
+		String edet=end +" "+endTime;
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		sdf.setLenient(false);
+		try {
+			Date startDate=sdf.parse(sdst);
+			Date endDate=sdf.parse(edet);
+			if(startDate.before(endDate)){
+				return true;
+			}
+		} catch (ParseException e) {
+			return false;
+		}
+		return false;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\TokenValidation.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserAddTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import pista.Constants;
+import pista.parser.MainParser;
+import pista.logic.Logic;
+import com.joestelmach.natty.CalendarSource;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+import pista.storage.Storage;
+
+public class ParserAddTest {
+	
+
+	@Before
+	public void setUp() throws Exception {
+		Date reference = DateFormat.getDateInstance(DateFormat.SHORT).parse("05/15/2015");	//mm/dd/yyyy FRI
+		CalendarSource.setBaseDate(reference);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		//Logic.getStorageList().clear();
+	}
+
+	@Test
+	public void testParserAddWithoutToken() {
+		MainParser mp = MainParser.validateInput("add");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH,mp.getMessage());
+	}
+	
+	@Test
+	public void testParserAddFloatedToken() {
+		MainParser mp = MainParser.validateInput("add floatedtask");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserAddDeadlineToken() {
+		MainParser mp = MainParser.validateInput("add deadlinetask -12/05/2015 -14:14");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserAddTimedToken() {
+		MainParser mp = MainParser.validateInput("add timedtask -12/05/2015 -14:14 -13/7/2015 -15:15");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testDeadlineFlexibleDates() {
+		MainParser mp = MainParser.validateInput("add deadlinetask -sun -noon");
+		assertEquals("17/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("12:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+		
+		mp = MainParser.validateInput("add deadlinetask -2 fri -evening");
+		assertEquals("29/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("19:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+		
+		mp = MainParser.validateInput("add deadlinetask -yesterday -morning");
+		assertEquals("14/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("08:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+		
+		mp = MainParser.validateInput("add deadlinetask -next year -5pm");
+		assertEquals("15/05/2016", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("17:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+		
+		mp = MainParser.validateInput("add deadlinetask -tomorrow -8p");
+		assertEquals("16/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("20:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+		
+		mp = MainParser.validateInput("add deadlinetask -2 days -midnight");
+		assertEquals("17/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("00:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+		
+		mp = MainParser.validateInput("add deadlinetask -last week -night");
+		assertEquals("08/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDDATE));
+		assertEquals("20:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_DEADLINE_ENDTIME));
+	}
+	
+	@Test
+	public void testTimedFlexibleDates() {
+		MainParser mp = MainParser.validateInput("add timed -0001/0000011/2015 -0622h -1/12/2015 -07:33h");
+		assertEquals("01/11/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE));
+		assertEquals("06:22", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME));
+		assertEquals("01/12/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE));
+		assertEquals("07:33", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME));
+		
+		mp = MainParser.validateInput("add timed -5/7/2015 -08:57 hours -6.9.2015 -19");
+		assertEquals("05/07/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE));
+		assertEquals("08:57", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME));
+		assertEquals("06/09/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE));
+		assertEquals("19:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME));
+		
+		mp = MainParser.validateInput("add timed -7/8 -8p -10/7 -10a");
+		assertEquals("07/08/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE));
+		assertEquals("20:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME));
+		assertEquals("10/07/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE));
+		assertEquals("10:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME));
+		
+		mp = MainParser.validateInput("add timed -8 april -4 hours before noon -10 may -5 hours after night");
+		assertEquals("08/04/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE));
+		assertEquals("08:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME));
+		assertEquals("10/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE));
+		assertEquals("01:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME));
+		
+		mp = MainParser.validateInput("add timed -tues last week -1 hours after noon -in a week -5 hours after midnight");
+		assertEquals("05/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTDATE));
+		assertEquals("13:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_STARTTIME));
+		assertEquals("22/05/2015", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDDATE));
+		assertEquals("05:00", mp.getItemInTokenIndex(Constants.ADD_TOKEN_TIMED_ENDTIME));
+		
+		mp = MainParser.validateInput("add timed -tomorrow -1 hours after noon -yesterday -5 hours after midnight");
+		assertEquals(Constants.PARSER_MESSAGE_STARTDATE_GREATER_THAN_ENDDATE, mp.getMessage());
+
+	}
+
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserAddTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserMarkTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import pista.Constants;
+import pista.parser.MainParser;
+
+import com.joestelmach.natty.CalendarSource;
+
+public class ParserMarkTest {
+
+	@Before
+	public void setUp() throws Exception {
+		Date reference = DateFormat.getDateInstance(DateFormat.SHORT).parse("05/15/2015");	//mm/dd/yyyy FRI
+		CalendarSource.setBaseDate(reference);
+	}
+	
+	@Test
+	public void testParserMarkDoneToken() {
+		MainParser mp = MainParser.validateInput("mark 1 -done");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+		
+	}
+	
+	@Test
+	public void testParserMarkUndoneToken() {
+		MainParser mp = MainParser.validateInput("mark 1 -undone");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserMarkUndoneFailToken() {
+		MainParser mp = MainParser.validateInput("mark 1 -undonedfgh");
+		assertEquals(Constants.PARSER_INVALID_MARK, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserMarkDoneFailToken() {
+		MainParser mp = MainParser.validateInput("mark 1 -done reg");
+		assertEquals(Constants.PARSER_INVALID_MARK, mp.getMessage());
+	}
+	
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserMarkTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserPriorityTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import pista.Constants;
+import pista.parser.MainParser;
+
+import com.joestelmach.natty.CalendarSource;
+
+public class ParserPriorityTest {
+
+	@Before
+	public void setUp() throws Exception {
+		Date reference = DateFormat.getDateInstance(DateFormat.SHORT).parse("05/15/2015");	//mm/dd/yyyy FRI
+		CalendarSource.setBaseDate(reference);
+	}
+	
+	@Test
+	public void testParserPriorityZeroToken() {
+		MainParser mp = MainParser.validateInput("priority 1 -0");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+		
+	}
+	
+	@Test
+	public void testParserPriorityOneToken() {
+		MainParser mp = MainParser.validateInput("priority 1 -1");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserPriorityTwoToken() {
+		MainParser mp = MainParser.validateInput("priority 1 -2");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserPriorityThreeToken() {
+		MainParser mp = MainParser.validateInput("priority 1 -3");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}	
+	
+	@Test
+	public void testParserPriorityFourToken() {
+		MainParser mp = MainParser.validateInput("priority 1 -4");
+		assertEquals(Constants.PARSER_INVALID_PRIORITY_SCORE, mp.getMessage());
+	}
+	
+	
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserPriorityTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserReminderTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import pista.Constants;
+import pista.parser.MainParser;
+
+import com.joestelmach.natty.CalendarSource;
+
+public class ParserReminderTest {
+
+	@Before
+	public void setUp() throws Exception {
+		Date reference = DateFormat.getDateInstance(DateFormat.SHORT).parse("05/15/2015");	//mm/dd/yyyy FRI
+		CalendarSource.setBaseDate(reference);
+	}
+	
+	@Test
+	public void testParserReminderToken() {
+		MainParser mp = MainParser.validateInput("remind 1 -17 may -5p");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+		
+	}
+	
+	@Test
+	public void testParserReminderDateFailToken() {
+		MainParser mp = MainParser.validateInput("remind 1 -17may -5p");
+		assertEquals(Constants.PARSER_MESSAGE_INVALD_NATTY_DATE, mp.getMessage());
+	}
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserReminderTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserSetTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import pista.Constants;
+import pista.parser.MainParser;
+
+import com.joestelmach.natty.CalendarSource;
+
+public class ParserSetTest {
+
+	@Before
+	public void setUp() throws Exception {
+		Date reference = DateFormat.getDateInstance(DateFormat.SHORT).parse("05/15/2015");	//mm/dd/yyyy FRI
+		CalendarSource.setBaseDate(reference);
+	}
+	
+	@Test
+	public void testParserSetToken() {
+		MainParser mp = MainParser.validateInput("set file location -C:\task.xml");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSetFailToken() {
+		MainParser mp = MainParser.validateInput("set file location -C:\task");
+		assertEquals(Constants.LOGIC_INVALID_SET_FILE_NAME, mp.getMessage());
+	}
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserSetTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserSortTest.java
+	 */
+
+package pista.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import pista.Constants;
+import pista.parser.MainParser;
+
+public class ParserSortTest {
+
+	@Test
+	public void testParserSortAscendingTitleToken() {
+		MainParser mp = MainParser.validateInput("sort ascending title");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortAscendingTitleFailToken() {
+		MainParser mp = MainParser.validateInput("sort ascendingtitle");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortOverviewToken() {
+		MainParser mp = MainParser.validateInput("sort overview");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortOverviewFailToken() {
+		MainParser mp = MainParser.validateInput("sort overviews");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortAscendingStartDateToken() {
+		MainParser mp = MainParser.validateInput("sort ascending start date");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortAscendingStartDateFailToken() {
+		MainParser mp = MainParser.validateInput("sort ascending startdate");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortDescendingStartDateToken() {
+		MainParser mp = MainParser.validateInput("sort descending end date");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortDescendingStartDateFailToken() {
+		MainParser mp = MainParser.validateInput("sort descending enddate");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortAscendingPriorityToken() {
+		MainParser mp = MainParser.validateInput("sort ascending priority");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortAscendingPriorityFailToken() {
+		MainParser mp = MainParser.validateInput("sort ascendingpriority");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortDescendingPriorityToken() {
+		MainParser mp = MainParser.validateInput("sort descending priority");
+		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
+	}
+	
+	@Test
+	public void testParserSortDescendingPriorityFailToken() {
+		MainParser mp = MainParser.validateInput("sort descendingpriority");
+		assertEquals(Constants.PARSER_MESSAGE_INVALID_SORT_FUNCTION, mp.getMessage());
+	}
+}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\test\ParserSortTest.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+	 */
+
+	/**This method will run the remainder
+	 * **/
+	private void runReminder(){
+		for (int i = 0; i < mLogic.getStorageList().size(); i++) {
+			Task extractedTask = mLogic.getStorageList().get(i);
+			String taskTitle = extractedTask.getTitle();
+			boolean taskIsReminded = extractedTask.getIsReminded();
+			Long taskReminder = extractedTask.getReminder();
+			Long taskEndMillisecond = extractedTask.getEndMilliseconds();
+			Long timeNow = System.currentTimeMillis();
+
+			if(taskReminder != 0L){
+				if(timeNow >= taskReminder && !taskIsReminded){
+					String datePattern = "dd MMMM yyyy"; //e.g. 18 January 2015
+					SimpleDateFormat mDateFormat = new SimpleDateFormat(datePattern);
+					String endDate = mDateFormat.format(new Date(taskEndMillisecond));
+
+					//update the reminded status in the storage list
+					mLogic.getStorageList().get(i).setIsReminded(true);
+
+					showReminder("Upcoming task: " + taskTitle, 
+							"Due on " + endDate);
+
+					File file = new File (Constants.BUILD_PATH + Constants.UI_ALARM_LOCATION);
+					playAlarm(file.toURI().toString());
+				}
+			}
+		}
+	}
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\ui\UIController.java
+
+
+
+
+
