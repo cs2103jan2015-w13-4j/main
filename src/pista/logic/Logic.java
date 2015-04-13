@@ -374,8 +374,10 @@ public class Logic {
 			mStorage.setTaskList(undoList.get(undoList.size()-1));
 			undoList.remove(undoList.size()-1);
 			mStorage.save();
+			mLog.logInfo(Constants.LOGIC_SUCCESS_UNDO);
 			return Constants.LOGIC_SUCCESS_UNDO;
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_UNDO);
 		return Constants.LOGIC_FAIL_UNDO;
 	}
 
@@ -389,8 +391,10 @@ public class Logic {
 			mStorage.setTaskList(redoList.get(redoList.size()-1));
 			redoList.remove(redoList.size()-1);
 			mStorage.save();
+			mLog.logInfo(Constants.LOGIC_SUCCESS_REDO);
 			return Constants.LOGIC_SUCCESS_REDO;
 		}
+		mLog.logInfo(Constants.LOGIC_FAIL_REDO);
 		return Constants.LOGIC_SUCCESS_REDO;
 	}
 
