@@ -179,13 +179,20 @@ public class Constants {
   	public static final String MESSAGE_EMPTY_TITLE = "The title cannot be empty";
   	public static final String MESSAGE_EDIT_EMPTY_TOKENS = "Empty tokens detected for Edit function";
   	public static final String MESSAGE_INVALID_SORT_FUNCTION = "The sort function you have entered is invalid";
+  	public static final String MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
+	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT = "Invalid clear count. To change from Timed to floated task, there must be 4 clear count. To deadline, 2 clear count  ";
+	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT_TIMED_TO_DEADLINE = "To convert timed to deadline, make sure the last 2 parameters contain c";
+	
   	public static final String REMINDER_OFF = "off";
   	public static final String REMINDER_INVALID_STATUS = "only allowed to set reminder as off";
+  	
   	public static final String MARK_DONE = "done";
   	public static final String MARK_UNDONE = "undone";
-	public static final String INVALID_MARK = "You can only mark task as done or undone";
+	
+  	public static final String INVALID_MARK = "You can only mark task as done or undone";
 	public static final String INVALID_REMINDER = "invalid reminder tokens paramter";
 	public static final String INVALID_PRIORITY_SCORE = "Prority range can be only 0-3";
+	
 	public static final String SORT_TYPE = "type";
 	public static final String SORT_OVERVIEW = "overview";
 	public static final String SORT_ASCENDING_START_DATE = "ascending start date";
@@ -201,9 +208,7 @@ public class Constants {
 	public static final String SORT_PRIORITY = "priority";
 	public static final String SET_TYPE_FILE_LOCATION = "file location";
 	public static final String SET_FILE_TYPE = ".xml";
-	public static final String MESSAGE_EDIT_DEADLINE_INVALID_CLEAR_COUNT = "Invalid clear count. To change from deadline to floated task, there must be 2 clear count ";
-	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT = "Invalid clear count. To change from Timed to floated task, there must be 4 clear count. To deadline, 2 clear count  ";
-	public static final String MESSAGE_EDIT_Timed_INVALID_CLEAR_COUNT_TIMED_TO_DEADLINE = "To convert timed to deadline, make sure the last 2 parameters contain c";
+	
 	public static final int TOKEN_NUM_PRIORITY_SCORE = 1;
 	public static final int TOKEN_NUM_PRORITY_ID = 0;
 	public static final int TOKEN_NUM_REMINDER_OFF = 1;
@@ -232,6 +237,11 @@ public class Constants {
 	public static final int ADD_TOKEN_TIMED_STARTTIME = 2;
 	public static final int ADD_TOKEN_TIMED_ENDDATE = 3;
 	public static final int ADD_TOKEN_TIMED_ENDTIME = 4;
+	public static final int SEARCH_TOKEN_KEYWORD = 0;
+	public static final int SEARCH_POSSIBLE_PARAMETERS = 3;
+	public static final int SEARCH_KEYWORD_STRING = 0;
+	public static final int SEARCH_KEYWORD_DATE = 1;
+	public static final int SEARCH_KEYWORD_TIME = 2;
 	public static final int SPLIT_INTO_TWO = 2;
 	public static final int INDEX_ZERO = 0;
 	public static final int INDEX_ONE = 1;
