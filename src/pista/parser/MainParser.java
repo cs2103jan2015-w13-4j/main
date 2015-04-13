@@ -1,3 +1,4 @@
+//@author A0111884E
 package pista.parser;
 
 import java.text.ParseException;
@@ -33,6 +34,7 @@ public class MainParser {
 	private void setTokens(String[] tokens){this.tokens = tokens;}
 	private void setMessage(String message){this.message = message;}
 	private void setIndexInToken(int index, String input){this.tokens[index] = input;}	
+	//@author A0111721Y
 	/*
 	 * tokens
 	 * [0] - command type
@@ -73,7 +75,7 @@ public class MainParser {
 			}
 		}
 	}
-
+	//@author A0112522Y
 	/**This method is checks if a string is empty
 	 * Parameters: String - a string that consists of command + parameters
 	 * Return:		Boolean
@@ -96,6 +98,7 @@ public class MainParser {
 		return command;
 	}
 	
+	//@author A0112522Y
 	/**This method checks if the command entered is supported by the program
 	 * Parameters: String - a string that contains the user's command
 	 * Return:		True if it is a valid command
@@ -118,6 +121,7 @@ public class MainParser {
 
 	}//end checkCommand
 
+	//@author A0111884E
 	/**This method extracts parameters from a string and put them inside a String array
 	 * Parameters: String - a string that consists of command + parameters
 	 * Return:		String array - Provided that all parameters have been entered
@@ -135,6 +139,7 @@ public class MainParser {
 		}
 	}
 
+	//@author A0111721Y
 	/**This method checks if the tokens/parameters supplied by the user
 	 * Parameters: Object of MainParser -  
 	 * 				String - contains the user's command
@@ -172,6 +177,7 @@ public class MainParser {
 		}
 	}
 	
+	//@author A0111884E
 	/**This method checks the tokens for the Add command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
@@ -283,6 +289,7 @@ public class MainParser {
 		return false;
 	}
 	
+	//@author A0112522Y
 	/**This method checks the tokens for the Delete command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
@@ -316,6 +323,7 @@ public class MainParser {
 		}
 	}
 	
+	//@author A0111884E
 	/**This method checks the tokens for the Mark command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
@@ -395,6 +403,7 @@ public class MainParser {
 		return false;
 	}
 	
+	//@author A0125474E
 	/**This method checks the tokens for the Set file location command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
@@ -433,6 +442,7 @@ public class MainParser {
 
 	}
 	
+	//@author A0111721Y
 	/**This method checks the tokens for the Search command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
@@ -506,6 +516,7 @@ public class MainParser {
 		return true;
 	}
 	
+	//@author A0111884E
 	/**This method checks the tokens for the Sort command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
@@ -679,6 +690,7 @@ public class MainParser {
 		return cal.getTimeInMillis();
 	}
 
+	//@author A0125474E
 	/**This method converts a string into Int
 	 * Parameters: String - input
 	 * Return:		Integer - converted string representation in int
@@ -687,6 +699,7 @@ public class MainParser {
 		return Integer.parseInt(input.trim());
 	}
 
+	//@author A0111884E
 	/**This method removes leading and trailing white spaces in an array
 	 * Parameters: String array - contains parameters with whitespaces
 	 * Return:		String array = parameters without whitespaces

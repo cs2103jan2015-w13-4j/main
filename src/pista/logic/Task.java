@@ -1,3 +1,4 @@
+//@author A0111884E
 package pista.logic;
 
 import pista.Constants;
@@ -56,6 +57,7 @@ public class Task {
 		}
 	}
 	
+	//@author A0125474E
 	public boolean initStorage(){
 		try{
 			mStorage = Storage.getInstance();
@@ -84,6 +86,7 @@ public class Task {
 		this.isReminded = false;
 	}
 	
+	//@author A0111884E
 	public String getTitle(){
 		return title;
 	}

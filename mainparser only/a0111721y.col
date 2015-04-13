@@ -1,0 +1,184 @@
+//@author: a0111721y
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA\src\pista\parser\MainParser.java
+	 */
+
+	/*
+	 * tokens
+	 * [0] - command type
+	 * [1] - parameter in string 
+	 * */
+	
+	/**This method is the main method that use to validate the input provided by the user
+	 * Parameters: String - a string that consists of command + parameters
+	 * Return:		mp - a MainParser object that contains the message of validity.
+	 * **/
+	public static MainParser validateInput(String input) {
+		MainParser mp = new MainParser();
+		if (isEmptyString(input)) {
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
+			return mp;
+		} else {
+			String command = getCommand(input);
+			if (!isCommandValid(command)) {
+				mp.setMessage(Constants.PARSER_MESSAGE_WRONG_COMMAND);
+				return mp;
+			} else {
+				if (command.equalsIgnoreCase(Constants.VALUE_HELP)) {
+					mp.setCommand(command);
+					mp.setMessage(Constants.PARSER_MESSAGE_VALID_INPUT);
+					return mp;
+				} else {
+					String[] tokens = getTokens(input);
+
+					if (!mp.isTokensValid(mp, command, tokens)) {
+						//mp.setMessage(Constants.MESSAGE_WRONG_PARAMETERS);
+						return mp;
+					} else {
+						mp.setCommand(command);
+						mp.setMessage(Constants.PARSER_MESSAGE_VALID_INPUT);
+						return mp;
+					}
+				}
+			}
+		}
+	}
+	// End of segment: D:\install location\java\work\CS2103 PISTA\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks if the tokens/parameters supplied by the user
+	 * Parameters: Object of MainParser -  
+	 * 				String - contains the user's command
+	 * 				String array - contains all parameters  
+	 * Return:		Boolean -
+	 * 				True if all tokens/parameters are correct
+	 * 				False if the tokens/parameters are wrong
+	 * **/
+	private boolean isTokensValid(MainParser mp, String command, String[] tokens){
+		switch(command) {
+		case Constants.VALUE_ADD:
+			return checkAddTokens(mp, tokens);
+		case Constants.VALUE_EDIT:
+			return checkEditTokens(mp, tokens);
+		case Constants.VALUE_DELETE:
+			return checkDeleteTokens(mp, tokens);
+		case Constants.VALUE_MARK:
+			return checkMarkTokens(mp, tokens);
+		case Constants.VALUE_REDO:
+			return true;
+		case Constants.VALUE_UNDO:
+			return true;
+		case Constants.VALUE_REMINDER:
+			return checkReminderTokens(mp, tokens);
+		case Constants.VALUE_PRIORITY:
+			return checkPriorityTokens(mp, tokens);
+		case Constants.VALUE_SET:
+			return checkSetTokens(mp, tokens);
+		case Constants.VALUE_SEARCH:
+			return checkSearchTokens(mp, tokens);
+		case Constants.VALUE_SORT:
+			return checkSortTokens(mp, tokens);
+		default:
+			return false;
+		}
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA\src\pista\parser\MainParser.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Search command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are co
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		Parser parser = new Parser();
+		String requiredNattyInputFormat = "";
+		String interpretOutputDateFromNatty = "";
+		List<DateGroup> groups;
+		
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		
+		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		if (tokens[Constants.INDEX_ZERO].equals("")) {
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
+			return false;
+		}
+		
+		String[] possibleKeywords = new String[Constants.SEARCH_POSSIBLE_PARAMETERS];
+		mp.setTokens(possibleKeywords);
+		mp.setIndexInToken(Constants.SEARCH_KEYWORD_STRING, tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+		
+		//checks if keyword is a date
+		if(!TokenValidation.isDateValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			requiredNattyInputFormat = nattyInputFormat(tokens, Constants.SEARCH_TOKEN_KEYWORD);
+			
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			}
+
+			try {
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputDateFromNatty = "";
+			}
+			
+			if(TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_DATE, interpretOutputDateFromNatty);
+			}
+		}
+				
+		//checks if keyword is a time
+		String interpretOutputTimeFromNatty="";
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		
+		if(!TokenValidation.isTimeValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputTimeFromNatty = "";
+			}
+			
+			if(TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_TIME, interpretOutputTimeFromNatty);
+			}
+		}
+		
+		System.out.println(mp.getTokens()[0] + mp.getTokens()[1] + mp.getTokens()[2]);
+		return true;
+	}
+	
+	// End of segment: D:\install location\java\work\CS2103 PISTA\src\pista\parser\MainParser.java
+
+
+
+
+

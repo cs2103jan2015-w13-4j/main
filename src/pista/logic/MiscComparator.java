@@ -1,3 +1,4 @@
+//@author A0111884E
 package pista.logic;
 
 import java.util.Comparator;
@@ -5,7 +6,7 @@ import java.util.Comparator;
 import pista.Constants;
 
 public class MiscComparator {
-
+	
 	public static Comparator<Task> titleComparator = new Comparator<Task>(){
 		@Override
 		public int compare (Task one, Task two){

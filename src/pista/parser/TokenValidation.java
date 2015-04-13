@@ -1,3 +1,4 @@
+//@author A0111884E
 package pista.parser;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,6 +15,7 @@ public class TokenValidation {
 
 	private static String[] inputArray=new String[8];
 	
+	//@author A0125474E
 	/**This method checks if the filename is valid
 	 * filename must not be empty and must have .xml as file type
 	 * Parameters: String - of name
@@ -28,6 +30,7 @@ public class TokenValidation {
 		return false;
 	}
 	
+	//@author A0111884E
 	/**This method checks if the title is valid
 	 * title must not be empty and can contain the ignore value "d"
 	 * Parameters: String - of title
@@ -111,6 +114,7 @@ public class TokenValidation {
 		return false;
 	}
 	
+	//@author A0125474E
 	public static int compareWithCurrentDate(Long endMillisecond, Long alarmMillisecond){
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Calendar cal = Calendar.getInstance();
