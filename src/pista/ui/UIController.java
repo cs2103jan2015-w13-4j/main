@@ -840,10 +840,10 @@ public class UIController {
 
 		final TextArea txtAreaTaskTitle = new TextArea();
 		Label lblTitle = new Label(Constants.UI_POP_OVER_ADD_TITLE);
-		Label lblDateTitle = new Label(Constants.UI_POP_OVER_ADD_START_DATE_TITLE);
-		Label lblTimeTitle = new Label(Constants.UI_POP_OVER_ADD_START_TIME_TITLE);
-		Label lblTimeTip = new Label(Constants.UI_POP_OVER_ADD_TIME_TIP);
-		Label lblColon = new Label(Constants.UI_POP_OVER_ADD_COLON);
+		Label lblDateTitle = new Label(Constants.UI_POP_OVER_START_DATE_TITLE);
+		Label lblTimeTitle = new Label(Constants.UI_POP_OVER_START_TIME_TITLE);
+		Label lblTimeTip = new Label(Constants.UI_POP_OVER_TIME_TIP);
+		Label lblColon = new Label(Constants.UI_POP_OVER_COLON);
 		final DatePicker datePickerStartDate = new DatePicker(); //start date
 		final DatePicker datePickerEndDate = new DatePicker(); //start date
 		final TextField txtFieldStartHour = new TextField(); //end hour
@@ -897,10 +897,10 @@ public class UIController {
 												Constants.UI_POP_OVER_HBOX_MARGIN_LEFT));
 		vBox.getChildren().add(hBox);
 
-		lblDateTitle = new Label(Constants.UI_POP_OVER_ADD_END_DATE_TITLE);
-		lblTimeTitle = new Label(Constants.UI_POP_OVER_ADD_END_TIME_TITLE);
-		lblTimeTip = new Label(Constants.UI_POP_OVER_ADD_TIME_TIP);
-		lblColon = new Label(Constants.UI_POP_OVER_ADD_COLON);
+		lblDateTitle = new Label(Constants.UI_POP_OVER_END_DATE_TITLE);
+		lblTimeTitle = new Label(Constants.UI_POP_OVER_END_TIME_TITLE);
+		lblTimeTip = new Label(Constants.UI_POP_OVER_TIME_TIP);
+		lblColon = new Label(Constants.UI_POP_OVER_COLON);
 
 		setPopOverLabelDateTime(lblDateTitle, lblTimeTitle, Constants.UI_POP_OVER_LABEL_DATETIME_WIDTH); //style the labels again
 		setPopOverTextFieldHourMinute(txtFieldEndHour, txtFieldEndMin);
@@ -998,7 +998,7 @@ public class UIController {
 					return;
 
 				}else{
-					newStartTime = newStartHour + Constants.UI_POP_OVER_ADD_COLON + newStartMinute;
+					newStartTime = newStartHour + Constants.UI_POP_OVER_COLON + newStartMinute;
 					addCommand = addCommand.replace("[start_date]", newStartDate).replace("[start_time]", newStartTime);
 				}
 

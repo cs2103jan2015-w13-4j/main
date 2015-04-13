@@ -61,6 +61,44 @@ public class Constants {
 	public static final String UI_CSS_POP_OVER_BUTTON = "pop-btn";
 	public static final String UI_CSS_POP_OVER_ERROR_MESSAGE = "pop-label-error-message";
 	public static final String UI_CSS_POP_OVER_CORRECT_MESSAGE = "pop-label-correct-message";
+
+	public static final String CSS_CELL = "task-list-cell";
+    public static final String CSS_CELL_ID = "task-list-cell-id";
+    public static final String CSS_CELL_TITLE = "task-list-cell-title";
+    public static final String CSS_CELL_DATETIME = "task-list-cell-datetime";
+    public static final String CSS_BUTTON_IS_DONE = "btn-is-done";
+    public static final String CSS_BUTTON_IS_DONE_UNSET = "btn-is-done-unset";
+    public static final String CSS_BUTTON_IS_DONE_SET = "btn-is-done-set";
+    public static final String CSS_BUTTON_IS_DONE_BACKGROUND_YELLOW = "btn-background-yellow";
+    public static final String CSS_BUTTON_IS_DONE_BACKGROUND_RED = "btn-background-red";
+    public static final String CSS_BUTTON_IS_DONE_BACKGROUND_GREEN = "btn-background-green";
+    public static final String CSS_BUTTON_EDIT = "btn-edit";
+    public static final String CSS_BUTTON_ALARM = "btn-alarm";
+    public static final String CSS_BUTTON_ALARM_SET = "btn-alarm-set";
+    public static final String CSS_BUTTON_ALARM_NOT_SET = "btn-alarm-not-set";
+    public static final String CSS_BUTTON_DELETE = "btn-delete";
+    public static final String CSS_BUTTON_PRIORITY = "btn-priority";  
+    public static final String CSS_PRIORITY_CRITICAL = "btn-priority-critical";
+    public static final String CSS_PRIORITY_NORMAL = "btn-priority-normal";
+    public static final String CSS_PRIORITY_LOW = "btn-priority-low";
+    public static final String CSS_PRIORITY_DEFAULT = "btn-priority-default";
+    public static final String CSS_CELL_TEXT_IS_DONE = "task-list-cell-text-is-done";
+    public static final String CSS_CELL_BACKGROUND_IS_DONE = "task-list-cell-background-is-done";
+    public static final String CSS_CELL_TEXT_STRIKE_THROUGH = "task-list-cell-label-strike-through"; 
+    public static final String CSS_POP_OVER_CONTENT_AREA = "pop-content-area";
+    public static final String CSS_POP_OVER_TITLE = "pop-title";
+    public static final String CSS_POP_OVER_TIME_TIP = "pop-label-time-tip";
+    public static final String CSS_POP_OVER_LABEL_PRIORITY = "pop-label-priority";
+    public static final String CSS_POP_OVER_LABEL_ERROR_MESSAGE = "pop-label-error-message";
+    public static final String CSS_POP_OVER_LABEL_CORRECT_MESSAGE = "pop-label-correct-message";
+    public static final String CSS_POP_OVER_IMAGE_CRITICAL = "pop-over-img-critical";
+    public static final String CSS_POP_OVER_IMAGE_NORMAL = "pop-over-img-normal";
+    public static final String CSS_POP_OVER_IMAGE_LOW = "pop-over-img-low";
+    public static final String CSS_POP_OVER_IMAGE_DEFAULT = "pop-over-img-default";
+    public static final String CSS_POP_OVER_BUTTON_CHANGE = "pop-over-btn-change";
+    public static final String CSS_POP_OVER_BUTTON_EDIT = "pop-over-btn-edit"; 
+    public static final String CSS_POP_OVER_TEXTAREA_EDIT = "pop-over-text-area-edit";
+    
 	
 	/*----- Pop Over (Pop-up) -----*/
 	public static final String UI_POP_OVER_FAILED_SETTING_MESSAGE = "Setting Failed";
@@ -71,6 +109,23 @@ public class Constants {
 	public static final String UI_POP_OVER_SUCCESS_ADD_MESSAGE = "Added Successfully";
 	public static final String UI_POP_OVER_FAIL_ADD_MESSAGE = "Fail to add";
 	public static final String UI_POP_OVER_ADD_TASK_COMMAND = "add [task_title] -[start_date] -[start_time] -[end_date] -[end_time]";
+	
+	
+	public static final String UI_POP_OVER_DATE_TITLE = "Date:";
+	public static final String UI_POP_OVER_TIME_TITLE = "Time:";
+	public static final String UI_POP_OVER_START_DATE_TITLE = "Start Date:";
+	public static final String UI_POP_OVER_END_DATE_TITLE = "End Date:";
+	public static final String UI_POP_OVER_START_TIME_TITLE = "Start Time:";
+	public static final String UI_POP_OVER_END_TIME_TITLE = "End Time:";
+	public static final String UI_POP_OVER_TIME_TIP = "(24 hrs format)";
+	public static final String UI_POP_OVER_COLON = ":";
+	public static final String UI_POP_OVER_DEFAULT_DATE = "01/01/1970";
+	public static final String UI_POP_OVER_DEFAULT_HOUR = "07";
+	public static final String UI_POP_OVER_DEFAULT_MINUTE = "30";
+	public static final String UI_POP_OVER_DATEPICKER_PROMPT_TEXT = "06 October 2015";
+	public static final String UI_POP_OVER_TEXT_HOUR_PROMPT_TEXT = "HH";
+	public static final String UI_POP_OVER_TEXT_MINUTE_PROMPT_TEXT = "MM";
+	
 	/*pop over setting*/
 	public static final double UI_POP_OVER_SETTING_WIDTH = 500.0;
 	public static final double UI_POP_OVER_SETTING_HEIGHT = 300.0;
@@ -85,18 +140,34 @@ public class Constants {
 	public static final double UI_POP_OVER_ADD_WIDTH = 400.0;
 	public static final double UI_POP_OVER_ADD_HEIGHT = 380.0;
 	public static final String UI_POP_OVER_ADD_TITLE = "Add New Task";
-	public static final String UI_POP_OVER_ADD_START_DATE_TITLE = "Start Date:";
-	public static final String UI_POP_OVER_ADD_END_DATE_TITLE = "End Date:";
-	public static final String UI_POP_OVER_ADD_START_TIME_TITLE = "Start Time:";
-	public static final String UI_POP_OVER_ADD_END_TIME_TITLE = "End Time:";
-	public static final String UI_POP_OVER_ADD_TIME_TIP = "(24 hrs format)";
-	public static final String UI_POP_OVER_ADD_COLON = ":";
 	public static final String UI_POP_OVER_ADD_BUTTON_ADD = "Add New Task";
 	public static final String UI_POP_OVER_ADD_DATEPICKER_START_DATE_PROMPT_TEXT = "06 October 2015";
 	public static final String UI_POP_OVER_ADD_DATEPICKER_END_DATE_PROMPT_TEXT = "23 November 2015";
 	
+	/*pop over priority*/
+	public static final String UI_POP_OVER_PRIORITY_TITLE = "Priority Level";
+	public static final String UI_POP_OVER_PRIORITY_BUTTON_CHANGE_TITLE = "Change";
+	public static final double UI_POP_OVER_PRIORITY_WIDTH = 300.0;
+	public static final double UI_POP_OVER_PRIORITY_HEIGHT = 250.0;
+	
+	
+	/*pop over alarm*/
+	public static final String UI_POP_OVER_ALARM_TITLE = "Alarm";
+	public static final String UI_POP_OVER_ALARM_BUTTON_CHANGE_TITLE = "Change";
+	public static final double UI_POP_OVER_ALARM_WIDTH = 300.0;
+	public static final double UI_POP_OVER_ALARM_HEIGHT = 200.0;
+	
+	/*Edit*/
+	public static final String UI_POP_OVER_EDIT_TITLE = "Edit Task";
+	public static final String UI_POP_OVER_EDIT_BUTTON_CHANGE_TITLE = "Edit";
+	public static final double UI_POP_OVER_EDIT_WIDTH = 400.0;
+	public static final double UI_POP_OVER_EDIT_HEIGHT = 380.0;
+	
+	
 	public static final double UI_POP_OVER_LABEL_MESSAGE_HEIGHT = 30.0;
 	public static final double UI_POP_OVER_LABEL_DATETIME_WIDTH = 80.0;
+	public static final double UI_POP_OVER_TEXT_HOUR_WIDTH = 60.0;
+	public static final double UI_POP_OVER_TEXT_MINUTE_WIDTH = 60.0;
 	public static final double UI_POP_OVER_VBOX_SPACING = 8.0;
 	public static final double UI_POP_OVER_HBOX_SPACING = 4.0;
 	public static final double UI_POP_OVER_HBOX_MARGIN_TOP = 10.0;
@@ -143,14 +214,16 @@ public class Constants {
 	public static final double UI_START_GUIDE_BUTTON_OK_WIDTH = 150.0;
 	public static final double UI_START_GUIDE_BUTTON_OK_HEIGHT = 35.0;
 	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_RIGHT = 5.0;
-	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP = 350.0;
+	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP = 35.0;
 	public static final String UI_START_GUIDE_BUTTON_OK_TITLE = "I Understand";
 	
 	/*----- Date format -----*/
 	public static final String DATETIME_FORMAT_CLOCK = "dd MMM yyyy HH:mm:ss a"; //e.g. 18 Jan 2015 03:00:00 AM
-	public static final String DATETIME_FORMAT_DATEPICKER = "dd MMMM yyyy"; //e.g. 18 January 2015
-	public static final String DATETIME_FORMAT_STORAGE = "d/M/yyyy"; //e.g. 18/4/2015
-	
+	public static final String DATETIME_FORMAT_DATEPICKER = "dd MMMM yyyy"; //e.g. 06 October 2015
+	public static final String DATETIME_FORMAT_FULL_SHORT = "dd MMM yyyy"; //e.g. 06 Oct 2015
+	public static final String DATETIME_FORMAT_FULL_SHORT_WITHOUT_YEAR = "dd MMM"; //e.g. 06 Oct
+	public static final String DATETIME_FORMAT_STORAGE = "d/M/yyyy"; //e.g. 8/04/2015
+	public static final String DATETIME_FORMAT_STORAGE_2 = "dd/MM/yyyy"; //e.g. 08/04/2015
 	
 	/*----- Redo ----- */
 	public static final String UI_REDO_IMAGE_LINK = "images/redo.png";
@@ -160,6 +233,21 @@ public class Constants {
 	/*----- Undo ----- */
 	public static final String UI_UNDO_COMMAND = "undo";
 	
+	/*----- Cell ----- */
+	public static final double IMAGE_WIDTH = 25.0;
+	public static final double LABEL_MESSAGE_HEIGHT = 30.0;
+	public static final String CELL_POP_OVER_INVALID_ALARM_TIME_MESSAGE = "Invalid Time";
+    public static final String CELL_POP_OVER_INVALID_ALARM_DATE_MESSAGE = "Invalid Date";
+    public static final String CELL_POP_OVER_SUCCESS_ALARM_MESSAGE = "Updated";
+    public static final String CELL_POP_OVER_SUCCESS_PRIORITY_MESSAGE = "Updated";
+    public static final String CELL_POP_OVER_FAIL_ALARM_MESSAGE = "Fail to Update";
+    public static final String CELL_POP_OVER_FAIL_PRIORITY_MESSAGE = "Fail to Update";
+    public static final String CELL_POP_OVER_INVALID_EDIT_START_TIME_MESSAGE = "Invalid Time";
+    public static final String CELL_POP_OVER_INVALID_EDIT_END_TIME_MESSAGE = "Invalid Date";
+    public static final String CELL_POP_OVER_INVALID_EDIT_TITLE_MESSAGE = "Title Cannot Be Empty";
+    public static final String CELL_POP_OVER_SUCCESS_EDIT_MESSAGE = "Edit Successfully";
+    public static final String CELL_POP_OVER_FAIL_EDIT_MESSAGE = "Fail to Edit";
+    
 	/*============================= End of UI =================================== */
 	
 	/*============================= Parser ====================================== */

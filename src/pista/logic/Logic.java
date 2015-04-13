@@ -31,18 +31,6 @@ public class Logic {
 	 * return the instance of Logic
 	 * **/
 	public static Logic getInstance(){
-		/*
-		if(mStorage == null){
-			initStorage();
-		}
-		if(mPrefs == null){
-			initPreference();
-		}
-		if(mLog == null){
-			initLogging();
-		}
-		*/
-		
 		return mLogic;
 	}
 
