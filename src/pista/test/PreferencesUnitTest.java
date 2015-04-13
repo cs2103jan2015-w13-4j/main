@@ -24,13 +24,24 @@ public class PreferencesUnitTest {
 	}
 
 	@Test
-	public void test_read_preference(){
-		assertEquals("Is key empty?", false, isStringEmpty(Constants.PREFERENCE_XML_FILE_LOCATION));
+	public void test_read_file_location_preference(){
+		assertEquals("Is file location key empty?", false, isStringEmpty(Constants.PREFERENCE_XML_FILE_LOCATION));
 		
 		String fileLocation = mPrefs.getPreferenceFileLocation();
 
-		assertEquals("Is value empty?", false, isStringEmpty(fileLocation));
+		assertEquals("Is file location value empty?", false, isStringEmpty(fileLocation));
 	
+	}
+	
+	@Test
+	public void test_read_flag_preference(){
+		assertEquals("Is flag key empty?", false, isStringEmpty(Constants.PREFERENCE_PISTA_FLAG_NODE));
+		
+		int flag = mPrefs.getPreferencePistaFlag();
+
+		assertEquals("Is key value empty?", 0, flag);
+	
+		
 	}
 	
 		
@@ -41,6 +52,7 @@ public class PreferencesUnitTest {
 		}
 		return true;
 	}
+	
 	
 	
 	

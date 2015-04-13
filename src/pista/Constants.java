@@ -214,7 +214,7 @@ public class Constants {
 	public static final double UI_START_GUIDE_BUTTON_OK_WIDTH = 150.0;
 	public static final double UI_START_GUIDE_BUTTON_OK_HEIGHT = 35.0;
 	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_RIGHT = 5.0;
-	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP = 35.0;
+	public static final double UI_START_GUIDE_BUTTON_OK_ANCHOR_TOP = 350.0;
 	public static final String UI_START_GUIDE_BUTTON_OK_TITLE = "I Understand";
 	
 	/*----- Date format -----*/
