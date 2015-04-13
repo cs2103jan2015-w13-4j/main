@@ -200,7 +200,7 @@ public class UIController {
 
 	}//end initialize
 	
-	//@author A0125474E
+	//@author A0111721Y
 	@FXML
 	public void enter() throws IOException {
 		//user click mouse on the enter button
@@ -851,7 +851,7 @@ public class UIController {
 		}
 	}
 
-	//@author A0125474E
+	//@author A0111721Y
 	/**This method will set text in the text field command
 	 * **/
 	private void setTextCommand(String command){
