@@ -538,7 +538,7 @@ public class UIController {
 	}
 
 	//@author A0125474E
-	/**This method will add controls(e.g. undo, redo, help, refresh, add, setting) to the top area 
+	/**This method will add each control (e.g. undo, redo, help, refresh, add, setting) to the top area 
 	 * Parameter	mNode - refers to single control (e.g. button)
 	 * 				anchorTop - double value
 	 * 				anchorRight - double value
@@ -577,7 +577,7 @@ public class UIController {
 	}
 	
 	//@author A0125474E
-	/**This method will get the file location from preferences
+	/**This method will get the file location in preferences
 	 * Usually from local user registry
 	 * **/
 	private String getPreferenceFilePath(){ //get file path from preference
@@ -592,7 +592,7 @@ public class UIController {
 	}
 		
 	//@author A0125474E
-	/**This method will get the launch flag from preferences
+	/**This method will get the launch flag in preferences
 	 * Usually from local user registry
 	 * **/
 	private int getPreferencePistaFlag(){
@@ -607,7 +607,7 @@ public class UIController {
 	}
 
 	//@author A0125474E
-	/**This method will set the launch flag from preferences
+	/**This method will set the launch flag in preferences
 	 * Usually from local user registry
 	 * **/
 	private boolean setPreferencePistaFlag(int flag){
@@ -621,7 +621,7 @@ public class UIController {
 	}
 
 	//@author A0125474E
-	/**This method will set the file location from preferences
+	/**This method will set the file location in preferences
 	 * Usually from local user registry
 	 * **/
 	private boolean setPreferenceFilePath(String newPath){ //set new file path from preference
@@ -635,7 +635,7 @@ public class UIController {
 	}
 
 	//@author A0125474E
-	/**This method will set text in the tooltip for buttons
+	/**This method will set text in the tooltip for each button
 	 * Parameters:		btn - a button that will be adding a tooltip
 	 * 					msg - message that will be showing
 	 * Returns:			boolean - true or false
@@ -709,8 +709,8 @@ public class UIController {
 				this.stageHelp = new Stage();
 			}
 	
-			double startX = this.mApp.getPrimaryStage().getX() + this.mApp.getPrimaryStageWidth();
-			double startY = this.mApp.getPrimaryStage().getY();
+			double startX = this.getMainAppLocationX() + this.mApp.getPrimaryStageWidth();
+			double startY = this.getMainAppLocationY();
 	
 			this.stageHelp.setTitle(Constants.HELP_TITLE);
 			this.stageHelp.initStyle(StageStyle.UTILITY);
@@ -739,12 +739,29 @@ public class UIController {
 	}
 
 	//@author A0125474E
+	/**This method will return the mainApp location X
+	 * Returns:		double - mainApp location X
+	 * **/
+	private double getMainAppLocationX(){
+		return this.mApp.getPrimaryStage().getX();
+	}
+	
+	//@author A0125474E
+	/**This method will return the mainApp location Y
+	 * Returns:		double - mainApp location Y
+	 * **/
+	private double getMainAppLocationY(){
+		return this.mApp.getPrimaryStage().getY();
+	}
+	
+	//@author A0125474E
 	/**This method will set text in the text field command
 	 * **/
 	private void clearTextCommand(){
 		this.txtBoxCommand.clear();
 	}
 
+	//@author A0112522Y
 	/**This method is to handle the auto-complete command when user press Ctrl+Space
 	 * **/
 	private void onCtrlSpacePressed(){
@@ -764,7 +781,7 @@ public class UIController {
 		}
 	}
 
-
+	//@author A0112522Y
 	/**This method is to toggle the history commands when user press Up
 	 * **/
 	private void onUpPressed(){
@@ -776,7 +793,7 @@ public class UIController {
 		}
 	}
 
-
+	//@author A0112522Y
 	/**This method is to toggle the history commands when user press Down
 	 * **/
 	private void onDownPressed(){
@@ -796,15 +813,13 @@ public class UIController {
 		this.txtBoxCommand.setText(command);
 	}
 	
-	//@author A0125474E
+	//@author A0112522Y
 	/**This method will append text in the text field command
 	 * with the cursor moving to the front
 	 * **/
 	private void setAppendTextCommand(String command){
 		this.txtBoxCommand.appendText(command);
 	}
-	
-	
 
 	//@author A0125474E
 	/**This method is to show the pop over add
@@ -1235,7 +1250,7 @@ public class UIController {
 		lbl.setText(msg);
 	}
 
-	//@author A0125474E
+	//@author A0111884E
 	/**This method will run the remainder
 	 * **/
 	private void runReminder(){
@@ -1283,7 +1298,7 @@ public class UIController {
 	}
 
 	//@author A0125474E
-	/**This method start media player which run the 
+	/**This method start media player which will play the alarm
 	 * Parameters:		m - string value
 	 * **/
 	private void startMediaPlayer(Media m){
@@ -1432,6 +1447,10 @@ public class UIController {
 	}
 
 	//@author A0125474E
+	/**This method convert from string value to integer value
+	 * Parameters:		s - String to be converted
+	 * Returns:			int - integer value
+	 * **/
 	private int convertStringToInteger(String s){
 		if(s.equals("") || s.isEmpty()){
 			return 0;
@@ -1440,20 +1459,24 @@ public class UIController {
 	}
 
 	//============================== SEARCH FUNCTIONS ====================================
+	//@author A0111721Y
 	private void setSearchKeyword(String[] tokens) {
 		this.searchKeyword = getKeyword(tokens);
 		this.possibleKeywords = tokens;
 	}
 
+	//@author A0111721Y
 	private String getKeyword(String[] tokens) {
 		return tokens[Constants.SEARCH_TOKEN_KEYWORD];
 	}
 
+	//@author A0111721Y
 	private void resetSearchKeyword() {
 		this.searchKeyword = null;
 		this.possibleKeywords = null;
 	}
 
+	//@author A0111721Y
 	private ArrayList<Task> searchTasks(ArrayList<Task> storageList, String keyword) {
 		ArrayList<Task> displayList = new ArrayList<Task>();
 
@@ -1465,6 +1488,7 @@ public class UIController {
 		return displayList;
 	}
 
+	//@author A0111721Y
 	private boolean hasKeyword(Task task, String[] possibleKeywords) {
 		String taskDescription = task.getTitle();
 		String taskStartDate = task.getStartDate();
@@ -1501,14 +1525,17 @@ public class UIController {
 		return false;
 	}
 
+	//@author A0111721Y
 	private String[] makeIntoTokens(String taskDescription) {
 		return taskDescription.split("\\s+");
 	}
 	
+	//@author A0111721Y
 	private String getDate() {
 		return this.possibleKeywords[Constants.SEARCH_KEYWORD_DATE];
 	}
 	
+	//@author A0111721Y
 	private String getTime() {
 		return this.possibleKeywords[Constants.SEARCH_KEYWORD_TIME];
 	}
