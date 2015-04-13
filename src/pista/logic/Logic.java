@@ -295,7 +295,7 @@ public class Logic {
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_FOUR){
 				extractedTask=editDeadlineTask(extractedTask, tokens);
 			}else if(tokens.length==Constants.TOKEN_NUM_EDIT_SIX){
-				extractedTask=editTimedTask(extractedTask, tokens);
+				extractedTask=editEventTask(extractedTask, tokens);
 			}
 			reInsertTaskInToList(taskIndex, extractedTask);
 			updateRedoAndUndo(currentState);
@@ -704,7 +704,7 @@ public class Logic {
 	 * 				tokens - the new information to be updated
 	 * Return:		extractedTask - the Task with information updated
 	 * **/
-	private Task editTimedTask(Task extractedTask, String[] tokens) {
+	private Task editEventTask(Task extractedTask, String[] tokens) {
 		Long remindMS = extractedTask.getReminder();
 		Long endMS = extractedTask.getEndMilliseconds();
 		Long differenceReminer = endMS - remindMS;
