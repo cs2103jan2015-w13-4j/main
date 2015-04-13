@@ -22,7 +22,7 @@ public class TokenValidation {
 	 * 				false if it is not
 	 * **/
 	public static boolean isFileNameValid(String name){
-		if(!name.isEmpty() && name.contains(Constants.SET_FILE_TYPE)){ //not empty and abc.xml
+		if(!name.isEmpty() && name.contains(Constants.PARSER_SET_FILE_TYPE)){ //not empty and abc.xml
 			return true;
 		}
 		return false;

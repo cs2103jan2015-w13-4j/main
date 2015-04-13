@@ -647,11 +647,11 @@ public class TaskListCell extends ListCell<Task> {
             
             if(!getCurrentStatus){ //if false
             	getIsDone = true; //change to true (done)
-            	markCommandEditedString = markCommandFormatString.replace("[id]", getID).replace("[type]", Constants.MARK_DONE);
+            	markCommandEditedString = markCommandFormatString.replace("[id]", getID).replace("[type]", Constants.PARSER_MARK_DONE);
             	
             }else{
             	getIsDone = false; //change to false (undone)
-            	markCommandEditedString = markCommandFormatString.replace("[id]", getID).replace("[type]", Constants.MARK_UNDONE);
+            	markCommandEditedString = markCommandFormatString.replace("[id]", getID).replace("[type]", Constants.PARSER_MARK_UNDONE);
             }
             
             isUpdated = mUIParent.executeCommand(markCommandEditedString);

@@ -53,7 +53,7 @@ public class Logic {
 	 * return false otherwise
 	 * **/
 	public boolean initStorage(){
-		currentSortType[0] = Constants.SORT_OVERVIEW;
+		currentSortType[0] = Constants.PARSER_SORT_OVERVIEW;
 		try{
 			mStorage = Storage.getInstance();
 			return true;
@@ -500,27 +500,27 @@ public class Logic {
 		/*if(Constants.LIST_ASCENDING_END_DATE.equalsIgnoreCase(sortType)){
 			sortAscendingEndDate();
 		}phased out since overview is sorted in isDone, priority, ascending end date, title*/
-		if(Constants.SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
+		if(Constants.PARSER_SORT_DESCENDING_END_DATE.equalsIgnoreCase(sortType)){
 			sortDescendingEndDate();
-		}else if(Constants.SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
+		}else if(Constants.PARSER_SORT_ASCENDING_START_DATE.equalsIgnoreCase(sortType)){
 			sortAscendingStartDate();
-		}else if(Constants.SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) ){
+		}else if(Constants.PARSER_SORT_DESCENDING_START_DATE.equalsIgnoreCase(sortType) ){
 			sortDescendingStartDate();
-		}else if(Constants.SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType)){
+		}else if(Constants.PARSER_SORT_ASCENDING_TITLE.equalsIgnoreCase(sortType)){
 			sortTitleAscending();
-		}else if(Constants.SORT_DESCENDING_TITLE.equals(sortType)){
+		}else if(Constants.PARSER_SORT_DESCENDING_TITLE.equals(sortType)){
 			sortTitleDescending();
-		}else if(Constants.SORT_ISDONE_DONE.equalsIgnoreCase(sortType) ){
+		}else if(Constants.PARSER_SORT_ISDONE_DONE.equalsIgnoreCase(sortType) ){
 			sortIsDoneCompleted();
-		}else if(Constants.SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) ){
+		}else if(Constants.PARSER_SORT_ISDONE_UNDONE.equalsIgnoreCase(sortType) ){
 			sortIsDoneUndone();
-		}else if(Constants.SORT_OVERVIEW.equalsIgnoreCase(sortType)){
+		}else if(Constants.PARSER_SORT_OVERVIEW.equalsIgnoreCase(sortType)){
 			sortOverView();
-		}else if(Constants.SORT_TYPE.equalsIgnoreCase(sortType)){
+		}else if(Constants.PARSER_SORT_TYPE.equalsIgnoreCase(sortType)){
 			sortTypeOfTask();
-		}else if (Constants.SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+		}else if (Constants.PARSER_SORT_ASCENDING_PRIORITY.equalsIgnoreCase(sortType)){
 			sortAscendingPriority();
-		}else if (Constants.SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
+		}else if (Constants.PARSER_SORT_DESCENDING_PRIORITY.equalsIgnoreCase(sortType)){
 			sortDescendingPriority();
 		}
 		currentSortType[0] = sortType;
