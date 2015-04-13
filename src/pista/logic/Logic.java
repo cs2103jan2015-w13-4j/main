@@ -340,9 +340,8 @@ public class Logic {
 			try{
 				if( index > -1){
 					assert index < mStorage.getTaskList().size() : "Index out of bound";
-					Task temp = getTaskByIndex(index);
 					mStorage.getTaskList().remove(index);
-					mLog.logInfo(String.format(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK, temp.getTitle()));
+					mLog.logInfo(Constants.LOG_LOGIC_SUCCESS_DELETE_TASK);
 					return Constants.LOGIC_SUCCESS_DELETE_TASK;
 				}else{
 					mLog.logInfo(Constants.LOGIC_DELETE_TASK_NOT_FOUND);

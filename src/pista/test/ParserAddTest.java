@@ -1,3 +1,4 @@
+//@author A0111884E
 package pista.test;
 
 import static org.junit.Assert.*;
@@ -52,7 +53,7 @@ public class ParserAddTest {
 	
 	@Test
 	public void testParserAddTimedToken() {
-		MainParser mp = MainParser.validateInput("add deadlinetask -12/05/2015 -14:14 -13/7/2015 -15:15");
+		MainParser mp = MainParser.validateInput("add timedtask -12/05/2015 -14:14 -13/7/2015 -15:15");
 		assertEquals(Constants.PARSER_MESSAGE_VALID_INPUT, mp.getMessage());
 	}
 	
