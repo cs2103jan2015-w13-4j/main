@@ -31,6 +31,7 @@ public class Logic {
 	 * return the instance of Logic
 	 * **/
 	public static Logic getInstance(){
+		/*
 		if(mStorage == null){
 			initStorage();
 		}
@@ -40,6 +41,8 @@ public class Logic {
 		if(mLog == null){
 			initLogging();
 		}
+		*/
+		
 		return mLogic;
 	}
 
@@ -47,7 +50,7 @@ public class Logic {
 	 * return true if done successfully
 	 * return false otherwise
 	 * **/
-	public static boolean initPreference(){
+	public boolean initPreference(){
 		try{
 			mPrefs = CustomPreferences.getInstance();
 			return true;
@@ -61,7 +64,7 @@ public class Logic {
 	 * return true if done successfully
 	 * return false otherwise
 	 * **/
-	public static boolean initStorage(){
+	public boolean initStorage(){
 		currentSortType[0] = Constants.SORT_OVERVIEW;
 		try{
 			mStorage = Storage.getInstance();
@@ -76,7 +79,7 @@ public class Logic {
 	 * return true if done successfully
 	 * return false otherwise
 	 * **/
-	public static boolean initLogging(){
+	public boolean initLogging(){
 		try{
 			mLog = CustomLogging.getInstance(Storage.class.getName());
 			return true;
@@ -199,7 +202,7 @@ public class Logic {
 	 * Parameters:	newFilePath - source file path
 	 * Return:		isWritten - true or false
 	 * **/
-	public static boolean writeNewFile(String newFilePath){
+	public boolean writeNewFile(String newFilePath){
 		boolean isWritten = false;
 		mStorage.initTaskList();
 		mStorage.setDataFileLocation(newFilePath);

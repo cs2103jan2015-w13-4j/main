@@ -164,15 +164,15 @@ public class UIController {
 
 		this.addControlsToTopArea(); //add controls to the top anchor top area
 		
-		Logic.initLogging(); //initialize Logic logging
-		Logic.initStorage(); //initialize Logic storage
-		Logic.initPreference(); //initialize Logic preference
+		this.mLogic.initLogging(); //initialize Logic logging
+		this.mLogic.initStorage(); //initialize Logic storage
+		this.mLogic.initPreference(); //initialize Logic preference
 		
 		if(this.getPreferencePistaFlag() == Constants.PREFERENCE_FIRST_LAUNCH_VALUE){ //equals 0
 			this.initStartGuide(); //start the start guide
 			this.setPreferencePistaFlag(Constants.PREFERENCE_SUBSQUENT_LAUNCH_VALUE); //update the preference of the flag = 1
 			this.setPreferenceFilePath(this.getNewLaunchFileLocation()); //set preference file location to new file path
-			Logic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
+			this.mLogic.writeNewFile(this.getNewLaunchFileLocation()); //write default XML string to new file
 		}		
 
 		this.mStorage.setDataFileLocation(getPreferenceFilePath());
