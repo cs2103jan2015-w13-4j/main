@@ -1,3 +1,4 @@
+//@author A0125474E
 package pista.ui;
 
 import java.text.ParseException;
@@ -42,12 +43,12 @@ import pista.parser.MainParser;
 import pista.parser.TokenValidation;
 
 public class TaskListCell extends ListCell<Task> {
-	private Logic mLogic;
+	private Logic mLogic = null;
 
+    private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
+    private String DISPLAY_END_DATE_TIME = "To [datetime]";
     private final int MAX_CHARACTER_IN_TITLE = 45;
     
-    private String DISPLAY_START_DATE_TIME = "From [datetime]"; 
-    private String DISPLAY_END_DATE_TIME = "To [datetime]"; 
     private UIController mUIParent = null;
 	private GridPane grid = null;
 	private VBox vBoxDateTime = new VBox();
