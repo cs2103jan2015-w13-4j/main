@@ -41,6 +41,22 @@ public class LogicTest {
 		assertEquals("Test editing Task with ID out of range",tLogic.runCommand("edit",new String[] {"5","new title"}),Constants.LOGIC_EDIT_TASK_NOT_FOUND);
 	}
 	
+	@Test
+	public void testDelete(){
+		populateList();
+		assertEquals("Test delete a task",tLogic.runCommand("delete", new String[] {"1"}),Constants.LOGIC_SUCCESS_DELETE_TASK);
+		assertEquals("Check if the task is deleted",tLogic.getStorage().getTaskList().size(),2);
+		assertEquals("Test delete task that is non existent",tLogic.runCommand("delete", new String[] {"10"}),Constants.LOGIC_DELETE_TASK_NOT_FOUND);
+	}
+	
+	@Test
+	public void testPriority(){
+		populateList();
+		assertEquals("Test setting new priority",tLogic.runCommand("priority", new String[] {"1","3"}),Constants.LOGIC_SUCCESS_PRIORITY_TASK);
+		assertEquals("Check if the task is updated",tLogic.getStorage().getTaskList().get(2).getPriority(),"3");
+		
+	}
+	
 	public void populateList(){
 		tLogic.runCommand("add",new String[] {"meeting"});
 		tLogic.runCommand("add",new String[] {"meeting1","today","2pm"});
