@@ -1421,22 +1421,15 @@ public class MainParser {
 		return requiredNattyInputDateFormat;
 	}
 
-	/**This method lets the third party library Natty interprets date and time 
-	 * which the inbuilt validator does not recognizes
-	 * Parameters: List<DateGroup>
-	 * Return:		String - if natty recognizes what it represents 
-	 * 				else it returns an empty string
-	 * **/
-	private static String interpretInputNatty(List<DateGroup> groups) {
-		List dates = null;
-		for(DateGroup group: groups){
-			dates = group.getDates();
-			return dates.toString();
-		}
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
 
-		return "";
 
-	}
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
 
 	/**This method converts unix epoch into a String of Date and Time
 	 * Parameters: Long - milliseconds
@@ -1620,24 +1613,16 @@ public class TokenValidation {
 		return true;
 	}
 
-	/**This method checks if the time is valid in the following order HH:mm
-	 * Parameters: String - of time
-	 * Return:		Boolean
-	 * 				True if time is valid
-	 * 				false if it is not
-	 * **/
-	public static boolean isTimeValid(String myTime){
-		Pattern pattern;
-		Matcher matcher;
-		String TIME24HOURS_PATTERN ="([01]?[0-9]|2[0-3]):[0-5][0-9]";
-		pattern = Pattern.compile(TIME24HOURS_PATTERN);
-		matcher=pattern.matcher(myTime);
-		if(matcher.matches() || Constants.DEFAULT_CLEAR_VALUE.equalsIgnoreCase(myTime)){
-			return true;
-		}
-		return false;
-	}
-	
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\TokenValidation.java
+
+
+
+
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\TokenValidation.java
+	 */
+
 	/**This method checks if the start date and time occurs earlier than the end date and time of a task
 	 * Parameters: String - of start/end date and time
 	 * Return:		Boolean

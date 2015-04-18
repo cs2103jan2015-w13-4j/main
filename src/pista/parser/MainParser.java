@@ -632,6 +632,7 @@ public class MainParser {
 		return requiredNattyInputDateFormat;
 	}
 
+	//@author A0111884E-reused
 	/**This method lets the third party library Natty interprets date and time 
 	 * which the inbuilt validator does not recognizes
 	 * Parameters: List<DateGroup>
@@ -649,6 +650,7 @@ public class MainParser {
 
 	}
 
+	//@author A0111884E
 	/**This method converts unix epoch into a String of Date and Time
 	 * Parameters: Long - milliseconds
 	 * Return:		String - date in the format dd/MM/yyyy

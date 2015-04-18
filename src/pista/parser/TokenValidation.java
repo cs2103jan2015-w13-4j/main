@@ -73,6 +73,7 @@ public class TokenValidation {
 		return true;
 	}
 
+	//@author A0111884E-reused
 	/**This method checks if the time is valid in the following order HH:mm
 	 * Parameters: String - of time
 	 * Return:		Boolean
@@ -91,6 +92,7 @@ public class TokenValidation {
 		return false;
 	}
 	
+	//@author A0111884E
 	/**This method checks if the start date and time occurs earlier than the end date and time of a task
 	 * Parameters: String - of start/end date and time
 	 * Return:		Boolean
