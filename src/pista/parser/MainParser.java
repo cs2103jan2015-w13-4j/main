@@ -443,7 +443,7 @@ public class MainParser {
 
 	}
 	
-	//@author A0111721Y
+	//@author A0111721Y-reused
 	/**This method checks the tokens for the Search command
 	 * Parameters: Object of MainParser
 	 * 				String array - contains all parameters
