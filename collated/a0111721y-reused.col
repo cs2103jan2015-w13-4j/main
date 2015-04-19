@@ -1,0 +1,82 @@
+@author A0111721Y-reused
+
+	/**
+	 * origin: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
+	 */
+
+	/**This method checks the tokens for the Search command
+	 * Parameters: Object of MainParser
+	 * 				String array - contains all parameters
+	 * Return:		Boolean 
+	 * 				True if the tokens are co
+	 * 				False if the tokens are wrong 
+	 * **/
+	private boolean checkSearchTokens (MainParser mp, String[] tokens) {
+		Parser parser = new Parser();
+		String requiredNattyInputFormat = "";
+		String interpretOutputDateFromNatty = "";
+		List<DateGroup> groups;
+		
+		SimpleDateFormat nattySDF = new SimpleDateFormat("[EEE MMM dd HH:mm:ss z yyyy]");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
+		
+		if(tokens == null || tokens.length != Constants.LENGTH_ONE){
+			mp.setMessage(Constants.PARSER_MESSAGE_INVALID_TOKEN_LENGTH);
+			return false;
+		}
+		
+		if (tokens[Constants.INDEX_ZERO].equals("")) {
+			mp.setMessage(Constants.PARSER_MESSAGE_EMPTY_STRING);
+			return false;
+		}
+		
+		String[] possibleKeywords = new String[Constants.SEARCH_POSSIBLE_PARAMETERS];
+		mp.setTokens(possibleKeywords);
+		mp.setIndexInToken(Constants.SEARCH_KEYWORD_STRING, tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+		
+		//checks if keyword is a date
+		if(!TokenValidation.isDateValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			requiredNattyInputFormat = nattyInputFormat(tokens, Constants.SEARCH_TOKEN_KEYWORD);
+			
+			if(!requiredNattyInputFormat.isEmpty()){
+				groups = parser.parse(requiredNattyInputFormat);
+			}else{
+				groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			}
+
+			try {
+				interpretOutputDateFromNatty = sdf.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputDateFromNatty = "";
+			}
+			
+			if(TokenValidation.isDateValid(interpretOutputDateFromNatty) && !interpretOutputDateFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_DATE, interpretOutputDateFromNatty);
+			}
+		}
+				
+		//checks if keyword is a time
+		String interpretOutputTimeFromNatty="";
+		SimpleDateFormat sdf2=new SimpleDateFormat("HH:mm");
+		
+		if(!TokenValidation.isTimeValid(tokens[Constants.SEARCH_TOKEN_KEYWORD])){
+			groups = parser.parse(tokens[Constants.SEARCH_TOKEN_KEYWORD]);
+			
+			try {
+				interpretOutputTimeFromNatty = sdf2.format(nattySDF.parse(interpretInputNatty(groups)));
+			} catch (ParseException e1) {
+				interpretOutputTimeFromNatty = "";
+			}
+			
+			if(TokenValidation.isTimeValid(interpretOutputTimeFromNatty) && !interpretOutputTimeFromNatty.isEmpty()){
+				mp.setIndexInToken(Constants.SEARCH_KEYWORD_TIME, interpretOutputTimeFromNatty);
+			}
+		}
+		
+		System.out.println(mp.getTokens()[0] + mp.getTokens()[1] + mp.getTokens()[2]);
+		return true;
+	}
+
+
+
+	// End of segment: D:\install location\java\work\CS2103 PISTA V0.5\src\pista\parser\MainParser.java
